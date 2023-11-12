@@ -1,0 +1,47 @@
+:root {
+    --primary: #2B3A67;
+    --primary-hover: #3b508d;
+    --primary-dark: #232f53;
+
+    --secondary: #FF9B71;
+    --secondary-hover: #f19974;
+    --secondary-dark: #c77958;
+
+    --success: #28a745;
+    --success-hover: #218838;
+    --success-dark: #1e7e34;
+
+    --info: #B56B45;
+    --info-hover: #ca754a;
+    --info-dark: #9e5d3c;
+
+    --warning: #FFFD82;
+    --warning-hover: #f5f389;
+    --warning-dark: #e0df6f;
+
+    --danger: #E84855;
+    --danger-hover: #f34f5d;
+    --danger-dark: #d1424e;
+
+    --light: #f8f9fa;
+    --light-hover: #e2e6ea;
+    --light-dark: #dae0e5;
+
+    --dark: #343a40;
+    --dark-hover: #23272b;
+    --dark-dark: #1d2124;
+
+    --white: #fff;
+    --white-hover: #eeeded;
+    --white-dark: #e7e7e7;
+
+    --black: #000;
+    --black-hover: #141414;
+    --black-dark: #1a1a1a;
+
+    --transparent-hover: rgba(0, 0, 0, 0.05);
+    --transparent-dark: rgba(0, 0, 0, 0.1);
+
+    --shadow: rgba(0, 0, 0, 0.05);
+    --shadow-dark: rgba(0, 0, 0, 0.1);
+}

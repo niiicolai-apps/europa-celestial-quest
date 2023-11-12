@@ -1,0 +1,72 @@
+{
+  "name": "ls",
+  "description": "ls",
+  "author": "Nicolai",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "electron/main.prod.cjs",
+  "scripts": {
+    "setup": "npm install && npx cap add android && npx cap add ios",
+    "preview": "vite preview",
+    "dev-web": "vite",
+    "dev-ios": "npx cap open ios",
+    "dev-android": "npx cap open android",
+    "dev-electron": "electron ./electron/main.dev.cjs",
+    "build": "npm run build-web && npm run build-electron && npm run build-capacitor",
+    "build-web": "vite build",
+    "build-electron": "electron-builder",
+    "build-capacitor": "npx cap copy && npx cap sync"
+  },
+  "build": {
+    "appId": "ls",
+    "productName": "ls",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "./dist",
+        "to": "./",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "@capacitor/android": "^5.5.1",
+    "@capacitor/cli": "^5.5.1",
+    "@capacitor/core": "^5.5.1",
+    "@capacitor/ios": "^5.5.1",
+    "frontend-icons": "github:niiicolai-apps/frontend-icons#v1.0.0",
+    "frontend-ui": "github:niiicolai-apps/frontend-ui#v1.0.1",
+    "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.1",
+    "three": "^0.158.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "electron": "^27.0.4",
+    "electron-builder": "^24.6.4",
+    "vite": "^4.4.5",
+    "vite-plugin-javascript-obfuscator": "^3.1.0"
+  }
+}
