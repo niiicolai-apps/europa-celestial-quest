@@ -1,6 +1,4 @@
 <template>
-    
-
     <UI.Fixed top="auto" left="1" right="1" bottom="1">
         <UI.Flex 
             direction="horizontal"
@@ -27,7 +25,7 @@
                     />
                 </UI.Button>
                 
-                <UI.Button @click="setPanel('settings')" >
+                <UI.Button @click="setPanel('pause')" >
                     <Icons.fa.PauseIcon 
                         width="2em" 
                         height="2em"

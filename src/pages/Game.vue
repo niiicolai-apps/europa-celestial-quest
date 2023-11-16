@@ -5,17 +5,19 @@ import WebGL from 'frontend-webgl';
 
 import { useBank } from '../composables/bank.js';
 import { useObjectives } from '../composables/objectives.js';
+import { useStats } from '../composables/stats.js';
 
 import Locale from '../components/Locale.vue';
 
 import SettingsPanel from '../components/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
 import ShopPanel from '../components/Game/Panels/ShopPanel.vue';
+import PausePanel from '../components/Game/Panels/PausePanel.vue';
 
 import TopPanel from '../components/Game/TopPanel.vue';
 import BottomPanel from '../components/Game/BottomPanel.vue';
 import { setMeta } from '../composables/meta.js';
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 
 // # UI
 const selectedPanel = ref('');
@@ -33,12 +35,16 @@ const player = ref({
 });
 
 const objectivesManager = useObjectives(player);
-objectivesManager.init();
-
 const bankManager = useBank();
-bankManager.init();
+const statsManager = useStats();
 
-setMeta("game")
+onMounted(() => {
+    objectivesManager.init();
+    bankManager.init();
+    statsManager.init();
+
+    setMeta("game")
+});
 </script>
 
 <template>
@@ -47,7 +53,24 @@ setMeta("game")
     <TopPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
     <BottomPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
 
-    <SettingsPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
-    <ObjectivesPanel :objectivesManager="objectivesManager" :selectedPanel="selectedPanel" :setPanel="setPanel" />
-    <ShopPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
+    <SettingsPanel 
+        :selectedPanel="selectedPanel" 
+        :setPanel="setPanel" 
+    />
+
+    <ObjectivesPanel 
+        :objectivesManager="objectivesManager" 
+        :selectedPanel="selectedPanel" 
+        :setPanel="setPanel" 
+    />
+
+    <ShopPanel
+        :selectedPanel="selectedPanel" 
+        :setPanel="setPanel" 
+    />
+
+    <PausePanel
+        :selectedPanel="selectedPanel" 
+        :setPanel="setPanel"
+    />
 </template>
