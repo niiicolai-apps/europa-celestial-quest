@@ -58,6 +58,8 @@
     "frontend-icons": "github:niiicolai-apps/frontend-icons#v1.0.0",
     "frontend-ui": "github:niiicolai-apps/frontend-ui#v1.0.1",
     "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.1",
+    "game-bank": "github:niiicolai-apps/game-bank#v1.0.0",
+    "game-objectives": "github:niiicolai-apps/game-objectives#v1.0.0",
     "three": "^0.158.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"

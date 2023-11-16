@@ -1,12 +1,12 @@
 <template>
-    <UI.Panel transition_name="slide-up" :show="selectedPanel === 'settings'">
+    <UI.Panel transition_name="slide-up" :show="selectedPanel === 'shop'">
         <div class="bg-white rounded w-full h-screen">
             <div class="p-5 bg-primary flex items-center justify-start gap-3">
                 <UI.Button type="danger" class="flex items-center justify-center" @click="setPanel('')">
                     <Icons.fa.ArrowDownIcon width="1em" height="1em" fill="white" />
                 </UI.Button>
                 <UI.SubTitle class="uppercase text-white">
-                    Settings
+                    Shop
                 </UI.SubTitle>
             </div>
             
