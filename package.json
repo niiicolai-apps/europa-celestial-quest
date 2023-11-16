@@ -57,7 +57,7 @@
     "@capacitor/ios": "^5.5.1",
     "frontend-icons": "github:niiicolai-apps/frontend-icons#v1.0.0",
     "frontend-ui": "github:niiicolai-apps/frontend-ui#v1.0.2",
-    "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.1",
+    "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.2",
     "game-bank": "github:niiicolai-apps/game-bank#v1.0.0",
     "game-objectives": "github:niiicolai-apps/game-objectives#v1.0.0",
     "game-stats": "github:niiicolai-apps/game-stats#v1.0.0",

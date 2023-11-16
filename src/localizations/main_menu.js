@@ -13,6 +13,10 @@ export default {
             en: 'Privacy',
             da: 'Privatliv',
         },
+        release_notes_button: {
+            en: 'Release Notes',
+            da: 'Versionsnoter',
+        },
         settings_button: {
             en: 'Settings',
             da: 'Indstillinger',

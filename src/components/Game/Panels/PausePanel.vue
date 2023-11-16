@@ -50,7 +50,7 @@
                     </UI.Flex>
                 </UI.Button>
 
-                <UI.Button type="danger" class="w-50" @click="console.log('not implemented yet')">
+                <UI.Button type="danger" class="w-50" link="/">
                     <UI.Flex direction="horizontal" justify="between">
                         <UI.Paragraph class="font-bold">
                             Quit

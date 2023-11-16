@@ -3,8 +3,9 @@ import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import WebGL from 'frontend-webgl';
 import Locale from '../components/Locale.vue';
-import SettingsPanel from '../components/SettingsPanel.vue';
-import PrivacyPanel from '../components/PrivacyPanel.vue';
+import SettingsPanel from '../components/General/SettingsPanel.vue';
+import PrivacyPanel from '../components/General/PrivacyPanel.vue';
+import ReleaseNotesPanel from '../components/General/ReleaseNotesPanel.vue';
 import { setMeta } from '../composables/meta.js';
 import { ref } from 'vue';
 
@@ -23,6 +24,11 @@ setMeta("main_menu")
     />
 
     <PrivacyPanel
+        :selectedPanel="selectedPanel"
+        :setPanel="setPanel"
+    />
+
+    <ReleaseNotesPanel
         :selectedPanel="selectedPanel"
         :setPanel="setPanel"
     />
@@ -56,6 +62,13 @@ setMeta("main_menu")
                     <UI.Flex direction="horizontal" items="center" justify="between">
                         <Locale id="main_menu.privacy_button" />
                         <Icons.fa.ShieldIcon width="1em" height="1em" fill="white" />
+                    </UI.Flex>
+                </UI.Button>
+
+                <UI.Button type="primary" @click="setPanel('release_notes')" class="w-full py-3 font-bold uppercase">
+                    <UI.Flex direction="horizontal" items="center" justify="between">
+                        <Locale id="main_menu.release_notes_button" />
+                        <Icons.fa.ScrollIcon width="1em" height="1em" fill="white" />
                     </UI.Flex>
                 </UI.Button>
 
