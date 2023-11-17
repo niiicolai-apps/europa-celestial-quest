@@ -6,32 +6,27 @@ import Locale from '../components/Locale.vue';
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import PrivacyPanel from '../components/General/PrivacyPanel.vue';
 import ReleaseNotesPanel from '../components/General/ReleaseNotesPanel.vue';
+import { usePanel } from '../composables/panel.js';
 import { setMeta } from '../composables/meta.js';
-import { ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 
-const selectedPanel = ref('');
-const setPanel = (newPanel) => selectedPanel.value = newPanel;
+const panelManager = usePanel();
 
-setMeta("main_menu")
+onMounted(() => {
+    setMeta("main_menu")
+});
+
+onUnmounted(() => {
+    panelManager.clearPanel();
+});
 </script>
 
 <template>
     <WebGL.components.MatrixBgg class="fixed inset-0 w-full h-full" />
     
-    <SettingsPanel
-        :selectedPanel="selectedPanel"
-        :setPanel="setPanel"
-    />
-
-    <PrivacyPanel
-        :selectedPanel="selectedPanel"
-        :setPanel="setPanel"
-    />
-
-    <ReleaseNotesPanel
-        :selectedPanel="selectedPanel"
-        :setPanel="setPanel"
-    />
+    <SettingsPanel />
+    <PrivacyPanel />
+    <ReleaseNotesPanel />
 
     <UI.Fixed top="auto" bottom="3">
         <div class="w-50 mx-auto">
@@ -51,21 +46,21 @@ setMeta("main_menu")
                     </UI.Flex>
                 </UI.Button>
 
-                <UI.Button type="primary" @click="setPanel('settings')" class="w-full py-3 font-bold uppercase">
+                <UI.Button type="primary" @click="panelManager.setPanel('settings')" class="w-full py-3 font-bold uppercase">
                     <UI.Flex direction="horizontal" items="center" justify="between">
                         <Locale id="main_menu.settings_button" />
                         <Icons.fa.GearIcon width="1em" height="1em" fill="white" />
                     </UI.Flex>
                 </UI.Button>
 
-                <UI.Button type="primary" @click="setPanel('privacy')" class="w-full py-3 font-bold uppercase">
+                <UI.Button type="primary" @click="panelManager.setPanel('privacy')" class="w-full py-3 font-bold uppercase">
                     <UI.Flex direction="horizontal" items="center" justify="between">
                         <Locale id="main_menu.privacy_button" />
                         <Icons.fa.ShieldIcon width="1em" height="1em" fill="white" />
                     </UI.Flex>
                 </UI.Button>
 
-                <UI.Button type="primary" @click="setPanel('release_notes')" class="w-full py-3 font-bold uppercase">
+                <UI.Button type="primary" @click="panelManager.setPanel('release_notes')" class="w-full py-3 font-bold uppercase">
                     <UI.Flex direction="horizontal" items="center" justify="between">
                         <Locale id="main_menu.release_notes_button" />
                         <Icons.fa.ScrollIcon width="1em" height="1em" fill="white" />

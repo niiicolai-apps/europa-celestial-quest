@@ -64,6 +64,18 @@ export default {
                 en: 'Cancel',
                 da: 'Annuller',
             },
+            start_upgrade_button: {
+                en: 'Upgrade',
+                da: 'Opgrader',
+            },
+            confirm_upgrade_button: {
+                en: 'Confirm',
+                da: 'Bekræft',
+            },
+            cancel_upgrade_button: {
+                en: 'Cancel',
+                da: 'Annuller',
+            },
         },
     }
 }

@@ -1,33 +1,11 @@
 <template>
-    <UI.Panel transition_name="slide-up" :show="selectedPanel === 'settings'">
-        <div class="bg-white rounded w-full h-screen">
-            <div class="p-5 bg-primary flex items-center justify-start gap-3">
-                <UI.Button type="danger" class="flex items-center justify-center" @click="setPanel('')">
-                    <Icons.fa.ArrowDownIcon width="1em" height="1em" fill="white" />
-                </UI.Button>
-                <UI.SubTitle class="uppercase text-white">
-                    Settings
-                </UI.SubTitle>
-            </div>
-            
-            <div class="p-5">
-                <UI.Paragraph class="mb-5">Body</UI.Paragraph>
-            </div>
-        </div>
-    </UI.Panel>
+    <Panel name="settings" identifier="settings">
+        <UI.Paragraph class="mb-5">Body</UI.Paragraph>
+    </Panel>
 </template>
 
 <script setup>
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
-defineProps({
-    selectedPanel: {
-        type: String,
-        required: true,
-    },
-    setPanel: {
-        type: Function,
-        required: true,
-    },
-})
+import Panel from '../UI/Panel.vue';
 </script>

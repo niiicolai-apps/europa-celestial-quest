@@ -6,7 +6,7 @@
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Button 
                     :title="localizationManager.getLocale('game.bottom_panel.shop_button')"
-                        @click="setPanel('shop')"
+                        @click="panelManager.setPanel('shop')"
                         >
                         <Icons.fa.ShopIcon 
                             width="2em" 
@@ -17,7 +17,7 @@
 
                     <UI.Button 
                         :title="localizationManager.getLocale('game.bottom_panel.objectives_button')" 
-                        @click="setPanel('objectives')"
+                        @click="panelManager.setPanel('objectives')"
                         >
                         <Icons.fa.ScrollIcon 
                             width="2em" 
@@ -28,7 +28,7 @@
                     
                     <UI.Button 
                         :title="localizationManager.getLocale('game.bottom_panel.pause_button')" 
-                        @click="setPanel('pause')"
+                        @click="panelManager.setPanel('pause')"
                         >
                         <Icons.fa.PauseIcon 
                             width="2em" 
@@ -37,7 +37,6 @@
                         />
                     </UI.Button>
                 </UI.Flex>
-
                 
             </UI.Flex>
         </UI.Fixed>
@@ -50,17 +49,8 @@ import Icons from 'frontend-icons';
 import { computed } from 'vue';
 import { useInspect } from '../../composables/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
-defineProps({
-    selectedPanel: {
-        type: String,
-        required: true,
-    },
-    setPanel: {
-        type: Function,
-        required: true,
-    },
-})
-
+import { usePanel } from '../../composables/panel.js';
+const panelManager = usePanel();
 const localizationManager = useLocalization();
 const inspectManager = useInspect();
 const selected = computed(() => inspectManager.selected.value);

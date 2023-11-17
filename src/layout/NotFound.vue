@@ -1,5 +1,6 @@
 <script setup>
-import Link from '../components/UI/Link.vue';
+import WebGl from 'frontend-webgl';
+import UI from 'frontend-ui';
 import Locale from '../components/Locale.vue';
 import { setMeta } from '../composables/meta.js';
 
@@ -7,21 +8,23 @@ setMeta("not_found")
 </script>
 
 <template>
-  <div>
-    <div>
+  <WebGl.components.MatrixBgg class="fixed inset-0 w-full h-full" />
 
-      <h2>
+  <UI.Fixed>
+    <UI.Flex class="h-screen text-white">
+
+      <UI.Title>
         <Locale id="not_found.title" />
-      </h2>
+      </UI.Title>
 
-      <p>
+      <UI.Paragraph>
         <Locale id="not_found.paragraph" />
-      </p>
+      </UI.Paragraph>
 
-      <Link to="/" class="text-green-700">
+      <UI.Button link="/" type="primary" class="uppercase font-bold">
         <Locale id="not_found.link" />
-      </Link>
+      </UI.Button>
 
-    </div>
-  </div>
+    </UI.Flex>
+  </UI.Fixed>
 </template>

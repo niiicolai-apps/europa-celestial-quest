@@ -9,8 +9,7 @@ import { useBank } from '../composables/bank.js';
 import { useObjectives } from '../composables/objectives.js';
 import { useStats } from '../composables/stats.js';
 import { useInspect } from '../composables/inspect.js';
-
-import Locale from '../components/Locale.vue';
+import { usePanel } from '../composables/panel.js';
 
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
@@ -24,10 +23,6 @@ import InspectPanel from '../components/Game/InspectPanel.vue';
 import { setMeta } from '../composables/meta.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 
-// # UI
-const selectedPanel = ref('');
-const setPanel = (newPanel) => selectedPanel.value = newPanel;
-
 // # Dummy data
 const player = ref({
     name: 'Player',
@@ -39,6 +34,7 @@ const player = ref({
     }
 });
 
+const panelManager = usePanel();
 const objectivesManager = useObjectives(player);
 const inspectManager = useInspect();
 const bankManager = useBank();
@@ -116,6 +112,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
     cameraManager.disable(); 
+    panelManager.clearPanel();
 })
 </script>
 
@@ -126,28 +123,15 @@ onUnmounted(() => {
         class="w-full h-screen block" 
     />
 
-    <TopPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
-    <BottomPanel :selectedPanel="selectedPanel" :setPanel="setPanel" />
+    <TopPanel />
+    <BottomPanel />
+
     <InspectPanel />
-
-    <SettingsPanel 
-        :selectedPanel="selectedPanel" 
-        :setPanel="setPanel" 
-    />
-
+    <SettingsPanel />
+    <ShopPanel />
+    <PausePanel />
     <ObjectivesPanel 
         :objectivesManager="objectivesManager" 
-        :selectedPanel="selectedPanel" 
-        :setPanel="setPanel" 
     />
-
-    <ShopPanel
-        :selectedPanel="selectedPanel" 
-        :setPanel="setPanel" 
-    />
-
-    <PausePanel
-        :selectedPanel="selectedPanel" 
-        :setPanel="setPanel"
-    />
+    
 </template>

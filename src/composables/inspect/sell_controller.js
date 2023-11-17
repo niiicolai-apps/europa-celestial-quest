@@ -6,19 +6,21 @@ const bankManager = useBank();
 const isSelling = ref(false);
 const SellController = {
     start: (selected) => {
-        if (isSelling.value) return;
-        if (!selected.value) return;
+        if (isSelling.value) return false;
+        if (!selected.value) return false;
 
         isSelling.value = true;
+        return true;
     },
     cancel: (selected) => {
-        if (!isSelling.value) return;
+        if (!isSelling.value) return false;
 
         isSelling.value = false;
+        return true;
     },
     confirm: (selected) => {
-        if (!isSelling.value) return;
-        if (!selected.value.userData.isOwned) return;
+        if (!isSelling.value) return false;
+        if (!selected.value.userData.isOwned) return false;
 
         isSelling.value = false;
         selected.value.userData.isOwned = false;
@@ -26,6 +28,7 @@ const SellController = {
         for (const cost of selected.value.userData.costs) {
             bankManager.bank.value.deposit(cost.amount, cost.currency);
         }
+        return true;
     },
     isSelling
 }

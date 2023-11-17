@@ -2,7 +2,6 @@ import NOT_FOUND from '../localizations/not_found.js';
 import MAIN_MENU from '../localizations/main_menu.js';
 import GAME_DETAILS from '../localizations/game_details.js';
 import GAME from '../localizations/game.js';
-import HEADER from '../localizations/header.js';
 import META from '../localizations/meta.js';
 
 const LANGUAGE_TYPES = {
@@ -17,7 +16,6 @@ const locals = {
     ...MAIN_MENU,
     ...GAME_DETAILS,
     ...GAME,
-    ...HEADER,
     ...META,
 }
 

@@ -11,14 +11,4 @@
 import UI from 'frontend-ui';
 import BankAccounts from './Utils/BankAccounts.vue';
 import Stats from './Utils/Stats.vue';
-defineProps({
-    selectedPanel: {
-        type: String,
-        required: true,
-    },
-    setPanel: {
-        type: Function,
-        required: true,
-    },
-})
 </script>

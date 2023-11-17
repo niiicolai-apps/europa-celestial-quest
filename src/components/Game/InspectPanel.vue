@@ -1,6 +1,6 @@
 <template>
     <Transition name="slide-up">
-        <UI.Fixed v-if="selected && !isMoving && !isSelling" top="auto" left="1" right="1" bottom="1">
+        <UI.Fixed v-if="selected && !isMoving && !isSelling && !isUpgrading" top="auto" left="1" right="1" bottom="1">
             <UI.Flex items="start" gap="3">
                 <UI.Paragraph class="font-bold text-white">
                     {{ selected.name }}
@@ -15,6 +15,11 @@
                     <UI.Button :title="localizationManager.getLocale('game.inspect_panel.start_sell_button')"
                         @click="inspectManager.sellCtrl.start()">
                         <Icons.fa.TrashIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
+
+                    <UI.Button :title="localizationManager.getLocale('game.inspect_panel.start_upgrade_button')"
+                        @click="inspectManager.upgradeCtrl.start()">
+                        <Icons.fa.ArrowUpIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>
@@ -94,6 +99,28 @@
             </UI.Flex>
         </UI.Fixed>
     </Transition>
+
+    <Transition name="slide-up">
+        <UI.Fixed v-if="selected && isUpgrading" top="auto" left="1" right="1" bottom="1">
+            <UI.Flex items="start" gap="3">
+                <UI.Paragraph class="font-bold text-white">
+                    Are you sure you want to upgrade {{ selected.name }}?
+                </UI.Paragraph>
+
+                <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <UI.Button :title="localizationManager.getLocale('game.inspect_panel.confirm_upgrade_button')"
+                        @click="inspectManager.upgradeCtrl.confirm()">
+                        <Icons.fa.CheckmarkIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
+
+                    <UI.Button :title="localizationManager.getLocale('game.inspect_panel.cancel_upgrade_button')"
+                        @click="inspectManager.upgradeCtrl.cancel()">
+                        <Icons.fa.TimesIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
+                </UI.Flex>
+            </UI.Flex>
+        </UI.Fixed>
+    </Transition>
 </template>
 
 <script setup>
@@ -108,4 +135,5 @@ const inspectManager = useInspect();
 const selected = computed(() => inspectManager.selected.value);
 const isMoving = computed(() => inspectManager.moveCtrl.isMoving.value);
 const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);
+const isUpgrading = computed(() => inspectManager.upgradeCtrl.isUpgrading.value);
 </script>
