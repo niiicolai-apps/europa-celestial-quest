@@ -1,27 +1,27 @@
 :root {
-    --primary: #2B3A67;
-    --primary-hover: #3b508d;
-    --primary-dark: #232f53;
+    --primary: #1C3144;
+    --primary-hover: #243f57;
+    --primary-dark: #111f2b;
 
-    --secondary: #FF9B71;
-    --secondary-hover: #f19974;
-    --secondary-dark: #c77958;
+    --secondary: #A2AEBB;
+    --secondary-hover: #b6c3d1;
+    --secondary-dark: #8b95a0;
 
-    --success: #28a745;
-    --success-hover: #218838;
-    --success-dark: #1e7e34;
+    --success: #566E3D;
+    --success-hover: #6d8b4c;
+    --success-dark: #455830;
 
-    --info: #B56B45;
-    --info-hover: #ca754a;
-    --info-dark: #9e5d3c;
+    --info: #3F88C5;
+    --info-hover: #4a9de2;
+    --info-dark: #3677ac;
 
-    --warning: #FFFD82;
-    --warning-hover: #f5f389;
-    --warning-dark: #e0df6f;
+    --warning: #FFBA08;
+    --warning-hover: #fcbc1a;
+    --warning-dark: #e6a80b;
 
-    --danger: #E84855;
-    --danger-hover: #f34f5d;
-    --danger-dark: #d1424e;
+    --danger: #D00000;
+    --danger-hover: #e70000;
+    --danger-dark: #bd0000;
 
     --light: #f8f9fa;
     --light-hover: #e2e6ea;

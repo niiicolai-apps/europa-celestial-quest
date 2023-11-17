@@ -9,7 +9,7 @@ export function useStats(options = {}) {
     const init = () => {
         if (isInitialized.value) return
 
-        const statName = 'General'
+        const statName = 'general'
         const maxLevel = 100
         const experienceMultiplier = 1.2
         const experienceFirstLevel = 100

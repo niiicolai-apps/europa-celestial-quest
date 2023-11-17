@@ -5,7 +5,7 @@
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Button 
-                    :title="localizationManager.getLocale('game.bottom_panel.shop_button')"
+                    :title="localizationManager.getLocale('game_menu.shop_button')"
                         @click="panelManager.setPanel('shop')"
                         >
                         <Icons.fa.ShopIcon 
@@ -16,7 +16,7 @@
                     </UI.Button>
 
                     <UI.Button 
-                        :title="localizationManager.getLocale('game.bottom_panel.objectives_button')" 
+                        :title="localizationManager.getLocale('game_menu.objectives_button')" 
                         @click="panelManager.setPanel('objectives')"
                         >
                         <Icons.fa.ScrollIcon 
@@ -27,7 +27,7 @@
                     </UI.Button>
                     
                     <UI.Button 
-                        :title="localizationManager.getLocale('game.bottom_panel.pause_button')" 
+                        :title="localizationManager.getLocale('game_menu.pause_button')" 
                         @click="panelManager.setPanel('pause')"
                         >
                         <Icons.fa.PauseIcon 

@@ -1,22 +1,41 @@
+import { ref } from 'vue';
 import NOT_FOUND from '../localizations/not_found.js';
 import MAIN_MENU from '../localizations/main_menu.js';
 import GAME_DETAILS from '../localizations/game_details.js';
-import GAME from '../localizations/game.js';
+import GAME_MENU from '../localizations/game_menu.js';
 import META from '../localizations/meta.js';
+import SETTINGS from '../localizations/settings.js';
+import PRIVACY from '../localizations/privacy.js';
+import RELEASE_NOTES from '../localizations/release_notes.js';
+import OBJECTIVES from '../localizations/objectives.js';
+import SHOP from '../localizations/shop.js';
+import STATS from '../localizations/stats.js';
+import PAUSE from '../localizations/pause.js';
+import INSPECT from '../localizations/inspect.js';
+import BANK from '../localizations/bank.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
     DANISH: 'da'
 }
 
-let LANGUAGE = 'en';
+const LANGUAGE = ref('da');
 
 const locals = {
     ...NOT_FOUND,
     ...MAIN_MENU,
     ...GAME_DETAILS,
-    ...GAME,
+    ...GAME_MENU,
     ...META,
+    ...SETTINGS,
+    ...PRIVACY,
+    ...RELEASE_NOTES,
+    ...OBJECTIVES,
+    ...SHOP,
+    ...STATS,
+    ...PAUSE,
+    ...INSPECT,
+    ...BANK
 }
 
 export const useLocalization = (_locals = locals) => {
@@ -30,7 +49,7 @@ export const useLocalization = (_locals = locals) => {
             result = result[currentKey];
         }
 
-        return result[splitKey[0]][LANGUAGE];
+        return result[splitKey[0]][LANGUAGE.value];
     }
 
     const setLanguage = (lang) => {
@@ -39,11 +58,13 @@ export const useLocalization = (_locals = locals) => {
             throw new Error('Invalid language');
         }
 
-        LANGUAGE = lang;
+        LANGUAGE.value = lang;
     }
 
     return {
         getLocale,
-        setLanguage
+        setLanguage,
+        LANGUAGE_TYPES,
+        LANGUAGE
     }
 }

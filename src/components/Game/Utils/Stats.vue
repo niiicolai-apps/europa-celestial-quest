@@ -1,6 +1,11 @@
 <template>
     <div v-if="statsCtrl && stats">
-        <UI.Flex v-for="stat in stats" :key="stat.name" gap="2">
+        <UI.Flex 
+            v-for="stat in stats" 
+            :key="stat.name" 
+            gap="2"
+            :title="localizationManager.getLocale(`stats.${stat.name}`)"
+            >
 
             <UI.ProgressBar 
                 :progress="stat.experience" 
@@ -27,7 +32,9 @@
 import UI from 'frontend-ui';
 import { computed } from 'vue';
 import { useStats } from '../../../composables/stats.js';
+import { useLocalization } from '../../../composables/localization.js';
 
+const localizationManager = useLocalization();
 const statsManager = useStats();
 const statsCtrl = computed(() => statsManager.controller.value);
 const stats = computed(() => statsCtrl.value.stats);
