@@ -51,6 +51,7 @@ const MoveController = {
             }
         }
 
+        itemsManager.saveState();
         isMoving.value = false;
         lastPosition.value = null;
         return true;
