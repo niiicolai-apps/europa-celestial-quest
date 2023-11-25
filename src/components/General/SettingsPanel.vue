@@ -58,9 +58,6 @@ const settings = computed(() => {
     }, {
         name: localizationManager.getLocale("settings.camera_pan_speed_title"),
         description: localizationManager.getLocale("settings.camera_pan_speed_description"),
-    }, {
-        name: localizationManager.getLocale("settings.music_volume_title"),
-        description: localizationManager.getLocale("settings.music_volume_description"),
     }]
 })
 </script>

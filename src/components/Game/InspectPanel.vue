@@ -46,32 +46,32 @@
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.move_left_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.moveLeft()">
                         <Icons.fa.ArrowLeftIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.move_right_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.moveRight()">
                         <Icons.fa.ArrowRightIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.move_up_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.moveBackward()">
                         <Icons.fa.ArrowUpIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.move_down_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.moveForward()">
                         <Icons.fa.ArrowDownIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.rotate_left_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.rotateLeft()">
                         <Icons.fa.RotateLeftIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.rotate_right_button')"
-                        @click="console.log('not implemented yet')">
+                        @click="inspectManager.moveCtrl.rotateRight()">
                         <Icons.fa.RotateRightIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
                 </UI.Flex>

@@ -3,10 +3,12 @@ import WebGL from 'frontend-webgl';
 import MoveController from './inspect/move_controller.js';
 import SellController from './inspect/sell_controller.js';
 import UpgradeController from './inspect/upgrade_controller.js';
+import { useGround } from './ground.js';
 
 const selected = ref(null);
 const selectableManager = ref(null);
 const isInitialized = ref(false);
+const groundManager = useGround();
 
 const moveCtrl = {
     start: () => {
@@ -20,6 +22,24 @@ const moveCtrl = {
     confirm: () => {
         if (MoveController.confirm(selected))
             selectableManager.value.enable();
+    },
+    moveForward: () => {
+        MoveController.moveForward(selected);
+    },
+    moveBackward: () => {
+        MoveController.moveBackward(selected);
+    },
+    moveLeft: () => {
+        MoveController.moveLeft(selected);
+    },
+    moveRight: () => {
+        MoveController.moveRight(selected);
+    },
+    rotateLeft: () => {
+        MoveController.rotateLeft(selected);
+    },
+    rotateRight: () => {
+        MoveController.rotateRight(selected);
     },
     isMoving: MoveController.isMoving
 }
@@ -55,6 +75,11 @@ const upgradeCtrl = {
     },
     isUpgrading: UpgradeController.isUpgrading
 }
+
+groundManager.addOnIntersect((point) => {
+    if (!selected.value) return;
+    MoveController.onClick(selected, point);
+});
 
 export const useInspect = () => {
 
@@ -100,6 +125,9 @@ export const useInspect = () => {
 
         selected.value = selectable;
         selectableManager.value.setSelected(selectable);
+        if (!selectable.userData.isOwned) {
+            moveCtrl.start();
+        }
     }
 
     const removeSelected = () => {

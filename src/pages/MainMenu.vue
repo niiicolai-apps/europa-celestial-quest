@@ -6,6 +6,7 @@ import Locale from '../components/Locale.vue';
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import PrivacyPanel from '../components/General/PrivacyPanel.vue';
 import ReleaseNotesPanel from '../components/General/ReleaseNotesPanel.vue';
+import Audio from '../components/UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
 import { setMeta } from '../composables/meta.js';
 import { onMounted, onUnmounted } from 'vue';
@@ -89,11 +90,10 @@ onUnmounted(() => {
     </UI.Fixed>
 
     <UI.Fixed bottom="auto" right="auto" top="1" left="2">
-        <UI.Button type="info" class="text-xs w-full py-1 font-bold uppercase">
-            <UI.Flex direction="horizontal" items="center" justify="between" gap="1">
-                <Icons.fa.StopIcon width="1em" height="1em" fill="white" />
-                <Locale id="main_menu.mute_button" />
-            </UI.Flex>
-        </UI.Button>
+        <Audio 
+            src="/audio/music_happy_bounce.wav"
+            :volume="0.1"
+            showMute
+        />
     </UI.Fixed>
 </template>

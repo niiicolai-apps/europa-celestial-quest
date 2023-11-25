@@ -1,8 +1,6 @@
 <template>
-    <div v-if="statsCtrl && stats">
-        <UI.Flex 
-            v-for="stat in stats" 
-            :key="stat.name" 
+    <div v-if="stat">
+        <UI.Flex
             gap="2"
             :title="localizationManager.getLocale(`stats.${stat.name}`)"
             >
@@ -36,6 +34,5 @@ import { useLocalization } from '../../../composables/localization.js';
 
 const localizationManager = useLocalization();
 const statsManager = useStats();
-const statsCtrl = computed(() => statsManager.controller.value);
-const stats = computed(() => statsCtrl.value.stats);
+const stat = computed(() => statsManager.stat.value);
 </script>

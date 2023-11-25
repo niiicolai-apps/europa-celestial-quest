@@ -28,13 +28,5 @@ export default {
             da: 'Juster kamerapanorering.',
         },
 
-        music_volume_title: {
-            en: 'Music Volume',
-            da: 'Musikvolumen',
-        },
-        music_volume_description: {
-            en: 'Adjust the music volume.',
-            da: 'Juster musikvolumen.',
-        },
     },
 }

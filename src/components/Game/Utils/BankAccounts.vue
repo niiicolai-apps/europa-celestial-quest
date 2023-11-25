@@ -1,8 +1,8 @@
 <template>
-    <UI.Flex direction="horizontal" gap="3" v-if="bank">
+    <UI.Flex direction="horizontal" gap="3" v-if="isInitialized">
         <UI.Flex 
             gap="2" 
-            v-for="account in bank.accounts" 
+            v-for="account in accounts" 
             :key="account.name"
             :title="localizationManager.getLocale(`bank.${account.name}`)"
             >
@@ -38,5 +38,6 @@ const iconSize = "1em";
 const iconFill = "white";
 const localizationManager = useLocalization();
 const bankManager = useBank();
-const bank = computed(() => bankManager.bank.value);
+const isInitialized = computed(() => bankManager.isInitialized.value);
+const accounts = computed(() => bankManager.accounts.value);
 </script>

@@ -10,6 +10,11 @@ import { useObjectives } from '../composables/objectives.js';
 import { useStats } from '../composables/stats.js';
 import { useInspect } from '../composables/inspect.js';
 import { usePanel } from '../composables/panel.js';
+import Camera from '../composables/camera.js';
+
+import { useGround } from '../composables/ground.js';
+import { useGrid } from '../composables/grid.js';
+import { useItems } from '../composables/items.js';
 
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
@@ -39,21 +44,13 @@ const objectivesManager = useObjectives(player);
 const inspectManager = useInspect();
 const bankManager = useBank();
 const statsManager = useStats();
+const groundManager = useGround();
+const gridManager = useGrid();
+const itemsManager = useItems();
 
 const canvasRef = ref(null);
-const cameraManager = WebGL.composables.useTopDownCamera({
-    minZoom: 50,
-    maxZoom: 220,
-    currentZoom: 150,
-    currentPosition: new THREE.Vector3(0, 0, 35),
-});
 const options = {
-    camera: {
-        custom: cameraManager.camera,
-        rotation: { 
-            x: -60 * Math.PI / 180, 
-        },
-    },
+    camera: { ...Camera.options },
 };
 
 onMounted(() => {
@@ -64,54 +61,56 @@ onMounted(() => {
 
     const { renderer, camera, scene, lifeCycle } = canvasRef.value.adapter;
 
+    itemsManager.init(scene);
     inspectManager.enable(camera, renderer);
-
-    const redColor = new THREE.Color(0xff0000);
-    const greenColor = new THREE.Color(0x00ff00);
-
-    const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-    const cubeMaterial = new THREE.MeshPhysicalMaterial({ color: greenColor });
-    const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cubeMesh.name = "Cube";
-    cubeMesh.userData = {
-        isOwned: true,
-        costs: [
-            { currency: "coins", amount: 100 },
-            { currency: "diamonds", amount: 10 },
-        ]
-    };
-    cubeMesh.position.set(0, 2.5, 0);
-    scene.add(cubeMesh);
-    inspectManager.addSelectable(cubeMesh);
-
-    const groundGeometry = new THREE.PlaneGeometry(100, 100);
-    const groundMaterial = new THREE.MeshPhysicalMaterial({ color: redColor });
-    const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
-    groundMesh.rotation.x = -Math.PI / 2;
-    scene.add(groundMesh);
+    groundManager.init(scene, camera, renderer.domElement, lifeCycle);
+    groundManager.enable();
 
     const light = new THREE.DirectionalLight(0xffffff, 1.5);
     light.position.set(0, 10, 0);
     scene.add(light);
 
+    const waypoints = [
+        {x: 0, y: .5, z: 0},
+        {x: 0, y: .5, z: 20},
+        {x: 20, y: .5, z: 20},
+        {x: 20, y: .5, z: 0},
+    ]
+
+    const enemyCubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+    const enemyCubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x0000ff });
+    const enemyCubeMesh = new THREE.Mesh(enemyCubeGeometry, enemyCubeMaterial);
+    enemyCubeMesh.name = "Enemy Cube";
+    enemyCubeMesh.position.set(0, 2.5, 0);
+    scene.add(enemyCubeMesh);
+
+    let waypointIndex = 0;
+    const enemyDestination = new THREE.Vector3();
+    const speed = 0.1;
+    const stoppingDistance = 0.1;
+
     lifeCycle.onAnimate.push(() => {
-        cameraManager.update();
+        Camera.manager.update();
+    
+        const distance = enemyCubeMesh.position.distanceTo(enemyDestination);
+        if (distance <= stoppingDistance) {
+            waypointIndex++;
+            if (waypointIndex >= waypoints.length) waypointIndex = 0;
+            enemyDestination.set(waypoints[waypointIndex].x, waypoints[waypointIndex].y, waypoints[waypointIndex].z);
+        }
+
+        const direction = enemyDestination.clone().sub(enemyCubeMesh.position).normalize();
+        enemyCubeMesh.position.add(direction.multiplyScalar(speed));
+
     });
 
     lifeCycle.onDispose.push(() => {
-        scene.remove(cubeMesh);
-        scene.remove(groundMesh);
-
-        groundGeometry.dispose();
-        groundMaterial.dispose();
-        cubeGeometry.dispose();
-        cubeMaterial.dispose();
     });
 
-    cameraManager.enable();
+    Camera.manager.enable();
 })
 onUnmounted(() => {
-    cameraManager.disable(); 
+    Camera.manager.disable(); 
     panelManager.clearPanel();
 })
 </script>
