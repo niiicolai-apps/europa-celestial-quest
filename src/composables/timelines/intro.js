@@ -134,7 +134,10 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     const terrain = await getMesh({
         type: 'GLTF',
         url: 'meshes/utils/terrain.glb',
-        subMeshes: [],
+        subMeshes: [{
+            name: 'map',
+            texturePack: 'terrain',
+        }],
     });
 
     let interval = null;
@@ -186,7 +189,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_01 = {
-        playTime: 18000,
+        playTime: 1,//18000,
         callback: () => {
             audioBgg.setSrc('audio/battle-of-the-dragons-8037.mp3');
             audioBgg.setVolume(.3);
@@ -224,7 +227,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_02 = {
-        playTime: 20000,
+        playTime: 1,//20000,
         callback: () => {
             stopLoop();
             stopCamera();
@@ -252,7 +255,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_03 = {
-        playTime: 11500,
+        playTime: 1,//11500,
         callback: () => {
             stopLoop();
             stopCamera();
@@ -271,7 +274,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_04 = {
-        playTime: 8500,
+        playTime: 1,//8500,
         callback: () => {
             stopCamera();
             stopLoop();
@@ -322,7 +325,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_05 = {
-        playTime: 8500,
+        playTime: 1,//8500,
         callback: () => {
             stopLoop();
 
@@ -353,7 +356,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_06 = {
-        playTime: 8500,
+        playTime: 1,//8500,
         callback: () => {
             audio.setSrc('audio/intro_poem_2.mp3');
             audio.play();
@@ -387,12 +390,11 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .1;
-
-                nebulaAirForce.update();
+                
                 nebulaAirForce.emitters[0].position.x = europa_horizon_drifter_x1.position.x + .2;
                 nebulaAirForce.emitters[0].position.y = europa_horizon_drifter_x1.position.y - .5;
                 nebulaAirForce.emitters[0].position.z = europa_horizon_drifter_x1.position.z + .5;
-
+                nebulaAirForce.update();
             });
 
             moveCamera(0, .001, 0);
@@ -425,7 +427,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
 
             camera.position.set(
                 terrain.position.x,
-                terrain.position.y + 5,
+                terrain.position.y + 35,
                 terrain.position.z - 260
             );
             camera.lookAt(
@@ -440,14 +442,15 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .01;
 
-                nebulaFireForce.update();
+                
                 nebulaFireForce.emitters[0].position.x = europa_horizon_drifter_x1.position.x;
                 nebulaFireForce.emitters[0].position.y = europa_horizon_drifter_x1.position.y - 3;
                 nebulaFireForce.emitters[0].position.z = europa_horizon_drifter_x1.position.z + 1;
+                nebulaFireForce.update();
 
                 shakeCamera(
                     terrain.position.x,
-                    terrain.position.y + 5,
+                    terrain.position.y + 35,
                     terrain.position.z - 260,
                     min,
                     max,
@@ -490,10 +493,11 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.y -= .05;
                 europa_horizon_drifter_x1.position.z += .01;
 
-                nebulaAirForce2.update();
+                
                 nebulaAirForce2.emitters[0].position.x = europa_horizon_drifter_x1.position.x;
                 nebulaAirForce2.emitters[0].position.y = europa_horizon_drifter_x1.position.y - 5;
                 nebulaAirForce2.emitters[0].position.z = europa_horizon_drifter_x1.position.z + 1;
+                nebulaAirForce2.update();
 
                 shakeCamera(
                     europa_horizon_drifter_x1.position.x + 10,
@@ -526,13 +530,13 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             europa_horizon_drifter_x1.rotation.y = 0 * Math.PI / 180;
             europa_horizon_drifter_x1.position.set(
                 terrain.position.x,
-                terrain.position.y - 90,
+                terrain.position.y + 18,
                 terrain.position.z - 80
             );
 
             camera.position.set(
                 terrain.position.x + 20,
-                terrain.position.y - 90,
+                terrain.position.y + 18,
                 terrain.position.z - 120
             );
             camera.lookAt(

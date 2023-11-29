@@ -95,6 +95,15 @@ const texturePacks = [
             { type: 'map', url: 'textures/book_paper/book_paper_basecolor.png' },
             { type: 'normalMap', url: 'textures/book_paper/book_paper_normal.png' },
         ]
+    },
+    {
+        name: 'terrain',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/terrain/terrain_basecolor.png' },
+        ]
     }
 ]
 
