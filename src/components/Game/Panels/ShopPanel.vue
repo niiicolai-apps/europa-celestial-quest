@@ -39,7 +39,7 @@ const localizationManager = useLocalization();
 const inspectManager = useInspect();
 const panelManager = usePanel();
 const itemsManager = useItems();
-const definitions = computed(() => itemsManager.itemDefinitions);
+const definitions = computed(() => itemsManager.ConstructionDefinitions);
 const click = async (definition) => {
     console.log(definition);
     if (itemsManager.canAfford(definition.costs)) {

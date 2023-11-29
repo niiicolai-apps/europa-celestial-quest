@@ -5,10 +5,97 @@ const texturePacks = [
         name: 'default',
         material: 'MeshBasicMaterial',
         color: 0x00ff00,
+        transparent: false,
         textures: [
             //{ type: 'map', url: 'texture.png' },
         ]
     },
+    {
+        name: 'wood',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/wood/wood_basecolor.png' },
+            { type: 'normalMap', url: 'textures/wood/wood_normal.png' },
+        ]
+    },
+    {
+        name: 'cardboard',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/cardboard/cardboard_basecolor.png' },
+            { type: 'normalMap', url: 'textures/cardboard/cardboard_normal.png' },
+        ]
+    },
+    {
+        name: 'glass',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        opacity: 0.1,
+        transparent: true,
+        textures: []
+    },
+    {
+        name: 'transparent_fabric',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        opacity: 0.5,
+        transparent: true,
+        textures: []
+    },
+    {
+        name: 'red_fabric',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        opacity: 1,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/red_fabric/red_fabric_basecolor.png' },
+            { type: 'normalMap', url: 'textures/red_fabric/red_fabric_normal.png'}
+        ]
+    },
+    {
+        name: 'black_fabric',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        opacity: 1,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/black_fabric/black_fabric_basecolor.png' },
+            { type: 'normalMap', url: 'textures/black_fabric/black_fabric_normal.png'}
+        ]
+    },
+    {
+        name: 'blue_fabric',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        opacity: 1,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/blue_fabric/blue_fabric_basecolor.png' },
+            { type: 'normalMap', url: 'textures/blue_fabric/blue_fabric_normal.png'}
+        ]
+    },
+    {
+        name: 'blue',
+        material: 'MeshPhysicalMaterial',
+        color: 0x0000ff,
+        transparent: false,
+        textures: []
+    },
+    {
+        name: 'book_paper',
+        material: 'MeshPhysicalMaterial',
+        color: 0xffffff,
+        transparent: false,
+        textures: [
+            { type: 'map', url: 'textures/book_paper/book_paper_basecolor.png' },
+            { type: 'normalMap', url: 'textures/book_paper/book_paper_normal.png' },
+        ]
+    }
 ]
 
 const textureCache = {}
@@ -47,10 +134,17 @@ export const getTexturePack = async (name, object_uuid) => {
 
     const { material, textures } = texturePack
     const materialInstance = newMaterial(material, texturePack.color)
+    materialInstance.colorSpace = THREE.SRGBColorSpace;
+    materialInstance.transparent = texturePack.transparent
+    materialInstance.opacity = texturePack.opacity || 1
+    
     console.log(materialInstance);
     textures.map(async texture => {
         const { type, url } = texture
         const _texture = await textureLoader.loadAsync(url)
+        _texture.wrapS = THREE.RepeatWrapping
+        _texture.wrapT = THREE.RepeatWrapping
+        _texture.repeat.set(1, 1)
         materialInstance[type] = _texture
     })
 

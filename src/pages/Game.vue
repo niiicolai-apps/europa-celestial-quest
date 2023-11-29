@@ -16,6 +16,8 @@ import { useGround } from '../composables/ground.js';
 import { useGrid } from '../composables/grid.js';
 import { useItems } from '../composables/items.js';
 
+import IntroTimeline from '../composables/timelines/intro.js';
+
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
 import ShopPanel from '../components/Game/Panels/ShopPanel.vue';
@@ -24,6 +26,7 @@ import PausePanel from '../components/Game/Panels/PausePanel.vue';
 import TopPanel from '../components/Game/TopPanel.vue';
 import BottomPanel from '../components/Game/BottomPanel.vue';
 import InspectPanel from '../components/Game/InspectPanel.vue';
+import Audio from '../components/UI/Audio.vue';
 
 import { setMeta } from '../composables/meta.js';
 import { ref, onMounted, onUnmounted } from 'vue';
@@ -48,12 +51,17 @@ const groundManager = useGround();
 const gridManager = useGrid();
 const itemsManager = useItems();
 
+const audioRef = ref(null);
+const audioRefBgg = ref(null);
 const canvasRef = ref(null);
+const intro = ref(null);
 const options = {
     camera: { ...Camera.options },
 };
 
-onMounted(() => {
+const interacted = ref(false);
+
+onMounted(async () => {
     setMeta("game")
     objectivesManager.init();
     bankManager.init();
@@ -61,22 +69,27 @@ onMounted(() => {
 
     const { renderer, camera, scene, lifeCycle } = canvasRef.value.adapter;
 
-    itemsManager.init(scene);
-    inspectManager.enable(camera, renderer);
-    groundManager.init(scene, camera, renderer.domElement, lifeCycle);
-    groundManager.enable();
+    renderer.alpha = true;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
-    const light = new THREE.DirectionalLight(0xffffff, 1.5);
-    light.position.set(0, 10, 0);
-    scene.add(light);
+    //const light = new THREE.DirectionalLight(0xffffff, 1.5);
+    //light.position.set(0, 10, 0);
+    //scene.add(light);
+
+    //itemsManager.init(scene);
+    //inspectManager.enable(camera, renderer);
+    //groundManager.init(scene, camera, renderer.domElement, lifeCycle);
 
     const waypoints = [
-        {x: 0, y: .5, z: 0},
-        {x: 0, y: .5, z: 20},
-        {x: 20, y: .5, z: 20},
-        {x: 20, y: .5, z: 0},
+        { x: 0, y: .5, z: 0 },
+        { x: 0, y: .5, z: 20 },
+        { x: 20, y: .5, z: 20 },
+        { x: 20, y: .5, z: 0 },
     ]
 
+    /*
     const enemyCubeGeometry = new THREE.BoxGeometry(5, 5, 5);
     const enemyCubeMaterial = new THREE.MeshPhysicalMaterial({ color: 0x0000ff });
     const enemyCubeMesh = new THREE.Mesh(enemyCubeGeometry, enemyCubeMaterial);
@@ -88,10 +101,10 @@ onMounted(() => {
     const enemyDestination = new THREE.Vector3();
     const speed = 0.1;
     const stoppingDistance = 0.1;
-
+    */
     lifeCycle.onAnimate.push(() => {
-        Camera.manager.update();
-    
+        //Camera.manager.update();
+        /*
         const distance = enemyCubeMesh.position.distanceTo(enemyDestination);
         if (distance <= stoppingDistance) {
             waypointIndex++;
@@ -101,26 +114,45 @@ onMounted(() => {
 
         const direction = enemyDestination.clone().sub(enemyCubeMesh.position).normalize();
         enemyCubeMesh.position.add(direction.multiplyScalar(speed));
-
+        */
     });
 
     lifeCycle.onDispose.push(() => {
     });
 
-    Camera.manager.enable();
+
+    //groundManager.enable();   
+    //Camera.manager.enable();
+    intro.value = await IntroTimeline(camera, scene, audioRef.value, audioRefBgg.value);
+    //intro.play();
 })
+
 onUnmounted(() => {
-    Camera.manager.disable(); 
+    Camera.manager.disable();
     panelManager.clearPanel();
 })
+
+const interact = () => {
+    if (interacted.value) return;
+    interacted.value = true;
+    intro.value.play();
+}
 </script>
 
 <template>
-    <WebGL.components.Canvas3D 
-        ref="canvasRef" 
-        :options="options" 
-        class="w-full h-screen block" 
-    />
+    <UI.Fixed v-if="!interacted">
+        <UI.Flex>
+            <UI.Button @click="interact">
+                Ready
+            </UI.Button>
+        </UI.Flex>
+    </UI.Fixed>
+
+
+    <WebGL.components.Canvas3D ref="canvasRef" :options="options" class="w-full h-screen block" />
+
+    <Audio ref="audioRef" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
+    <Audio ref="audioRefBgg" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
 
     <TopPanel />
     <BottomPanel />
@@ -129,8 +161,5 @@ onUnmounted(() => {
     <SettingsPanel />
     <ShopPanel />
     <PausePanel />
-    <ObjectivesPanel 
-        :objectivesManager="objectivesManager" 
-    />
-    
+    <ObjectivesPanel :objectivesManager="objectivesManager" />
 </template>

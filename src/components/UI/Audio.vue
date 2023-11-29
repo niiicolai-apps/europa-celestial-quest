@@ -45,6 +45,10 @@ const toggleMute = () => {
     audioRef.value.muted = !audioRef.value.muted;
     muted.value = audioRef.value.muted;
 }
+const setMuted = (value) => {
+    audioRef.value.muted = value;
+    muted.value = value;
+}
 
 defineExpose({
     play,
@@ -52,7 +56,8 @@ defineExpose({
     toggle,
     setVolume,
     setSrc,
-    toggleMute
+    toggleMute,
+    setMuted
 });
 
 onMounted(() => {

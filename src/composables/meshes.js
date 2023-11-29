@@ -25,6 +25,9 @@ export const getMesh = async (mesh) => {
         object3D = gltf.scene;
         object3D.traverse(async (child) => {
             if (child.isMesh) {
+                if (child.name === 'Cube051' || child.name === 'Cube060') child.visible = false;
+                child.castShadow = true;
+                child.receiveShadow = true;
                 const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
                 if (!subMesh) return;
 
