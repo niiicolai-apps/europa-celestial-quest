@@ -189,7 +189,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_01 = {
-        playTime: 1,//18000,
+        playTime: 18000,
         callback: () => {
             audioBgg.setSrc('audio/battle-of-the-dragons-8037.mp3');
             audioBgg.setVolume(.3);
@@ -227,7 +227,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_02 = {
-        playTime: 1,//20000,
+        playTime: 20000,
         callback: () => {
             stopLoop();
             stopCamera();
@@ -255,7 +255,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_03 = {
-        playTime: 1,//11500,
+        playTime: 11500,
         callback: () => {
             stopLoop();
             stopCamera();
@@ -274,7 +274,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_04 = {
-        playTime: 1,//8500,
+        playTime: 8500,
         callback: () => {
             stopCamera();
             stopLoop();
@@ -325,7 +325,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_05 = {
-        playTime: 1,//8500,
+        playTime: 8500,
         callback: () => {
             stopLoop();
 
@@ -356,7 +356,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_06 = {
-        playTime: 1,//8500,
+        playTime: 8500,
         callback: () => {
             audio.setSrc('audio/intro_poem_2.mp3');
             audio.play();
