@@ -13,19 +13,22 @@ const system = new System();
 const itemsManager = useItems();
 
 export default async (camera, scene, lifeCycle, audio, audioBgg) => {
-    const ambient_light = new THREE.AmbientLight(0xffffff, .1);
+    const ambient_light = new THREE.AmbientLight(0xffffff, .15);
 
     const womans_house_light_01 = new THREE.PointLight(0xAA4203, .3, 80);
     const womans_house_light_02 = new THREE.DirectionalLight(0xF6F1D5, 2);
     const womans_house_light_03 = new THREE.PointLight(0xAA4203, .6, 130);
+    const womans_house_light_04 = new THREE.PointLight(0xAA4203, .8, 40);
 
     womans_house_light_01.position.set(2.6, .8, -2.6);
     womans_house_light_02.position.set(15, 15, 0);
     womans_house_light_02.target.position.set(2.6, .7, -2.7);
     womans_house_light_03.position.set(1, .8, -1.6);
+    womans_house_light_04.position.set(1.77, 1, -2.72);
     womans_house_light_01.castShadow = true;
     womans_house_light_02.castShadow = true;
     womans_house_light_03.castShadow = true;
+    womans_house_light_04.castShadow = true;
 
     const space_light_01 = new THREE.DirectionalLight(0xffffff, 1.4, 100);
     const space_ship_light_01 = new THREE.PointLight(0xFF0000, 44.4, 10);
@@ -37,6 +40,12 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     const nebulaSystemFire = await System.fromJSONAsync(fireParticleJson, THREE);
     const nebulaRendererFire = new SpriteRenderer(scene, THREE);
     const nebulaFire = nebulaSystemFire.addRenderer(nebulaRendererFire);
+
+    const nebulaSystemFire2 = await System.fromJSONAsync(fireParticleJson, THREE);
+    const nebulaRendererFire2 = new SpriteRenderer(scene, THREE);
+    const nebulaFire2 = nebulaSystemFire2.addRenderer(nebulaRendererFire2);
+    nebulaFire2.emitters[0].position.x = 1.77;
+    nebulaFire2.emitters[0].position.z = -2.72;
 
     const nebulaSystemAirForce = await System.fromJSONAsync(airForceParticleJson, THREE);
     const nebulaRendererAirForce = new SpriteRenderer(scene, THREE);
@@ -91,13 +100,13 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
         url: 'meshes/utils/woman_with_poem.glb',
         subMeshes: [{
             name: 'Cube105',
-            texturePack: 'blue',
+            texturePack: 'blue_fabric',
         }, {
             name: 'Cube104',
-            texturePack: 'blue',
+            texturePack: 'blue_fabric',
         }, {
             name: 'Cube106',
-            texturePack: 'blue',
+            texturePack: 'blue_fabric',
         }],
     });
 
@@ -190,7 +199,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             audio.play();
 
             scene.add(womans_house);
-            scene.add(womans_hand);
+            //scene.add(womans_hand);
             scene.add(womans_house_light_01);
             scene.add(womans_house_light_02);
             scene.add(womans_house_light_03);
@@ -201,12 +210,14 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             womans_house.position.set(0, 0, 0);
             womans_hand.position.set(2.25, .7, -2.3);
 
-            camera.position.set(2.2, .9, -2.44);
-            camera.rotation.z = 20 * Math.PI / 180;
-            camera.rotation.y = 20 * Math.PI / 180;
+            camera.position.set(2.2, 1, -2.4);
+            camera.rotation.z = 15 * Math.PI / 180;
+            camera.rotation.y = 15 * Math.PI / 180;
             loop(() => {
                 camera.rotation.z -= .0001;
                 camera.rotation.y -= .0001;
+                nebulaFire.update();
+                nebulaFire2.update();
             });
             moveCamera(.00001, 0, 0);
         }
@@ -222,18 +233,26 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             scene.add(woman_with_poem);
             scene.remove(womans_hand);
             woman_with_poem.position.set(2.25, .6, -1.3);
+            woman_with_poem.scale.set(1.1, 1.1, 1.1);
             woman_with_poem.rotation.y = 90 * Math.PI / 180;
             camera.position.set(0, 1, 0);
             camera.rotation.set(0, -1, 0);
+            nebulaFireForce.emitters[0].position.x = 150.77;
+            nebulaFireForce.emitters[0].position.z = -70.72;
+            nebulaFireForce.emitters[0].position.y = 1;
             moveCamera(0, 0, .0001);
             loop(() => {
                 nebulaFire.update();
+                nebulaFire2.update();
+                nebulaFireForce.update();
+                nebulaFireForce.emitters[0].position.y += .01;
+                nebulaFireForce.emitters[0].position.z += .01;
             }, 1000 / 60);
         }
     }
 
     const sequence_03 = {
-        playTime: 11000,
+        playTime: 11500,
         callback: () => {
             stopLoop();
             stopCamera();
@@ -243,6 +262,10 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             moveCamera(.0001, 0, .0001);
             loop(() => {
                 nebulaFire.update();
+                nebulaFire2.update();
+                nebulaFireForce.update();
+                nebulaFireForce.emitters[0].position.y += .01;
+                nebulaFireForce.emitters[0].position.z += .01;
             }, 1000 / 60);
         }
     }
@@ -411,8 +434,8 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.z
             );
 
-            const min = -0.5;
-            const max = 0.5;
+            const min = -0.8;
+            const max = 0.8;
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .01;
@@ -461,8 +484,8 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.z
             );
 
-            const min = -0.05;
-            const max = 0.05;
+            const min = -0.8;
+            const max = 0.8;
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .05;
                 europa_horizon_drifter_x1.position.z += .01;
@@ -518,7 +541,11 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.z
             );
 
-            moveCamera(0, .001, -.001);
+            moveCamera(0, .001, -.01);
+            loop(() => {
+                camera.rotation.z += .0001;
+                camera.rotation.y += .0001;
+            })
         }
     }
 
