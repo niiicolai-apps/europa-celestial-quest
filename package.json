@@ -63,6 +63,7 @@
     "game-objectives": "github:niiicolai-apps/game-objectives#v1.0.0",
     "game-stats": "github:niiicolai-apps/game-stats#v1.0.1",
     "three": "^0.158.0",
+    "three-nebula": "^10.0.3",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },

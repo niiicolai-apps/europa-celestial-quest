@@ -29,7 +29,7 @@ import InspectPanel from '../components/Game/InspectPanel.vue';
 import Audio from '../components/UI/Audio.vue';
 
 import { setMeta } from '../composables/meta.js';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 // # Dummy data
 const player = ref({
@@ -55,6 +55,7 @@ const audioRef = ref(null);
 const audioRefBgg = ref(null);
 const canvasRef = ref(null);
 const intro = ref(null);
+const isPlayingIntro = ref(false);
 const options = {
     camera: { ...Camera.options },
 };
@@ -73,6 +74,17 @@ onMounted(async () => {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    scene.background = new THREE.CubeTextureLoader()
+	.setPath( 'textures/cubeMaps/' )
+	.load( [
+				'px.png',
+				'nx.png',
+				'py.png',
+				'ny.png',
+				'pz.png',
+				'nz.png'
+			] );
 
     //const light = new THREE.DirectionalLight(0xffffff, 1.5);
     //light.position.set(0, 10, 0);
@@ -123,7 +135,7 @@ onMounted(async () => {
 
     //groundManager.enable();   
     //Camera.manager.enable();
-    intro.value = await IntroTimeline(camera, scene, audioRef.value, audioRefBgg.value);
+    intro.value = await IntroTimeline(camera, scene, lifeCycle, audioRef.value, audioRefBgg.value);
     //intro.play();
 })
 
@@ -136,6 +148,7 @@ const interact = () => {
     if (interacted.value) return;
     interacted.value = true;
     intro.value.play();
+    isPlayingIntro.value = true;
 }
 </script>
 
@@ -154,12 +167,15 @@ const interact = () => {
     <Audio ref="audioRef" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
     <Audio ref="audioRefBgg" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
 
-    <TopPanel />
-    <BottomPanel />
+    <div v-if="!isPlayingIntro">
+        
+        <TopPanel />
+        <BottomPanel />
 
-    <InspectPanel />
-    <SettingsPanel />
-    <ShopPanel />
-    <PausePanel />
-    <ObjectivesPanel :objectivesManager="objectivesManager" />
+        <InspectPanel />
+        <SettingsPanel />
+        <ShopPanel />
+        <PausePanel />
+        <ObjectivesPanel :objectivesManager="objectivesManager" />
+    </div>
 </template>

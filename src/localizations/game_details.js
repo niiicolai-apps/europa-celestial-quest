@@ -2,12 +2,12 @@
 export default {
     game_details: {
         title: {
-            en: 'Lemonade Shop',
-            da: 'Lemonade Butik',
+            en: 'Europa The Last Hope',
+            da: 'Europa Det sidste håb',
         },
         subtitle: {
-            en: 'Lemoncake update',
-            da: 'Citronkage opdatering',
+            en: 'Space update',
+            da: 'Rumopdatering',
         },
         version: {
             en: 'Version 1.0.0',

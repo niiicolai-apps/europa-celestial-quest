@@ -9,12 +9,15 @@ import ReleaseNotesPanel from '../components/General/ReleaseNotesPanel.vue';
 import Audio from '../components/UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
 import { setMeta } from '../composables/meta.js';
-import { onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
+const canvasRef = ref(null);
 const panelManager = usePanel();
 
 onMounted(() => {
     setMeta("main_menu")
+    const { scene, camera } = canvasRef.value.adapter;
+    camera.position.set(0, 0, 0);
 });
 
 onUnmounted(() => {
@@ -23,7 +26,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <WebGL.components.MatrixBgg class="fixed inset-0 w-full h-full" />
+    <WebGL.components.Canvas3D ref="canvasRef" class="fixed inset-0 w-full h-full" />
     
     <SettingsPanel />
     <PrivacyPanel />
