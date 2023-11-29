@@ -255,7 +255,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_03 = {
-        playTime: 11500,
+        playTime: 11000,
         callback: () => {
             stopLoop();
             stopCamera();

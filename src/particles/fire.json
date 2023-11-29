@@ -40,8 +40,8 @@
                     "id": "51ca9452-3d8b-11e9-a1e8-4785d9606b75",
                     "type": "Life",
                     "properties": {
-                        "min": 0.5,
-                        "max": 1,
+                        "min": 0.3,
+                        "max": 0.7,
                         "isEnabled": true
                     }
                 },
@@ -57,8 +57,8 @@
                     "id": "51ca9454-3d8b-11e9-a1e8-4785d9606b75",
                     "type": "Radius",
                     "properties": {
-                        "width": 0.04,
-                        "height": 0.02,
+                        "width": 0.02,
+                        "height": 0.01,
                         "isEnabled": true
                     }
                 },
