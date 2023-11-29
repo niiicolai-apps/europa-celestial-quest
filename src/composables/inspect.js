@@ -73,7 +73,9 @@ const upgradeCtrl = {
         if (UpgradeController.confirm(selected))
             selectableManager.value.enable();
     },
-    isUpgrading: UpgradeController.isUpgrading
+    isUpgradeable: () => UpgradeController.isUpgradeable(selected),
+    isMaxUpgradeReached: () => UpgradeController.isMaxUpgradeReached(selected),
+    isUpgrading: UpgradeController.isUpgrading    
 }
 
 groundManager.addOnIntersect((point) => {

@@ -1,14 +1,14 @@
 import * as THREE from 'three';
-import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { getTexturePack } from './textures.js';
 
-const gltfLoader = new GLTFExporter();
+const gltfLoader = new GLTFLoader();
 const meshCache = {};
 
-const getCached = (name) => {
-    if (meshCache[name]) {
-        const clone = meshCache[name].mesh.clone()
-        meshCache[name].clones.push(clone);
+const getCached = (url) => {
+    if (meshCache[url]) {
+        const clone = meshCache[url].mesh.clone()
+        meshCache[url].clones.push(clone);
         return clone;
     }
 
@@ -16,18 +16,11 @@ const getCached = (name) => {
 }
 
 export const getMesh = async (mesh) => {
-    const cached = getCached(mesh.name);
+    const cached = getCached(mesh.url);
     if (cached) return cached;
 
     let object3D = null;
-    if (mesh.type === 'BoxGeometry') {
-        const subMesh = mesh.subMeshes[0];
-        const { width, height, depth } = subMesh;
-        const geometry = new THREE.BoxGeometry(width, height, depth);
-        object3D = new THREE.Mesh(geometry);
-        const material = await getTexturePack(subMesh.texturePack, object3D.uuid);
-        object3D.material = material;
-    } else if (mesh.type === 'GLTF') {
+    if (mesh.type === 'GLTF') {
         const gltf = await gltfLoader.loadAsync(mesh.url);
         object3D = gltf.scene;
         object3D.traverse(async (child) => {
@@ -49,6 +42,6 @@ export const getMesh = async (mesh) => {
         clones: [mesh.uuid],
     }
 
-    meshCache[mesh.name] = meshInstance;
+    meshCache[mesh.url] = meshInstance;
     return meshInstance.mesh;
 }

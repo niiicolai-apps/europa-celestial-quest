@@ -39,7 +39,7 @@ const MoveController = {
     confirm: (selected) => {
         if (!isMoving.value) return false;
         if (!selected.value.userData.isOwned) {
-            let canAfford = itemsManager.canAfford(selected.value.userData.costs);
+            const canAfford = itemsManager.canAfford(selected.value.userData.costs);
 
             if (canAfford) {
                 for (const cost of selected.value.userData.costs) {

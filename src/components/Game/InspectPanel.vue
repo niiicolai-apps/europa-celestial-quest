@@ -2,10 +2,16 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && !isMoving && !isSelling && !isUpgrading" top="auto" left="1" right="1" bottom="1">
             <UI.Flex items="start" gap="3">
-                <UI.Paragraph class="font-bold text-white">
-                    {{ selected.name }}
-                </UI.Paragraph>
+                <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <UI.Paragraph class="font-bold text-white">
+                        {{ selected.name }}
+                    </UI.Paragraph>
 
+                    <UI.Paragraph v-if="isUpgradeable" class="font-bold text-white">
+                        ({{ selected.userData.upgrades[selected.userData.upgrade.index].name }})
+                    </UI.Paragraph>
+                </UI.Flex>
+                
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Button :title="localizationManager.getLocale('inspect.start_move_button')"
                         @click="inspectManager.moveCtrl.start()">
@@ -17,7 +23,8 @@
                         <Icons.fa.TrashIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
 
-                    <UI.Button :title="localizationManager.getLocale('inspect.start_upgrade_button')"
+                    <UI.Button v-if="isUpgradeable && !isMaxUpgradeReached"
+                        :title="localizationManager.getLocale('inspect.start_upgrade_button')"
                         @click="inspectManager.upgradeCtrl.start()">
                         <Icons.fa.ArrowUpIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
@@ -121,7 +128,7 @@
                         <Icons.fa.TimesIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
                 </UI.Flex>
-            </UI.Flex>
+            </UI.Flex>            
         </UI.Fixed>
     </Transition>
 </template>
@@ -140,4 +147,6 @@ const selected = computed(() => inspectManager.selected.value);
 const isMoving = computed(() => inspectManager.moveCtrl.isMoving.value);
 const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);
 const isUpgrading = computed(() => inspectManager.upgradeCtrl.isUpgrading.value);
+const isUpgradeable = computed(() => inspectManager.upgradeCtrl.isUpgradeable());
+const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgradeReached());
 </script>
