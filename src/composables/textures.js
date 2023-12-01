@@ -147,7 +147,6 @@ export const getTexturePack = async (name, object_uuid) => {
     materialInstance.transparent = texturePack.transparent
     materialInstance.opacity = texturePack.opacity || 1
     
-    console.log(materialInstance);
     textures.map(async texture => {
         const { type, url } = texture
         const _texture = await textureLoader.loadAsync(url)
@@ -163,6 +162,41 @@ export const getTexturePack = async (name, object_uuid) => {
     }
 
     textureCache[name] = texture
-    console.log(texture);
+
     return texture.material
+}
+
+export const removeTexturePack = (name, object_uuid) => {
+    const cached = textureCache[name]
+    if (!cached) return
+
+    const index = cached.clones.indexOf(object_uuid)
+    if (index === -1) return
+
+    cached.clones.splice(index, 1)
+    if (cached.clones.length === 0) {
+        delete textureCache[name]
+
+        const { material } = cached
+        for (const key in material) {
+            if (material[key] instanceof THREE.Texture) {
+                material[key].dispose()
+            }
+        }
+        material.dispose()
+    }
+}
+
+export const disposeTextureCache = () => {
+    for (const key in textureCache) {
+        const { material } = textureCache[key]
+        for (const key in material) {
+            if (material[key] instanceof THREE.Texture) {
+                material[key].dispose()
+            }
+        }
+        material.dispose()
+    }
+
+    textureCache = {}
 }

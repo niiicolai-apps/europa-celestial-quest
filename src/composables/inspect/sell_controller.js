@@ -1,9 +1,12 @@
 import { ref } from 'vue';
 import { useBank } from '../bank.js';
+import { useItems } from '../items.js';
+import { removeMesh } from '../meshes.js';
 
 const bankManager = useBank();
-
+const itemsManager = useItems();
 const isSelling = ref(false);
+
 const SellController = {
     start: (selected) => {
         if (isSelling.value) return false;
@@ -18,16 +21,20 @@ const SellController = {
         isSelling.value = false;
         return true;
     },
-    confirm: (selected) => {
+    confirm: (selected, scene) => {
         if (!isSelling.value) return false;
         if (!selected.value.userData.isOwned) return false;
 
         isSelling.value = false;
         selected.value.userData.isOwned = false;
-        console.log('Destroying selected (not implemented yet)');
+        
         for (const cost of selected.value.userData.costs) {
-            bankManager.bank.value.deposit(cost.amount, cost.currency);
+            bankManager.deposit(cost.amount, cost.currency);
         }
+
+        removeMesh(selected.value);
+        scene.remove(selected.value);
+        itemsManager.removeItemFromState(selected.value);
         return true;
     },
     isSelling

@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { ref } from 'vue';
+import { getMesh } from './meshes.js';
 
 const isInitialized = ref(false);
 const onIntersect = [];
@@ -12,26 +13,42 @@ let groundMesh = null;
 
 export const useGround = () => {
 
-    const init = (scene, _camera, _domElement, lifeCycle) => {
+    const init = async (scene, _camera, _domElement, lifeCycle) => {
         if (isInitialized.value) return false;
 
-        const geometry = new THREE.PlaneGeometry(100, 100);
-        const material = new THREE.MeshPhysicalMaterial({ color: 0x00ff00 });
-        groundMesh = new THREE.Mesh(geometry, material);
-        groundMesh.rotation.x = -Math.PI / 2;
-
+        groundMesh = await getMesh({
+            type: 'GLTF',
+            url: 'meshes/utils/terrain.glb',
+            subMeshes: [{
+                name: 'map',
+                texturePack: 'terrain',
+            }],
+        });
+        groundMesh.position.set(0, 0, 0);
+        groundMesh.scale.set(1, 1, 1);
+        groundMesh.rotation.set(0, 0, 0);
+        
         camera = _camera;
         domElement = _domElement;
         scene.add(groundMesh);
 
         lifeCycle.onDispose.push(() => {
-            geometry.dispose();
-            material.dispose();
             scene.remove(groundMesh);
         });
 
         isInitialized.value = true;
         return true;
+    }
+
+    const getIntersectFromPosition = (position, direction) => {
+        if (!isInitialized.value) return null;
+
+        raycaster.set(position, direction);
+        const intersects = raycaster.intersectObject(groundMesh);
+        if (intersects.length > 0) {
+            return intersects[0].point;
+        }
+        return null;
     }
 
     const mouseDown = (event) => {
@@ -64,6 +81,7 @@ export const useGround = () => {
         init,
         enable,
         disable,
-        addOnIntersect
+        addOnIntersect,
+        getIntersectFromPosition
     }
 }

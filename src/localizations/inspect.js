@@ -5,6 +5,10 @@ export default {
             en: 'Inspect',
             da: 'Inspektion',
         },
+        upgrade: {
+            en: 'Upgrade',
+            da: 'Opgradering',
+        },
 
         moving_title: {
             en: 'Moving',
@@ -79,6 +83,19 @@ export default {
         cancel_upgrade_button: {
             en: 'Cancel',
             da: 'Annuller',
+        },
+
+        unit_title: {
+            en: 'Spawn Unit',
+            da: 'Spawn Enhed',
+        },
+        start_unit_button: {
+            en: 'Spawn Unit',
+            da: 'Spawn Enhed',
+        },
+        cancel_unit_button: {
+            en: 'Back',
+            da: 'Tilbage',
         },
     },
 }

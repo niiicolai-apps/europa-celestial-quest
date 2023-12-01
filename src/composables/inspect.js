@@ -3,8 +3,12 @@ import WebGL from 'frontend-webgl';
 import MoveController from './inspect/move_controller.js';
 import SellController from './inspect/sell_controller.js';
 import UpgradeController from './inspect/upgrade_controller.js';
+import UnitController from './inspect/unit_controller.js';
+import MarkerController from './inspect/marker_controller.js';
+import * as THREE from 'three';
 import { useGround } from './ground.js';
 
+const scene = ref(null);
 const selected = ref(null);
 const selectableManager = ref(null);
 const isInitialized = ref(false);
@@ -16,8 +20,12 @@ const moveCtrl = {
             selectableManager.value.disable();
     },
     cancel: () => {
-        if (MoveController.cancel(selected))
+        if (MoveController.cancel(selected, scene.value)) {
             selectableManager.value.enable();
+            if (!selected.value.userData.isOwned) {
+                selectableManager.value.removeSelected();
+            }
+        }
     },
     confirm: () => {
         if (MoveController.confirm(selected))
@@ -54,8 +62,10 @@ const sellCtrl = {
             selectableManager.value.enable();
     },
     confirm: () => {
-        if (SellController.confirm(selected))
+        if (SellController.confirm(selected, scene.value)) {
             selectableManager.value.enable();
+            selectableManager.value.removeSelected();
+        }
     },
     isSelling: SellController.isSelling
 }
@@ -78,6 +88,20 @@ const upgradeCtrl = {
     isUpgrading: UpgradeController.isUpgrading    
 }
 
+const unitCtrl = {
+    start: () => {
+        if (UnitController.start(selected))
+            selectableManager.value.disable();
+    },
+    cancel: () => {
+        if (UnitController.cancel(selected))
+            selectableManager.value.enable();
+    },
+    getAllowedUnits: () => UnitController.getAllowedUnits(selected),
+    canBuild: () => UnitController.canBuild(selected),
+    isBuilding: UnitController.isBuilding
+}
+
 groundManager.addOnIntersect((point) => {
     if (!selected.value) return;
     MoveController.onClick(selected, point);
@@ -86,16 +110,26 @@ groundManager.addOnIntersect((point) => {
 export const useInspect = () => {
 
     const onSelect = (selectable) => {
-        selected.value = selectable;
-        console.log('onSelect', selectable);
+        // Find parent selectable
+        let parent = selectable;
+        while (true) {
+            if (!parent) break;
+            if (!parent.parent) break;
+            if (parent.parent.type === 'Scene') break;
+            parent = parent.parent;
+        } 
+        selected.value = parent;
+        MarkerController.onSelect(parent);
+        console.log('onSelect', parent);
     }
 
     const onDeselect = (selectable) => {
         selected.value = null;
+        MarkerController.onDeselect();
         console.log('onDeselect', selectable);
     }
 
-    const enable = (camera, renderer) => {
+    const enable = (camera, _scene, renderer) => {
         if (isInitialized.value) return;
 
         selectableManager.value = WebGL.composables.useSelectable(renderer.domElement, camera, {
@@ -105,8 +139,10 @@ export const useInspect = () => {
             onDeselect,
         });
 
-        selectableManager.value.enable();
+        MarkerController.init(_scene);
 
+        selectableManager.value.enable();
+        scene.value = _scene;
         isInitialized.value = true;
     }
 
@@ -114,7 +150,9 @@ export const useInspect = () => {
         if (!isInitialized.value) return;
 
         isInitialized.value = false;
+        scene.value = null;
         selectableManager.value.disable();
+        MarkerController.dispose();
     }
 
     const setSelected = (selectable) => {
@@ -127,6 +165,7 @@ export const useInspect = () => {
 
         selected.value = selectable;
         selectableManager.value.setSelected(selectable);
+        MarkerController.onSelect(selectable);
         if (!selectable.userData.isOwned) {
             moveCtrl.start();
         }
@@ -139,6 +178,7 @@ export const useInspect = () => {
 
         selected.value = null;
         selectableManager.value.removeSelected();
+        MarkerController.onDeselect();
     }
     
     const addSelectable = (selectable) => {
@@ -174,6 +214,7 @@ export const useInspect = () => {
         removeSelectable,
         moveCtrl,
         sellCtrl,
-        upgradeCtrl
+        upgradeCtrl,
+        unitCtrl,
     }
 }

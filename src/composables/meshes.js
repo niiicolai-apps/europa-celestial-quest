@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { getTexturePack } from './textures.js';
+import { getTexturePack, removeTexturePack, disposeTextureCache } from './textures.js';
 
 const gltfLoader = new GLTFLoader();
 const meshCache = {};
@@ -23,6 +23,8 @@ export const getMesh = async (mesh) => {
     if (mesh.type === 'GLTF') {
         const gltf = await gltfLoader.loadAsync(mesh.url);
         object3D = gltf.scene;
+
+        // Apply texture packs
         object3D.traverse(async (child) => {
             if (child.isMesh) {
                 if (child.name === 'Cube051' || child.name === 'Cube060') child.visible = false;
@@ -38,13 +40,54 @@ export const getMesh = async (mesh) => {
     } else {
         throw new Error(`Unknown mesh type: ${mesh.type}`);
     }
-    
-    console.log(object3D);
+    object3D.userData.mesh = mesh;
     const meshInstance = {
         mesh: object3D,
-        clones: [mesh.uuid],
+        clones: [object3D.uuid],
     }
 
     meshCache[mesh.url] = meshInstance;
     return meshInstance.mesh;
+}
+
+export const removeMesh = (object3D) => {
+    console.log('removeMesh', object3D);
+    const mesh = object3D.userData.mesh;
+    const cached = meshCache[mesh.url];
+    if (!cached) return;
+
+    const index = cached.clones.indexOf(object3D.uuid);
+    if (index === -1) return;
+    cached.clones.splice(index, 1);
+    
+    // Remove child texture packs
+    object3D.traverse(async (child) => {
+        if (child.isMesh) {
+            const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
+            if (!subMesh) return;
+            removeTexturePack(subMesh.texturePack, child.uuid);
+        }
+    });
+    
+    if (cached.clones.length === 0) {
+        delete meshCache[mesh.url];
+
+        // dispose geometry
+        object3D.traverse((child) => {
+            if (child.isMesh) {
+                child.geometry.dispose();
+            }
+        });
+    }
+}
+
+export const disposeMeshCache = () => {
+    /*
+    for (const key in meshCache) {
+        const meshInstance = meshCache[key];
+        for (const clone of meshInstance.clones) {
+            removeMesh(clone);
+        }
+    }*/
+    disposeTextureCache();
 }

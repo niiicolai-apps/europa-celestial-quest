@@ -43,6 +43,7 @@ export const useItems = () => {
             costs: itemDefinition.costs,
             upgrade: itemDefinition.upgrade,
             upgrades: itemDefinition.upgrades,
+            mesh: itemDefinition.mesh,
         }
         return item
     }
@@ -71,9 +72,25 @@ export const useItems = () => {
                 position: {x: item.position.x, y: item.position.y, z: item.position.z},
                 rotation: {x: item.rotation.x, y: item.rotation.y, z: item.rotation.z},
                 userData: item.userData,
+                uuid: item.uuid,
             }
         })
         PersistentData.set('items', data)
+    }
+
+    const removeItemFromState = (item) => {
+        let index = -1
+        for (let i = 0; i < items.value.length; i++) {
+            if (items.value[i].uuid === item.uuid) {
+                index = i
+                break
+            }
+        }
+        if (index === -1) return false 
+        console.log('Removing item from state', item)
+        items.value.splice(index, 1)
+        saveState()
+        return true
     }
 
     return {
@@ -82,6 +99,7 @@ export const useItems = () => {
         canAfford,
         items,
         ConstructionDefinitions,
-        saveState
+        saveState,
+        removeItemFromState
     }
 }

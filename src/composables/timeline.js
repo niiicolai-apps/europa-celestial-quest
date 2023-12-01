@@ -1,5 +1,5 @@
 
-export default (sequencies) => {
+export default (sequencies, onStop=()=>{}) => {
     const state = [...sequencies];
     const player = { index: 0 };
     let timeout = null;
@@ -26,7 +26,9 @@ export default (sequencies) => {
 
     const stop = () => {
         clearTimeout(timeout);
+        timeout = null;
         player.index = 0;
+        onStop();
     }
 
     const isPlaying = () => {

@@ -39,7 +39,53 @@ export default [
             { currency: "diamonds", amount: 0 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [{
+                name: 'B S-1',
+                image: 'thumbnails/human_units/bot_spider_1.png',
+                requiredLevel: 1,
+                mesh: {
+                    type: 'GLTF',
+                    url: 'meshes/human_units/bot_spider_1.glb',
+                    subMeshes: [
+                        {
+                            name: 'Cube',
+                            texturePack: 'default',
+                        },
+                    ]
+                },
+            }]
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [
+                {
+                    name: 'B S-2',
+                    image: 'thumbnails/human_units/bot_spider_2.png',
+                    requiredLevel: 1,
+                    mesh: {
+                        type: 'GLTF',
+                        url: 'meshes/human_units/bot_spider_2.glb',
+                        subMeshes: [
+                            {
+                                name: 'Cube',
+                                texturePack: 'default',
+                            },
+                        ]
+                    },
+                }
+            ]
+        }],
     },
     {
         name: 'Drone Facility',
@@ -60,7 +106,55 @@ export default [
             { currency: "diamonds", amount: 0 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [
+                {
+                    name: 'D L-1',
+                    image: 'thumbnails/human_units/drone_laser_1.png',
+                    requiredLevel: 1,
+                    mesh: {
+                        type: 'GLTF',
+                        url: 'meshes/human_units/drone_laser_1.glb',
+                        subMeshes: [
+                            {
+                                name: 'Cube',
+                                texturePack: 'default',
+                            },
+                        ]
+                    },
+                }
+            ]
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [
+                {
+                    name: 'D L-2',
+                    image: 'thumbnails/human_units/drone_laser_2.png',
+                    requiredLevel: 1,
+                    mesh: {
+                        type: 'GLTF',
+                        url: 'meshes/human_units/drone_laser_2.glb',
+                        subMeshes: [
+                            {
+                                name: 'Cube',
+                                texturePack: 'default',
+                            },
+                        ]
+                    },
+                }
+            ]
+        }],
     },
     {
         name: 'Hydrogen Fuel Tank',
@@ -123,7 +217,53 @@ export default [
             { currency: "diamonds", amount: 0 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [{
+                name: 'RR H20',
+                image: 'thumbnails/human_units/rover_research_h20.png',
+                requiredLevel: 1,
+                mesh: {
+                    type: 'GLTF',
+                    url: 'meshes/human_units/rover_research_h20.glb',
+                    subMeshes: [
+                        {
+                            name: 'Cube',
+                            texturePack: 'default',
+                        },
+                    ]
+                },
+            }]
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [
+                {
+                    name: 'RR D-1',
+                    image: 'thumbnails/human_units/rover_research_d1.png',
+                    requiredLevel: 1,
+                    mesh: {
+                        type: 'GLTF',
+                        url: 'meshes/human_units/rover_research_d1.glb',
+                        subMeshes: [
+                            {
+                                name: 'Cube',
+                                texturePack: 'default',
+                            },
+                        ]
+                    },
+                }
+            ]
+        }],
     },
     {
         name: 'Rover Warrior Facility',
@@ -144,7 +284,53 @@ export default [
             { currency: "diamonds", amount: 0 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [{
+                name: 'RR W-3',
+                image: 'thumbnails/human_units/rover_warrior_6.png',
+                requiredLevel: 1,
+                mesh: {
+                    type: 'GLTF',
+                    url: 'meshes/human_units/rover_warrior_6.glb',
+                    subMeshes: [
+                        {
+                            name: 'Cube',
+                            texturePack: 'default',
+                        },
+                    ]
+                },
+            }]
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "coins", amount: 1 },
+                { currency: "diamonds", amount: 0 },
+            ],
+            subMesh: {},
+            units: [
+                {
+                    name: 'RR W-6',
+                    image: 'thumbnails/human_units/rover_warrior_3.png',
+                    requiredLevel: 1,
+                    mesh: {
+                        type: 'GLTF',
+                        url: 'meshes/human_units/rover_warrior_3.glb',
+                        subMeshes: [
+                            {
+                                name: 'Cube',
+                                texturePack: 'default',
+                            },
+                        ]
+                    },
+                }
+            ]
+        }],
     },
     {
         name: 'Machine Gun Turrent',

@@ -1,8 +1,11 @@
+import MarkerController from './marker_controller.js';
 import { ref } from 'vue';
 import { useCollision } from '../collision.js';
 import { useGrid } from '../grid.js';
 import { useBank } from '../bank.js';
 import { useItems } from '../items.js';
+import { useGround } from '../ground.js';
+import { removeMesh } from '../meshes.js';
 
 import * as THREE from 'three';
 
@@ -10,10 +13,36 @@ const grid = useGrid();
 const bankManager = useBank();
 const itemsManager = useItems();
 const collisionManager = useCollision();
+const groundManager = useGround();
 
 const moveLength = 3;
 const isMoving = ref(false);
 const lastPosition = ref(null);
+const worldDown = new THREE.Vector3(0, -1, 0);
+
+const move = (selected, dx, dy, dz) => {
+    if (!isMoving.value) return false;
+
+    const nextPosition = selected.value.position.clone();
+    nextPosition.x += dx;
+    nextPosition.y += dy;
+    nextPosition.z += dz;
+
+    const point = groundManager.getIntersectFromPosition(nextPosition, worldDown);
+    if (!point) return false;
+    nextPosition.copy(grid.getPosition(point));
+
+    const box3 = new THREE.Box3().setFromObject(selected.value);
+    const size = box3.getSize(new THREE.Vector3());
+    nextPosition.y += size.y / 2;
+
+    if (collisionManager.isCollidingAt(selected.value, nextPosition))
+        return false;
+
+    selected.value.position.copy(nextPosition);
+    MarkerController.onSelect(selected.value);
+    return true;
+}
 
 const MoveController = {
     start: (selected) => {
@@ -21,18 +50,20 @@ const MoveController = {
         if (!selected.value) return false;
 
         isMoving.value = true,
-        lastPosition.value = selected.value.position.clone();
+            lastPosition.value = selected.value.position.clone();
         return true;
     },
-    cancel: (selected) => {
+    cancel: (selected, scene) => {
         if (!isMoving.value) return false;
 
         isMoving.value = false;
-        
+
         if (selected.value.userData.isOwned) {
             selected.value.position.copy(lastPosition.value);
         } else {
-            console.log('Destroying selected (not implemented yet)');
+            removeMesh(selected.value);
+            scene.remove(selected.value);
+            itemsManager.removeItemFromState(selected.value);
         }
         return true;
     },
@@ -57,52 +88,16 @@ const MoveController = {
         return true;
     },
     moveForward: (selected) => {
-        if (!isMoving.value) return false;
-
-        const nextPosition = selected.value.position.clone();
-        nextPosition.z += moveLength;
-        nextPosition.copy(grid.getPosition(nextPosition));
-        if (collisionManager.isCollidingAt(selected.value, nextPosition))
-            return false;
-        
-        selected.value.position.copy(nextPosition);
-        return true;
+        return move(selected, 0, 0, moveLength);
     },
     moveBackward: (selected) => {
-        if (!isMoving.value) return false;
-
-        const nextPosition = selected.value.position.clone();
-        nextPosition.z -= moveLength;
-        nextPosition.copy(grid.getPosition(nextPosition));
-        if (collisionManager.isCollidingAt(selected.value, nextPosition))
-            return false;
-
-        selected.value.position.copy(nextPosition);
-        return true;
+        return move(selected, 0, 0, -moveLength);
     },
     moveLeft: (selected) => {
-        if (!isMoving.value) return false;
-
-        const nextPosition = selected.value.position.clone();
-        nextPosition.x -= moveLength;
-        nextPosition.copy(grid.getPosition(nextPosition));
-        if (collisionManager.isCollidingAt(selected.value, nextPosition))
-            return false;
-
-        selected.value.position.copy(nextPosition);
-        return true;
+        return move(selected, -moveLength, 0, 0);
     },
     moveRight: (selected) => {
-        if (!isMoving.value) return false;
-
-        const nextPosition = selected.value.position.clone();
-        nextPosition.x += moveLength;
-        nextPosition.copy(grid.getPosition(nextPosition));
-        if (collisionManager.isCollidingAt(selected.value, nextPosition))
-            return false;
-
-        selected.value.position.copy(nextPosition);
-        return true;
+        return move(selected, moveLength, 0, 0);
     },
     rotateLeft: (selected) => {
         if (!isMoving.value) return false;
@@ -117,18 +112,19 @@ const MoveController = {
         return true;
     },
     onClick: (selected, point) => {
-        if (!isMoving.value) 
+        if (!isMoving.value)
             return false;
 
         const box3 = new THREE.Box3().setFromObject(selected.value);
         const size = box3.getSize(new THREE.Vector3());
         point = grid.getPosition(point);
-        point.y = size.y / 2;
+        point.y += size.y / 2;
 
-        if (collisionManager.isCollidingAt(selected.value, point)) 
+        if (collisionManager.isCollidingAt(selected.value, point))
             return false;
-        
+
         selected.value.position.copy(point);
+        MarkerController.onSelect(selected.value);
         return true;
     },
     isMoving

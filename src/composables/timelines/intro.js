@@ -1,5 +1,6 @@
 import Timeline from '../timeline.js'
-import { getMesh } from '../meshes.js'
+import Camera from '../camera.js';
+import { getMesh, removeMesh } from '../meshes.js'
 import { useItems } from '../items.js';
 import * as THREE from 'three';
 
@@ -12,7 +13,7 @@ const system = new System();
 
 const itemsManager = useItems();
 
-export default async (camera, scene, lifeCycle, audio, audioBgg) => {
+export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => { }) => {
     const ambient_light = new THREE.AmbientLight(0xffffff, .15);
 
     const womans_house_light_01 = new THREE.PointLight(0xAA4203, .3, 80);
@@ -58,7 +59,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     const nebulaSystemFireForce = await System.fromJSONAsync(fireForceParticleJson, THREE);
     const nebulaRendererFireForce = new SpriteRenderer(scene, THREE);
     const nebulaFireForce = nebulaSystemFireForce.addRenderer(nebulaRendererFireForce);
-    
+
     const womans_house = await getMesh({
         type: 'GLTF',
         url: 'meshes/utils/womans_house.glb',
@@ -167,7 +168,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
         clearInterval(movementInterval);
     }
 
-    const loop = (callback, framerate=10) => {
+    const loop = (callback, framerate = 10) => {
         interval = setInterval(callback, framerate);
     }
 
@@ -180,9 +181,9 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             if (child.isMesh && child.name === 'Parachute') {
                 child.visible = visibleParachute;
             } else if (child.isMesh && child.name === 'Leg1' ||
-                    child.isMesh && child.name === 'Leg2' ||
-                    child.isMesh && child.name === 'Leg3' ||
-                    child.isMesh && child.name === 'Leg4') {
+                child.isMesh && child.name === 'Leg2' ||
+                child.isMesh && child.name === 'Leg3' ||
+                child.isMesh && child.name === 'Leg4') {
                 child.visible = visibleLegs;
             }
         });
@@ -313,12 +314,12 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.z + 1
             );
             europa_horizon_drifter_x1.add(space_ship_light_01);
-            
+
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .1;
                 europa_horizon_drifter_x1.rotation.z -= .0001;
-                
+
                 camera.lookAt(europa_horizon_drifter_x1.position);
             });
         }
@@ -345,7 +346,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .1;
-                
+
                 camera.position.set(
                     europa_horizon_drifter_x1.position.x - 4,
                     europa_horizon_drifter_x1.position.y + 1,
@@ -390,7 +391,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
             loop(() => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .1;
-                
+
                 nebulaAirForce.emitters[0].position.x = europa_horizon_drifter_x1.position.x + .2;
                 nebulaAirForce.emitters[0].position.y = europa_horizon_drifter_x1.position.y - .5;
                 nebulaAirForce.emitters[0].position.z = europa_horizon_drifter_x1.position.z + .5;
@@ -442,7 +443,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.y -= .01;
                 europa_horizon_drifter_x1.position.z += .01;
 
-                
+
                 nebulaFireForce.emitters[0].position.x = europa_horizon_drifter_x1.position.x;
                 nebulaFireForce.emitters[0].position.y = europa_horizon_drifter_x1.position.y - 3;
                 nebulaFireForce.emitters[0].position.z = europa_horizon_drifter_x1.position.z + 1;
@@ -493,7 +494,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 europa_horizon_drifter_x1.position.y -= .05;
                 europa_horizon_drifter_x1.position.z += .01;
 
-                
+
                 nebulaAirForce2.emitters[0].position.x = europa_horizon_drifter_x1.position.x;
                 nebulaAirForce2.emitters[0].position.y = europa_horizon_drifter_x1.position.y - 5;
                 nebulaAirForce2.emitters[0].position.z = europa_horizon_drifter_x1.position.z + 1;
@@ -526,7 +527,7 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
                 terrain.position.y - 20,
                 terrain.position.z + 820
             );
-            
+
             europa_horizon_drifter_x1.rotation.y = 0 * Math.PI / 180;
             europa_horizon_drifter_x1.position.set(
                 terrain.position.x,
@@ -554,11 +555,60 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
     }
 
     const sequence_10 = {
-        playTime: 1,
+        playTime: 1000,
         callback: () => {
             stopCamera();
             stopLoop();
+
+            loop(() => {
+                if (space_light_01.intensity > 0) {
+                    space_light_01.intensity -= .01;
+                }
+                if (space_ship_light_01.intensity > 0) {
+                    space_ship_light_01.intensity -= .01;
+                }
+            })
         }
+    }
+
+    const sequence_11 = {
+        playTime: 1,
+        callback: async () => {
+            onStop();
+            await onEnd();
+        }
+    }
+
+    const onStop = () => {
+        stopLoop();
+        stopCamera();
+
+        audioBgg.pause();
+        audio.pause();
+
+        scene.remove(space_light_01);
+        scene.remove(space_ship_light_01);
+        scene.remove(jupiter);
+        scene.remove(europa);
+        scene.remove(europa_horizon_drifter_x1);
+        scene.remove(terrain);
+        scene.remove(ambient_light);
+        scene.remove(womans_house);
+        scene.remove(womans_hand);
+        scene.remove(womans_house_light_01);
+        scene.remove(womans_house_light_02);
+        scene.remove(womans_house_light_03);
+        scene.remove(womans_house_light_04);
+
+        removeMesh(womans_house);
+        removeMesh(womans_hand);
+        removeMesh(woman_with_poem);
+        removeMesh(europa);
+        removeMesh(jupiter);
+
+        scene.fog = null;
+        camera.position.set(0, 0, 0);
+        camera.rotation.set(Camera.options.rotation.x, 0, 0);
     }
 
     return Timeline([
@@ -572,5 +622,6 @@ export default async (camera, scene, lifeCycle, audio, audioBgg) => {
         sequence_08,
         sequence_09,
         sequence_10,
-    ]);
+        sequence_11,
+    ], onStop);
 }

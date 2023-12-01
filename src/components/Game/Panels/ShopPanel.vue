@@ -5,14 +5,17 @@
                 v-for="definition in definitions" 
                 :key="definition.name"
                 @click="click(definition)"
-                class="border-1 border-solid border-primary w-30 h-30 p-3">                
+                class="border-1 border-solid border-primary w-full h-50 p-3 bg-secondary-hover cursor-pointer">      
+                <div class="font-bold text-lg text-center mb-3">
+                    <Locale :id="`constructions.${definition.name}`" />
+                </div>          
                 <img :src="definition.image" :alt="definition.name" 
-                    class="block w-20 h-15 mx-auto" />
+                    class="block w-35 h-25 mx-auto" />
                 <div>
                     <UI.Flex 
                         v-for="cost in definition.costs"
                         :key="cost.currency"
-                        gap="1" 
+                        gap="3" 
                         direction="horizontal" 
                         justify="between" 
                         class="w-full text-sm">
@@ -29,6 +32,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
+import Locale from '../../Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
 import { useItems } from '../../../composables/items.js';
 import { useInspect } from '../../../composables/inspect.js';

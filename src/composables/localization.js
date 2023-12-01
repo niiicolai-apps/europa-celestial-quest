@@ -13,6 +13,8 @@ import STATS from '../localizations/stats.js';
 import PAUSE from '../localizations/pause.js';
 import INSPECT from '../localizations/inspect.js';
 import BANK from '../localizations/bank.js';
+import CONSTRUCTIONS from '../localizations/constructions.js';
+import UNITS from '../localizations/units.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
@@ -35,7 +37,9 @@ const locals = {
     ...STATS,
     ...PAUSE,
     ...INSPECT,
-    ...BANK
+    ...BANK,
+    ...CONSTRUCTIONS,
+    ...UNITS
 }
 
 export const useLocalization = (_locals = locals) => {

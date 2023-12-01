@@ -1,14 +1,14 @@
 <template>
     <Transition name="slide-up">
-        <UI.Fixed v-if="selected && !isMoving && !isSelling && !isUpgrading" top="auto" left="1" right="1" bottom="1">
+        <UI.Fixed v-if="selected && !isMoving && !isSelling && !isUpgrading && !isBuilding" top="auto" left="1" right="1" bottom="1">
             <UI.Flex items="start" gap="3">
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Paragraph class="font-bold text-white">
-                        {{ selected.name }}
+                        <Locale :id="`constructions.${selected.name}`" />
                     </UI.Paragraph>
 
                     <UI.Paragraph v-if="isUpgradeable" class="font-bold text-white">
-                        ({{ selected.userData.upgrades[selected.userData.upgrade.index].name }})
+                        (<Locale id="inspect.upgrade" /> {{ selected.userData.upgrade.index + 1 }})
                     </UI.Paragraph>
                 </UI.Flex>
                 
@@ -28,6 +28,12 @@
                         @click="inspectManager.upgradeCtrl.start()">
                         <Icons.fa.ArrowUpIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
+
+                    <UI.Button v-if="canBuild"
+                        :title="localizationManager.getLocale('inspect.start_unit_button')"
+                        @click="inspectManager.unitCtrl.start()">
+                        <Icons.fa.PersonIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
                 </UI.Flex>
             </UI.Flex>
         </UI.Fixed>
@@ -38,7 +44,8 @@
             <UI.Flex items="start" gap="3">
                 <UI.Flex direction="horizontal" gap="1" class="font-bold text-white">
                     <Locale id="inspect.moving_title" /> 
-                    <span>{{ selected.name }}</span>
+                    <span><Locale :id="`constructions.${selected.name}`" /></span>
+
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
@@ -91,7 +98,7 @@
             <UI.Flex items="start" gap="3">
                 <UI.Flex direction="horizontal" gap="1" class="font-bold text-white">
                     <Locale id="inspect.selling_title" /> 
-                    <span>{{ selected.name }}?</span>
+                    <span><Locale :id="`constructions.${selected.name}`" />?</span>
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
@@ -114,7 +121,7 @@
             <UI.Flex items="start" gap="3">
                 <UI.Flex direction="horizontal" gap="1" class="font-bold text-white">
                     <Locale id="inspect.upgrading_title" /> 
-                    <span>{{ selected.name }}?</span>
+                    <span><Locale :id="`constructions.${selected.name}`" />?</span>
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
@@ -126,6 +133,35 @@
                     <UI.Button :title="localizationManager.getLocale('inspect.cancel_upgrade_button')"
                         @click="inspectManager.upgradeCtrl.cancel()">
                         <Icons.fa.TimesIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
+                </UI.Flex>
+            </UI.Flex>            
+        </UI.Fixed>
+    </Transition>
+
+    <Transition name="slide-up">
+        <UI.Fixed v-if="selected && isBuilding" top="auto" left="1" right="1" bottom="1">
+            <UI.Flex items="start" gap="3">
+                <UI.Flex direction="horizontal" gap="1" class="font-bold text-white">
+                    <Locale id="inspect.unit_title" />
+                    <span>?</span>
+                </UI.Flex>
+
+                <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <UI.Button :title="localizationManager.getLocale('inspect.cancel_unit_button')"
+                        @click="inspectManager.unitCtrl.cancel()">
+                        <Icons.fa.ArrowLeftIcon width="2em" height="2em" fill="white" />
+                    </UI.Button>
+                </UI.Flex>
+
+                <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <UI.Button 
+                        v-for="unit in allowedUnits"
+                        :key="unit.name"
+                        :title="localizationManager.getLocale('units.' + unit.name)"
+                        type="dark"
+                    >
+                        <img :src="unit.image" :alt="unit.name" class="block w-15 h-9 mx-auto rounded" />
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>            
@@ -149,4 +185,7 @@ const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);
 const isUpgrading = computed(() => inspectManager.upgradeCtrl.isUpgrading.value);
 const isUpgradeable = computed(() => inspectManager.upgradeCtrl.isUpgradeable());
 const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgradeReached());
+const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding.value);
+const allowedUnits = computed(() => isBuilding ? inspectManager.unitCtrl.getAllowedUnits() : []);
+const canBuild = computed(() => inspectManager.unitCtrl.canBuild());
 </script>
