@@ -98,6 +98,9 @@ const unitCtrl = {
             selectableManager.value.enable();
     },
     getAllowedUnits: () => UnitController.getAllowedUnits(selected),
+    getQueue: () => UnitController.getQueue(selected),
+    dequeueAny: () => UnitController.dequeueAny(selected, scene.value),
+    queueUnit: (unitName) => UnitController.queueUnit(selected, unitName),
     canBuild: () => UnitController.canBuild(selected),
     isBuilding: UnitController.isBuilding
 }

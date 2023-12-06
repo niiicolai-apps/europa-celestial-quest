@@ -49,11 +49,23 @@ export function useBank() {
         }
     }
 
+    const canAfford = (costs) => {
+        let canAfford = true
+        for (const cost of costs) {
+            if (getBalance(cost.currency) < cost.amount) {
+                canAfford = false
+                break
+            }
+        }
+        return canAfford
+    }
+
     return {
         init,
         deposit,
         withdraw,
         getBalance,
+        canAfford,
         isInitialized,
         accounts,
         CURRENCIES

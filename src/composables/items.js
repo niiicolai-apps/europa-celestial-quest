@@ -1,10 +1,10 @@
 import PersistentData from './persistent_data.js'
 import ConstructionDefinitions from './construction_definitions.js'
+import UnitController from './inspect/unit_controller.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
 import { getMesh } from './meshes.js'
 import { ref } from 'vue'
-
 
 const items = ref([])
 const bankManager = useBank()
@@ -45,6 +45,15 @@ export const useItems = () => {
             upgrades: itemDefinition.upgrades,
             mesh: itemDefinition.mesh,
         }
+
+        const canBuild = UnitController.canBuild(item);
+        if (canBuild) {
+            const queueInterval = setInterval(() => {
+                UnitController.dequeueAny(item, scene);
+            }, 1000);
+            item.userData.queueInterval = queueInterval;
+        }
+
         return item
     }
 
@@ -69,8 +78,8 @@ export const useItems = () => {
         const data = items.value.map(item => {
             return {
                 name: item.name,
-                position: {x: item.position.x, y: item.position.y, z: item.position.z},
-                rotation: {x: item.rotation.x, y: item.rotation.y, z: item.rotation.z},
+                position: { x: item.position.x, y: item.position.y, z: item.position.z },
+                rotation: { x: item.rotation.x, y: item.rotation.y, z: item.rotation.z },
                 userData: item.userData,
                 uuid: item.uuid,
             }
@@ -86,7 +95,7 @@ export const useItems = () => {
                 break
             }
         }
-        if (index === -1) return false 
+        if (index === -1) return false
         console.log('Removing item from state', item)
         items.value.splice(index, 1)
         saveState()

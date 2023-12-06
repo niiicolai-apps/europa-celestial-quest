@@ -1,0 +1,905 @@
+{
+    "meshes": [
+        "womans_house",
+        "woman_with_poem",
+        "jupiter",
+        "europa",
+        "europa_horizon_drifter_x1",
+        "terrain"
+    ],
+    "lights": [
+        { 
+            "name": "ambient_light", 
+            "type": "AmbientLight",
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 1
+        },
+        {
+            "name": "womans_house_light_01", 
+            "type": "DirectionalLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.03,
+            "distance": 1,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_02", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_03", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_04", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_05", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_06", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "space_light_01", 
+            "type": "DirectionalLight", 
+            "color": { "r": 246, "g": 241, "b": 213 },
+            "intensity": 0.01,
+            "distance": 1,
+            "castShadow": true
+        },
+        { 
+            "name": "space_ship_light_01", 
+            "type": "PointLight", 
+            "color": { "r": 255, "g": 0, "b": 0 },
+            "intensity": 0.005,
+            "distance": 10,
+            "castShadow": true
+        }
+    ],
+    "particles": [
+        { 
+            "name": "candle_light_1", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_2", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_3", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_4", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_5", 
+            "type": "fire" 
+        },
+        { 
+            "name": "air_force_1", 
+            "type": "air_force" 
+        },
+        { 
+            "name": "air_force_2", 
+            "type": "air_force2" 
+        },
+        { 
+            "name": "fire_force_1", 
+            "type": "fire_force" 
+        },
+        { 
+            "name": "fire_force_2", 
+            "type": "fire_force2" 
+        }
+    ],
+    "sequencies": [
+        {
+            "playTime": 18000,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.01
+            },
+            "sub_title": "intro.dialog_1",
+            "audio_1": {
+                "clip": "audio/battle-of-the-dragons-8037.mp3",
+                "volume": 0.5,
+                "muted": false
+            },
+            "audio_2": {
+                "clip": "audio/intro_dialog_1.mp3",
+                "volume": 0.5,
+                "muted": false
+            },
+            "scene": {
+                "fog": {
+                    "color": "0x000000",
+                    "density": 0.0001
+                }
+            },
+            "camera": {
+                "position": { "x": 2.2, "y": 1, "z": -2.4 },
+                "rotation": { "x": -65, "y": 15, "z": 0 },
+                "move": { "dx": -0.00001, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": -0.0001, "dz": 0.0001 }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "womans_house_light_02", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_03",
+                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_04",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.97 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_05",
+                    "position": { "x": 2.7, "y": 1.310, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_06",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.02 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "womans_house",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 20000,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.01
+            },
+            "sub_title": "intro.dialog_2",
+            "audio_2": {
+                "clip": "audio/intro_dialog_2.mp3",
+                "volume": 0.5
+            },
+            "camera": {
+                "position": { "x": 0, "y": 1, "z": 0 },
+                "rotation": { "x": 0, "y": -55, "z": 0 },
+                "move": { "dx": 0, "dy": 0, "dz": 0.0001 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "womans_house_light_02", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_03",
+                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_04",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.97 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_05",
+                    "position": { "x": 2.7, "y": 1.310, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_06",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.02 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "womans_house",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "woman_with_poem",
+                    "position": { "x": 2.25, "y": 0.6, "z": -1.3 },
+                    "rotation": { "x": 0, "y": 90, "z": 0 },
+                    "scale": { "x": 1.1, "y": 1.1, "z": 1.1 }
+                }
+            ],
+            "particles": [
+                {
+                    "name": "fire_force_1",
+                    "position": { "x": 150.77, "y": 1, "z": -70.72 },
+                    "move": { "dx": 0, "dy": 0.00001, "dz": 0 }
+                },
+                {
+                    "name": "candle_light_1",
+                    "position": { "x": 1.90, "y": 1.510, "z": -2.95 }
+                },
+                {
+                    "name": "candle_light_2",
+                    "position": { "x": 2.77, "y": 1.310, "z": -1.97 }
+                },
+                {
+                    "name": "candle_light_3",
+                    "position": { "x": 2.77, "y": 1.310, "z": -1.02 }
+                },
+                {
+                    "name": "candle_light_4",
+                    "position": { "x": 2.77, "y": 1.310, "z": 0 }
+                },
+                {
+                    "name": "candle_light_5",
+                    "position": { "x": 2.77, "y": 0.72, "z": -2.79 }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 11000,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.01
+            },
+            "sub_title": "intro.dialog_3",
+            "audio_2": {
+                "clip": "audio/intro_dialog_3.mp3",
+                "volume": 0.5
+            },
+            "camera": {
+                "position": { "x": 1.6, "y": 1, "z": -0.7 },
+                "rotation": { "x": 0, "y": -55, "z": 0 },
+                "move": { "dx": 0.0001, "dy": 0, "dz": 0.0001 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "womans_house_light_02", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_03",
+                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_04",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.97 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_05",
+                    "position": { "x": 2.7, "y": 1.310, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_06",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.02 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "womans_house",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "woman_with_poem",
+                    "position": { "x": 2.25, "y": 0.6, "z": -1.3 },
+                    "rotation": { "x": 0, "y": 90, "z": 0 },
+                    "scale": { "x": 1.1, "y": 1.1, "z": 1.1 }
+                }
+            ],
+            "particles": [
+                {
+                    "name": "fire_force_1",
+                    "move": { "dx": 0, "dy": 0.00001, "dz": 0 }
+                },
+                {
+                    "name": "candle_light_1"
+                },
+                {
+                    "name": "candle_light_2"
+                },
+                {
+                    "name": "candle_light_3"
+                },
+                {
+                    "name": "candle_light_4"
+                },
+                {
+                    "name": "candle_light_5"
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 8500,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "sub_title": "intro.poem_1",
+            "audio_2": {
+                "clip": "audio/intro_poem_1.mp3",
+                "volume": 0.5
+            },
+            "camera": {
+                "position": { "x": 40, "y": 0, "z": 40 },
+                "rotation": { "x": 0, "y": -55, "z": 0 },
+                "move": { "dx": 0.0001, "dy": 0, "dz": 0.0001 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "lookAt": { 
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { "name": "europa_horizon_drifter_x1" }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": -100, "y": 0, "z": -800 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.25, "y": 0.25, "z": 0.25 }
+                },
+                {
+                    "name": "europa",
+                    "position": { "x": -110, "y": 0, "z": -500 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.1, "y": 0.1, "z": 0.1 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": -45, "y": 0, "z": 0 },
+                    "scale": { "x": 1, "y": 1, "z": 1 },
+                    "move": { "dx": 0, "dy": 0.01, "dz": -0.1 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": false },
+                        { "name": "Leg1", "visible": false },
+                        { "name": "Leg2", "visible": false },
+                        { "name": "Leg3", "visible": false },
+                        { "name": "Leg4", "visible": false }
+                    ]
+                }
+            ],
+            "particles": [
+                {
+                    "name": "fire_force_1",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                },
+                {
+                    "name": "candle_light_1",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                },
+                {
+                    "name": "candle_light_2",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                },
+                {
+                    "name": "candle_light_3",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                },
+                {
+                    "name": "candle_light_4",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                },
+                {
+                    "name": "candle_light_5",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 8500,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "sub_title": "intro.poem_1",
+            "camera": {
+                "position": { "x": 1, "y": -8, "z": -8 },
+                "rotation": { "x": 0, "y": 0, "z": 0 },
+                "move": { "dx": 0, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "parent": { "mesh": { "name": "europa_horizon_drifter_x1" } },
+                "lookAt": { 
+                    "position": { "x": 0, "y": 0, "z": -0 },
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { "mesh": { "name": "europa_horizon_drifter_x1"} }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": 300, "y": 0, "z": -600 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.25, "y": 0.25, "z": 0.25 }
+                },
+                {
+                    "name": "europa",
+                    "position": { "x": 110, "y": 0, "z": -500 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.1, "y": 0.1, "z": 0.1 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 30, "y": 90, "z": 0 },
+                    "scale": { "x": 1, "y": 1, "z": 1 },
+                    "move": { "dx": 0, "dy": 0.01, "dz": -0.1 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": false },
+                        { "name": "Leg1", "visible": false },
+                        { "name": "Leg2", "visible": false },
+                        { "name": "Leg3", "visible": false },
+                        { "name": "Leg4", "visible": false }
+                    ]
+                }
+            ],
+            "particles": []
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 8500,
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "sub_title": "intro.poem_2",
+            "audio_2": {
+                "clip": "audio/intro_poem_2.mp3",
+                "volume": 0.5
+            },
+            "camera": {
+                "position": { "x": 100, "y": -8, "z": -8 },
+                "rotation": { "x": 0, "y": 0, "z": 0 },
+                "move": { "dx": 0, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "lookAt": { 
+                    "position": { "x": 0, "y": 0, "z": -0 },
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { "mesh": { "name": "europa_horizon_drifter_x1"} }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": 120, "y": 0, "z": -800 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.55, "y": 0.55, "z": 0.55 }
+                },
+                {
+                    "name": "europa",
+                    "position": { "x": 110, "y": 0, "z": -300 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.2, "y": 0.2, "z": 0.2 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 110, "y": 50, "z": -300 },
+                    "rotation": { "x": 180, "y": 0, "z": 0 },
+                    "scale": { "x": 0.2, "y": 0.2, "z": 0.2 },
+                    "move": { "dx": 0, "dy": -0.01, "dz": 0.001 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": false },
+                        { "name": "Leg1", "visible": false },
+                        { "name": "Leg2", "visible": false },
+                        { "name": "Leg3", "visible": false },
+                        { "name": "Leg4", "visible": false }
+                    ]
+                }
+            ],
+            "particles": [
+                {
+                    "name": "air_force_1",
+                    "position": { "x": 0, "y": -1, "z": 0 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"}
+                    }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 9000,
+            "sub_title": "intro.poem_2",
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "camera": {
+                "position": { "x": 150, "y": 18, "z": -8 },
+                "rotation": { "x": 0, "y": 0, "z": 0 },
+                "move": { "dx": 0, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "shake": {
+                    "min": { "x": -0.1, "y": 0, "z": -0.1 },
+                    "max": { "x": 0.1, "y": 0, "z": 0.1 }
+                },
+                "lookAt": { 
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { "mesh": { "name": "europa_horizon_drifter_x1"} }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": 120, "y": 0, "z": -800 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.55, "y": 0.55, "z": 0.55 }
+                },
+                {
+                    "name": "terrain",
+                    "position": { "x": 100, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.2, "y": 0.2, "z": 0.2 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 0, "y": 50, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.5, "y": 0.5, "z": 0.5 },
+                    "move": { "dx": 0, "dy": -0.01, "dz": 0 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": true },
+                        { "name": "Leg1", "visible": false },
+                        { "name": "Leg2", "visible": false },
+                        { "name": "Leg3", "visible": false },
+                        { "name": "Leg4", "visible": false }
+                    ]
+                }
+            ],
+            "particles": [
+                {
+                    "name": "air_force_1",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"}
+                    }
+                },
+                {
+                    "name": "fire_force_2",
+                    "position": { "x": 0, "y": -1, "z": 0 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"}
+                    }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 8000,
+            "sub_title": "intro.poem_3",
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "audio_2": {
+                "clip": "audio/intro_poem_3.mp3",
+                "volume": 0.5
+            },
+            "camera": {
+                "position": { "x": 10, "y": 35, "z": 0 },
+                "rotation": { "x": -90, "y": 0, "z": 5 },
+                "move": { "dx": 0, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "shake": {
+                    "min": { "x": -0.1, "y": 0, "z": -0.1 },
+                    "max": { "x": 0.1, "y": 0, "z": 0.1 }
+                },
+                "parent": { 
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { "mesh": { "name": "europa_horizon_drifter_x1"} }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": 120, "y": 0, "z": -800 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.55, "y": 0.55, "z": 0.55 }
+                },
+                {
+                    "name": "terrain",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.2, "y": 0.2, "z": 0.2 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 0, "y": 50, "z": 0 },
+                    "rotation": { "x":0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.5, "y": 0.5, "z": 0.5 },
+                    "move": { "dx": 0, "dy": -0.01, "dz": 0 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": true },
+                        { "name": "Leg1", "visible": false },
+                        { "name": "Leg2", "visible": false },
+                        { "name": "Leg3", "visible": false },
+                        { "name": "Leg4", "visible": false }
+                    ]
+                }
+            ],
+            "particles": [
+                {
+                    "name": "fire_force_2",
+                    "position": { "x": 0, "y": -1, "z": 0 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"}
+                    }
+                }
+            ]
+        },
+        {
+            "transition": {
+                "time": 1000,
+                "type": "fade",
+                "steps": 50
+            },
+            "playTime": 9000,
+            "sub_title": "intro.poem_3",
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.001
+            },
+            "camera": {
+                "position": { "x": 0, "y": -3, "z": -45 },
+                "rotation": { "x": 0, "y": 0, "z": 0 },
+                "move": { "dx": 0.01, "dy": 0, "dz": -0.001 },
+                "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                "parent": { 
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                },
+                "lookAt": { 
+                    "position": { "x": 0, "y": 0, "z": -0 },
+                    "mesh": { "name": "europa_horizon_drifter_x1" } 
+                }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "space_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "space_ship_light_01", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"} 
+                    }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "jupiter",
+                    "position": { "x": 0, "y": 150, "z": 800 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 0.55, "y": 0.55, "z": 0.55 }
+                },
+                {
+                    "name": "terrain",
+                    "position": { "x": 50, "y": -3, "z": 20 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "scale": { "x": 1, "y": 1, "z": 1 }
+                },
+                {
+                    "name": "europa_horizon_drifter_x1",
+                    "position": { "x": 0, "y": 38, "z": 0 },
+                    "rotation": { "x":0, "y": 0, "z": 0 },
+                    "scale": { "x": 1, "y": 1, "z": 1 },
+                    "move": { "dx": 0, "dy": 0, "dz": 0 },
+                    "rotate": { "dx": 0, "dy": 0, "dz": 0 },
+                    "subMeshes": [
+                        { "name": "Parachute", "visible": false },
+                        { "name": "Leg1", "visible": true },
+                        { "name": "Leg2", "visible": true },
+                        { "name": "Leg3", "visible": true },
+                        { "name": "Leg4", "visible": true }
+                    ]
+                }
+            ],
+            "particles": [
+                {
+                    "name": "fire_force_2",
+                    "position": { "x": 9999, "y": -9999, "z": 9999 },
+                    "parent": { 
+                        "mesh": { "name": "europa_horizon_drifter_x1"}
+                    }
+                }
+            ]
+        }
+    ]
+}

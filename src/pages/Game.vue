@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import WebGL from 'frontend-webgl';
+import Locale from '../components/Locale.vue';
 
 import { useBank } from '../composables/bank.js';
 import { useObjectives } from '../composables/objectives.js';
@@ -18,12 +19,19 @@ import { useGrid } from '../composables/grid.js';
 import { useItems } from '../composables/items.js';
 
 import IntroTimeline from '../composables/timelines/intro.js';
+
+import { TimelineFromJson } from '../composables/timeline.js';
+import introTimelineJson from '../timelines/intro.json';
+
+import Timeline1 from '../composables/timelines/timeline1.js';
 import PersistentData from '../composables/persistent_data.js';
 
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
 import ShopPanel from '../components/Game/Panels/ShopPanel.vue';
 import PausePanel from '../components/Game/Panels/PausePanel.vue';
+
+import SubTitle from '../components/Game/SubTitle.vue';
 
 import TopPanel from '../components/Game/TopPanel.vue';
 import BottomPanel from '../components/Game/BottomPanel.vue';
@@ -53,10 +61,12 @@ const groundManager = useGround();
 const gridManager = useGrid();
 const itemsManager = useItems();
 
+const subTitleRef = ref(null);
 const audioRef = ref(null);
 const audioRefBgg = ref(null);
 const canvasRef = ref(null);
 const intro = ref(null);
+const timeline1 = ref(null);
 const isPlayingIntro = ref(false);
 const interacted = ref(false);
 const options = {
@@ -86,7 +96,15 @@ onMounted(async () => {
             'nz.png'
         ]);
 
-    intro.value = await IntroTimeline(camera, scene, lifeCycle, audioRef.value, audioRefBgg.value, startGame);
+    intro.value = await TimelineFromJson(
+        introTimelineJson,
+        camera,
+        scene,
+        audioRef.value,
+        audioRefBgg.value,
+        subTitleRef.value,
+        startGame
+    );
 })
 
 onUnmounted(() => {
@@ -148,9 +166,9 @@ const startGame = async () => {
         </UI.Flex>
     </UI.Fixed>
 
-    <UI.Fixed v-if="isPlayingIntro" bottom="3" right="3" left="auto" top="auto">
+    <UI.Fixed v-if="isPlayingIntro" bottom="auto" right="3" left="auto" top="3">
         <UI.Button @click="skipIntro">
-            Skip intro
+            <Locale id="timeline.skip" />
         </UI.Button>
     </UI.Fixed>
 
@@ -158,6 +176,7 @@ const startGame = async () => {
 
     <Audio ref="audioRef" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
     <Audio ref="audioRefBgg" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
+    <SubTitle ref="subTitleRef" />
 
     <div v-if="interacted && !isPlayingIntro">
 

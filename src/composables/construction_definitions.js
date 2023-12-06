@@ -50,6 +50,11 @@ export default [
                 name: 'B S-1',
                 image: 'thumbnails/human_units/bot_spider_1.png',
                 requiredLevel: 1,
+                complete_time: 1000,
+                costs: [
+                    { currency: "coins", amount: 1 },
+                    { currency: "diamonds", amount: 0 },
+                ],
                 mesh: {
                     type: 'GLTF',
                     url: 'meshes/human_units/bot_spider_1.glb',
@@ -73,6 +78,11 @@ export default [
                     name: 'B S-2',
                     image: 'thumbnails/human_units/bot_spider_2.png',
                     requiredLevel: 1,
+                    complete_time: 1000,
+                    costs: [
+                        { currency: "coins", amount: 1 },
+                        { currency: "diamonds", amount: 0 },
+                    ],
                     mesh: {
                         type: 'GLTF',
                         url: 'meshes/human_units/bot_spider_2.glb',
@@ -118,6 +128,11 @@ export default [
                     name: 'D L-1',
                     image: 'thumbnails/human_units/drone_laser_1.png',
                     requiredLevel: 1,
+                    complete_time: 1000,
+                    costs: [
+                        { currency: "coins", amount: 1 },
+                        { currency: "diamonds", amount: 0 },
+                    ],
                     mesh: {
                         type: 'GLTF',
                         url: 'meshes/human_units/drone_laser_1.glb',
@@ -142,6 +157,11 @@ export default [
                     name: 'D L-2',
                     image: 'thumbnails/human_units/drone_laser_2.png',
                     requiredLevel: 1,
+                    complete_time: 1000,
+                    costs: [
+                        { currency: "coins", amount: 1 },
+                        { currency: "diamonds", amount: 0 },
+                    ],
                     mesh: {
                         type: 'GLTF',
                         url: 'meshes/human_units/drone_laser_2.glb',
@@ -228,6 +248,11 @@ export default [
                 name: 'RR H20',
                 image: 'thumbnails/human_units/rover_research_h20.png',
                 requiredLevel: 1,
+                complete_time: 1000,
+                costs: [
+                    { currency: "coins", amount: 1 },
+                    { currency: "diamonds", amount: 0 },
+                ],
                 mesh: {
                     type: 'GLTF',
                     url: 'meshes/human_units/rover_research_h20.glb',
@@ -251,6 +276,11 @@ export default [
                     name: 'RR D-1',
                     image: 'thumbnails/human_units/rover_research_d1.png',
                     requiredLevel: 1,
+                    complete_time: 1000,
+                    costs: [
+                        { currency: "coins", amount: 1 },
+                        { currency: "diamonds", amount: 0 },
+                    ],
                     mesh: {
                         type: 'GLTF',
                         url: 'meshes/human_units/rover_research_d1.glb',
@@ -295,6 +325,11 @@ export default [
                 name: 'RR W-3',
                 image: 'thumbnails/human_units/rover_warrior_6.png',
                 requiredLevel: 1,
+                complete_time: 1000,
+                costs: [
+                    { currency: "coins", amount: 1 },
+                    { currency: "diamonds", amount: 0 },
+                ],
                 mesh: {
                     type: 'GLTF',
                     url: 'meshes/human_units/rover_warrior_6.glb',
@@ -317,7 +352,12 @@ export default [
                 {
                     name: 'RR W-6',
                     image: 'thumbnails/human_units/rover_warrior_3.png',
+                    complete_time: 1000,
                     requiredLevel: 1,
+                    costs: [
+                        { currency: "coins", amount: 1 },
+                        { currency: "diamonds", amount: 0 },
+                    ],
                     mesh: {
                         type: 'GLTF',
                         url: 'meshes/human_units/rover_warrior_3.glb',

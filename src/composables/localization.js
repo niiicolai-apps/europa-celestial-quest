@@ -15,13 +15,15 @@ import INSPECT from '../localizations/inspect.js';
 import BANK from '../localizations/bank.js';
 import CONSTRUCTIONS from '../localizations/constructions.js';
 import UNITS from '../localizations/units.js';
+import TIMELINE from '../localizations/timeline.js';
+import INTRO from '../localizations/intro.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
     DANISH: 'da'
 }
 
-const LANGUAGE = ref('da');
+const LANGUAGE = ref('en');
 
 const locals = {
     ...NOT_FOUND,
@@ -39,7 +41,9 @@ const locals = {
     ...INSPECT,
     ...BANK,
     ...CONSTRUCTIONS,
-    ...UNITS
+    ...UNITS,
+    ...TIMELINE,
+    ...INTRO
 }
 
 export const useLocalization = (_locals = locals) => {

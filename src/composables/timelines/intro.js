@@ -9,27 +9,30 @@ import fireForceParticleJson from '../../particles/fire_force.json';
 import airForceParticleJson from '../../particles/air_force.json';
 import airForce2ParticleJson from '../../particles/air_force2.json';
 const { System, Span, SpriteRenderer } = window.Nebula;
-const system = new System();
 
-const itemsManager = useItems();
-
-export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => { }) => {
-    const ambient_light = new THREE.AmbientLight(0xffffff, .15);
+export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => { }, subTitleCtrl) => {
+    const ambient_light = new THREE.AmbientLight(0xffffff, .25);
 
     const womans_house_light_01 = new THREE.PointLight(0xAA4203, .3, 80);
     const womans_house_light_02 = new THREE.DirectionalLight(0xF6F1D5, 2);
     const womans_house_light_03 = new THREE.PointLight(0xAA4203, .6, 130);
-    const womans_house_light_04 = new THREE.PointLight(0xAA4203, .8, 40);
+    const womans_house_light_04 = new THREE.PointLight(0xAA4203, .4, 130);
+    const womans_house_light_05 = new THREE.PointLight(0xAA4203, .4, 130);
+    const womans_house_light_06 = new THREE.PointLight(0xAA4203, .4, 130);
 
     womans_house_light_01.position.set(2.6, .8, -2.6);
     womans_house_light_02.position.set(15, 15, 0);
     womans_house_light_02.target.position.set(2.6, .7, -2.7);
-    womans_house_light_03.position.set(1, .8, -1.6);
-    womans_house_light_04.position.set(1.77, 1, -2.72);
+    womans_house_light_03.position.set(1.82, 1.535, -2.6);
+    womans_house_light_04.position.set(2.7, 1.310, -1.97);
+    womans_house_light_05.position.set(2.7, 1.310, 0);
+    womans_house_light_06.position.set(2.7, 1.310, -1.02);
     womans_house_light_01.castShadow = true;
     womans_house_light_02.castShadow = true;
     womans_house_light_03.castShadow = true;
     womans_house_light_04.castShadow = true;
+    womans_house_light_05.castShadow = true;
+    womans_house_light_06.castShadow = true;
 
     const space_light_01 = new THREE.DirectionalLight(0xffffff, 1.4, 100);
     const space_ship_light_01 = new THREE.PointLight(0xFF0000, 44.4, 10);
@@ -45,8 +48,30 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
     const nebulaSystemFire2 = await System.fromJSONAsync(fireParticleJson, THREE);
     const nebulaRendererFire2 = new SpriteRenderer(scene, THREE);
     const nebulaFire2 = nebulaSystemFire2.addRenderer(nebulaRendererFire2);
-    nebulaFire2.emitters[0].position.x = 1.77;
-    nebulaFire2.emitters[0].position.z = -2.72;
+    nebulaFire2.emitters[0].position.x = 1.90;
+    nebulaFire2.emitters[0].position.z = -2.95;
+    nebulaFire2.emitters[0].position.y = 1.510;
+
+    const nebulaSystemFire3 = await System.fromJSONAsync(fireParticleJson, THREE);
+    const nebulaRendererFire3 = new SpriteRenderer(scene, THREE);
+    const nebulaFire3 = nebulaSystemFire3.addRenderer(nebulaRendererFire3);
+    nebulaFire3.emitters[0].position.x = 2.77;
+    nebulaFire3.emitters[0].position.z = -1.97;
+    nebulaFire3.emitters[0].position.y = 1.310;
+
+    const nebulaSystemFire4 = await System.fromJSONAsync(fireParticleJson, THREE);
+    const nebulaRendererFire4 = new SpriteRenderer(scene, THREE);
+    const nebulaFire4 = nebulaSystemFire4.addRenderer(nebulaRendererFire4);
+    nebulaFire4.emitters[0].position.x = 2.77;
+    nebulaFire4.emitters[0].position.z = -1.02;
+    nebulaFire4.emitters[0].position.y = 1.310;
+
+    const nebulaSystemFire5 = await System.fromJSONAsync(fireParticleJson, THREE);
+    const nebulaRendererFire5 = new SpriteRenderer(scene, THREE);
+    const nebulaFire5 = nebulaSystemFire5.addRenderer(nebulaRendererFire5);
+    nebulaFire5.emitters[0].position.x = 2.77;
+    nebulaFire5.emitters[0].position.z = 0;
+    nebulaFire5.emitters[0].position.y = 1.310;
 
     const nebulaSystemAirForce = await System.fromJSONAsync(airForceParticleJson, THREE);
     const nebulaRendererAirForce = new SpriteRenderer(scene, THREE);
@@ -202,11 +227,16 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
             audio.setMuted(false);
             audio.play();
 
+            subTitleCtrl.showSubTitle('intro.dialog_1');
+
             scene.add(womans_house);
             //scene.add(womans_hand);
             scene.add(womans_house_light_01);
             scene.add(womans_house_light_02);
             scene.add(womans_house_light_03);
+            scene.add(womans_house_light_04);
+            scene.add(womans_house_light_05);
+            scene.add(womans_house_light_06);
             scene.add(ambient_light);
 
             scene.fog = new THREE.FogExp2(0x000000, 0.01);
@@ -220,8 +250,6 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
             loop(() => {
                 camera.rotation.z -= .0001;
                 camera.rotation.y -= .0001;
-                nebulaFire.update();
-                nebulaFire2.update();
             });
             moveCamera(.00001, 0, 0);
         }
@@ -232,10 +260,15 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
         callback: () => {
             stopLoop();
             stopCamera();
+
             audio.setSrc('audio/intro_dialog_2.mp3');
             audio.play();
+
+            subTitleCtrl.showSubTitle('intro.dialog_2');
+
             scene.add(woman_with_poem);
             scene.remove(womans_hand);
+
             woman_with_poem.position.set(2.25, .6, -1.3);
             woman_with_poem.scale.set(1.1, 1.1, 1.1);
             woman_with_poem.rotation.y = 90 * Math.PI / 180;
@@ -248,6 +281,9 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
             loop(() => {
                 nebulaFire.update();
                 nebulaFire2.update();
+                nebulaFire3.update();
+                nebulaFire4.update();
+                nebulaFire5.update();
                 nebulaFireForce.update();
                 nebulaFireForce.emitters[0].position.y += .01;
                 nebulaFireForce.emitters[0].position.z += .01;
@@ -260,13 +296,20 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
         callback: () => {
             stopLoop();
             stopCamera();
+
             audio.setSrc('audio/intro_dialog_3.mp3');
             audio.play();
+
+            subTitleCtrl.showSubTitle('intro.dialog_3');
+
             camera.position.set(1.6, 1, -.7);
             moveCamera(.0001, 0, .0001);
             loop(() => {
                 nebulaFire.update();
                 nebulaFire2.update();
+                nebulaFire3.update();
+                nebulaFire4.update();
+                nebulaFire5.update();
                 nebulaFireForce.update();
                 nebulaFireForce.emitters[0].position.y += .01;
                 nebulaFireForce.emitters[0].position.z += .01;
@@ -296,6 +339,8 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
 
             audio.setSrc('audio/intro_poem_1.mp3');
             audio.play();
+
+            subTitleCtrl.showSubTitle('intro.poem_1');
 
             jupiter.position.set(100, -100, 800);
             jupiter.scale.set(.25, .25, .25);
@@ -361,6 +406,9 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
         callback: () => {
             audio.setSrc('audio/intro_poem_2.mp3');
             audio.play();
+
+            subTitleCtrl.showSubTitle('intro.poem_2');
+
             stopCamera();
             stopLoop();
 
@@ -475,6 +523,8 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
             audio.setSrc('audio/intro_poem_3.mp3');
             audio.play();
 
+            subTitleCtrl.showSubTitle('intro.poem_3');
+
             europa_horizon_drifter_x1.rotation.y = 75 * Math.PI / 180;
 
             camera.position.set(
@@ -559,6 +609,8 @@ export default async (camera, scene, lifeCycle, audio, audioBgg, onEnd = () => {
         callback: () => {
             stopCamera();
             stopLoop();
+
+            subTitleCtrl.hideSubTitle();
 
             loop(() => {
                 if (space_light_01.intensity > 0) {

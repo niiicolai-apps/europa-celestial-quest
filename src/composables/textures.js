@@ -107,7 +107,7 @@ const texturePacks = [
     }
 ]
 
-const textureCache = {}
+let textureCache = {} 
 const textureLoader = new THREE.TextureLoader()
 
 const newMaterial = (type, color) => {

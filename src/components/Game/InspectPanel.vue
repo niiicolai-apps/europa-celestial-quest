@@ -152,6 +152,20 @@
                         @click="inspectManager.unitCtrl.cancel()">
                         <Icons.fa.ArrowLeftIcon width="2em" height="2em" fill="white" />
                     </UI.Button>
+                    
+                    <UI.Button 
+                        v-for="queued in unitsQueue"
+                        :key="queued.unit.name"
+                        :title="localizationManager.getLocale('units.' + queued.unit.name)"
+                        type="dark"
+                    >
+                        <img :src="queued.unit.image" :alt="queued.unit.name" class="block w-15 h-8 mx-auto rounded" />
+                        <UI.ProgressBar
+                            :progress="getUnitProgress(queued)"
+                            :maxProgress="getUnitMaxProgress(queued)"
+                            class="w-15 h-1 mx-auto rounded text-sm"
+                        />
+                    </UI.Button>
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
@@ -160,6 +174,7 @@
                         :key="unit.name"
                         :title="localizationManager.getLocale('units.' + unit.name)"
                         type="dark"
+                        @click="inspectManager.unitCtrl.queueUnit(unit.name)"
                     >
                         <img :src="unit.image" :alt="unit.name" class="block w-15 h-9 mx-auto rounded" />
                     </UI.Button>
@@ -173,7 +188,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Locale from '../Locale.vue';
-import { computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useInspect } from '../../composables/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
 
@@ -188,4 +203,21 @@ const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgra
 const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding.value);
 const allowedUnits = computed(() => isBuilding ? inspectManager.unitCtrl.getAllowedUnits() : []);
 const canBuild = computed(() => inspectManager.unitCtrl.canBuild());
+const unitsQueue = computed(() => isBuilding ? inspectManager.unitCtrl.getQueue() : []);
+
+const getUnitProgress = (queue) => {
+    const start = queue.startTime;
+    const completeTime = queue.completeTime;
+    const now = Date.now();
+    const progress = (now - start) / (completeTime - start);
+    return progress;    
+}
+
+const getUnitMaxProgress = (queue) => {
+    const start = queue.startTime;
+    const completeTime = queue.completeTime;
+    const now = Date.now();
+    const progress = (now - start) / (completeTime - start);
+    return progress;    
+}
 </script>
