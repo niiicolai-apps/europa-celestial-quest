@@ -17,6 +17,7 @@ import Camera from '../composables/camera.js';
 import { useGround } from '../composables/ground.js';
 import { useGrid } from '../composables/grid.js';
 import { useItems } from '../composables/items.js';
+import { useNavigation } from '../composables/navigation.js';
 
 import IntroTimeline from '../composables/timelines/intro.js';
 
@@ -60,6 +61,7 @@ const statsManager = useStats();
 const groundManager = useGround();
 const gridManager = useGrid();
 const itemsManager = useItems();
+const navigationManager = useNavigation();
 
 const subTitleRef = ref(null);
 const audioRef = ref(null);
@@ -75,8 +77,6 @@ const options = {
 
 onMounted(async () => {
     setMeta("game")
-
-    
 
     const { renderer, camera, scene, lifeCycle } = canvasRef.value.adapter;
 
@@ -147,6 +147,7 @@ const startGame = async () => {
     inspectManager.enable(camera, scene, renderer);
     groundManager.enable();
     Camera.manager.enable();
+    navigationManager.enable();
 
     lifeCycle.onAnimate.push(() => {
         Camera.manager.update();
