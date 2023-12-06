@@ -72,4 +72,25 @@ export default {
         url: 'meshes/human_construction/europa_horizon_drifter_x1.glb',
         subMeshes: [],
     },
+    rock_resource_01: {
+        name: 'rock_resource_01',
+        type: 'GLTF',
+        url: 'meshes/resources/rock_resource_01.glb',
+        subMeshes: [{
+            name: 'Rock',
+            texturePack: 'black_fabric',
+        }],
+    },
+    ice_resource_01: {
+        name: 'ice_resource_01',
+        type: 'GLTF',
+        url: 'meshes/resources/ice_resource_01.glb',
+        subMeshes: [{
+            name: 'Ice',
+            texturePack: 'blue_fabric',
+        }, {
+            name: 'Purple_Diamond',
+            texturePack: 'red_fabric',
+        }],
+    },
 }

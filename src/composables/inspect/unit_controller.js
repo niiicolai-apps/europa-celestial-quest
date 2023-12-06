@@ -2,11 +2,11 @@ import { ref } from 'vue';
 import { useBank } from '../bank.js';
 import { useItems } from '../items.js';
 import { getMesh, removeMesh } from '../meshes.js';
-import { useNavigation } from '../navigation.js';
+import { useUnits } from '../units.js';
 import ConstructionDefinitions from '../construction_definitions.js'
 import * as THREE from 'three';
 
-const navigation = useNavigation();
+const unitManager = useUnits();
 const bankManager = useBank();
 const isBuilding = ref(false);
 
@@ -50,8 +50,7 @@ const BuildController = {
             const unitSize = unitBox3.getSize(new THREE.Vector3());
             
             unitMesh.position.y += unitSize.y / 2;
-            unitMesh.userData = { unit: unit.unit }
-            navigation.addAgent(unitMesh, new THREE.Vector3(0, 0, 0), 0.1);
+            unitManager.add(unitMesh, unit.unit);
 
             queue.splice(i, 1);
         }

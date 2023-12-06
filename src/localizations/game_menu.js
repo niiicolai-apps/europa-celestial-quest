@@ -13,5 +13,15 @@ export default {
             en: 'Pause',
             da: 'Pause',
         },
+        warrior: {
+            regroup_button: {
+                en: 'Regroup Warriors',
+                da: 'Saml krigere',
+            },
+            attack_button: {
+                en: 'Attack Area',
+                da: 'Angrib område',
+            },
+        }
     }
 }

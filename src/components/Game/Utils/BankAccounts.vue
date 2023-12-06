@@ -20,8 +20,36 @@
                 :fill="iconFill" 
             />
 
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'ice'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'rock'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'hydrogen'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'metal'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
             <UI.Paragraph class="text-white">
-                {{ account.balance }}
+                {{ balance(account) }}
             </UI.Paragraph>
         </UI.Flex>
     </UI.Flex>
@@ -40,4 +68,11 @@ const localizationManager = useLocalization();
 const bankManager = useBank();
 const isInitialized = computed(() => bankManager.isInitialized.value);
 const accounts = computed(() => bankManager.accounts.value);
+const balance = (account) => {
+    if (account.max) {
+        return `${account.balance}/${account.max}`;
+    }
+
+    return account.balance;
+}
 </script>

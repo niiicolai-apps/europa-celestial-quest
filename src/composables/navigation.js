@@ -5,27 +5,28 @@ import { useGround } from './ground.js';
 const agents = ref([]);
 const ground = useGround();
 const worldDown = new THREE.Vector3(0, -1, 0);
+const direction = new THREE.Vector3();
+const remainingDistanceVector = new THREE.Vector3();
 
 const loop = () => {
     for (const agent of agents.value) {
-        const direction = new THREE.Vector3().subVectors(agent.destination, agent.object3D.position);
-        const distance = direction.length();
-        const velocity = direction.normalize().multiplyScalar(agent.speed);
-        if (distance > 0.1) {
-            const position = agent.object3D.position.clone();
-            position.add(velocity);
-            position.y += 1;
-            const intersect = ground.getIntersectFromPosition(position, worldDown);
-            if (intersect) {
-                position.copy(intersect);
-            }
-            agent.object3D.position.copy(position);
+        direction.subVectors(agent.destination, agent.object3D.position)
+            .normalize()
+            .multiplyScalar(agent.speed);
+         agent.object3D.position.add(direction);
 
-        } else {
-            agent.object3D.position.copy(agent.destination);
+       /*
+        direction.add(agent.object3D.position)
+        direction.y += 1;
+        const intersect = ground.getIntersectFromPosition(direction, worldDown);
+        if (intersect) {
+            direction.copy(intersect);
         }
+        agent.object3D.position.copy(direction);*/
         
-        const remainingDistance = new THREE.Vector3().subVectors(agent.destination, agent.object3D.position).length();
+        const remainingDistance = remainingDistanceVector
+            .subVectors(agent.destination, agent.object3D.position)
+            .length();
         if (remainingDistance < 0.1) {
             agent.object3D.position.copy(agent.destination);
             agents.value = agents.value.filter(a => a !== agent);
@@ -34,16 +35,31 @@ const loop = () => {
 }
 
 export const useNavigation = () => {
-    const addAgent = (object3D, destination, speed) => {
-        agents.value.push({object3D, destination, speed});
+    const addAgent = (object3D, destination, speed, groundOffset) => {
+        const exist = agents.value.find(a => a.object3D.uuid === object3D.uuid);
+        if (exist) {
+            exist.destination = destination;
+            exist.speed = speed;
+            exist.groundOffset = groundOffset;
+            return;
+        }
+
+        agents.value.push({ object3D, destination, speed, groundOffset });
     }
 
     const removeAgent = (agent) => {
         agents.value = agents.value.filter(a => a !== agent);
     }
 
+    const reachedDestination = (object3D, destination, acceptableDistance=0.1) => {
+        const remainingDistance = remainingDistanceVector
+            .subVectors(destination, object3D.position)
+            .length();
+        return remainingDistance < acceptableDistance;
+    }
+
     const enable = () => {
-        setInterval(loop, 1000 / 60);
+        setInterval(loop, 30);
     }
 
     const disable = () => {
@@ -55,6 +71,7 @@ export const useNavigation = () => {
         addAgent,
         removeAgent,
         enable,
-        disable
+        disable,
+        reachedDestination,
     }
 }

@@ -102,6 +102,20 @@ export const useItems = () => {
         return true
     }
 
+    const findClosestItem = (position, name) => {
+        let closest = null
+        let closestDistance = Infinity
+        for (const item of items.value) {
+            if (item.name !== name) continue
+            const distance = item.position.distanceTo(position)
+            if (distance < closestDistance) {
+                closest = item
+                closestDistance = distance
+            }
+        }
+        return closest
+    }
+
     return {
         init,
         spawn,
@@ -109,6 +123,7 @@ export const useItems = () => {
         items,
         ConstructionDefinitions,
         saveState,
-        removeItemFromState
+        removeItemFromState,
+        findClosestItem,
     }
 }

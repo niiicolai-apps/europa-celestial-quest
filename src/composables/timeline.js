@@ -91,6 +91,26 @@ const setupScene = (scene, sequence) => {
     } else {
         scene.fog = null;
     }
+
+    if (sequence.background) {
+        if (sequence.background.type === 'CubeTexture') {
+
+            scene.background = new THREE.CubeTextureLoader()
+                .setPath(sequence.background.path)
+                .load(sequence.background.load);
+
+        } else if (sequence.background.type === 'Color') {
+
+            scene.background = new THREE.Color(
+                sequence.background.color.r,
+                sequence.background.color.g,
+                sequence.background.color.b
+            );
+
+        } else {
+            throw new Error(`Unknown background type: ${scene.background.type}`);
+        }
+    }
 }
 
 const setupCamera = (camera, meshes, scene, sequence) => {
@@ -447,6 +467,8 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         return s;
     });
 
+    const backgroundBefore = scene.background;
+
     const stop = () => {
         utils.stopCamera();
         utils.stopCameraLoop();
@@ -459,7 +481,8 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         removeLights(_lights, scene);
         removeMeshes(_meshes, scene);
         removeTransition();
-        scene.fog = null;        
+        scene.fog = null;
+        scene.background = backgroundBefore;
         onStop();
     }
 

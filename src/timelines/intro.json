@@ -121,6 +121,11 @@
     "sequencies": [
         {
             "playTime": 18000,
+            "background": {
+                "type": "CubeTexture",
+                "path": "textures/cubeMaps/",
+                "load": [ "px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png" ]
+            },
             "fog": {
                 "color": { "r": 0, "g": 0, "b": 0 },
                 "density": 0.01
@@ -135,12 +140,6 @@
                 "clip": "audio/intro_dialog_1.mp3",
                 "volume": 0.5,
                 "muted": false
-            },
-            "scene": {
-                "fog": {
-                    "color": "0x000000",
-                    "density": 0.0001
-                }
             },
             "camera": {
                 "position": { "x": 2.2, "y": 1, "z": -2.4 },

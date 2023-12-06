@@ -1,3 +1,288 @@
+const FEATURES = {
+    MISSILE_ATTACK: (distance=5, rate=2, damage=15) => {
+        return { 
+            name: 'attack',
+            options: {
+                type: 'missile',
+                distance,
+                rate,
+                damage,
+            }
+        }
+    },
+    MACHINE_GUN_ATTACK: (distance=5, rate=2, damage=15) => {
+        return { 
+            name: 'attack',
+            options: {
+                type: 'machine_gun',
+                distance,
+                rate,
+                damage,
+            }
+        }
+    },
+    LASER_ATTACK: (distance=5, rate=2, damage=15) => {
+        return { 
+            name: 'attack',
+            options: {
+                type: 'laser',
+                distance,
+                rate,
+                damage,
+            }
+        }
+    },
+    MOVE: (speed=0.1, type='walk', groundOffset=1) => {
+        return { 
+            name: 'move',
+            options: {
+                type,
+                speed,
+                groundOffset
+            }
+        }
+    },
+    HEALTH: (maxHealth=100) => {
+        return { 
+            name: 'health',
+            options: {
+                health: maxHealth,
+                maxHealth,
+            }
+        }
+    },
+    COLLECT: (type='rock', max=1, speed=5000, deliver_construction='Hydrogen Fuel Tank') => {
+        return { 
+            name: 'collect',
+            options: {
+                collected: 0,
+                resource: null,
+                deliver_to: null,
+                type,
+                max,
+                speed,
+                deliver_construction,
+            }
+        }
+    },
+}
+
+const PRIMARY_FUNCTIONS = {
+    COLLECTOR: 'collector',
+    WARRIOR: 'warrior',
+}
+
+const UNITS = {
+    BOT_SPIDER_1: {
+        name: 'B S-1',
+        image: 'thumbnails/human_units/bot_spider_1.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.MISSILE_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/bot_spider_1.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    BOT_SPIDER_2: {
+        name: 'B S-2',
+        image: 'thumbnails/human_units/bot_spider_2.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.MISSILE_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/bot_spider_2.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    DRONE_LASER_1: {
+        name: 'D L-1',
+        image: 'thumbnails/human_units/drone_laser_1.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.LASER_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/drone_laser_1.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    DRONE_LASER_2: {
+        name: 'D L-2',
+        image: 'thumbnails/human_units/drone_laser_2.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.LASER_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/drone_laser_2.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    ROVER_RESEARCH_H20: {
+        name: 'RR H20',
+        image: 'thumbnails/human_units/rover_research_h20.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
+        features: [
+            FEATURES.COLLECT("ice", 1, 5000, "Hydrogen Fuel Tank"),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/rover_research_h20.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    ROVER_RESEARCH_D1: {
+        name: 'RR D-1',
+        image: 'thumbnails/human_units/rover_research_d1.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
+        features: [
+            FEATURES.COLLECT("rock", 1, 5000, "Rock Metal Extractor"),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/rover_research_d1.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    ROVER_WARRIOR_3: {
+        name: 'RR W-3',
+        image: 'thumbnails/human_units/rover_warrior_6.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.MACHINE_GUN_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/rover_warrior_6.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    ROVER_WARRIOR_6: {
+        name: 'RR W-6',
+        image: 'thumbnails/human_units/rover_warrior_3.png',
+        complete_time: 1000,
+        requiredLevel: 1,
+        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        features: [
+            FEATURES.MACHINE_GUN_ATTACK(),
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+        ],
+        costs: [
+            { currency: "coins", amount: 1 },
+            { currency: "diamonds", amount: 0 },
+        ], 
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/rover_warrior_3.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    }
+}
+
 export default [
     {
         name: 'Europa Horizon Drifter X1',
@@ -46,26 +331,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [{
-                name: 'B S-1',
-                image: 'thumbnails/human_units/bot_spider_1.png',
-                requiredLevel: 1,
-                complete_time: 1000,
-                costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
-                ],
-                mesh: {
-                    type: 'GLTF',
-                    url: 'meshes/human_units/bot_spider_1.glb',
-                    subMeshes: [
-                        {
-                            name: 'Cube',
-                            texturePack: 'default',
-                        },
-                    ]
-                },
-            }]
+            units: [UNITS.BOT_SPIDER_1]
         }, {
             name: 'Upgrade 2',
             costs: [
@@ -73,28 +339,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [
-                {
-                    name: 'B S-2',
-                    image: 'thumbnails/human_units/bot_spider_2.png',
-                    requiredLevel: 1,
-                    complete_time: 1000,
-                    costs: [
-                        { currency: "coins", amount: 1 },
-                        { currency: "diamonds", amount: 0 },
-                    ],
-                    mesh: {
-                        type: 'GLTF',
-                        url: 'meshes/human_units/bot_spider_2.glb',
-                        subMeshes: [
-                            {
-                                name: 'Cube',
-                                texturePack: 'default',
-                            },
-                        ]
-                    },
-                }
-            ]
+            units: [UNITS.BOT_SPIDER_2]
         }],
     },
     {
@@ -123,28 +368,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [
-                {
-                    name: 'D L-1',
-                    image: 'thumbnails/human_units/drone_laser_1.png',
-                    requiredLevel: 1,
-                    complete_time: 1000,
-                    costs: [
-                        { currency: "coins", amount: 1 },
-                        { currency: "diamonds", amount: 0 },
-                    ],
-                    mesh: {
-                        type: 'GLTF',
-                        url: 'meshes/human_units/drone_laser_1.glb',
-                        subMeshes: [
-                            {
-                                name: 'Cube',
-                                texturePack: 'default',
-                            },
-                        ]
-                    },
-                }
-            ]
+            units: [UNITS.DRONE_LASER_1]
         }, {
             name: 'Upgrade 2',
             costs: [
@@ -152,28 +376,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [
-                {
-                    name: 'D L-2',
-                    image: 'thumbnails/human_units/drone_laser_2.png',
-                    requiredLevel: 1,
-                    complete_time: 1000,
-                    costs: [
-                        { currency: "coins", amount: 1 },
-                        { currency: "diamonds", amount: 0 },
-                    ],
-                    mesh: {
-                        type: 'GLTF',
-                        url: 'meshes/human_units/drone_laser_2.glb',
-                        subMeshes: [
-                            {
-                                name: 'Cube',
-                                texturePack: 'default',
-                            },
-                        ]
-                    },
-                }
-            ]
+            units: [UNITS.DRONE_LASER_2]
         }],
     },
     {
@@ -244,26 +447,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [{
-                name: 'RR H20',
-                image: 'thumbnails/human_units/rover_research_h20.png',
-                requiredLevel: 1,
-                complete_time: 1000,
-                costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
-                ],
-                mesh: {
-                    type: 'GLTF',
-                    url: 'meshes/human_units/rover_research_h20.glb',
-                    subMeshes: [
-                        {
-                            name: 'Cube',
-                            texturePack: 'default',
-                        },
-                    ]
-                },
-            }]
+            units: [UNITS.ROVER_RESEARCH_H20]
         }, {
             name: 'Upgrade 2',
             costs: [
@@ -271,28 +455,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [
-                {
-                    name: 'RR D-1',
-                    image: 'thumbnails/human_units/rover_research_d1.png',
-                    requiredLevel: 1,
-                    complete_time: 1000,
-                    costs: [
-                        { currency: "coins", amount: 1 },
-                        { currency: "diamonds", amount: 0 },
-                    ],
-                    mesh: {
-                        type: 'GLTF',
-                        url: 'meshes/human_units/rover_research_d1.glb',
-                        subMeshes: [
-                            {
-                                name: 'Cube',
-                                texturePack: 'default',
-                            },
-                        ]
-                    },
-                }
-            ]
+            units: [UNITS.ROVER_RESEARCH_D1]
         }],
     },
     {
@@ -321,26 +484,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [{
-                name: 'RR W-3',
-                image: 'thumbnails/human_units/rover_warrior_6.png',
-                requiredLevel: 1,
-                complete_time: 1000,
-                costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
-                ],
-                mesh: {
-                    type: 'GLTF',
-                    url: 'meshes/human_units/rover_warrior_6.glb',
-                    subMeshes: [
-                        {
-                            name: 'Cube',
-                            texturePack: 'default',
-                        },
-                    ]
-                },
-            }]
+            units: [UNITS.ROVER_WARRIOR_3]
         }, {
             name: 'Upgrade 2',
             costs: [
@@ -348,28 +492,7 @@ export default [
                 { currency: "diamonds", amount: 0 },
             ],
             subMesh: {},
-            units: [
-                {
-                    name: 'RR W-6',
-                    image: 'thumbnails/human_units/rover_warrior_3.png',
-                    complete_time: 1000,
-                    requiredLevel: 1,
-                    costs: [
-                        { currency: "coins", amount: 1 },
-                        { currency: "diamonds", amount: 0 },
-                    ],
-                    mesh: {
-                        type: 'GLTF',
-                        url: 'meshes/human_units/rover_warrior_3.glb',
-                        subMeshes: [
-                            {
-                                name: 'Cube',
-                                texturePack: 'default',
-                            },
-                        ]
-                    },
-                }
-            ]
+            units: [UNITS.ROVER_WARRIOR_6]
         }],
     },
     {
