@@ -4,7 +4,6 @@ import { useItems } from '../items.js';
 import { removeMesh } from '../meshes.js';
 
 const bankManager = useBank();
-const itemsManager = useItems();
 const isSelling = ref(false);
 
 const SellController = {
@@ -34,7 +33,7 @@ const SellController = {
 
         removeMesh(selected.value);
         scene.remove(selected.value);
-        itemsManager.removeItemFromState(selected.value);
+        useItems().removeItemFromState(selected.value);
         return true;
     },
     isSelling

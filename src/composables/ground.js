@@ -1,9 +1,11 @@
 import * as THREE from 'three'
 import { ref } from 'vue';
 import { getMesh } from './meshes.js';
+import { useMap } from './map.js';
 
 const isInitialized = ref(false);
 const onIntersect = [];
+const map = useMap();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -16,17 +18,13 @@ export const useGround = () => {
     const init = async (scene, _camera, _domElement, lifeCycle) => {
         if (isInitialized.value) return false;
 
-        groundMesh = await getMesh({
-            type: 'GLTF',
-            url: 'meshes/utils/terrain.glb',
-            subMeshes: [{
-                name: 'map',
-                texturePack: 'terrain',
-            }],
-        });
-        groundMesh.position.set(0, 0, 0);
-        groundMesh.scale.set(1, 1, 1);
-        groundMesh.rotation.set(0, 0, 0);
+        const mapData = map.map.value;
+        const { mesh, position, rotation, scale } = mapData.terrain;
+        
+        groundMesh = await getMesh(mesh);        
+        groundMesh.position.set(position.x, position.y, position.z);                
+        groundMesh.rotation.set(rotation.x, rotation.y, rotation.z);
+        groundMesh.scale.set(scale.x, scale.y, scale.z);
         
         camera = _camera;
         domElement = _domElement;

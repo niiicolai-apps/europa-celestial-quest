@@ -1,9 +1,8 @@
 import { ref } from 'vue';
 import { useBank } from '../bank.js';
 import { useItems } from '../items.js';
-
+import { useObjectives } from '../objectives.js';
 const bankManager = useBank();
-const itemsManager = useItems();
 
 const isUpgrading = ref(false);
 
@@ -40,16 +39,21 @@ const UpgradeController = {
         const upgradeIndex = selected.value.userData.upgrade.index;
         const nextUpgrade = selected.value.userData.upgrades[upgradeIndex];  
 
-        const canAfford = itemsManager.canAfford(nextUpgrade.costs);
+        const canAfford = useItems().canAfford(nextUpgrade.costs);
         if (!canAfford) return false;
 
         for (const cost of nextUpgrade.costs) {
             bankManager.withdraw(cost.amount, cost.currency);
         }
 
+        if (selected.value.userData.canStore) {
+            useItems().recalculateStorage();
+        }
+
         isUpgrading.value = false;
         selected.value.userData.upgrade.index++;
-        itemsManager.saveState();
+        useObjectives().tryCompleteIncompletes();
+        useItems().saveState();
         
         return true;
     },

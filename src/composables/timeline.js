@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import MESHES from "../meshes/meshes.js";
+import meshesJson from '../meshes/meshes.json'
 import utils from "./timelines/utils.js";
 import { getMesh, removeMesh } from "./meshes.js";
 const { System, SpriteRenderer } = window.Nebula;
@@ -389,7 +389,7 @@ const removeTransition = () => {
 export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ctrl, subTitleCtrl, onStop = () => { }) => {
     const _meshes = [];
     for (const mesh of json.meshes) {
-        const _mesh = await getMesh(MESHES[mesh]);
+        const _mesh = await getMesh(meshesJson[mesh]);
         _meshes.push({ name: mesh, mesh: _mesh });
     }
 

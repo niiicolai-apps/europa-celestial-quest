@@ -123,15 +123,16 @@ const startGame = async () => {
     light.position.set(0, 10, 0);
     scene.add(light);
 
-    objectivesManager.init();
-    bankManager.init();
-    statsManager.init();
-    itemsManager.init(scene);
-    unitsManager.init(scene, renderer.domElement);
-    resourcesManager.init(scene);
-    await groundManager.init(scene, camera, renderer.domElement, lifeCycle);
-
     inspectManager.enable(camera, scene, renderer);
+
+    await objectivesManager.init();
+    await bankManager.init();
+    await statsManager.init();
+    await itemsManager.init(scene);
+    await unitsManager.init(scene, renderer.domElement);
+    await resourcesManager.init(scene);
+    await groundManager.init(scene, camera, renderer.domElement, lifeCycle);
+    
     groundManager.enable();
     Camera.manager.enable();
     navigationManager.enable();

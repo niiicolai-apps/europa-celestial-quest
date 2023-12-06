@@ -10,6 +10,8 @@ const CURRENCIES = {
     ROCK: 'rock',
     HYRDOGEN: 'hydrogen',
     METAL: 'metal',
+    POWER: 'power',
+    RESEARCH: 'research',
 }
 const bank = ref(null);
 const accounts = computed(() => bank.value.accounts);
@@ -20,49 +22,82 @@ export function useBank() {
         if (isInitialized.value) return;
 
         GameBank.Currency.createMany(
-            { name: CURRENCIES.COINS, options: {} }, 
-            { name: CURRENCIES.DIAMONDS, options: {} },
-            { name: CURRENCIES.ICE, options: { max: 100 } },
-            { name: CURRENCIES.ROCK, options: { max: 100 } },
-            { name: CURRENCIES.HYRDOGEN, options: { max: 100 } },
-            { name: CURRENCIES.METAL, options: { max: 100 } },
+            { name: CURRENCIES.ICE, options: { max: 100, defaultMax: 100 } },
+            { name: CURRENCIES.ROCK, options: { max: 100, defaultMax: 100 } },
+            { name: CURRENCIES.HYRDOGEN, options: { max: 100, defaultMax: 100 } },
+            { name: CURRENCIES.METAL, options: { max: 100, defaultMax: 100 } },
+            { name: CURRENCIES.POWER, options: { max: 100, defaultMax: 100 } },
+            { name: CURRENCIES.RESEARCH, options: { max: 100, defaultMax: 100 } }
         );
 
-        const pdCoins = await PersistentData.get(CURRENCIES.COINS);
-        const pdDiamonds = await PersistentData.get(CURRENCIES.DIAMONDS);
         const pdIce = await PersistentData.get(CURRENCIES.ICE);
         const pdRock = await PersistentData.get(CURRENCIES.ROCK);
         const pdHydrogen = await PersistentData.get(CURRENCIES.HYRDOGEN);
         const pdMetal = await PersistentData.get(CURRENCIES.METAL);
-       
-        const coins = pdCoins?.balance || 100;
-        const diamonds = pdDiamonds?.balance || 10;
-        const ice = pdIce?.balance || 0;
-        const rock = pdRock?.balance || 0;
-        const hydrogen = pdHydrogen?.balance || 0;
-        const metal = pdMetal?.balance || 0;
+        const pdPower = await PersistentData.get(CURRENCIES.POWER);
+        const pdResearch = await PersistentData.get(CURRENCIES.RESEARCH);
+
+        const ice = pdIce?.balance || 100;
+        const rock = pdRock?.balance || 100;
+        const hydrogen = pdHydrogen?.balance || 50;
+        const metal = pdMetal?.balance || 50;
+        const power = pdPower?.balance || 100;
+        const research = pdResearch?.balance || 0;
 
         bank.value = GameBank.Bank.create(BANK_NAME, {
             defaultAccounts: [
-                { name: CURRENCIES.COINS, balance: coins },
-                { name: CURRENCIES.DIAMONDS, balance: diamonds },
                 { name: CURRENCIES.ICE, balance: ice },
                 { name: CURRENCIES.ROCK, balance: rock },
                 { name: CURRENCIES.HYRDOGEN, balance: hydrogen },
                 { name: CURRENCIES.METAL, balance: metal },
+                { name: CURRENCIES.POWER, balance: power },
+                { name: CURRENCIES.RESEARCH, balance: research }
             ]
         });
         
         isInitialized.value = true;
     }
 
+    const updateCurrencyMax = (currency, max) => {
+        if (!isInitialized.value) throw new Error('Bank not initialized');
+        const acc = bank.value.accounts;
+        const account = acc.find(a => a.name === currency);
+        if (!account) return;
+        const index = acc.indexOf(account);
+        acc[index].max = max + acc[index].defaultMax;
+        bank.value.accounts = acc;
+    }
+
+    const getCurrency = (currency) => {
+        if (!isInitialized.value) throw new Error('Bank not initialized');
+        const acc = bank.value.accounts;
+        const account = acc.find(a => a.name === currency);
+        if (!account) return null;
+        return account;
+    }
+
+    const overrideBalance = (balance, currency) => {
+        if (!isInitialized.value) throw new Error('Bank not initialized');
+        const acc = bank.value.accounts;
+        const account = acc.find(a => a.name === currency);
+        if (!account) return;
+        const index = acc.indexOf(account);
+        acc[index].balance = balance;
+        bank.value.accounts = acc;
+    }
+
     const deposit = (balance, currency) => {
         // Enforce max balance
-        const c = GameBank.Currency.findByName(currency);
-        if (c.max) {
+        const acc = bank.value.accounts;
+        const account = acc.find(a => a.name === currency);
+        if (!account) throw new Error(`Unknown currency: ${currency}`);
+        
+        if (account.max) {
             const b = getBalance(currency);
             const n = b + balance;
-            if (n > c.max) return false;
+            if (n > account.max) {
+                balance = account.max - b; 
+            }
         }
 
         bank.value.deposit(balance, currency);
@@ -92,6 +127,7 @@ export function useBank() {
     }
 
     return {
+        bank,
         init,
         deposit,
         withdraw,
@@ -99,6 +135,9 @@ export function useBank() {
         canAfford,
         isInitialized,
         accounts,
+        updateCurrencyMax,
+        getCurrency,
+        overrideBalance,
         CURRENCIES
     }
 }

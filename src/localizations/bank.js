@@ -25,5 +25,13 @@ export default {
             en: 'Metal',
             da: 'Metal',
         },
+        power: {
+            en: 'Power',
+            da: 'Energi',
+        },
+        research: {
+            en: 'Research',
+            da: 'Forskning',
+        }
     },
 }

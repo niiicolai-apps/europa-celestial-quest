@@ -6,12 +6,12 @@ import { useBank } from '../bank.js';
 import { useItems } from '../items.js';
 import { useGround } from '../ground.js';
 import { removeMesh } from '../meshes.js';
+import { useObjectives } from '../objectives.js';
 
 import * as THREE from 'three';
 
 const grid = useGrid();
 const bankManager = useBank();
-const itemsManager = useItems();
 const collisionManager = useCollision();
 const groundManager = useGround();
 
@@ -63,26 +63,31 @@ const MoveController = {
         } else {
             removeMesh(selected.value);
             scene.remove(selected.value);
-            itemsManager.removeItemFromState(selected.value);
+            useItems().removeItemFromState(selected.value);
         }
         return true;
     },
     confirm: (selected) => {
         if (!isMoving.value) return false;
         if (!selected.value.userData.isOwned) {
-            const canAfford = itemsManager.canAfford(selected.value.userData.costs);
+            const canAfford = useItems().canAfford(selected.value.userData.costs);
 
             if (canAfford) {
                 for (const cost of selected.value.userData.costs) {
                     bankManager.withdraw(cost.amount, cost.currency);
                 }
                 selected.value.userData.isOwned = true;
+                useObjectives().tryCompleteIncompletes();
             } else {
                 return false;
             }
         }
+        
+        if (selected.value.userData.canStore) {
+            useItems().recalculateStorage();
+        }
 
-        itemsManager.saveState();
+        useItems().saveState();
         isMoving.value = false;
         lastPosition.value = null;
         return true;

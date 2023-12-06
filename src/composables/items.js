@@ -9,7 +9,39 @@ import { ref } from 'vue'
 const items = ref([])
 const bankManager = useBank()
 const isInitialized = ref(false)
+
 let scene = null
+let queueInterval = null
+
+const recalculateStorage = () => {
+    let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
+    for (const item of items.value) {
+        if (!item.userData.canStore) continue
+
+        const features = item.userData.upgrades[item.userData.upgrade.index].features;
+        for (const feature of features) {
+            if (feature.name !== 'storage') continue
+            if (feature.options.type === 'ice') {
+                ice += feature.options.max;
+            } else if (feature.options.type === 'rock') {
+                rock += feature.options.max;
+            } else if (feature.options.type === 'hydrogen') {
+                hydrogen += feature.options.max;
+            } else if (feature.options.type === 'metal') {
+                metal += feature.options.max;
+            } else if (feature.options.type === 'power') {
+                power += feature.options.max;
+            }
+        }
+    }
+
+    bankManager.updateCurrencyMax('ice', ice);
+    bankManager.updateCurrencyMax('rock', rock);
+    bankManager.updateCurrencyMax('hydrogen', hydrogen);
+    bankManager.updateCurrencyMax('metal', metal);
+    bankManager.updateCurrencyMax('power', power);
+    bankManager.overrideBalance(power + bankManager.getCurrency('power').defaultMax, 'power');
+}
 
 export const useItems = () => {
     const init = async (_scene) => {
@@ -17,6 +49,36 @@ export const useItems = () => {
 
         scene = _scene
         await loadState()
+
+        queueInterval = setInterval(() => {
+            const time = Date.now()
+
+            for (const item of items.value) {
+
+                if (item.userData.canBuild) {
+                    UnitController.dequeueAny(item, scene)
+                }
+
+                else if (item.userData.canProduce) {
+                    const produceFeature = item.userData.upgrades[item.userData.upgrade.index]
+                        .features.find(feature => feature.name === 'produce')
+                    const currency = produceFeature.options.type
+                    const isFull = bankManager.getBalance(currency) >= bankManager.getCurrency(currency).max
+                    
+                    if (!isFull && produceFeature.options.nextTime < time) {
+                        const canAfford = bankManager.canAfford(produceFeature.options.costs)
+                        if (!canAfford) continue
+
+                        const amount = produceFeature.options.rate
+                        bankManager.deposit(amount, currency)
+                        for (const cost of produceFeature.options.costs) {
+                            bankManager.withdraw(cost.amount, cost.currency)
+                        }
+                        produceFeature.options.nextTime = time + produceFeature.options.speed
+                    }
+                }
+            }
+        }, 15000);
 
         isInitialized.value = true
         return true
@@ -33,7 +95,7 @@ export const useItems = () => {
         return canAfford
     }
 
-    const spawn = async (itemDefinition) => {
+    const spawn = async (itemDefinition, team = 'player') => {
         const item = await getMesh(itemDefinition.mesh)
         items.value.push(item)
         scene.add(item)
@@ -41,18 +103,22 @@ export const useItems = () => {
         item.userData = {
             isOwned: false,
             costs: itemDefinition.costs,
-            upgrade: itemDefinition.upgrade,
+            upgrade: { index: 0 },
             upgrades: itemDefinition.upgrades,
             mesh: itemDefinition.mesh,
+            team,
         }
 
-        const canBuild = UnitController.canBuild(item);
-        if (canBuild) {
-            const queueInterval = setInterval(() => {
-                UnitController.dequeueAny(item, scene);
-            }, 1000);
-            item.userData.queueInterval = queueInterval;
-        }
+        item.userData.canBuild = UnitController.canBuild(item);
+        item.userData.canStore = itemDefinition
+            .upgrades
+            .find(upgrade => {
+                if (!upgrade.features) return false
+                return upgrade.features.find(feature => feature.name === 'storage')
+            }) !== undefined
+
+        const produceFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'produce')
+        item.userData.canProduce = produceFeature !== undefined
 
         return item
     }
@@ -69,8 +135,10 @@ export const useItems = () => {
             const item = await spawn(itemDefinition)
             item.position.set(itemData.position.x, itemData.position.y, itemData.position.z)
             item.rotation.set(itemData.rotation.x, itemData.rotation.y, itemData.rotation.z)
-            item.userData = itemData.userData
+            item.userData.upgrade.index = itemData.userData.upgrade.index
+            item.userData.isOwned = itemData.userData.isOwned
             inspectManager.addSelectable(item)
+            recalculateStorage()
         }
     }
 
@@ -116,6 +184,26 @@ export const useItems = () => {
         return closest
     }
 
+    const findItemByName = (name) => {
+        return items.value.find(item => item.name === name)
+    }
+
+    const findItemByNameAndUpgrade = (name, upgradeIndex) => {
+        return items.value.find(item => {
+            return item.name === name && item.userData.upgrade.index === upgradeIndex
+        })
+    }
+
+    const countItemsByName = (name) => {
+        return items.value.filter(item => item.name === name).length
+    }
+
+    const countItemsByNameAndUpgrade = (name, upgradeIndex) => {
+        return items.value.filter(item => {
+            return item.name === name && item.userData.upgrade.index === upgradeIndex
+        }).length
+    }
+
     return {
         init,
         spawn,
@@ -125,5 +213,10 @@ export const useItems = () => {
         saveState,
         removeItemFromState,
         findClosestItem,
+        recalculateStorage,
+        findItemByName,
+        findItemByNameAndUpgrade,
+        countItemsByName,
+        countItemsByNameAndUpgrade,
     }
 }

@@ -33,5 +33,9 @@ export default {
             en: 'RR H20',
             da: 'RR H20',
         },
+        'RR S-1': {
+            en: 'RR S-1',
+            da: 'RR S-1',
+        },
     }
 }

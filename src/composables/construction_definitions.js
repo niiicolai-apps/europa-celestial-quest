@@ -1,6 +1,6 @@
 const FEATURES = {
-    MISSILE_ATTACK: (distance=5, rate=2, damage=15) => {
-        return { 
+    MISSILE_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+        return {
             name: 'attack',
             options: {
                 type: 'missile',
@@ -10,8 +10,8 @@ const FEATURES = {
             }
         }
     },
-    MACHINE_GUN_ATTACK: (distance=5, rate=2, damage=15) => {
-        return { 
+    MACHINE_GUN_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+        return {
             name: 'attack',
             options: {
                 type: 'machine_gun',
@@ -21,8 +21,8 @@ const FEATURES = {
             }
         }
     },
-    LASER_ATTACK: (distance=5, rate=2, damage=15) => {
-        return { 
+    LASER_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+        return {
             name: 'attack',
             options: {
                 type: 'laser',
@@ -32,8 +32,8 @@ const FEATURES = {
             }
         }
     },
-    MOVE: (speed=0.1, type='walk', groundOffset=1) => {
-        return { 
+    MOVE: (speed = 0.1, type = 'walk', groundOffset = 1) => {
+        return {
             name: 'move',
             options: {
                 type,
@@ -42,8 +42,8 @@ const FEATURES = {
             }
         }
     },
-    HEALTH: (maxHealth=100) => {
-        return { 
+    HEALTH: (maxHealth = 100) => {
+        return {
             name: 'health',
             options: {
                 health: maxHealth,
@@ -51,8 +51,8 @@ const FEATURES = {
             }
         }
     },
-    COLLECT: (type='rock', max=1, speed=5000, deliver_construction='Hydrogen Fuel Tank') => {
-        return { 
+    COLLECT: (type = 'rock', costs=[{ currency: "power", amount: 1 }], max = 1, speed = 5000, deliver_construction = 'Hydrogen Fuel Tank') => {
+        return {
             name: 'collect',
             options: {
                 collected: 0,
@@ -62,6 +62,43 @@ const FEATURES = {
                 max,
                 speed,
                 deliver_construction,
+                costs,
+            }
+        }
+    },
+    STORAGE: (type = 'rock', max = 100) => {
+        return {
+            name: 'storage',
+            options: {
+                type,
+                max,
+            }
+        }
+    },
+    PRODUCE: (type = 'hydrogen', costs=[], rate = 1, speed = 5000) => {
+        return {
+            name: 'produce',
+            options: {
+                nextTime: 0,
+                type,
+                rate,
+                speed,
+                costs,
+            }
+        }
+    },
+    SCAN: (type = 'research', costs=[{ currency: "power", amount: 1 }], rate = 0.1, speed = 5000, deliver_construction = 'Europa Horizon Drifter X1') => {
+        return {
+            name: 'scan',
+            options: {
+                next_position: null,
+                deliver_to: null,
+                scanned: false,
+                type,
+                rate,
+                speed,
+                costs,
+                deliver_construction
             }
         }
     },
@@ -70,6 +107,7 @@ const FEATURES = {
 const PRIMARY_FUNCTIONS = {
     COLLECTOR: 'collector',
     WARRIOR: 'warrior',
+    SCANNER: 'scanner',
 }
 
 const UNITS = {
@@ -85,8 +123,11 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -111,8 +152,11 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -137,8 +181,11 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -163,8 +210,11 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -184,13 +234,16 @@ const UNITS = {
         complete_time: 1000,
         primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
-            FEATURES.COLLECT("ice", 1, 5000, "Hydrogen Fuel Tank"),
+            FEATURES.COLLECT("ice", [{ currency: "power", amount: 1 }], 1, 5000, "Hydrogen Fuel Tank"),
             FEATURES.MOVE(),
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -210,13 +263,45 @@ const UNITS = {
         complete_time: 1000,
         primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
-            FEATURES.COLLECT("rock", 1, 5000, "Rock Metal Extractor"),
+            FEATURES.COLLECT("rock", [{ currency: "power", amount: 1 }], 1, 5000, "Rock Metal Extractor"),
             FEATURES.MOVE(),
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
+        ],
+        mesh: {
+            type: 'GLTF',
+            url: 'meshes/human_units/rover_research_d1.glb',
+            subMeshes: [
+                {
+                    name: 'Cube',
+                    texturePack: 'default',
+                },
+            ]
+        },
+    },
+    ROVER_RESEARCH_S1: {
+        name: 'RR S-1',
+        image: 'thumbnails/human_units/rover_research_d1.png',
+        requiredLevel: 1,
+        complete_time: 1000,
+        primary_function: PRIMARY_FUNCTIONS.SCANNER,
+        features: [
+            FEATURES.MOVE(),
+            FEATURES.HEALTH(),
+            FEATURES.SCAN(),
+        ],
+        costs: [
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -241,8 +326,11 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
         ],
         mesh: {
             type: 'GLTF',
@@ -267,9 +355,12 @@ const UNITS = {
             FEATURES.HEALTH(),
         ],
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
-        ], 
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
+            { currency: "power", amount: 1 }
+        ],
         mesh: {
             type: 'GLTF',
             url: 'meshes/human_units/rover_warrior_3.glb',
@@ -299,11 +390,26 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
+            ],
+            subMesh: {},
+            features: [
+                FEATURES.HEALTH(),
+                FEATURES.PRODUCE('power', [], 2, 5000),
+            ],
+        }],
     },
     {
         name: 'Robot Facility',
@@ -320,26 +426,38 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
         upgrades: [{
             name: 'Upgrade 1',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.BOT_SPIDER_1]
+            units: [UNITS.BOT_SPIDER_1],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }, {
             name: 'Upgrade 2',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.BOT_SPIDER_2]
+            units: [UNITS.BOT_SPIDER_2],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }],
     },
     {
@@ -357,26 +475,38 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
         upgrades: [{
             name: 'Upgrade 1',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.DRONE_LASER_1]
+            units: [UNITS.DRONE_LASER_1],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }, {
             name: 'Upgrade 2',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.DRONE_LASER_2]
+            units: [UNITS.DRONE_LASER_2],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }],
     },
     {
@@ -394,11 +524,45 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
+            ],
+            subMesh: {},
+            units: [],
+            features: [
+                FEATURES.STORAGE('ice', 100),
+                FEATURES.STORAGE('hydrogen', 100),
+                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }], 10, 5000),
+                FEATURES.HEALTH(),
+            ],
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
+            ],
+            subMesh: {},
+            units: [],
+            features: [
+                FEATURES.STORAGE('ice', 500),
+                FEATURES.STORAGE('hydrogen', 500),
+                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }], 20, 5000),
+                FEATURES.HEALTH(),
+            ],
+        }],
     },
     {
         name: 'Rock Metal Extractor',
@@ -415,11 +579,45 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [{
+            name: 'Upgrade 1',
+            costs: [
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
+            ],
+            subMesh: {},
+            units: [],
+            features: [
+                FEATURES.STORAGE('rock', 100),
+                FEATURES.STORAGE('metal', 100),
+                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }], 10, 5000),
+                FEATURES.HEALTH(),
+            ],
+        }, {
+            name: 'Upgrade 2',
+            costs: [
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
+            ],
+            subMesh: {},
+            units: [],
+            features: [
+                FEATURES.STORAGE('rock', 500),
+                FEATURES.STORAGE('metal', 500),
+                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }], 20, 5000),
+                FEATURES.HEALTH(),
+            ],
+        }],
     },
     {
         name: 'Rover Research Facility',
@@ -436,26 +634,41 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
         upgrades: [{
             name: 'Upgrade 1',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.ROVER_RESEARCH_H20]
+            units: [
+                UNITS.ROVER_RESEARCH_H20,
+                UNITS.ROVER_RESEARCH_S1,
+            ],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }, {
             name: 'Upgrade 2',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.ROVER_RESEARCH_D1]
+            units: [UNITS.ROVER_RESEARCH_D1],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }],
     },
     {
@@ -473,26 +686,38 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
         upgrades: [{
             name: 'Upgrade 1',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.ROVER_WARRIOR_3]
+            units: [UNITS.ROVER_WARRIOR_3],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }, {
             name: 'Upgrade 2',
             costs: [
-                { currency: "coins", amount: 1 },
-                { currency: "diamonds", amount: 0 },
+                { currency: "metal", amount: 0 },
+                { currency: "rock", amount: 1 },
+                { currency: "hydrogen", amount: 0 },
+                { currency: "ice", amount: 1 },
             ],
             subMesh: {},
-            units: [UNITS.ROVER_WARRIOR_6]
+            units: [UNITS.ROVER_WARRIOR_6],
+            features: [
+                FEATURES.HEALTH(),
+            ],
         }],
     },
     {
@@ -510,11 +735,62 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
-        upgrades: [],
+        upgrades: [
+            {
+                name: 'Upgrade 1',
+                costs: [
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
+                ],
+                subMesh: {
+                    name: 'Machine_Gun_Turrent_Level_1',
+                },
+                features: [
+                    FEATURES.MACHINE_GUN_ATTACK(),
+                    FEATURES.HEALTH(),
+                ],
+            },
+            {
+                name: 'Upgrade 2',
+                costs: [
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
+                ],
+                subMesh: {
+                    name: 'Machine_Gun_Turrent_Level_2',
+                },
+                features: [
+                    FEATURES.MACHINE_GUN_ATTACK(),
+                    FEATURES.HEALTH(),
+                ],
+            },
+            {
+                name: 'Upgrade 3',
+                costs: [
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
+                ],
+                subMesh: {
+                    name: 'Machine_Gun_Turrent_Level_3',
+                },
+                features: [
+                    FEATURES.MACHINE_GUN_ATTACK(),
+                    FEATURES.HEALTH(),
+                ],
+            },
+        ],
     },
     {
         name: 'Solar Panel',
@@ -531,40 +807,63 @@ export default [
             ]
         },
         costs: [
-            { currency: "coins", amount: 1 },
-            { currency: "diamonds", amount: 0 },
+            { currency: "metal", amount: 0 },
+            { currency: "rock", amount: 1 },
+            { currency: "hydrogen", amount: 0 },
+            { currency: "ice", amount: 1 },
         ],
         upgrade: { index: 0 },
         upgrades: [
             {
                 name: 'Upgrade 1',
                 costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
                 ],
                 subMesh: {
                     name: 'Solar_Panel_Level_1',
                 },
+                features: [
+                    FEATURES.STORAGE('power', 100),
+                    FEATURES.PRODUCE('power', [], 10, 5000),
+                    FEATURES.HEALTH(),
+                ],
             },
             {
                 name: 'Upgrade 2',
                 costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
                 ],
                 subMesh: {
                     name: 'Solar_Panel_Level_2',
                 },
+                features: [
+                    FEATURES.STORAGE('power', 200),
+                    FEATURES.PRODUCE('power', [], 20, 5000),
+                    FEATURES.HEALTH(),
+                ],
             },
             {
                 name: 'Upgrade 3',
                 costs: [
-                    { currency: "coins", amount: 1 },
-                    { currency: "diamonds", amount: 0 },
+                    { currency: "metal", amount: 0 },
+                    { currency: "rock", amount: 1 },
+                    { currency: "hydrogen", amount: 0 },
+                    { currency: "ice", amount: 1 },
                 ],
                 subMesh: {
                     name: 'Solar_Panel_Level_3',
                 },
+                features: [
+                    FEATURES.STORAGE('power', 300),
+                    FEATURES.PRODUCE('power', [], 30, 5000),
+                    FEATURES.HEALTH(),
+                ],
             },
         ],
     }

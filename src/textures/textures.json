@@ -1,0 +1,143 @@
+[
+    {
+        "name": "default",
+        "material": "MeshBasicMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": []
+    },
+    {
+        "name": "wood",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/wood/wood_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/wood/wood_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "cardboard",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/cardboard/cardboard_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/cardboard/cardboard_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "glass",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "opacity": 0.1,
+        "transparent": true,
+        "textures": []
+    },
+    {
+        "name": "transparent_fabric",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "opacity": 0.5,
+        "transparent": true,
+        "textures": []
+    },
+    {
+        "name": "red_fabric",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/red_fabric/red_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/red_fabric/red_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "black_fabric",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/black_fabric/black_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/black_fabric/black_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "blue_fabric",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/blue_fabric/blue_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/blue_fabric/blue_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "blue",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": []
+    },
+    {
+        "name": "book_paper",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/book_paper/book_paper_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/book_paper/book_paper_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "terrain",
+        "material": "MeshPhysicalMaterial",
+        "color": {"r": 255, "g": 255, "b": 255},
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/terrain/terrain_basecolor.png"
+            }
+        ]
+    }
+]

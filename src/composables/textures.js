@@ -1,111 +1,5 @@
 import * as THREE from 'three'
-
-const texturePacks = [
-    {
-        name: 'default',
-        material: 'MeshBasicMaterial',
-        color: 0x00ff00,
-        transparent: false,
-        textures: [
-            //{ type: 'map', url: 'texture.png' },
-        ]
-    },
-    {
-        name: 'wood',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/wood/wood_basecolor.png' },
-            { type: 'normalMap', url: 'textures/wood/wood_normal.png' },
-        ]
-    },
-    {
-        name: 'cardboard',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/cardboard/cardboard_basecolor.png' },
-            { type: 'normalMap', url: 'textures/cardboard/cardboard_normal.png' },
-        ]
-    },
-    {
-        name: 'glass',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        opacity: 0.1,
-        transparent: true,
-        textures: []
-    },
-    {
-        name: 'transparent_fabric',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        opacity: 0.5,
-        transparent: true,
-        textures: []
-    },
-    {
-        name: 'red_fabric',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        opacity: 1,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/red_fabric/red_fabric_basecolor.png' },
-            { type: 'normalMap', url: 'textures/red_fabric/red_fabric_normal.png'}
-        ]
-    },
-    {
-        name: 'black_fabric',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        opacity: 1,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/black_fabric/black_fabric_basecolor.png' },
-            { type: 'normalMap', url: 'textures/black_fabric/black_fabric_normal.png'}
-        ]
-    },
-    {
-        name: 'blue_fabric',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        opacity: 1,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/blue_fabric/blue_fabric_basecolor.png' },
-            { type: 'normalMap', url: 'textures/blue_fabric/blue_fabric_normal.png'}
-        ]
-    },
-    {
-        name: 'blue',
-        material: 'MeshPhysicalMaterial',
-        color: 0x0000ff,
-        transparent: false,
-        textures: []
-    },
-    {
-        name: 'book_paper',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/book_paper/book_paper_basecolor.png' },
-            { type: 'normalMap', url: 'textures/book_paper/book_paper_normal.png' },
-        ]
-    },
-    {
-        name: 'terrain',
-        material: 'MeshPhysicalMaterial',
-        color: 0xffffff,
-        transparent: false,
-        textures: [
-            { type: 'map', url: 'textures/terrain/terrain_basecolor.png' },
-        ]
-    }
-]
+import texturesJson from '../textures/textures.json'
 
 let textureCache = {} 
 const textureLoader = new THREE.TextureLoader()
@@ -138,7 +32,7 @@ export const getTexturePack = async (name, object_uuid) => {
     const cached = getCached(name, object_uuid)
     if (cached) return cached
 
-    const texturePack = texturePacks.find(texturePack => texturePack.name === name)
+    const texturePack = texturesJson.find(texturePack => texturePack.name === name)
     if (!texturePack) return null
 
     const { material, textures } = texturePack

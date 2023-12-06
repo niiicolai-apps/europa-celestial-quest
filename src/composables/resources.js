@@ -1,26 +1,33 @@
 import { ref } from 'vue';
 import { getMesh } from './meshes.js';
-import MESHES from '../meshes/meshes.js'
-import * as THREE from 'three';
+import { useMap } from './map.js';
+import meshesJson from '../meshes/meshes.json'
 
 const isInitialized = ref(false);
+const map = useMap();
 const resources = ref([]);
 
 export const useResources = () => {
     const init = async (scene) => {
         if (isInitialized.value) return false;
 
-        const rock = await getMesh(MESHES.rock_resource_01);
-        rock.position.set(-130, 31, -95);
+        const mapData = map.map.value;
+        for (const resourceData of mapData.resources) {
+            const resource = await getMesh(meshesJson[resourceData.mesh.name]);
+            resource.position.set(resourceData.position.x, resourceData.position.y, resourceData.position.z);
+            resource.rotation.set(resourceData.rotation.x, resourceData.rotation.y, resourceData.rotation.z);
+            resource.scale.set(resourceData.scale.x, resourceData.scale.y, resourceData.scale.z);
+            scene.add(resource);
 
-        const ice = await getMesh(MESHES.ice_resource_01);
-        ice.position.set(-90, 31, -130);
-
-        scene.add(rock);
-        scene.add(ice);
-
-        resources.value.push({ object3D: rock, data: { type: 'rock' } });
-        resources.value.push({ object3D: ice, data: { type: 'ice' } });
+            resources.value.push({ 
+                object3D: resource, 
+                data: { 
+                    current: resourceData.max,
+                    type: resourceData.type,
+                    max: resourceData.max 
+                } 
+            });
+        }
     }
 
     const findResourcesOfType = (type) => {
@@ -45,8 +52,14 @@ export const useResources = () => {
         return closest;
     }
 
+    const getRandom = () => {
+        const index = Math.floor(Math.random() * resources.value.length);
+        return resources.value[index];
+    }
+
     return {
         init,
         findClosest,
+        getRandom,
     }
 }

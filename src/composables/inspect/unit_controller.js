@@ -1,8 +1,9 @@
 import { ref } from 'vue';
 import { useBank } from '../bank.js';
 import { useItems } from '../items.js';
-import { getMesh, removeMesh } from '../meshes.js';
+import { getMesh } from '../meshes.js';
 import { useUnits } from '../units.js';
+import { useObjectives } from '../objectives.js';
 import ConstructionDefinitions from '../construction_definitions.js'
 import * as THREE from 'three';
 
@@ -57,7 +58,8 @@ const BuildController = {
 
         s.userData.unitQueue = queue;
 
-        useItems().saveState();
+        useObjectives().tryCompleteIncompletes();
+        //useItems().saveState();
     },
     queueUnit: async (selected, unitName) => {
         if (!isBuilding.value) return false;
@@ -108,7 +110,7 @@ const BuildController = {
     },
     canBuild: (selected) => {
         const s = selected.value || selected;
-
+        
         const construction = getConstructionDefinition(s.name);
         const upgradeIndex = s.userData.upgrade.index;
         const upgrades = construction.upgrades;

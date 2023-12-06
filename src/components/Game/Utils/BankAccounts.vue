@@ -2,7 +2,7 @@
     <UI.Flex direction="horizontal" gap="3" v-if="isInitialized">
         <UI.Flex 
             gap="2" 
-            v-for="account in accounts" 
+            v-for="account in bankManager.bank.value.accounts" 
             :key="account.name"
             :title="localizationManager.getLocale(`bank.${account.name}`)"
             >
@@ -48,6 +48,20 @@
                 :fill="iconFill" 
             />
 
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'power'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
+            <Icons.fa.TrashIcon 
+                v-if="account.name == 'research'" 
+                :width="iconSize" 
+                :height="iconSize" 
+                :fill="iconFill" 
+            />
+
             <UI.Paragraph class="text-white">
                 {{ balance(account) }}
             </UI.Paragraph>
@@ -67,12 +81,12 @@ const iconFill = "white";
 const localizationManager = useLocalization();
 const bankManager = useBank();
 const isInitialized = computed(() => bankManager.isInitialized.value);
-const accounts = computed(() => bankManager.accounts.value);
+
 const balance = (account) => {
     if (account.max) {
         return `${account.balance}/${account.max}`;
     }
-
+    
     return account.balance;
 }
 </script>

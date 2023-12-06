@@ -1,0 +1,376 @@
+{
+    "terrain": {
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "rotation": { "x": 0, "y": 0, "z": 0 },
+        "scale": { "x": 1, "y": 1, "z": 1 },
+        "mesh": {
+            "type": "GLTF",
+            "url": "meshes/utils/terrain.glb",
+            "subMeshes": [{
+                "name": "map",
+                "texturePack": "terrain"
+            }]
+        }
+    },
+    "resources": [
+        {
+            "mesh": { "name": "rock_resource_01" },
+            "position": { "x": -39, "y": 38, "z": -54 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "rock",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "rock_resource_01" },
+            "position": { "x": -48, "y": 41, "z": 186 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "rock",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "rock_resource_01" },
+            "position": { "x": 6, "y": 33, "z": -321 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "rock",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "rock_resource_01" },
+            "position": { "x": 213, "y": 26, "z": -201 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "rock",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "rock_resource_01" },
+            "position": { "x": 207, "y": 34, "z": 60 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "rock",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "ice_resource_01" },
+            "position": { "x": 72, "y": 41, "z": -264 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "ice",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "ice_resource_01" },
+            "position": { "x": 267, "y": 26, "z": -282 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "ice",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "ice_resource_01" },
+            "position": { "x": 132, "y": 44, "z": 264 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "ice",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "ice_resource_01" },
+            "position": { "x": -258, "y": 35, "z": -144 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "ice",
+            "max": 300
+        },
+        {
+            "mesh": { "name": "ice_resource_01" },
+            "position": { "x": 147, "y": 34, "z": -45 },
+            "rotation": { "x": 0, "y": 0, "z": 0 },
+            "scale": { "x": 1, "y": 1, "z": 1 },
+            "type": "ice",
+            "max": 300
+        }
+    ],
+    "objectives": [
+        {
+            "name": "Start Producing Hydrogen",
+            "description": "Hydrogen is a must have resource for your colony.",
+            "requiredLevel": 1,
+            "requiredObjectives": [],
+            "goals": [
+                {
+                    "name": "Build a Rover Research Facility", 
+                    "options": { 
+                        "construction": { "name": "Rover Research Facility" }
+                    }
+                },
+                {
+                    "name": "Deploy a RR H20 from a Rover Research Facility", 
+                    "options": { 
+                        "unit": { "name": "RR H20" }
+                    }
+                },
+                {
+                    "name": "Build a Hydrogen Fuel Tank", 
+                    "options": { 
+                        "construction": { "name": "Hydrogen Fuel Tank" }
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Start Producing Metal",
+            "description": "You need metal to build more advanced buildings.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Hydrogen"
+            ],
+            "goals": [
+                {
+                    "name": "Build a Rock Metal Extractor", 
+                    "options": { 
+                        "construction": { "name": "Rock Metal Extractor" }
+                    }
+                },
+                {
+                    "name": "Upgrade Rover Research Facility to Level 2 to unlock RR D-1", 
+                    "options": { 
+                        "upgrade": { "name": "Rover Research Facility", "upgradeIndex": 1 }
+                    }
+                },
+                {
+                    "name": "Deploy a RR D-1 from a Rover Research Facility", 
+                    "options": { 
+                        "unit": { "name": "RR D-1" }
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Start Producing Power",
+            "description": "You need power to produce units and buildings.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Hydrogen", 
+                "Start Producing Metal"
+            ],
+            "goals": [
+                {
+                    "name": "Build a Solar Panel", 
+                    "options": { 
+                        "construction": { "name": "Solar Panel" }
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Scan The Area For Information",
+            "description": "Gather information about Europa for the doctor.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Hydrogen", 
+                "Start Producing Metal"
+            ],
+            "goals": [
+                {
+                    "name": "Deploy a RR S-1 from a Rover Research Facility", 
+                    "options": { 
+                        "unit": { "name": "RR S-1" }
+                    }
+                },
+                {
+                    "name": "Scan 10% of the map",
+                    "options": { 
+                        "bank": { "currency": "research", "balance": 10 }
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Build Defense Turrets",
+            "description": "You need to protect your colony from enemies.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Metal", 
+                "Start Producing Hydrogen",
+                "Scan The Area For Information"
+            ],
+            "goals": [
+                {
+                    "name": "Build at least 3 Machine Gun Turrents", 
+                    "options": { 
+                        "construction": { "name": "Machine Gun Turrent" },
+                        "min": 3
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The Best Defense is a Good Offense",
+            "description": "Get ready to attack the enemy.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Metal", 
+                "Start Producing Hydrogen", 
+                "Build Defense Turrets",
+                "Scan The Area For Information"
+            ],
+            "goals": [
+                {
+                    "name": "Build a Rover Warrior Facility", 
+                    "options": { 
+                        "construction": { "name": "Rover Warrior Facility" }
+                    }
+                },
+                {
+                    "name": "Deploy at least 3 RR W-3",
+                    "options": { 
+                        "unit": { "name": "RR W-3" },
+                        "min": 3
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Upgrade Your Power",
+            "description": "Increase your power production.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Metal", 
+                "Start Producing Hydrogen", 
+                "Build Defense Turrets", 
+                "The Best Defense is a Good Offense",
+                "Scan The Area For Information"
+            ],
+            "goals": [
+                {
+                    "name": "Build at least 2 Solar Panels", 
+                    "options": { 
+                        "construction": { "name": "Solar Panel" },
+                        "min": 2
+                    }
+                },
+                {
+                    "name": "Upgrade at least 2 Solar Panels to level 2", 
+                    "options": { 
+                        "upgrade": { "name": "Solar Panel", "upgradeIndex": 1 },
+                        "min": 2
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Improve Your Offense",
+            "description": "Robots and drones are the best way to attack the enemy.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Metal", 
+                "Start Producing Hydrogen", 
+                "Build Defense Turrets", 
+                "The Best Defense is a Good Offense",
+                "Upgrade Your Power",
+                "Scan The Area For Information"
+            ],
+            "goals": [
+                {
+                    "name": "Build a Robot Facility", 
+                    "options": { 
+                        "construction": { "name": "Robot Facility" }
+                    }
+                },
+                {
+                    "name": "Deploy at least 2 B S-1 from a Robot Facility",
+                    "options": { 
+                        "unit": { "name": "B S-1" },
+                        "min": 2
+                    }
+                },
+                {
+                    "name": "Build a Drone Facility", 
+                    "options": { 
+                        "construction": { "name": "Drone Facility" }
+                    }
+                },
+                {
+                    "name": "Deploy at least 2 D L-1 from a Drone Facility",
+                    "options": { 
+                        "unit": { "name": "D L-1" },
+                        "min": 2
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        }
+    ]
+}

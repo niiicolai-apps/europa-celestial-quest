@@ -21,5 +21,15 @@ export default {
             en: 'Rewards',
             da: 'Belønninger',
         },
+        filter_btn: {
+            completed: {
+                en: 'Completed Objectives',
+                da: 'Fuldført mål',
+            },
+            incomplete: {
+                en: 'Incomplete Objectives',
+                da: 'Ufuldførte mål',
+            },
+        }
     },
 }
