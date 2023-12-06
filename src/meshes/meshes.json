@@ -10,6 +10,12 @@
             }
         ]
     },
+    "dragon": {
+        "name": "dragon",
+        "type": "GLTF",
+        "url": "meshes/utils/dragon.glb",
+        "subMeshes": []
+    },
     "womans_house": {
         "name": "womans_house",
         "type": "GLTF",
@@ -80,12 +86,6 @@
         "url": "meshes/utils/europa.glb",
         "subMeshes": []
     },
-    "europa_horizon_drifter_x1": {
-        "name": "europa_horizon_drifter_x1",
-        "type": "GLTF",
-        "url": "meshes/human_construction/europa_horizon_drifter_x1.glb",
-        "subMeshes": []
-    },
     "rock_resource_01": {
         "name": "rock_resource_01",
         "type": "GLTF",
@@ -111,5 +111,113 @@
                 "texturePack": "red_fabric"
             }
         ]
+    },
+    "europa_horizon_drifter_x1": {
+        "name": "europa_horizon_drifter_x1",
+        "type": "GLTF",
+        "url": "meshes/human_construction/europa_horizon_drifter_x1.glb",
+        "subMeshes": []
+    },
+    "Robot Facility": {
+        "name": "Robot Facility",
+        "type": "GLTF",
+        "url": "meshes/human_construction/bot_builder.glb",
+        "subMeshes": []
+    },
+    "Drone Facility": {
+        "name": "Drone Facility",
+        "type": "GLTF",
+        "url": "meshes/human_construction/drone_builder.glb",
+        "subMeshes": []
+    },
+    "Hydrogen Fuel Tank": {
+        "name": "Hydrogen Fuel Tank",
+        "type": "GLTF",
+        "url": "meshes/human_construction/hydrogen_fuel_tank.glb",
+        "subMeshes": []
+    },
+    "Rock Metal Extractor": {
+        "name": "Rock Metal Extractor",
+        "type": "GLTF",
+        "url": "meshes/human_construction/rock_metal_extractor.glb",
+        "subMeshes": []
+    },
+    "Rover Research Facility": {
+        "name": "Rover Research Facility",
+        "type": "GLTF",
+        "url": "meshes/human_construction/rover_research_facility.glb",
+        "subMeshes": []
+    },
+    "Rover Warrior Facility": {
+        "name": "Rover Warrior Facility",
+        "type": "GLTF",
+        "url": "meshes/human_construction/rover_warrior_facility.glb",
+        "subMeshes": []
+    },
+    "Machine Gun Turrent": {
+        "name": "Machine Gun Turrent",
+        "type": "GLTF",
+        "url": "meshes/human_construction/machine_gun_turrent.glb",
+        "subMeshes": []
+    },
+    "Solar Panel": {
+        "name": "Solar Panel",
+        "type": "GLTF",
+        "url": "meshes/human_construction/solar_panel.glb",
+        "subMeshes": []
+    },
+    "B S-1": {
+        "name": "B S-1",
+        "type": "GLTF",
+        "url": "meshes/human_units/bot_spider_1.glb",
+        "subMeshes": []
+    },
+    "B S-2": {
+        "name": "B S-2",
+        "type": "GLTF",
+        "url": "meshes/human_units/bot_spider_2.glb",
+        "subMeshes": []
+    },
+    "D L-1": {
+        "name": "D L-1",
+        "type": "GLTF",
+        "url": "meshes/human_units/drone_laser_1.glb",
+        "subMeshes": []
+    },
+    "D L-2": {
+        "name": "D L-2",
+        "type": "GLTF",
+        "url": "meshes/human_units/drone_laser_2.glb",
+        "subMeshes": []
+    },
+    "RR H20": {
+        "name": "RR H20",
+        "type": "GLTF",
+        "url": "meshes/human_units/rover_research_h20.glb",
+        "subMeshes": []
+    },
+    "RR D-1": {
+        "name": "RR D-1",
+        "type": "GLTF",
+        "url": "meshes/human_units/rover_research_d1.glb",
+        "subMeshes": []
+    },
+    "RR S-1": {
+        "name": "RR S-1",
+        "type": "GLTF",
+        "url": "meshes/human_units/rover_research_d1.glb",
+        "subMeshes": []
+    },
+    "RR W-3": {
+        "name": "RR W-3",
+        "type": "GLTF",
+        "url": "meshes/human_units/rover_warrior_3.glb",
+        "subMeshes": []
+    },
+    "RR W-6": {
+        "name": "RR W-6",
+        "type": "GLTF",
+        "url": "meshes/human_units/rover_warrior_6.glb",
+        "subMeshes": []
     }
 }

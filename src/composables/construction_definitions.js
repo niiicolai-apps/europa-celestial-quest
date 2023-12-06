@@ -1,3 +1,5 @@
+import meshesJson from '../meshes/meshes.json'
+
 const FEATURES = {
     MISSILE_ATTACK: (distance = 5, rate = 2, damage = 15) => {
         return {
@@ -129,16 +131,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/bot_spider_1.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['B S-1'],
     },
     BOT_SPIDER_2: {
         name: 'B S-2',
@@ -158,16 +151,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/bot_spider_2.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['B S-2'],
     },
     DRONE_LASER_1: {
         name: 'D L-1',
@@ -187,16 +171,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/drone_laser_1.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['D L-1'],
     },
     DRONE_LASER_2: {
         name: 'D L-2',
@@ -216,16 +191,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/drone_laser_2.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['D L-2'],
     },
     ROVER_RESEARCH_H20: {
         name: 'RR H20',
@@ -245,16 +211,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/rover_research_h20.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['RR H20'],
     },
     ROVER_RESEARCH_D1: {
         name: 'RR D-1',
@@ -274,16 +231,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/rover_research_d1.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['RR D-1'],
     },
     ROVER_RESEARCH_S1: {
         name: 'RR S-1',
@@ -303,16 +251,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/rover_research_d1.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['RR S-1'],
     },
     ROVER_WARRIOR_3: {
         name: 'RR W-3',
@@ -332,16 +271,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/rover_warrior_6.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['RR W-3'],
     },
     ROVER_WARRIOR_6: {
         name: 'RR W-6',
@@ -361,16 +291,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_units/rover_warrior_3.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['RR W-6'],
     }
 }
 
@@ -379,16 +300,7 @@ export default [
         name: 'Europa Horizon Drifter X1',
         image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/europa_horizon_drifter_x1.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['europa_horizon_drifter_x1'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -415,16 +327,7 @@ export default [
         name: 'Robot Facility',
         image: 'thumbnails/human_construction/bot_builder.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/bot_builder.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Robot Facility'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -464,16 +367,7 @@ export default [
         name: 'Drone Facility',
         image: 'thumbnails/human_construction/drone_builder.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/drone_builder.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Drone Facility'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -513,16 +407,7 @@ export default [
         name: 'Hydrogen Fuel Tank',
         image: 'thumbnails/human_construction/hydrogen_fuel_tank.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/hydrogen_fuel_tank.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Hydrogen Fuel Tank'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -543,7 +428,7 @@ export default [
             features: [
                 FEATURES.STORAGE('ice', 100),
                 FEATURES.STORAGE('hydrogen', 100),
-                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }], 10, 5000),
+                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }, { currency: "power", amount: 10 }], 10, 5000),
                 FEATURES.HEALTH(),
             ],
         }, {
@@ -559,7 +444,7 @@ export default [
             features: [
                 FEATURES.STORAGE('ice', 500),
                 FEATURES.STORAGE('hydrogen', 500),
-                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }], 20, 5000),
+                FEATURES.PRODUCE('hydrogen', [{ currency: "ice", amount: 10 }, { currency: "power", amount: 10 }], 20, 5000),
                 FEATURES.HEALTH(),
             ],
         }],
@@ -568,16 +453,7 @@ export default [
         name: 'Rock Metal Extractor',
         image: 'thumbnails/human_construction/rock_metal_extractor.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/rock_metal_extractor.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Rock Metal Extractor'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -598,7 +474,7 @@ export default [
             features: [
                 FEATURES.STORAGE('rock', 100),
                 FEATURES.STORAGE('metal', 100),
-                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }], 10, 5000),
+                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }, { currency: "power", amount: 10 }], 10, 5000),
                 FEATURES.HEALTH(),
             ],
         }, {
@@ -614,7 +490,7 @@ export default [
             features: [
                 FEATURES.STORAGE('rock', 500),
                 FEATURES.STORAGE('metal', 500),
-                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }], 20, 5000),
+                FEATURES.PRODUCE('metal', [{ currency: "rock", amount: 10 }, { currency: "power", amount: 10 }], 20, 5000),
                 FEATURES.HEALTH(),
             ],
         }],
@@ -623,16 +499,7 @@ export default [
         name: 'Rover Research Facility',
         image: 'thumbnails/human_construction/rover_research_facility.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/rover_research_facility.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Rover Research Facility'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -675,16 +542,7 @@ export default [
         name: 'Rover Warrior Facility',
         image: 'thumbnails/human_construction/rover_warrior_facility.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/rover_warrior_facility.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Rover Warrior Facility'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -724,16 +582,7 @@ export default [
         name: 'Machine Gun Turrent',
         image: 'thumbnails/human_construction/machine_gun_turrent.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/machine_gun_turrent.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Machine Gun Turrent'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -796,16 +645,7 @@ export default [
         name: 'Solar Panel',
         image: 'thumbnails/human_construction/solar_panel.png',
         requiredLevel: 1,
-        mesh: {
-            type: 'GLTF',
-            url: 'meshes/human_construction/solar_panel.glb',
-            subMeshes: [
-                {
-                    name: 'Cube',
-                    texturePack: 'default',
-                },
-            ]
-        },
+        mesh: meshesJson['Solar Panel'],
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },

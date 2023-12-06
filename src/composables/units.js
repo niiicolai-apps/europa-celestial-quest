@@ -27,6 +27,11 @@ const collect = (unit) => {
     if (shouldCollect) {
         if (unit.options.collect.resource) {
             if (navigation.reachedDestination(unit.object3D, unit.options.collect.resource.position, 5)) {
+                const canAfford = bank.canAfford(unit.options.collect.costs);
+                if (!canAfford) return;
+                for (const cost of unit.options.collect.costs) {
+                    bank.withdraw(cost.amount, cost.currency);
+                }
                 unit.options.collect.collected = unit.options.collect.max;
                 unit.options.collect.resource = null;
                 console.log('collected');
@@ -118,6 +123,11 @@ const scan = (unit) => {
     } else {
         if (unit.options.scan.next_position) {
             if (navigation.reachedDestination(unit.object3D, unit.options.scan.next_position, 15)) {
+                const canAfford = bank.canAfford(unit.options.scan.costs);
+                if (!canAfford) return;
+                for (const cost of unit.options.scan.costs) {
+                    bank.withdraw(cost.amount, cost.currency);
+                }
                 unit.options.scan.next_position = null;
                 unit.options.scan.scanned = true;
                 console.log('delivered');

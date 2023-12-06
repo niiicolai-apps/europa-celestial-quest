@@ -13,11 +13,11 @@ import { useInspect } from '../composables/inspect.js';
 import { usePanel } from '../composables/panel.js';
 import { disposeMeshCache } from '../composables/meshes.js';
 import { useGround } from '../composables/ground.js';
-import { useGrid } from '../composables/grid.js';
 import { useItems } from '../composables/items.js';
 import { useNavigation } from '../composables/navigation.js';
 import { useUnits } from '../composables/units.js';
 import { useResources } from '../composables/resources.js';
+import { useMap } from '../composables/map.js';
 import { TimelineFromJson } from '../composables/timeline.js';
 
 import introTimelineJson from '../timelines/intro.json';
@@ -37,28 +37,18 @@ import Audio from '../components/UI/Audio.vue';
 
 import { ref, onMounted, onUnmounted } from 'vue';
 
-// # Dummy data
-const player = ref({
-    name: 'Player',
-    experience: 0,
-    position: {
-        x: 0,
-        y: 0,
-        z: 0
-    }
-});
 
 const panelManager = usePanel();
-const objectivesManager = useObjectives(player);
+const objectivesManager = useObjectives({});
 const inspectManager = useInspect();
 const bankManager = useBank();
 const statsManager = useStats();
 const groundManager = useGround();
-const gridManager = useGrid();
 const itemsManager = useItems();
 const unitsManager = useUnits();
 const resourcesManager = useResources();
 const navigationManager = useNavigation();
+const mapManager = useMap();
 
 const subTitleRef = ref(null);
 const audioRef = ref(null);
@@ -119,12 +109,11 @@ const startGame = async () => {
 
     const { renderer, camera, scene, lifeCycle } = canvasRef.value.adapter;
 
-    const light = new THREE.DirectionalLight(0xffffff, 1.5);
-    light.position.set(0, 10, 0);
-    scene.add(light);
-
+    Camera.manager.enable();
     inspectManager.enable(camera, scene, renderer);
+    navigationManager.enable();
 
+    await mapManager.init(scene);
     await objectivesManager.init();
     await bankManager.init();
     await statsManager.init();
@@ -134,8 +123,6 @@ const startGame = async () => {
     await groundManager.init(scene, camera, renderer.domElement, lifeCycle);
     
     groundManager.enable();
-    Camera.manager.enable();
-    navigationManager.enable();
     unitsManager.enable();
 
     lifeCycle.onAnimate.push(() => {
@@ -143,6 +130,11 @@ const startGame = async () => {
     });
 
     lifeCycle.onDispose.push(() => {
+        Camera.manager.disable();
+        inspectManager.disable();
+        navigationManager.disable();
+        groundManager.disable();
+        unitsManager.disable();
     });
 
     console.log(renderer.info)

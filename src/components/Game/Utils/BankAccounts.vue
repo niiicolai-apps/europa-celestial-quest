@@ -84,7 +84,7 @@ const isInitialized = computed(() => bankManager.isInitialized.value);
 
 const balance = (account) => {
     if (account.max) {
-        return `${account.balance}/${account.max}`;
+        return `${parseFloat(account.balance).toFixed(1)}/${account.max}`;
     }
     
     return account.balance;

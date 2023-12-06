@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { ref } from 'vue';
 import { getMesh } from './meshes.js';
 import { useMap } from './map.js';
+import meshesJson from '../meshes/meshes.json'
 
 const isInitialized = ref(false);
 const onIntersect = [];
@@ -21,7 +22,7 @@ export const useGround = () => {
         const mapData = map.map.value;
         const { mesh, position, rotation, scale } = mapData.terrain;
         
-        groundMesh = await getMesh(mesh);        
+        groundMesh = await getMesh(meshesJson[mesh.name]);        
         groundMesh.position.set(position.x, position.y, position.z);                
         groundMesh.rotation.set(rotation.x, rotation.y, rotation.z);
         groundMesh.scale.set(scale.x, scale.y, scale.z);

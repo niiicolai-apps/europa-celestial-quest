@@ -3,15 +3,22 @@
         "position": { "x": 0, "y": 0, "z": 0 },
         "rotation": { "x": 0, "y": 0, "z": 0 },
         "scale": { "x": 1, "y": 1, "z": 1 },
-        "mesh": {
-            "type": "GLTF",
-            "url": "meshes/utils/terrain.glb",
-            "subMeshes": [{
-                "name": "map",
-                "texturePack": "terrain"
-            }]
-        }
+        "mesh": { "name": "terrain" }
     },
+    "lights": [
+        { 
+            "type": "directional", 
+            "color": { "r": 1, "g": 1, "b": 1 }, 
+            "intensity": 1, 
+            "position": { "x": 0, "y": 100, "z": 0 },
+            "target": { "x": 0, "y": 0, "z": 0 }
+        },
+        { 
+            "type": "ambient", 
+            "color": { "r": 1, "g": 1, "b": 1 }, 
+            "intensity": 0.5 
+        }
+    ],
     "resources": [
         {
             "mesh": { "name": "rock_resource_01" },
@@ -207,9 +214,9 @@
                     }
                 },
                 {
-                    "name": "Scan 10% of the map",
+                    "name": "Scan 0.5% of the map",
                     "options": { 
-                        "bank": { "currency": "research", "balance": 10 }
+                        "bank": { "currency": "research", "balance": 0.5 }
                     }
                 }
             ],
@@ -323,6 +330,43 @@
             ]
         },
         {
+            "name": "Increase Your Scan ability",
+            "description": "Increase your scan ability to research the moon faster.",
+            "requiredLevel": 1,
+            "requiredObjectives": [
+                "Start Producing Power",
+                "Start Producing Metal", 
+                "Start Producing Hydrogen", 
+                "Build Defense Turrets", 
+                "The Best Defense is a Good Offense",
+                "Scan The Area For Information",
+                "Upgrade Your Power"
+            ],
+            "goals": [
+                {
+                    "name": "Deploy at least 3 RR S-1 from a Rover Research Facility", 
+                    "options": { 
+                        "unit": { "name": "RR S-1" },
+                        "min": 3
+                    }
+                },
+                {
+                    "name": "Scan 20% of the map",
+                    "options": { 
+                        "bank": { "currency": "research", "balance": 20 }
+                    }
+                }
+            ],
+            "rewards": [
+                {
+                    "name": "100 Experience Points", 
+                    "options": { 
+                        "stat": { "name": "general", "value": 100 }
+                    }
+                }
+            ]
+        },
+        {
             "name": "Improve Your Offense",
             "description": "Robots and drones are the best way to attack the enemy.",
             "requiredLevel": 1,
@@ -333,7 +377,8 @@
                 "Build Defense Turrets", 
                 "The Best Defense is a Good Offense",
                 "Upgrade Your Power",
-                "Scan The Area For Information"
+                "Scan The Area For Information",
+                "Increase Your Scan ability"
             ],
             "goals": [
                 {
@@ -372,5 +417,42 @@
                 }
             ]
         }
-    ]
+    ],
+    "enemy": {
+        "constructions": [
+            {
+                "name": "europa_horizon_drifter_x1",
+                "position": { "x": -99, "y": 49, "z": 297 },
+                "rotation": { "x": 0, "y": 0, "z": 0 }
+            },
+            {
+                "name": "Machine Gun Turrent",
+                "position": { "x": -63, "y": 43, "z": 306 },
+                "rotation": { "x": 0, "y": 1.5707963267948966, "z": 0 }
+            },
+            {
+                "name": "Machine Gun Turrent",
+                "position": { "x": 45, "y": 34, "z": 318 },
+                "rotation": { "x": 0, "y": -1, "z": 0 }
+            },
+            {
+                "name": "Machine Gun Turrent",
+                "position": { "x": 81, "y": 33, "z": 318 },
+                "rotation": { "x": 0, "y": -1, "z": 0 }
+            },
+            {
+                "name": "Machine Gun Turrent",
+                "position": { "x": 15, "y": 36, "z": 261 },
+                "rotation": { "x": 0, "y": -1, "z": 0 }
+            },
+            {
+                "name": "Robot Facility",
+                "position": { "x": 69, "y": 34, "z": 354 },
+                "rotation": { "x": 0, "y": -1, "z": 0 }
+            }
+        ],
+        "units": [
+
+        ]
+    }
 }
