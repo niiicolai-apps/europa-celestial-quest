@@ -4,7 +4,7 @@ import WebGL from 'frontend-webgl'
 const currentZoom = 150;
 const currentPosition = new THREE.Vector3(0, 0, 35);
 const minZoom = 50;
-const maxZoom = 220;
+const maxZoom = 620;
 
 const manager = WebGL.composables.useTopDownCamera({
     minZoom,

@@ -59,7 +59,7 @@ const localizationManager = useLocalization();
 const inspectManager = useInspect();
 const selected = computed(() => inspectManager.selected.value);
 const unitsManager = useUnits();
-const warriorCommand = computed(() => unitsManager.warriorCommand.value);
+const warriorCommand = computed(() => {});
 const isSettingWarriorCommand = computed(() => unitsManager.isSettingWarriorCommand.value);
 const toggleWarriorCommand = (type) => {
     if (isSettingWarriorCommand.value)

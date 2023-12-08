@@ -5,15 +5,14 @@ import { useResources } from './resources.js';
 import { useItems } from './items.js';
 import { useBank } from './bank.js';
 import * as THREE from 'three';
+import UnitsBehavior from '../units/units_behavior.json';
+import UnitStates from './unit_states.js';
 
 const ground = useGround();
-const navigation = useNavigation();
-const resources = useResources();
-const bank = useBank();
 const units = ref([]);
+const commands = ref([{ team: 'player', type: 'regroup', position: { x: 0, y: 0, z: 0 } }]);
 
 const isSettingWarriorCommand = ref(false);
-const warriorCommand = ref({ type: 'regroup', position: { x: 0, y: 0, z: 0 } });
 const WARRIOR_COMMANDS = ['regroup', 'attack'];
 
 const warriorMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -22,152 +21,37 @@ const warriorMarkerMesh = new THREE.Mesh(warriorMarkerGeometry, warriorMarkerMat
 
 const domElement = ref(null);
 
-const collect = (unit) => {
-    const shouldCollect = unit.options.collect.collected < unit.options.collect.max;
-    if (shouldCollect) {
-        if (unit.options.collect.resource) {
-            if (navigation.reachedDestination(unit.object3D, unit.options.collect.resource.position, 5)) {
-                const canAfford = bank.canAfford(unit.options.collect.costs);
-                if (!canAfford) return;
-                for (const cost of unit.options.collect.costs) {
-                    bank.withdraw(cost.amount, cost.currency);
-                }
-                unit.options.collect.collected = unit.options.collect.max;
-                unit.options.collect.resource = null;
-                console.log('collected');
-            } else {
-                navigation.addAgent(
-                    unit.object3D,
-                    unit.options.collect.resource.position,
-                    unit.options.move.speed,
-                    unit.options.move.groundOffset
-                );
-            }
-        } else {
-            const closestResource = resources.findClosest(unit.object3D.position, unit.options.collect.type);
-            if (closestResource) {
-                unit.options.collect.resource = closestResource;
-            } else {
-                console.log('no resource');
-            }
-        }
+const setAction = (unit, actionIndex) => {
+    unit.actionIndex = actionIndex;
 
-    } else {
-        if (unit.options.collect.deliver_to) {
-            if (navigation.reachedDestination(unit.object3D, unit.options.collect.deliver_to.position, 15)) {
-                bank.deposit(unit.options.collect.collected, unit.options.collect.type);
-                unit.options.collect.deliver_to = null;
-                unit.options.collect.collected = 0;
-                console.log('delivered');
-            } else {
-                navigation.addAgent(
-                    unit.object3D,
-                    unit.options.collect.deliver_to.position,
-                    unit.options.move.speed,
-                    unit.options.move.groundOffset
-                );
-            }
-        } else {
-            const deliver_to = useItems().findClosestItem(unit.object3D.position, unit.options.collect.deliver_construction);
-            if (deliver_to) {
-                unit.options.collect.deliver_to = deliver_to;
-            } else {
-                console.log('no deliver to');
-            }
-        }
+    if (unit.action) {
+        unit.action.exit();
     }
-}
 
-const regroup = (unit) => {
-    navigation.addAgent(
-        unit.object3D,
-        warriorCommand.value.position,
-        unit.options.move.speed,
-        unit.options.move.groundOffset
-    );
-}
-
-const attack = (unit) => {
-    navigation.addAgent(
-        unit.object3D,
-        warriorCommand.value.position,
-        unit.options.move.speed,
-        unit.options.move.groundOffset
-    );
-}
-
-const scan = (unit) => {
-    if (unit.options.scan.scanned) {
-        if (unit.options.scan.deliver_to) {
-            if (navigation.reachedDestination(unit.object3D, unit.options.scan.deliver_to.position, 15)) {
-                bank.deposit(unit.options.scan.rate, unit.options.scan.type);
-                unit.options.scan.deliver_to = null;
-                unit.options.scan.scanned = false;
-                console.log('delivered');
-            } else {
-                navigation.addAgent(
-                    unit.object3D,
-                    unit.options.scan.deliver_to.position,
-                    unit.options.move.speed,
-                    unit.options.move.groundOffset
-                );
-            }
-        } else {
-            const deliver_to = useItems().findClosestItem(unit.object3D.position, unit.options.scan.deliver_construction);
-            if (deliver_to) {
-                unit.options.scan.deliver_to = deliver_to;
-            } else {
-                console.log('no deliver to');
-            }
-        }
-    } else {
-        if (unit.options.scan.next_position) {
-            if (navigation.reachedDestination(unit.object3D, unit.options.scan.next_position, 15)) {
-                const canAfford = bank.canAfford(unit.options.scan.costs);
-                if (!canAfford) return;
-                for (const cost of unit.options.scan.costs) {
-                    bank.withdraw(cost.amount, cost.currency);
-                }
-                unit.options.scan.next_position = null;
-                unit.options.scan.scanned = true;
-                console.log('delivered');
-            } else {
-                navigation.addAgent(
-                    unit.object3D,
-                    unit.options.scan.next_position,
-                    unit.options.move.speed,
-                    unit.options.move.groundOffset
-                );
-            }
-        } else {
-            const resource = resources.getRandom();
-            if (resource) {
-                unit.options.scan.next_position = resource.object3D.position;
-            } else {
-                console.log('no resource');
-            }
-        }
-    }
+    const action = unit.state.actions[actionIndex];
+    const nextClazz = UnitStates[action.method.toUpperCase()];
+    const command = commands.value.find(c => c.team === unit.team);
+    unit.action = new nextClazz(unit, { command, ...action.options });
+    unit.action.enter();
 }
 
 const loop = () => {
     for (const unit of units.value) {
+        const behavior = UnitsBehavior[unit.data.primary_function];
+        if (!unit.state) {
+            unit.state = behavior.states[0];
+        }
+        if (!unit.action) {
+            setAction(unit, 0);
+        }
 
-        if (unit.data.primary_function === 'collector') {
-            collect(unit);
+        if (unit.action?.isComplete()) {
+            const actionIndex = unit.actionIndex;
+            const nextActionIndex = (actionIndex + 1) % unit.state.actions.length;
+            setAction(unit, nextActionIndex);
         }
-        else if (unit.data.primary_function === 'warrior') {
-            if (warriorCommand.value.type === 'regroup') {
-                if (navigation.reachedDestination(unit.object3D, warriorCommand.value.position)) continue;
-                regroup(unit);
-            } else if (warriorCommand.value.type === 'attack') {
-                if (navigation.reachedDestination(unit.object3D, warriorCommand.value.position)) continue;
-                attack(unit);
-            }
-        }
-        else if (unit.data.primary_function === 'scanner') {
-            scan(unit);
-        }
+
+        unit.action?.update();
     }
 }
 
@@ -187,9 +71,23 @@ export const useUnits = () => {
         domElement.value = _domElement;
     }
 
-    const add = (object3D, data) => {
+    const add = (object3D, data, team = 'player') => {
         const options = featuresToOptions(data.features);
-        units.value.push({ object3D, data, options });
+        units.value.push({
+            object3D,
+            data,
+            options,
+            action: null,
+            actionIndex: 0,
+            state: null,
+            target: null,
+            team
+        });
+
+        const existingCommand = commands.value.find(c => c.team === team);
+        if (!existingCommand) {
+            commands.value.push({ team, type: 'regroup', position: { x: 0, y: 0, z: 0 } });
+        }
     }
 
     const remove = (object3D) => {
@@ -208,7 +106,8 @@ export const useUnits = () => {
         const point = ground.getIntersectionFromMouse(event);
         if (!point) return;
 
-        warriorCommand.value.position = point;
+        const command = commands.value.find(c => c.team === 'player');
+        command.position = point;
         warriorMarkerMesh.position.copy(point);
         stopTrackWarriorCommand();
     }
@@ -219,7 +118,8 @@ export const useUnits = () => {
 
         console.log('start track warrior command', type);
 
-        warriorCommand.value.type = type;
+        const command = commands.value.find(c => c.team === 'player');
+        command.type = type;
         warriorMarkerMesh.visible = true;
         isSettingWarriorCommand.value = true;
         domElement.value.addEventListener('pointerdown', onPointerDown);
@@ -228,7 +128,36 @@ export const useUnits = () => {
 
     const stopTrackWarriorCommand = () => {
         isSettingWarriorCommand.value = false;
+        const command = commands.value.find(c => c.team === 'player');
+        setStateByFunction('warrior', command.type);
         domElement.value.removeEventListener('pointerdown', onPointerDown);
+    }
+
+    const setCommand = (type, position, team='player') => {
+        const command = commands.value.find(c => c.team === team);
+        if (!command) {
+            commands.value.push({ team, type, position });
+            return;
+        }
+        
+        command.type = type;
+        command.position = position;
+    }
+
+    const setStateByFunction = (primaryFunction, stateName, team='player') => {
+        const behavior = UnitsBehavior[primaryFunction];
+        const state = behavior.states.find(s => s.name === stateName);
+        if (!state) {
+            throw new Error(`State not found: ${stateName}`);
+        }
+
+        for (const unit of units.value) {
+            if (unit.team !== team) continue;
+            if (unit.data.primary_function !== primaryFunction) continue;
+            unit.state = state;
+            setAction(unit, 0);
+        }
+        console.log(`Set state ${stateName} for ${primaryFunction} units`);
     }
 
     const findByName = (name) => {
@@ -249,9 +178,10 @@ export const useUnits = () => {
         startTrackWarriorCommand,
         stopTrackWarriorCommand,
         WARRIOR_COMMANDS,
-        warriorCommand,
         isSettingWarriorCommand,
+        setStateByFunction,
         findByName,
         countByName,
+        setCommand,
     }
 }

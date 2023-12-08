@@ -18,6 +18,7 @@ import { useNavigation } from '../composables/navigation.js';
 import { useUnits } from '../composables/units.js';
 import { useResources } from '../composables/resources.js';
 import { useMap } from '../composables/map.js';
+import { useEnemy } from '../composables/enemy.js';
 import { TimelineFromJson } from '../composables/timeline.js';
 
 import introTimelineJson from '../timelines/intro.json';
@@ -49,6 +50,7 @@ const unitsManager = useUnits();
 const resourcesManager = useResources();
 const navigationManager = useNavigation();
 const mapManager = useMap();
+const enemyManager = useEnemy();
 
 const subTitleRef = ref(null);
 const audioRef = ref(null);
@@ -120,10 +122,12 @@ const startGame = async () => {
     await itemsManager.init(scene);
     await unitsManager.init(scene, renderer.domElement);
     await resourcesManager.init(scene);
+    await enemyManager.init(scene);
     await groundManager.init(scene, camera, renderer.domElement, lifeCycle);
     
     groundManager.enable();
     unitsManager.enable();
+    enemyManager.enable();
 
     lifeCycle.onAnimate.push(() => {
         Camera.manager.update();

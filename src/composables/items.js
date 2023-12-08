@@ -4,6 +4,7 @@ import UnitController from './inspect/unit_controller.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
 import { getMesh } from './meshes.js'
+import { removeMesh } from './meshes.js'
 import { ref } from 'vue'
 
 const items = ref([])
@@ -101,6 +102,7 @@ export const useItems = () => {
         scene.add(item)
         item.name = itemDefinition.name
         item.userData = {
+            type: itemDefinition.type,
             isOwned: false,
             costs: itemDefinition.costs,
             upgrade: { index: 0 },
@@ -119,6 +121,19 @@ export const useItems = () => {
 
         const produceFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'produce')
         item.userData.canProduce = produceFeature !== undefined
+
+        const healthFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'health')
+        if (healthFeature) {
+            item.userData.health = {
+                current: healthFeature.options.current,
+                max: healthFeature.options.maxHealth,
+                onDie: () => {
+                    removeItemFromState(item)
+                    scene.remove(item)
+                    removeMesh(item)
+                }
+            }
+        }
 
         return item
     }
@@ -143,7 +158,8 @@ export const useItems = () => {
     }
 
     const saveState = () => {
-        const data = items.value.map(item => {
+        const playerItems = items.value.filter(item => item.userData.team === 'player')
+        const data = playerItems.map(item => {
             return {
                 name: item.name,
                 position: { x: item.position.x, y: item.position.y, z: item.position.z },
@@ -184,6 +200,20 @@ export const useItems = () => {
         return closest
     }
 
+    const findClosestItemByType = (position, type) => {
+        let closest = null
+        let closestDistance = Infinity
+        for (const item of items.value) {
+            if (item.userData.type !== type) continue
+            const distance = item.position.distanceTo(position)
+            if (distance < closestDistance) {
+                closest = item
+                closestDistance = distance
+            }
+        }
+        return closest
+    }
+
     const findItemByName = (name) => {
         return items.value.find(item => item.name === name)
     }
@@ -213,6 +243,7 @@ export const useItems = () => {
         saveState,
         removeItemFromState,
         findClosestItem,
+        findClosestItemByType,
         recalculateStorage,
         findItemByName,
         findItemByNameAndUpgrade,

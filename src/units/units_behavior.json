@@ -1,0 +1,203 @@
+{
+    "collector": {
+        "states": [
+            {
+                "name": "Collect Resources",
+                "actions": [
+                    {
+                        "method": "find_closest",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "collect",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "find_closest",
+                        "options": {
+                            "type": "construction"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "deliver",
+                        "options": {
+                            "type": "construction"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Run Away",
+                "actions": [
+                    {
+                        "method": "find_random",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "scanner": {
+        "states": [
+            {
+                "goal": "Scan Resources",
+                "actions": [
+                    {
+                        "method": "find_random",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "collect",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "find_closest",
+                        "options": {
+                            "type": "construction"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "deliver",
+                        "options": {
+                            "type": "construction"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Run Away",
+                "actions": [
+                    {
+                        "method": "find_random",
+                        "options": {
+                            "type": "resource"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "warrior": {
+        "states": [
+            {
+                "name": "idle",
+                "actions": [
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "regroup",
+                "actions": [
+                    {
+                        "method": "regroup",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "defend",
+                "actions": [
+                    {
+                        "method": "move_to",
+                        "options": {
+                            "type": "last_attacker"
+                        }
+                    },
+                    {
+                        "method": "attack",
+                        "options": {
+                            "who": "last_attacker"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "attack",
+                "actions": [
+                    {
+                        "method": "find_closest",
+                        "options": {
+                            "type": "enemy"
+                        }
+                    },
+                    {
+                        "method": "move_to",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "attack",
+                        "options": {
+                            "who": "target"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

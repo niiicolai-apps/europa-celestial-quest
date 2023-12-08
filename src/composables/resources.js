@@ -36,7 +36,6 @@ export const useResources = () => {
 
     const findClosest = (position, type) => {
         const resourcesOfType = findResourcesOfType(type);
-        console.log(resourcesOfType);
         if (!resourcesOfType) return null;
 
         let closest = null;

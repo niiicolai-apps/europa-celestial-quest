@@ -34,10 +34,11 @@ const FEATURES = {
             }
         }
     },
-    MOVE: (speed = 0.1, type = 'walk', groundOffset = 1) => {
+    MOVE: (speed = 1.1, type = 'walk', groundOffset = 1) => {
         return {
             name: 'move',
             options: {
+                destination: null,
                 type,
                 speed,
                 groundOffset
@@ -48,8 +49,9 @@ const FEATURES = {
         return {
             name: 'health',
             options: {
-                health: maxHealth,
+                current: maxHealth,
                 maxHealth,
+                onDie: () => { },
             }
         }
     },
@@ -58,8 +60,7 @@ const FEATURES = {
             name: 'collect',
             options: {
                 collected: 0,
-                resource: null,
-                deliver_to: null,
+                target: null,
                 type,
                 max,
                 speed,
@@ -93,8 +94,7 @@ const FEATURES = {
         return {
             name: 'scan',
             options: {
-                next_position: null,
-                deliver_to: null,
+                target: null,
                 scanned: false,
                 type,
                 rate,
@@ -298,6 +298,7 @@ const UNITS = {
 export default [
     {
         name: 'Europa Horizon Drifter X1',
+        type: 'base',
         image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
         mesh: meshesJson['europa_horizon_drifter_x1'],
@@ -325,6 +326,7 @@ export default [
     },
     {
         name: 'Robot Facility',
+        type: 'spawner',
         image: 'thumbnails/human_construction/bot_builder.png',
         requiredLevel: 1,
         mesh: meshesJson['Robot Facility'],
@@ -365,6 +367,7 @@ export default [
     },
     {
         name: 'Drone Facility',
+        type: 'spawner',
         image: 'thumbnails/human_construction/drone_builder.png',
         requiredLevel: 1,
         mesh: meshesJson['Drone Facility'],
@@ -405,6 +408,7 @@ export default [
     },
     {
         name: 'Hydrogen Fuel Tank',
+        type: 'hydrogen',
         image: 'thumbnails/human_construction/hydrogen_fuel_tank.png',
         requiredLevel: 1,
         mesh: meshesJson['Hydrogen Fuel Tank'],
@@ -451,6 +455,7 @@ export default [
     },
     {
         name: 'Rock Metal Extractor',
+        type: 'rock',
         image: 'thumbnails/human_construction/rock_metal_extractor.png',
         requiredLevel: 1,
         mesh: meshesJson['Rock Metal Extractor'],
@@ -497,6 +502,7 @@ export default [
     },
     {
         name: 'Rover Research Facility',
+        type: 'spawner',
         image: 'thumbnails/human_construction/rover_research_facility.png',
         requiredLevel: 1,
         mesh: meshesJson['Rover Research Facility'],
@@ -540,6 +546,7 @@ export default [
     },
     {
         name: 'Rover Warrior Facility',
+        type: 'spawner',
         image: 'thumbnails/human_construction/rover_warrior_facility.png',
         requiredLevel: 1,
         mesh: meshesJson['Rover Warrior Facility'],
@@ -580,6 +587,7 @@ export default [
     },
     {
         name: 'Machine Gun Turrent',
+        type: 'spawner',
         image: 'thumbnails/human_construction/machine_gun_turrent.png',
         requiredLevel: 1,
         mesh: meshesJson['Machine Gun Turrent'],
@@ -643,6 +651,7 @@ export default [
     },
     {
         name: 'Solar Panel',
+        type: 'power',
         image: 'thumbnails/human_construction/solar_panel.png',
         requiredLevel: 1,
         mesh: meshesJson['Solar Panel'],
