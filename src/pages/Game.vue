@@ -13,13 +13,14 @@ import { useInspect } from '../composables/inspect.js';
 import { usePanel } from '../composables/panel.js';
 import { disposeMeshCache } from '../composables/meshes.js';
 import { useGround } from '../composables/ground.js';
-import { useItems } from '../composables/items.js';
+import { useItems } from '../composables/constructions.js';
 import { useNavigation } from '../composables/navigation.js';
 import { useUnits } from '../composables/units.js';
 import { useResources } from '../composables/resources.js';
 import { useMap } from '../composables/map.js';
 import { useEnemy } from '../composables/enemy.js';
 import { useBillboard } from '../composables/billboard.js';
+import { useStateMachine } from '../composables/state_machine.js';
 import { TimelineFromJson } from '../composables/timeline.js';
 
 import introTimelineJson from '../timelines/intro.json';
@@ -52,6 +53,7 @@ const unitsManager = useUnits();
 const resourcesManager = useResources();
 const navigationManager = useNavigation();
 const billboardManager = useBillboard();
+const stateMachine = useStateMachine();
 const mapManager = useMap();
 const enemyManager = useEnemy();
 
@@ -137,6 +139,7 @@ const startGame = async () => {
     enemyManager.enable();
     billboardManager.enable();
     itemsManager.enable();
+    stateMachine.enable();
 
     lifeCycle.onAnimate.push(() => {
         Camera.manager.update();
@@ -148,6 +151,7 @@ const startGame = async () => {
         navigationManager.disable();
         groundManager.disable();
         unitsManager.disable();
+        stateMachine.disable();
     });
 
     console.log(renderer.info)

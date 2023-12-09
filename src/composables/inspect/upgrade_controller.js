@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { useBank } from '../bank.js';
-import { useItems } from '../items.js';
+import { useItems } from '../constructions.js';
 import { useObjectives } from '../objectives.js';
 const bankManager = useBank();
 

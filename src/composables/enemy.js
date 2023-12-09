@@ -1,10 +1,10 @@
 import { getMesh } from './meshes.js'
 import { useMap } from './map.js'
-import { useItems } from './items.js'
+import { useItems } from './constructions.js'
 import { useUnits } from './units.js'
 import { useNavigation } from './navigation.js'
 import { ref } from 'vue'
-import ConstructionDefinitions from './construction_definitions.js'
+import ConstructionDefinitions from './definitions/constructions.js'
 import MeshesJson from '../meshes/meshes.json'
 
 const navigation = useNavigation()
@@ -117,7 +117,6 @@ export const useEnemy = () => {
 
         scene.value = _scene
         isInitialized.value = true
-        //useUnits().setCommand('regroup', { "x": 246, "y": 20, "z": -423 }, 'enemy');
         await spawnConstructions()
     }
 

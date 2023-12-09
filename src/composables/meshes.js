@@ -55,8 +55,11 @@ export const getMesh = async (mesh) => {
 }
 
 export const removeMesh = (object3D) => {
-    console.log('removeMesh', object3D);
     const mesh = object3D.userData.mesh;
+    if (!mesh || !mesh.url) {
+        console.log('bug: mesh or mesh.url is undefined')
+        return;
+    }
     const cached = meshCache[mesh.url];
     if (!cached) return;
 

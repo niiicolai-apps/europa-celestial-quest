@@ -1,10 +1,10 @@
 import { ref } from 'vue';
 import { useBank } from '../bank.js';
-import { useItems } from '../items.js';
+import { useItems } from '../constructions.js';
 import { getMesh } from '../meshes.js';
 import { useUnits } from '../units.js';
 import { useObjectives } from '../objectives.js';
-import ConstructionDefinitions from '../construction_definitions.js'
+import ConstructionDefinitions from '../definitions/constructions.js'
 import * as THREE from 'three';
 
 const unitManager = useUnits();

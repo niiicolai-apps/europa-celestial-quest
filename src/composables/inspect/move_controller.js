@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useCollision } from '../collision.js';
 import { useGrid } from '../grid.js';
 import { useBank } from '../bank.js';
-import { useItems } from '../items.js';
+import { useItems } from '../constructions.js';
 import { useGround } from '../ground.js';
 import { removeMesh } from '../meshes.js';
 import { useObjectives } from '../objectives.js';

@@ -1,12 +1,12 @@
-import { useBank } from "./bank.js";
-import { useItems } from "./items.js";
-import { useHealth } from "./health.js";
+import { useBank } from "../bank.js";
+import { useItems } from "../constructions.js";
+import { useHealth } from "../health.js";
 
 class Base {
-    constructor(construction, options = {}) {
-        this.construction = construction;
+    constructor(manager, options = {}) {
+        this.manager = manager;
         this.options = options;
-        if (!construction) throw new Error('Construction is required');
+        if (!manager) throw new Error('Manager is required');
     }
 
     enter() { }
@@ -18,8 +18,8 @@ class Base {
 }
 
 class Wait extends Base {
-    constructor(construction, options = {}) {
-        super(construction, options);
+    constructor(manager, options = {}) {
+        super(manager, options);
     }
 
     exit() {
@@ -31,9 +31,9 @@ class Wait extends Base {
 }
 
 class Timer extends Base {
-    constructor(construction, options = {}) {
-        super(construction, options);
-        const duration = construction.userData.target || 1000;
+    constructor(manager, options = {}) {
+        super(manager, options);
+        const duration = manager.target || 1000;
         this.endTime = Date.now() + duration;
     }
 
@@ -43,15 +43,15 @@ class Timer extends Base {
 }
 
 class TrySpawn extends Base {
-    constructor(construction, options = {}) {
-        super(construction, options);
-        if (!construction.userData.canBuild) throw new Error('Construction Spawn feature is required');
+    constructor(manager, options = {}) {
+        super(manager, options);
+        if (!manager.object.canBuild) throw new Error('Manager Spawn feature is required');
     }
 
     exit() {
         const time = Date.now()
-        this.construction.userData.target = time + 1000;
-        useItems().dequeueAny(this.construction)
+        this.manager.target = time + 1000;
+        useItems().dequeueAny(this.manager.object.construction)
     }
 
     isComplete() {
@@ -60,13 +60,15 @@ class TrySpawn extends Base {
 }
 
 class Produce extends Base {
-    constructor(construction, options = {}) {
-        super(construction, options);
-        if (!construction.userData.canProduce) throw new Error('Construction Produce feature is required');
+    constructor(manager, options = {}) {
+        super(manager, options);
+        if (!manager.object.canProduce) throw new Error('Manager Produce feature is required');
     }
 
     exit() {
-        const userData = this.construction.userData
+        const manager = this.manager
+        const construction = manager.object.construction
+        const userData = construction.userData
         const upgrade = userData.upgrades[userData.upgrade.index]
         const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
         const currency = produceFeature.options.type
@@ -78,7 +80,7 @@ class Produce extends Base {
         if (!isFull) {
             const canAfford = bankManager.canAfford(produceFeature.options.costs)
             if (!canAfford) {
-                userData.target = time + 1000;
+                manager.target = time + 1000;
                 return;
             }
 
@@ -87,7 +89,7 @@ class Produce extends Base {
             }
 
             bankManager.deposit(amount, currency)
-            userData.target = time + produceFeature.options.speed;
+            manager.target = time + produceFeature.options.speed;
         }
     }
 
@@ -97,9 +99,9 @@ class Produce extends Base {
 }
 
 class Attack extends Base {
-    constructor(construction, options = {}) {
-        super(construction, options);
-        if (!construction.userData.canAttack) throw new Error('Construction Attack feature is required');
+    constructor(manager, options = {}) {
+        super(manager, options);
+        if (!manager.canAttack) throw new Error('Manager Attack feature is required');
         this.healthManager = useHealth();
     }
 
@@ -117,10 +119,12 @@ class Attack extends Base {
     }
 
     update() {
-        const construction = this.construction;
+        const manager = this.manager;
+        const construction = manager.object.construction;
         const position = construction.position;
         const userData = construction.userData;
-        const team = userData.team;
+        const healthManager = this.healthManager;
+        const team = manager.team;
 
         const upgrade = userData.upgrades[userData.upgrade.index];
         const attackFeature = upgrade.features.find(feature => feature.name === 'attack');
@@ -128,7 +132,7 @@ class Attack extends Base {
         let target = attackFeature.options.target;
         if (!target) {
 
-            const healthObjects = this.healthManager
+            const healthObjects = healthManager
                 .findAllNotOnTeam(team)
                 .map(h => h.object3D);
 
@@ -147,20 +151,22 @@ class Attack extends Base {
         const attackDamage = attackFeature.options.damage;
 
         if (distance <= attackDistance) {
-            this.healthManager.applyDamage(target, attackDamage, construction, team);
-            const isDead = this.healthManager.isDead(target);
+            healthManager.applyDamage(target, attackDamage, construction, team);
+            const isDead = healthManager.isDead(target);
             if (isDead) attackFeature.options.target = null;
         }
     }
 
     exit() {
-        const userData = this.construction.userData;
+        const manager = this.manager;
+        const construction = manager.object.construction;
+        const userData = construction.userData;
         const upgrade = userData.upgrades[userData.upgrade.index];
         const attackFeature = upgrade.features.find(feature => feature.name === 'attack');
         const attackRate = attackFeature.options.rate;
         const time = Date.now()
 
-        this.construction.userData.target = time + attackRate;
+        manager.target = time + attackRate;
     }
 
     isComplete() {

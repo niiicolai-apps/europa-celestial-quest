@@ -24,6 +24,7 @@ const createHealthBar = (object3D) => {
 
     const healthBarBggMesh = new THREE.Mesh(healthBarGeometry.value, healthBarBggMaterial.value);
     const healthBarMesh = new THREE.Mesh(healthBarGeometry.value, healthBarMaterial.value);
+    healthBarBggMesh.name = 'healthBar';
     object3D.add(healthBarBggMesh);
     healthBarBggMesh.add(healthBarMesh);
     
@@ -109,6 +110,24 @@ export const useHealth = () => {
         return healthObjects.value.filter(h => h.team !== team && (isDead ? h.current <= 0 : h.current > 0))
     }
 
+    const findClosestNotOnTeam = (team, position) => {
+        const healthObjects = findAllNotOnTeam(team);
+        if (healthObjects.length === 0) {
+            return null;
+        }
+
+        let closest = null;
+        let closestDistance = Infinity;
+        for (const healthObject of healthObjects) {
+            const distance = healthObject.object3D.position.distanceTo(position);
+            if (distance < closestDistance) {
+                closest = healthObject;
+                closestDistance = distance;
+            }
+        }
+        return { healthObject: closest, closestDistance };
+    }
+
     return {
         addHealthObject,
         removeHealthObject,
@@ -117,6 +136,7 @@ export const useHealth = () => {
         revive,
         reset,
         findAllByTeam,
-        findAllNotOnTeam
+        findAllNotOnTeam,
+        findClosestNotOnTeam
     }
 }

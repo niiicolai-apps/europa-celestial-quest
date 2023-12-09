@@ -2,13 +2,14 @@ import { ref } from 'vue';
 import { useNavigation } from './navigation.js';
 import { useGround } from './ground.js';
 import { useResources } from './resources.js';
-import { useItems } from './items.js';
+import { useItems } from './constructions.js';
 import { useBank } from './bank.js';
 import { useHealth } from './health.js';
 import { removeMesh } from './meshes.js';
+import { useStateMachine } from './state_machine.js'
 import * as THREE from 'three';
-import UnitsBehavior from '../units/units_behavior.json';
-import UnitStates from './unit_states.js';
+import UnitsBehavior from './behaviors/units_behavior.json';
+import UnitStates from './states/unit_states.js';
 
 const ground = useGround();
 const units = ref([]);
@@ -30,41 +31,6 @@ const warriorMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const warriorMarkerGeometry = new THREE.BoxGeometry(1, 1, 1);
 const warriorMarkerMesh = new THREE.Mesh(warriorMarkerGeometry, warriorMarkerMaterial);
 
-
-const setAction = (unit, actionIndex) => {
-    unit.actionIndex = actionIndex;
-
-    if (unit.action) {
-        unit.action.exit();
-    }
-
-    const action = unit.state.actions[actionIndex];
-    const nextClazz = UnitStates[action.method.toUpperCase()];
-    const command = commands.value.find(c => c.team === unit.team);
-    unit.action = new nextClazz(unit, { command, ...action.options });
-    unit.action.enter();
-}
-
-const loop = () => {
-    for (const unit of units.value) {
-        const behavior = UnitsBehavior[unit.data.primary_function];
-        if (!unit.state) {
-            unit.state = behavior.states[0];
-        }
-        if (!unit.action) {
-            setAction(unit, 0);
-        }
-
-        if (unit.action?.isComplete()) {
-            const actionIndex = unit.actionIndex;
-            const nextActionIndex = (actionIndex + 1) % unit.state.actions.length;
-            setAction(unit, nextActionIndex);
-        }
-
-        unit.action?.update();
-    }
-}
-
 export const useUnits = () => {
 
     const featuresToOptions = (features) => {
@@ -75,57 +41,33 @@ export const useUnits = () => {
         return options;
     }
 
-    const init = async (_scene, _domElement) => {
-        scene.value = _scene;
-        scene.value.add(warriorMarkerMesh);
-        domElement.value = _domElement;
-        warriorMarkerMesh.visible = false;
+    const createCommand = (team) => {
+        let command = commands.value.find(c => c.team === team);
+        if (!command) {
+            command = { team, type: 'regroup', position: { x: 0, y: 0, z: 0 } };
+            commands.value.push(command);
+        }
+        return command;
     }
 
-    const add = (object3D, data, team = 'player') => {
-        // Create unit options
-        const options = featuresToOptions(data.features);
+    const createHealth = (unit) => {
+        const health = unit.options.health;
+        if (!health) return;
 
-        // Create unit
-        const unit = {
-            object3D,
-            data,
-            options,
-            action: null,
-            actionIndex: 0,
-            state: null,
-            target: null,
-            team
-        };
-        
-        // Add unit to units list
-        units.value.push(unit);
+        const healthManager = useHealth();
+        const current = health.current;
+        const maxHealth = health.maxHealth;
+        const object3D = unit.object3D;
+        const team = unit.team;
 
-        // Add unit command controller
-        const existingCommand = commands.value.find(c => c.team === team);
-        if (!existingCommand) {
-            commands.value.push({ 
-                team, 
-                type: 'regroup', 
-                position: { x: 0, y: 0, z: 0 } 
-            });
+        const onDie = () => {
+            remove(unit.object3D)
+            scene.value.remove(unit.object3D)
+            removeMesh(unit.object3D)
         }
 
-        // Add unit to health system
-        if (options.health) {
-            useHealth().addHealthObject(
-                object3D,
-                team,
-                options.health.current,
-                options.health.maxHealth,
-                // onDie
-                () => {
-                    remove(object3D)
-                    scene.value.remove(object3D)
-                    removeMesh(object3D)
-                },
-                // onDamage
-                (attacker) => {
+        const onDamage = (attacker) => {
+            /*
                     const behavior = UnitsBehavior[unit.data.primary_function];
                     const { state: reactStateName, blocking_states } = behavior.on_damage;
                     if (blocking_states.includes(unit.state?.name)) {
@@ -140,10 +82,48 @@ export const useUnits = () => {
                     console.log(attacker)
                     unit.state = state;
                     unit.target = attacker;
-                    setAction(unit, 0);
-                }
-            )
+                    setAction(unit, 0);*/
         }
+
+        healthManager.addHealthObject(
+            object3D,
+            team,
+            current,
+            maxHealth,
+            onDie,
+            onDamage
+        )
+    }
+
+    const init = async (_scene, _domElement) => {
+        scene.value = _scene;
+        scene.value.add(warriorMarkerMesh);
+        domElement.value = _domElement;
+        warriorMarkerMesh.visible = false;
+    }
+
+    const add = (object3D, data, team = 'player') => {
+        // Create unit options
+        const options = featuresToOptions(data.features);
+        const command = createCommand(team);
+
+        // Create unit
+        const unit = {
+            object3D,
+            data,
+            options,
+            command,
+            team
+        };
+        
+        units.value.push(unit);
+        createHealth(unit);
+
+        const stateMachine = useStateMachine()
+        const behavior = UnitsBehavior[data.primary_function]
+        const states = UnitStates;
+        const id = object3D.uuid
+        stateMachine.add(unit, id, behavior, states);
     }
 
     const remove = (object3D) => {
@@ -151,11 +131,11 @@ export const useUnits = () => {
     }
 
     const enable = () => {
-        setInterval(loop, 1000);
+        //setInterval(loop, 1000);
     }
 
     const disable = () => {
-        clearInterval(loop);
+        //clearInterval(loop);
     }
 
     const onPointerDown = (event) => {
@@ -192,8 +172,7 @@ export const useUnits = () => {
     const setCommand = (type, position, team='player') => {
         const command = commands.value.find(c => c.team === team);
         if (!command) {
-            commands.value.push({ team, type, position });
-            return;
+            throw new Error(`Command not found for team: ${team}`);
         }
 
         command.type = type;
@@ -201,19 +180,12 @@ export const useUnits = () => {
     }
 
     const setStateByFunction = (primaryFunction, stateName, team='player') => {
-        const behavior = UnitsBehavior[primaryFunction];
-        const state = behavior.states.find(s => s.name === stateName);
-        if (!state) {
-            throw new Error(`State not found: ${stateName}`);
+        const stateMachine = useStateMachine()
+        const unitsByFunction = units.value.filter(u => u.data.primary_function === primaryFunction);
+        const unitsByTeam = unitsByFunction.filter(u => u.team === team);
+        for (const unit of unitsByTeam) {
+            stateMachine.setState(unit.object3D.uuid, stateName);
         }
-
-        for (const unit of units.value) {
-            if (unit.team !== team) continue;
-            if (unit.data.primary_function !== primaryFunction) continue;
-            unit.state = state;
-            setAction(unit, 0);
-        }
-        console.log(`Set state ${stateName} for ${primaryFunction} units`);
     }
 
     const findByName = (name) => {

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useMap } from './map.js'
 import { useStats } from './stats.js';
-import { useItems } from './items.js';
+import { useItems } from './constructions.js';
 import { useUnits } from './units.js';
 import { useBank } from './bank.js';
 import PersistentData from './persistent_data.js';

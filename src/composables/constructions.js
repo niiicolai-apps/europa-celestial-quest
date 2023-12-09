@@ -1,11 +1,12 @@
 import PersistentData from './persistent_data.js'
-import ConstructionDefinitions from './construction_definitions.js'
-import ConstructionStates from './construction_states.js'
-import ConstructionBehaviors from '../constructions/constructions_behavior.json'
+import ConstructionDefinitions from './definitions/constructions.js'
+import ConstructionStates from './states/construction_states.js'
+import ConstructionBehaviors from './behaviors/constructions_behavior.json'
 import UnitController from './inspect/unit_controller.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
 import { useHealth } from './health.js'
+import { useStateMachine } from './state_machine.js'
 import { getMesh, removeMesh } from './meshes.js'
 import { ref } from 'vue'
 
@@ -15,7 +16,6 @@ const isInitialized = ref(false)
 const interval = ref(null)
 
 let scene = null
-let queueInterval = null
 
 const recalculateStorage = () => {
     let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
@@ -47,38 +47,42 @@ const recalculateStorage = () => {
     bankManager.overrideBalance(power + bankManager.getCurrency('power').defaultMax, 'power');
 }
 
-const setAction = (construction, actionIndex) => {
-    construction.userData.actionIndex = actionIndex;
-
-    if (construction.userData.action) {
-        construction.userData.action.exit();
+const removeItemFromState = (item) => {
+    let index = -1
+    for (let i = 0; i < items.value.length; i++) {
+        if (items.value[i].uuid === item.uuid) {
+            index = i
+            break
+        }
     }
-
-    const action = construction.userData.state.actions[actionIndex];
-    const nextClazz = ConstructionStates[action.method.toUpperCase()];
-    construction.userData.action = new nextClazz(construction, action.options);
-    construction.userData.action.enter();
+    if (index === -1) return false
+    console.log('Removing item from state', item)
+    items.value.splice(index, 1)
+    return true
 }
 
-const loop = () => {
-    for (const construction of items.value) {
-        const behavior = ConstructionBehaviors[construction.userData.primaryFunction];
-        if (!construction.userData.state) {
-            construction.userData.state = behavior.states[0];
-        }
-        if (!construction.userData.action) {
-            setAction(construction, 0);
-        }
+const addHealthBar = (item, healthFeature, team) => {
+    if (!healthFeature) return
+    const { maxHealth, current } = healthFeature.options
+    const healthManager = useHealth()
 
-        if (construction.userData.action?.isComplete()) {
-            const actionIndex = construction.userData.actionIndex;
-            const nextActionIndex = (actionIndex + 1) % construction.userData.state.actions.length;
-            setAction(construction, nextActionIndex);
-            console.log('Next action', construction.userData.action)
-        }
-
-        construction.userData.action?.update();
+    const onDie = () => {
+        removeItemFromState(item)
+        scene.remove(item)
+        removeMesh(item)
     }
+
+    const onDamage = (attacker) => {
+    }
+
+    healthManager.addHealthObject(
+        item,
+        team,
+        current,
+        maxHealth,
+        onDie,
+        onDamage
+    )
 }
 
 export const useItems = () => {
@@ -88,37 +92,6 @@ export const useItems = () => {
         scene = _scene
         await loadState()
 
-        /*
-        queueInterval = setInterval(() => {
-            const time = Date.now()
-
-            for (const item of items.value) {
-
-                if (item.userData.canBuild) {
-                    UnitController.dequeueAny(item, scene)
-                }
-
-                else if (item.userData.canProduce) {
-                    const produceFeature = item.userData.upgrades[item.userData.upgrade.index]
-                        .features.find(feature => feature.name === 'produce')
-                    const currency = produceFeature.options.type
-                    const isFull = bankManager.getBalance(currency) >= bankManager.getCurrency(currency).max
-                    
-                    if (!isFull && produceFeature.options.nextTime < time) {
-                        const canAfford = bankManager.canAfford(produceFeature.options.costs)
-                        if (!canAfford) continue
-
-                        const amount = produceFeature.options.rate
-                        bankManager.deposit(amount, currency)
-                        for (const cost of produceFeature.options.costs) {
-                            bankManager.withdraw(cost.amount, cost.currency)
-                        }
-                        produceFeature.options.nextTime = time + produceFeature.options.speed
-                    }
-                }
-            }
-        }, 15000);
-        */
         isInitialized.value = true
         return true
     }
@@ -134,55 +107,44 @@ export const useItems = () => {
         return canAfford
     }
 
-    const spawn = async (itemDefinition, team = 'player') => {
-        const item = await getMesh(itemDefinition.mesh)
-        items.value.push(item)
-        scene.add(item)
-        item.name = itemDefinition.name
+    const spawn = async (itemDefinition, team = 'player', isOwned = false) => {
+        const { mesh, name, type, costs, upgrades } = itemDefinition
+        
+        const upgrade = { index: 0 }
+        const item = await getMesh(mesh)
+        
+        item.name = name
         item.userData = {
-            type: itemDefinition.type,
-            isOwned: false,
-            costs: itemDefinition.costs,
-            upgrade: { index: 0 },
-            upgrades: itemDefinition.upgrades,
-            mesh: itemDefinition.mesh,
-            team,
-            primaryFunction: itemDefinition.primary_function,
-            state: null,
-            action: null,
-            target: null,
+            mesh,
+            type,
+            costs,
+            upgrades,
+            upgrade,
+            isOwned,
+            team
         }
 
-        item.userData.canBuild = UnitController.canBuild(item);
-        item.userData.canStore = itemDefinition
-            .upgrades
-            .find(upgrade => {
-                if (!upgrade.features) return false
-                return upgrade.features.find(feature => feature.name === 'storage')
-            }) !== undefined
+        scene.add(item)
+        items.value.push(item)
 
         const produceFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'produce')
-        item.userData.canProduce = produceFeature !== undefined
-
         const attackFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'attack')
-        item.userData.canAttack = attackFeature !== undefined
-
         const healthFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'health')
-        if (healthFeature) {
-            useHealth().addHealthObject(
-                item,
-                team,
-                healthFeature.options.current,
-                healthFeature.options.maxHealth,
-                () => {
-                    removeItemFromState(item)
-                    scene.remove(item)
-                    removeMesh(item)
-                },
-                (attacker) => {
-                }
-            )
-        }
+        const storageFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'storage')
+
+        const canProduce = produceFeature !== undefined
+        const canAttack = attackFeature !== undefined
+        const canStore = storageFeature !== undefined
+        const canBuild = UnitController.canBuild(item);
+        
+        addHealthBar(item, healthFeature, team)
+
+        const stateMachine = useStateMachine()
+        const behavior = ConstructionBehaviors[itemDefinition.primary_function]
+        const states = ConstructionStates;
+        const object = { construction: item, canBuild, canStore, canProduce, canAttack, team }
+        const id = item.uuid
+        stateMachine.add(object, id, behavior, states);
 
         return item
     }
@@ -224,40 +186,11 @@ export const useItems = () => {
         PersistentData.set('items', data)
     }
 
-    const removeItemFromState = (item) => {
-        let index = -1
-        for (let i = 0; i < items.value.length; i++) {
-            if (items.value[i].uuid === item.uuid) {
-                index = i
-                break
-            }
-        }
-        if (index === -1) return false
-        console.log('Removing item from state', item)
-        items.value.splice(index, 1)
-        saveState()
-        return true
-    }
-
     const findClosestItem = (position, name) => {
         let closest = null
         let closestDistance = Infinity
         for (const item of items.value) {
             if (item.name !== name) continue
-            const distance = item.position.distanceTo(position)
-            if (distance < closestDistance) {
-                closest = item
-                closestDistance = distance
-            }
-        }
-        return closest
-    }
-
-    const findClosestItemByType = (position, type) => {
-        let closest = null
-        let closestDistance = Infinity
-        for (const item of items.value) {
-            if (item.userData.type !== type) continue
             const distance = item.position.distanceTo(position)
             if (distance < closestDistance) {
                 closest = item
@@ -277,6 +210,33 @@ export const useItems = () => {
         })
     }
 
+    const findClosestByNameAndTeam = (position, name, team) => {
+        let closest = null
+        let closestDistance = Infinity
+        for (const item of items.value) {
+            if (item.name !== name) continue
+            if (item.userData.team !== team) continue
+            const distance = item.position.distanceTo(position)
+            if (distance < closestDistance) {
+                closest = item
+                closestDistance = distance
+            }
+        }
+        return closest
+    }
+
+    const findByNameAndTeam = (name, team) => {
+        return items.value.find(item => {
+            return item.name === name && item.userData.team === team
+        })
+    }
+
+    const findByNameAndUpgradeAndTeam = (name, upgradeIndex, team) => {
+        return items.value.find(item => {
+            return item.name === name && item.userData.upgrade.index === upgradeIndex && item.userData.team === team
+        })
+    }
+
     const countItemsByName = (name) => {
         return items.value.filter(item => item.name === name).length
     }
@@ -288,11 +248,11 @@ export const useItems = () => {
     }
 
     const enable = () => {
-        interval.value = setInterval(loop, 1000)
+        //interval.value = setInterval(loop, 1000)
     }
 
     const disable = () => {
-        clearInterval(interval.value)
+        //clearInterval(interval.value)
     }
 
     return {
@@ -304,10 +264,12 @@ export const useItems = () => {
         saveState,
         removeItemFromState,
         findClosestItem,
-        findClosestItemByType,
+        findClosestByNameAndTeam,
         recalculateStorage,
         findItemByName,
         findItemByNameAndUpgrade,
+        findByNameAndTeam,
+        findByNameAndUpgradeAndTeam,
         countItemsByName,
         countItemsByNameAndUpgrade,
         dequeueAny,
