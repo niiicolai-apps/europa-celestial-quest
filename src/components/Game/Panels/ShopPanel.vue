@@ -32,7 +32,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
-import Locale from '../../Locale.vue';
+import Locale from '../../General/Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
 import { useItems } from '../../../composables/constructions.js';
 import { useInspect } from '../../../composables/inspect.js';

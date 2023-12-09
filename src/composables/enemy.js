@@ -5,7 +5,6 @@ import { useUnits } from './units.js'
 import { useNavigation } from './navigation.js'
 import { ref } from 'vue'
 import ConstructionDefinitions from './definitions/constructions.js'
-import MeshesJson from '../meshes/meshes.json'
 
 const navigation = useNavigation()
 const isInitialized = ref(false)
@@ -15,37 +14,39 @@ const spawnInterval = ref(null)
 const constructions = ref([])
 const scene = ref(null)
 
+const spawnUnit = async (unitData, point) => {
+    const unitsManager = useUnits()
+    const mesh = await getMesh(unitData.name)
+    if (!mesh) return
+
+    mesh.position.x = point.x + (unitData.instances.length + 1);
+    mesh.position.y = point.y;
+    mesh.position.z = point.z;
+    mesh.rotation.x = 0;
+    mesh.rotation.y = 0;
+    mesh.rotation.z = 0;
+    scene.value.add(mesh)
+    unitData.instances.push(mesh)
+    unitsManager.add(mesh, unitData.spawnData, 'enemy')
+}
+
 const spawnUnits = async () => {
     if (armyIsSpawned.value) return
 
     let allUnitsSpawned = true
-    const unitsManager = useUnits()
+    
     for (const construction of constructions.value) {
         if (construction.spawn) {
+
             const { point, units } = construction.spawn
 
             for (const unitData of units) {
-                
-                if (unitData.instances.length >= unitData.count) {
+                if (unitData.instances.length > unitData.count) {
                     continue
-                }
+                }       
 
-                const mesh = await getMesh(MeshesJson[unitData.name])
-                if (!mesh) {
-                    console.error(`Mesh not found: ${unitData.name}`)
-                    continue
-                }
-
-                mesh.position.x = point.x + (unitData.instances.length + 1);
-                mesh.position.y = point.y;
-                mesh.position.z = point.z;
-                mesh.rotation.x = 0;
-                mesh.rotation.y = 0;
-                mesh.rotation.z = 0;
-                scene.value.add(mesh)
-                unitData.instances.push(mesh)
-                unitsManager.add(mesh, unitData.spawnData, 'enemy')
-                allUnitsSpawned = false                
+                await spawnUnit(unitData, point)
+                allUnitsSpawned = false   
             }
         }
     }
@@ -56,7 +57,9 @@ const spawnUnits = async () => {
 const spawnConstructions = async () => {
     const map = useMap()
     const items = useItems()
-    const { constructions: c } = map.map.value.enemy
+    const enemyData = await map.enemy()
+
+    const { constructions: c } = enemyData
 
     for (const construction of c) {
 
@@ -96,9 +99,9 @@ const spawnConstructions = async () => {
     }
 }
 
-const unitsBehaviour = () => {
+const unitsBehaviour = async () => {
     if (!armyIsSpawned.value) {
-        spawnUnits()
+        await spawnUnits()
         return
     }
 
@@ -122,7 +125,8 @@ export const useEnemy = () => {
 
     const enable = () => {
         const map = useMap()
-        const { spawn_every } = map.map.value.enemy
+        const enemyData = map.enemy()
+        const { spawn_every } = enemyData
         spawnInterval.value = setInterval(unitsBehaviour, spawn_every);
     }
 

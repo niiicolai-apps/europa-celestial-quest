@@ -25,10 +25,10 @@ export function useObjectives(player) {
         const itemsManager = useItems();
         const unitsManager = useUnits();
 
-        const mapData = map.map.value;
+        const objectivesData = await map.objectives();
         const rewardCache = [];        
 
-        for (const objectiveData of mapData.objectives) {
+        for (const objectiveData of objectivesData) {
             const goals = [];
             const rewards = [];
 

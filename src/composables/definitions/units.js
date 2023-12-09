@@ -1,6 +1,5 @@
 import FEATURES from './features.js'
 import PRIMARY_FUNCTIONS from './primary_functions.js'
-import meshesJson from '../../meshes/meshes.json'
 
 const UNIT_PRIMARY_FUNCTIONS = PRIMARY_FUNCTIONS.UNITS;
 
@@ -23,7 +22,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['B S-1'],
+        mesh: 'B S-1',
     },
     BOT_SPIDER_2: {
         name: 'B S-2',
@@ -43,7 +42,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['B S-2'],
+        mesh: 'B S-2',
     },
     DRONE_LASER_1: {
         name: 'D L-1',
@@ -63,7 +62,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['D L-1'],
+        mesh: 'D L-1',
     },
     DRONE_LASER_2: {
         name: 'D L-2',
@@ -83,7 +82,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['D L-2'],
+        mesh: 'D L-2',
     },
     ROVER_RESEARCH_H20: {
         name: 'RR H20',
@@ -103,7 +102,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['RR H20'],
+        mesh: 'RR H20',
     },
     ROVER_RESEARCH_D1: {
         name: 'RR D-1',
@@ -123,7 +122,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['RR D-1'],
+        mesh: 'RR D-1',
     },
     ROVER_RESEARCH_S1: {
         name: 'RR S-1',
@@ -143,7 +142,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['RR S-1'],
+        mesh: 'RR S-1',
     },
     ROVER_WARRIOR_3: {
         name: 'RR W-3',
@@ -163,7 +162,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['RR W-3'],
+        mesh: 'RR W-3',
     },
     ROVER_WARRIOR_6: {
         name: 'RR W-6',
@@ -183,7 +182,7 @@ const UNITS = {
             { currency: "ice", amount: 1 },
             { currency: "power", amount: 1 }
         ],
-        mesh: meshesJson['RR W-6'],
+        mesh: 'RR W-6',
     }
 }
 

@@ -1,3 +1,40 @@
+<template>
+    <TimelinePanel />
+    <SubTitle ref="subTitleRef" />
+    <Toast ref="toastRef" />
+
+    <WebGL.components.Canvas3D 
+        ref="canvasRef" 
+        :options="webGLOptions" 
+        class="w-full h-screen block" 
+    />
+
+    <Audio 
+        ref="audioRef" 
+        src="/audio/music_happy_bounce.wav" 
+        :volume="0.1" 
+        :showMute="false" 
+    />
+
+    <Audio 
+        ref="audioRefBgg" 
+        src="/audio/music_happy_bounce.wav" 
+        :volume="0.1" 
+        :showMute="false" 
+    />
+
+    <div v-if="isGameStarted && !isPlayingTimeline">
+        <SettingsPanel />
+        <ShopPanel />
+        <PausePanel />
+        <ObjectivesPanel />
+
+        <TopPanel />
+        <InspectPanel />
+        <BottomPanel />
+    </div>
+</template>
+
 <script setup>
 import * as THREE from 'three'
 import WebGL from 'frontend-webgl';
@@ -51,40 +88,3 @@ onMounted(async () => {
     await gameManager.resumeGame();
 })
 </script>
-
-<template>
-    <TimelinePanel />
-    <SubTitle ref="subTitleRef" />
-    <Toast ref="toastRef" />
-
-    <WebGL.components.Canvas3D 
-        ref="canvasRef" 
-        :options="webGLOptions" 
-        class="w-full h-screen block" 
-    />
-
-    <Audio 
-        ref="audioRef" 
-        src="/audio/music_happy_bounce.wav" 
-        :volume="0.1" 
-        :showMute="false" 
-    />
-
-    <Audio 
-        ref="audioRefBgg" 
-        src="/audio/music_happy_bounce.wav" 
-        :volume="0.1" 
-        :showMute="false" 
-    />
-
-    <div v-if="isGameStarted && !isPlayingTimeline">
-        <SettingsPanel />
-        <ShopPanel />
-        <PausePanel />
-        <ObjectivesPanel />
-
-        <TopPanel />
-        <InspectPanel />
-        <BottomPanel />
-    </div>
-</template>

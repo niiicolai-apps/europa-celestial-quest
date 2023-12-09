@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import texturesJson from '../textures/textures.json'
 
 let textureCache = {} 
 const textureLoader = new THREE.TextureLoader()
@@ -32,6 +31,7 @@ export const getTexturePack = async (name, object_uuid) => {
     const cached = getCached(name, object_uuid)
     if (cached) return cached
 
+    const texturesJson = await fetch('/textures/textures.json').then(res => res.json())
     const texturePack = texturesJson.find(texturePack => texturePack.name === name)
     if (!texturePack) return null
 

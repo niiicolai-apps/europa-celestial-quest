@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { useLocalization } from '../composables/localization.js';
+import { useLocalization } from '../../composables/localization.js';
 const { getLocale } = useLocalization();
 defineProps({
     id: {

@@ -1,27 +1,33 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { getTexturePack, removeTexturePack, disposeTextureCache } from './textures.js';
+import { ref } from 'vue';
 
 const gltfLoader = new GLTFLoader();
 const meshCache = {};
+let meshesJson = null;
 
-const getCached = (url) => {
-    if (meshCache[url]) {
-        const mesh = meshCache[url].mesh;
+const getCached = (name) => {
+    if (meshCache[name]) {
+        const mesh = meshCache[name].mesh;
         const userData = mesh.userData;
         mesh.userData = {}
         const clone = mesh.clone();
         mesh.userData = userData;
-        meshCache[url].clones.push(clone);
+        meshCache[name].clones.push(clone);
         return clone;
     }
 
     return null;
 }
 
-export const getMesh = async (mesh) => {
-    const cached = getCached(mesh.url);
+export const getMesh = async (name) => {
+    const cached = getCached(name);
     if (cached) return cached;
+    if (!meshesJson) 
+        meshesJson = await fetch('/meshes/meshes.json').then(res => res.json());
+
+    const mesh = meshesJson[name];
 
     let object3D = null;
     if (mesh.type === 'GLTF') {
@@ -50,7 +56,7 @@ export const getMesh = async (mesh) => {
         clones: [object3D.uuid],
     }
 
-    meshCache[mesh.url] = meshInstance;
+    meshCache[name] = meshInstance;
     return meshInstance.mesh;
 }
 

@@ -170,10 +170,7 @@ export const useUnits = () => {
     }
 
     const setCommand = (type, position, team='player') => {
-        const command = commands.value.find(c => c.team === team);
-        if (!command) {
-            throw new Error(`Command not found for team: ${team}`);
-        }
+        const command = createCommand(team);
 
         command.type = type;
         command.position = position;

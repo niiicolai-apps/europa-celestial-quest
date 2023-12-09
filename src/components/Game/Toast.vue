@@ -17,7 +17,7 @@
 <script setup>
 import UI from 'frontend-ui';
 import { ref, defineExpose, onMounted, onUnmounted } from 'vue';
-import Locale from '../Locale.vue';
+import Locale from '../General/Locale.vue';
 
 const queue = ref([]);
 const item = ref(null);

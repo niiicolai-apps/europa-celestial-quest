@@ -1,7 +1,7 @@
 <script setup>
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
-import Locale from './Locale.vue';
+import Locale from './General/Locale.vue';
 import SettingsPanel from './General/SettingsPanel.vue';
 import PrivacyPanel from './General/PrivacyPanel.vue';
 import ReleaseNotesPanel from './General/ReleaseNotesPanel.vue';

@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 import { getMesh } from './meshes.js';
 import { useMap } from './map.js';
-import meshesJson from '../meshes/meshes.json'
 
 const isInitialized = ref(false);
 const map = useMap();
@@ -11,9 +10,9 @@ export const useResources = () => {
     const init = async (scene) => {
         if (isInitialized.value) return false;
 
-        const mapData = map.map.value;
-        for (const resourceData of mapData.resources) {
-            const resource = await getMesh(meshesJson[resourceData.mesh.name]);
+        const resourcesData = await map.resources();
+        for (const resourceData of resourcesData) {
+            const resource = await getMesh(resourceData.mesh.name);
             resource.position.set(resourceData.position.x, resourceData.position.y, resourceData.position.z);
             resource.rotation.set(resourceData.rotation.x, resourceData.rotation.y, resourceData.rotation.z);
             resource.scale.set(resourceData.scale.x, resourceData.scale.y, resourceData.scale.z);

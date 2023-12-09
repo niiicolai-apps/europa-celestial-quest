@@ -1,7 +1,6 @@
 import FEATURES from './features.js'
 import PRIMARY_FUNCTIONS from './primary_functions.js'
 import UNITS from './units.js'
-import meshesJson from '../../meshes/meshes.json'
 
 const CONSTRUCTION_PRIMARY_FUNCTIONS = PRIMARY_FUNCTIONS.CONSTRUCTIONS;
 
@@ -11,7 +10,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.BASE,
         image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
-        mesh: meshesJson['europa_horizon_drifter_x1'],
+        mesh: 'europa_horizon_drifter_x1',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -39,7 +38,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/bot_builder.png',
         requiredLevel: 1,
-        mesh: meshesJson['Robot Facility'],
+        mesh: 'Robot Facility',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -80,7 +79,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/drone_builder.png',
         requiredLevel: 1,
-        mesh: meshesJson['Drone Facility'],
+        mesh: 'Drone Facility',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -121,7 +120,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/hydrogen_fuel_tank.png',
         requiredLevel: 1,
-        mesh: meshesJson['Hydrogen Fuel Tank'],
+        mesh: 'Hydrogen Fuel Tank',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -168,7 +167,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/rock_metal_extractor.png',
         requiredLevel: 1,
-        mesh: meshesJson['Rock Metal Extractor'],
+        mesh: 'Rock Metal Extractor',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -215,7 +214,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/rover_research_facility.png',
         requiredLevel: 1,
-        mesh: meshesJson['Rover Research Facility'],
+        mesh: 'Rover Research Facility',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -259,7 +258,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/rover_warrior_facility.png',
         requiredLevel: 1,
-        mesh: meshesJson['Rover Warrior Facility'],
+        mesh: 'Rover Warrior Facility',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -300,7 +299,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.TOWER,
         image: 'thumbnails/human_construction/machine_gun_turrent.png',
         requiredLevel: 1,
-        mesh: meshesJson['Machine Gun Turrent'],
+        mesh: 'Machine Gun Turrent',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },
@@ -364,7 +363,7 @@ const CONSTRUCTIONS = [
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/solar_panel.png',
         requiredLevel: 1,
-        mesh: meshesJson['Solar Panel'],
+        mesh: 'Solar Panel',
         costs: [
             { currency: "metal", amount: 0 },
             { currency: "rock", amount: 1 },

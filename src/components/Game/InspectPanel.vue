@@ -187,7 +187,7 @@
 <script setup>
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
-import Locale from '../Locale.vue';
+import Locale from '../General/Locale.vue';
 import { ref, computed, watch } from 'vue';
 import { useInspect } from '../../composables/inspect.js';
 import { useLocalization } from '../../composables/localization.js';

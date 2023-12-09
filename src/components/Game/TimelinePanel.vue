@@ -8,7 +8,7 @@
 
 <script setup>
 import UI from 'frontend-ui';
-import Locale from '../Locale.vue';
+import Locale from '../General/Locale.vue';
 import { useTimeline } from '../../composables/timeline.js';
 import { computed } from 'vue';
 

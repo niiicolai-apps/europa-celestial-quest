@@ -47,7 +47,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Panel from '../UI/Panel.vue';
-import Locale from '../Locale.vue';
+import Locale from './Locale.vue';
 import { computed } from 'vue';
 import { useLocalization } from '../../composables/localization';
 const localizationManager = useLocalization();

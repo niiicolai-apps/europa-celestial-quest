@@ -1,7 +1,7 @@
 <script setup>
 import WebGl from 'frontend-webgl';
 import UI from 'frontend-ui';
-import Locale from '../components/Locale.vue';
+import Locale from '../components/General/Locale.vue';
 import { setMeta } from '../composables/meta.js';
 
 setMeta("not_found")

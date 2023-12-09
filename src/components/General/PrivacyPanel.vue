@@ -34,7 +34,7 @@
 <script setup>
 import UI from 'frontend-ui';
 import Panel from '../UI/Panel.vue';
-import Locale from '../Locale.vue';
+import Locale from './Locale.vue';
 import { computed } from 'vue';
 import { useLocalization } from '../../composables/localization';
 const localizationManager = useLocalization();
