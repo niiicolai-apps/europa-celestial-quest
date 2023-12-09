@@ -4,13 +4,24 @@ import { useGround } from './ground.js';
 import { useResources } from './resources.js';
 import { useItems } from './items.js';
 import { useBank } from './bank.js';
+import { useHealth } from './health.js';
+import { removeMesh } from './meshes.js';
 import * as THREE from 'three';
 import UnitsBehavior from '../units/units_behavior.json';
 import UnitStates from './unit_states.js';
 
 const ground = useGround();
 const units = ref([]);
-const commands = ref([{ team: 'player', type: 'regroup', position: { x: 0, y: 0, z: 0 } }]);
+const scene = ref(null);
+
+const domElement = ref(null);
+const commands = ref([
+    { 
+        team: 'player', 
+        type: 'regroup', 
+        position: { x: 0, y: 0, z: 0 } 
+    }
+]);
 
 const isSettingWarriorCommand = ref(false);
 const WARRIOR_COMMANDS = ['regroup', 'attack'];
@@ -19,7 +30,6 @@ const warriorMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const warriorMarkerGeometry = new THREE.BoxGeometry(1, 1, 1);
 const warriorMarkerMesh = new THREE.Mesh(warriorMarkerGeometry, warriorMarkerMaterial);
 
-const domElement = ref(null);
 
 const setAction = (unit, actionIndex) => {
     unit.actionIndex = actionIndex;
@@ -60,20 +70,24 @@ export const useUnits = () => {
     const featuresToOptions = (features) => {
         const options = {};
         for (const feature of features) {
-            options[feature.name] = feature.options;
+            options[feature.name] = {...feature.options};
         }
         return options;
     }
 
-    const init = async (scene, _domElement) => {
-        scene.add(warriorMarkerMesh);
-        warriorMarkerMesh.visible = false;
+    const init = async (_scene, _domElement) => {
+        scene.value = _scene;
+        scene.value.add(warriorMarkerMesh);
         domElement.value = _domElement;
+        warriorMarkerMesh.visible = false;
     }
 
     const add = (object3D, data, team = 'player') => {
+        // Create unit options
         const options = featuresToOptions(data.features);
-        units.value.push({
+
+        // Create unit
+        const unit = {
             object3D,
             data,
             options,
@@ -82,11 +96,53 @@ export const useUnits = () => {
             state: null,
             target: null,
             team
-        });
+        };
+        
+        // Add unit to units list
+        units.value.push(unit);
 
+        // Add unit command controller
         const existingCommand = commands.value.find(c => c.team === team);
         if (!existingCommand) {
-            commands.value.push({ team, type: 'regroup', position: { x: 0, y: 0, z: 0 } });
+            commands.value.push({ 
+                team, 
+                type: 'regroup', 
+                position: { x: 0, y: 0, z: 0 } 
+            });
+        }
+
+        // Add unit to health system
+        if (options.health) {
+            useHealth().addHealthObject(
+                object3D,
+                team,
+                options.health.current,
+                options.health.maxHealth,
+                // onDie
+                () => {
+                    remove(object3D)
+                    scene.value.remove(object3D)
+                    removeMesh(object3D)
+                },
+                // onDamage
+                (attacker) => {
+                    const behavior = UnitsBehavior[unit.data.primary_function];
+                    const { state: reactStateName, blocking_states } = behavior.on_damage;
+                    if (blocking_states.includes(unit.state?.name)) {
+                        return;
+                    }
+
+                    const state = behavior.states.find(s => s.name === reactStateName);
+                    if (!state) {
+                        throw new Error(`State not found: ${reactStateName}`);
+                    }
+
+                    console.log(attacker)
+                    unit.state = state;
+                    unit.target = attacker;
+                    setAction(unit, 0);
+                }
+            )
         }
     }
 
@@ -139,7 +195,7 @@ export const useUnits = () => {
             commands.value.push({ team, type, position });
             return;
         }
-        
+
         command.type = type;
         command.position = position;
     }

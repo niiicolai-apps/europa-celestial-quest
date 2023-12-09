@@ -7,7 +7,11 @@ const meshCache = {};
 
 const getCached = (url) => {
     if (meshCache[url]) {
-        const clone = meshCache[url].mesh.clone()
+        const mesh = meshCache[url].mesh;
+        const userData = mesh.userData;
+        mesh.userData = {}
+        const clone = mesh.clone();
+        mesh.userData = userData;
         meshCache[url].clones.push(clone);
         return clone;
     }

@@ -3,6 +3,7 @@ import { useNavigation } from "./navigation.js";
 import { useBank } from "./bank.js";
 import { useItems } from "./items.js";
 import { useUnits } from "./units.js";
+import { useHealth } from "./health.js";
 
 class Base {
     constructor(unit, options={}) {
@@ -66,6 +67,22 @@ class MoveTo extends Base {
     }
 }
 
+class MoveToTarget extends Base {
+    constructor(unit, options={}) {
+        super(unit, options);
+        if (!unit.options.move) throw new Error('Unit Move feature is required');
+        if (!unit.target) throw new Error('Unit target is required');
+    }
+
+    exit() {
+        this.unit.options.move.destination = this.unit.target.position;
+    }
+
+    isComplete() {
+        return true;
+    }
+}
+
 class FindClosest extends Base {
     constructor(unit, options={}) {
         super(unit, options);
@@ -99,19 +116,17 @@ class FindClosest extends Base {
                 : this.unit.options.scan.deliver_construction;
             this.target = useItems().findClosestItem(position, targetType);
         } else if (type === 'enemy') {
-            const constructions = useItems().items.value.filter(i => i.userData.team !== this.unit.team && i.userData.health?.current > 0);
-            const units = useUnits().units.value
-                .filter(u => u.team !== this.unit.team && u.options.health?.current > 0)
-                .map(u => u.object3D);
-            if (constructions.length === 0 && units.length === 0) {
+            const healthObjects = useHealth()
+                .findAllNotOnTeam(this.unit.team)
+                .map(h => h.object3D);
+
+            if (healthObjects.length === 0) {
+                console.log('No health objects found, regrouping');
                 useUnits().setStateByFunction('warrior', 'regroup', this.unit.team);
                 return;
             }
-            const closestConstruction = this.findClosestObject(constructions, position);
-            const closestUnit = this.findClosestObject(units, position);
-            this.target = closestConstruction.closestDistance < closestUnit.closestDistance
-                ? closestConstruction.object
-                : closestUnit.object;
+            const closest = this.findClosestObject(healthObjects, position);
+            this.target = closest.object;
         }
     }
 
@@ -155,11 +170,11 @@ class FindRandom extends Base {
             const targetType = this.unit.options.scan.deliver_construction;
             this.target = useItems().findClosestItem(position, targetType);
         }
-
-        console.log(this.target);
     }
 
     exit() {
+        if (!this.target) return;
+
         if (this.unit.options.collect) {
             this.unit.options.collect.target = this.target;
             this.unit.target = this.unit.options.collect.speed;
@@ -249,6 +264,7 @@ class Attack extends Base {
         this.rate = this.unit.options.attack.rate;
         this.damage = this.unit.options.attack.damage;
         this.nextAttack = Date.now();
+        this.healthManager = useHealth();
     }
 
     resetAttack() {
@@ -259,17 +275,15 @@ class Attack extends Base {
         if (!this.unit.target) return;
         const target = this.unit.target;
         const distance = this.unit.object3D.position.distanceTo(target.position);
-        if (distance < this.distance && target.userData.health.current > 0) {
-            this.resetAttack();
 
-            target.userData.health.current -= this.damage;
-            if (target.userData.health.current <= 0) {
-                target.userData.health.onDie();
+        if (distance < this.distance) {
+            this.resetAttack();
+            this.healthManager.applyDamage(target, this.damage, this.unit.object3D, this.unit.team);
+            
+            const targetIsDead = this.healthManager.isDead(target);
+            if (targetIsDead) {
                 this.unit.target = null;
             }
-            
-        } else if (target.userData.health.current <= 0) {
-            this.unit.target = null;
         }
     }
 
@@ -301,4 +315,5 @@ export default {
     WAIT: Wait,
     REGROUP: Regroup,
     ATTACK: Attack,
+    MOVE_TO_TARGET: MoveToTarget,
 }

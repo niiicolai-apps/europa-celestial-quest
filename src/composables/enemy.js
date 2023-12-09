@@ -104,7 +104,9 @@ const unitsBehaviour = () => {
 
     if (armyCommand.value.type !== 'attack') {
         armyCommand.value.type = 'attack'
+        useUnits().setCommand('attack', { "x": 246, "y": 20, "z": -423 }, 'enemy');
         useUnits().setStateByFunction('warrior', 'attack', 'enemy')
+        console.log('Attack!')
     }
 }
 
@@ -115,7 +117,7 @@ export const useEnemy = () => {
 
         scene.value = _scene
         isInitialized.value = true
-        useUnits().setCommand('regroup', { "x": 246, "y": 20, "z": -423 }, 'enemy');
+        //useUnits().setCommand('regroup', { "x": 246, "y": 20, "z": -423 }, 'enemy');
         await spawnConstructions()
     }
 

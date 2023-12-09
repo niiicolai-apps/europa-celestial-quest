@@ -2,7 +2,7 @@
     "collector": {
         "states": [
             {
-                "name": "Collect Resources",
+                "name": "collect resources",
                 "actions": [
                     {
                         "method": "find_closest",
@@ -41,7 +41,7 @@
                 ]
             },
             {
-                "name": "Run Away",
+                "name": "run away",
                 "actions": [
                     {
                         "method": "find_random",
@@ -61,12 +61,16 @@
                     }
                 ]
             }
-        ]
+        ],
+        "on_damage": {
+            "blocking_states": [],
+            "state": "run away"
+        }
     },
     "scanner": {
         "states": [
             {
-                "goal": "Scan Resources",
+                "name": "scan resources",
                 "actions": [
                     {
                         "method": "find_random",
@@ -105,7 +109,7 @@
                 ]
             },
             {
-                "name": "Run Away",
+                "name": "run away",
                 "actions": [
                     {
                         "method": "find_random",
@@ -125,7 +129,11 @@
                     }
                 ]
             }
-        ]
+        ],
+        "on_damage": {
+            "blocking_states": [],
+            "state": "run away"
+        }
     },
     "warrior": {
         "states": [
@@ -163,15 +171,18 @@
                 "name": "defend",
                 "actions": [
                     {
+                        "method": "move_to_target",
+                        "options": {
+                        }
+                    },
+                    {
                         "method": "move_to",
                         "options": {
-                            "type": "last_attacker"
                         }
                     },
                     {
                         "method": "attack",
                         "options": {
-                            "who": "last_attacker"
                         }
                     }
                 ]
@@ -198,6 +209,10 @@
                     }
                 ]
             }
-        ]
+        ],
+        "on_damage": {
+            "blocking_states": ["attack"],
+            "state": "defend"
+        }
     }
 }

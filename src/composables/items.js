@@ -1,15 +1,18 @@
 import PersistentData from './persistent_data.js'
 import ConstructionDefinitions from './construction_definitions.js'
+import ConstructionStates from './construction_states.js'
+import ConstructionBehaviors from '../constructions/constructions_behavior.json'
 import UnitController from './inspect/unit_controller.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
-import { getMesh } from './meshes.js'
-import { removeMesh } from './meshes.js'
+import { useHealth } from './health.js'
+import { getMesh, removeMesh } from './meshes.js'
 import { ref } from 'vue'
 
 const items = ref([])
 const bankManager = useBank()
 const isInitialized = ref(false)
+const interval = ref(null)
 
 let scene = null
 let queueInterval = null
@@ -44,6 +47,40 @@ const recalculateStorage = () => {
     bankManager.overrideBalance(power + bankManager.getCurrency('power').defaultMax, 'power');
 }
 
+const setAction = (construction, actionIndex) => {
+    construction.userData.actionIndex = actionIndex;
+
+    if (construction.userData.action) {
+        construction.userData.action.exit();
+    }
+
+    const action = construction.userData.state.actions[actionIndex];
+    const nextClazz = ConstructionStates[action.method.toUpperCase()];
+    construction.userData.action = new nextClazz(construction, action.options);
+    construction.userData.action.enter();
+}
+
+const loop = () => {
+    for (const construction of items.value) {
+        const behavior = ConstructionBehaviors[construction.userData.primaryFunction];
+        if (!construction.userData.state) {
+            construction.userData.state = behavior.states[0];
+        }
+        if (!construction.userData.action) {
+            setAction(construction, 0);
+        }
+
+        if (construction.userData.action?.isComplete()) {
+            const actionIndex = construction.userData.actionIndex;
+            const nextActionIndex = (actionIndex + 1) % construction.userData.state.actions.length;
+            setAction(construction, nextActionIndex);
+            console.log('Next action', construction.userData.action)
+        }
+
+        construction.userData.action?.update();
+    }
+}
+
 export const useItems = () => {
     const init = async (_scene) => {
         if (isInitialized.value) return false
@@ -51,6 +88,7 @@ export const useItems = () => {
         scene = _scene
         await loadState()
 
+        /*
         queueInterval = setInterval(() => {
             const time = Date.now()
 
@@ -80,7 +118,7 @@ export const useItems = () => {
                 }
             }
         }, 15000);
-
+        */
         isInitialized.value = true
         return true
     }
@@ -109,6 +147,10 @@ export const useItems = () => {
             upgrades: itemDefinition.upgrades,
             mesh: itemDefinition.mesh,
             team,
+            primaryFunction: itemDefinition.primary_function,
+            state: null,
+            action: null,
+            target: null,
         }
 
         item.userData.canBuild = UnitController.canBuild(item);
@@ -122,20 +164,31 @@ export const useItems = () => {
         const produceFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'produce')
         item.userData.canProduce = produceFeature !== undefined
 
+        const attackFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'attack')
+        item.userData.canAttack = attackFeature !== undefined
+
         const healthFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'health')
         if (healthFeature) {
-            item.userData.health = {
-                current: healthFeature.options.current,
-                max: healthFeature.options.maxHealth,
-                onDie: () => {
+            useHealth().addHealthObject(
+                item,
+                team,
+                healthFeature.options.current,
+                healthFeature.options.maxHealth,
+                () => {
                     removeItemFromState(item)
                     scene.remove(item)
                     removeMesh(item)
+                },
+                (attacker) => {
                 }
-            }
+            )
         }
 
         return item
+    }
+
+    const dequeueAny = (item) => {
+        UnitController.dequeueAny(item, scene)
     }
 
     const loadState = async () => {
@@ -234,6 +287,14 @@ export const useItems = () => {
         }).length
     }
 
+    const enable = () => {
+        interval.value = setInterval(loop, 1000)
+    }
+
+    const disable = () => {
+        clearInterval(interval.value)
+    }
+
     return {
         init,
         spawn,
@@ -249,5 +310,8 @@ export const useItems = () => {
         findItemByNameAndUpgrade,
         countItemsByName,
         countItemsByNameAndUpgrade,
+        dequeueAny,
+        enable,
+        disable,
     }
 }

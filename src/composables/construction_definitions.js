@@ -6,6 +6,7 @@ const FEATURES = {
             name: 'attack',
             options: {
                 type: 'missile',
+                target: null,
                 distance,
                 rate,
                 damage,
@@ -17,6 +18,7 @@ const FEATURES = {
             name: 'attack',
             options: {
                 type: 'machine_gun',
+                target: null,
                 distance,
                 rate,
                 damage,
@@ -28,6 +30,7 @@ const FEATURES = {
             name: 'attack',
             options: {
                 type: 'laser',
+                target: null,
                 distance,
                 rate,
                 damage,
@@ -106,10 +109,17 @@ const FEATURES = {
     },
 }
 
-const PRIMARY_FUNCTIONS = {
+const UNIT_PRIMARY_FUNCTIONS = {
     COLLECTOR: 'collector',
     WARRIOR: 'warrior',
     SCANNER: 'scanner',
+}
+
+const CONSTRUCTION_PRIMARY_FUNCTIONS = {
+    BASE: 'base',
+    SPAWNER: 'spawner',
+    TOWER: 'tower',
+    PRODUCER: 'producer',
 }
 
 const UNITS = {
@@ -118,7 +128,7 @@ const UNITS = {
         image: 'thumbnails/human_units/bot_spider_1.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MISSILE_ATTACK(),
             FEATURES.MOVE(),
@@ -138,7 +148,7 @@ const UNITS = {
         image: 'thumbnails/human_units/bot_spider_2.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MISSILE_ATTACK(),
             FEATURES.MOVE(),
@@ -158,7 +168,7 @@ const UNITS = {
         image: 'thumbnails/human_units/drone_laser_1.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.LASER_ATTACK(),
             FEATURES.MOVE(),
@@ -178,7 +188,7 @@ const UNITS = {
         image: 'thumbnails/human_units/drone_laser_2.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.LASER_ATTACK(),
             FEATURES.MOVE(),
@@ -198,7 +208,7 @@ const UNITS = {
         image: 'thumbnails/human_units/rover_research_h20.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
             FEATURES.COLLECT("ice", [{ currency: "power", amount: 1 }], 1, 5000, "Hydrogen Fuel Tank"),
             FEATURES.MOVE(),
@@ -218,7 +228,7 @@ const UNITS = {
         image: 'thumbnails/human_units/rover_research_d1.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.COLLECTOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
             FEATURES.COLLECT("rock", [{ currency: "power", amount: 1 }], 1, 5000, "Rock Metal Extractor"),
             FEATURES.MOVE(),
@@ -238,7 +248,7 @@ const UNITS = {
         image: 'thumbnails/human_units/rover_research_d1.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.SCANNER,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.SCANNER,
         features: [
             FEATURES.MOVE(),
             FEATURES.HEALTH(),
@@ -258,7 +268,7 @@ const UNITS = {
         image: 'thumbnails/human_units/rover_warrior_6.png',
         requiredLevel: 1,
         complete_time: 1000,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MACHINE_GUN_ATTACK(),
             FEATURES.MOVE(),
@@ -278,7 +288,7 @@ const UNITS = {
         image: 'thumbnails/human_units/rover_warrior_3.png',
         complete_time: 1000,
         requiredLevel: 1,
-        primary_function: PRIMARY_FUNCTIONS.WARRIOR,
+        primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MACHINE_GUN_ATTACK(),
             FEATURES.MOVE(),
@@ -298,7 +308,7 @@ const UNITS = {
 export default [
     {
         name: 'Europa Horizon Drifter X1',
-        type: 'base',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.BASE,
         image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
         mesh: meshesJson['europa_horizon_drifter_x1'],
@@ -326,7 +336,7 @@ export default [
     },
     {
         name: 'Robot Facility',
-        type: 'spawner',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/bot_builder.png',
         requiredLevel: 1,
         mesh: meshesJson['Robot Facility'],
@@ -367,7 +377,7 @@ export default [
     },
     {
         name: 'Drone Facility',
-        type: 'spawner',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/drone_builder.png',
         requiredLevel: 1,
         mesh: meshesJson['Drone Facility'],
@@ -408,7 +418,7 @@ export default [
     },
     {
         name: 'Hydrogen Fuel Tank',
-        type: 'hydrogen',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/hydrogen_fuel_tank.png',
         requiredLevel: 1,
         mesh: meshesJson['Hydrogen Fuel Tank'],
@@ -455,7 +465,7 @@ export default [
     },
     {
         name: 'Rock Metal Extractor',
-        type: 'rock',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/rock_metal_extractor.png',
         requiredLevel: 1,
         mesh: meshesJson['Rock Metal Extractor'],
@@ -502,7 +512,7 @@ export default [
     },
     {
         name: 'Rover Research Facility',
-        type: 'spawner',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/rover_research_facility.png',
         requiredLevel: 1,
         mesh: meshesJson['Rover Research Facility'],
@@ -546,7 +556,7 @@ export default [
     },
     {
         name: 'Rover Warrior Facility',
-        type: 'spawner',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/rover_warrior_facility.png',
         requiredLevel: 1,
         mesh: meshesJson['Rover Warrior Facility'],
@@ -587,7 +597,7 @@ export default [
     },
     {
         name: 'Machine Gun Turrent',
-        type: 'spawner',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.TOWER,
         image: 'thumbnails/human_construction/machine_gun_turrent.png',
         requiredLevel: 1,
         mesh: meshesJson['Machine Gun Turrent'],
@@ -651,7 +661,7 @@ export default [
     },
     {
         name: 'Solar Panel',
-        type: 'power',
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/solar_panel.png',
         requiredLevel: 1,
         mesh: meshesJson['Solar Panel'],

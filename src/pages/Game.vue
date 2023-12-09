@@ -19,12 +19,14 @@ import { useUnits } from '../composables/units.js';
 import { useResources } from '../composables/resources.js';
 import { useMap } from '../composables/map.js';
 import { useEnemy } from '../composables/enemy.js';
+import { useBillboard } from '../composables/billboard.js';
 import { TimelineFromJson } from '../composables/timeline.js';
 
 import introTimelineJson from '../timelines/intro.json';
 import PersistentData from '../composables/persistent_data.js';
 import Camera from '../composables/camera.js';
 
+import Toast from '../components/Game/Toast.vue';
 import SettingsPanel from '../components/General/SettingsPanel.vue';
 import ObjectivesPanel from '../components/Game/Panels/ObjectivesPanel.vue';
 import ShopPanel from '../components/Game/Panels/ShopPanel.vue';
@@ -49,12 +51,14 @@ const itemsManager = useItems();
 const unitsManager = useUnits();
 const resourcesManager = useResources();
 const navigationManager = useNavigation();
+const billboardManager = useBillboard();
 const mapManager = useMap();
 const enemyManager = useEnemy();
 
 const subTitleRef = ref(null);
 const audioRef = ref(null);
 const audioRefBgg = ref(null);
+const toastRef = ref(null);
 const canvasRef = ref(null);
 const intro = ref(null);
 const isPlayingIntro = ref(false);
@@ -82,6 +86,8 @@ onMounted(async () => {
         subTitleRef.value,
         startGame
     );
+
+    toastRef.value.add('toasts.welcome', 5000, 'primary');
 })
 
 onUnmounted(() => {
@@ -123,11 +129,14 @@ const startGame = async () => {
     await unitsManager.init(scene, renderer.domElement);
     await resourcesManager.init(scene);
     await enemyManager.init(scene);
+    await billboardManager.init(camera);
     await groundManager.init(scene, camera, renderer.domElement, lifeCycle);
     
     groundManager.enable();
     unitsManager.enable();
     enemyManager.enable();
+    billboardManager.enable();
+    itemsManager.enable();
 
     lifeCycle.onAnimate.push(() => {
         Camera.manager.update();
@@ -165,6 +174,7 @@ const startGame = async () => {
     <Audio ref="audioRef" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
     <Audio ref="audioRefBgg" src="/audio/music_happy_bounce.wav" :volume="0.1" :showMute="false" />
     <SubTitle ref="subTitleRef" />
+    <Toast ref="toastRef" />
 
     <div v-if="interacted && !isPlayingIntro">
 

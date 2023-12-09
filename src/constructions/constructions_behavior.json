@@ -1,0 +1,74 @@
+{
+    "base": {
+        "states": [
+            {
+                "name": "idle",
+                "actions": [
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "spawner": {
+        "states": [
+            {
+                "name": "spawn",
+                "actions": [
+                    {
+                        "method": "try_spawn",
+                        "options": {
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "tower": {
+        "states": [
+            {
+                "name": "idle",
+                "actions": [
+                    {
+                        "method": "wait",
+                        "options": {
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "defend",
+                "actions": [
+                    {
+                        "method": "attack",
+                        "options": {
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "producer": {
+        "states": [
+            {
+                "name": "produce resources",
+                "actions": [
+                    {
+                        "method": "timer",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "produce",
+                        "options": {
+                            "type": "resource"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
