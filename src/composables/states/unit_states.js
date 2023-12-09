@@ -56,7 +56,6 @@ class MoveTo extends Base {
         const unitOptions = unit.options;
         const move = unitOptions.move;
         const moveDestination = move ? move.destination : null;
-        console.log(manager)
         if (!move) throw new Error('Unit Move feature is required');
         if (!moveDestination) throw new Error('Unit Move feature destination is required');
     }
@@ -189,7 +188,6 @@ class FindClosest extends Base {
         const attack = unitOptions.attack;
         const move = unitOptions.move;
         const targetPosition = this.target.position;
-        console.log(this.target)
         if (collect) {
             collect.target = this.target;
             manager.target = collect.speed;

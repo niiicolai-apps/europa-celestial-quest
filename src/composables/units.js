@@ -196,6 +196,10 @@ export const useUnits = () => {
         return units.value.filter(u => u.data.name === name).length;
     }
 
+    const countByTeam = (team) => {
+        return units.value.filter(u => u.team === team).length;
+    }
+
     return {
         units,
         init,
@@ -211,5 +215,6 @@ export const useUnits = () => {
         findByName,
         countByName,
         setCommand,
+        countByTeam
     }
 }

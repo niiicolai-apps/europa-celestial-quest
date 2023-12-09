@@ -8,14 +8,10 @@
 import Panel from '../../UI/Panel.vue';
 import ObjectiveCard from './ObjectiveCard.vue';
 import { computed } from 'vue';
+import { useObjectives } from '../../../composables/objectives.js';
 import { useLocalization } from '../../../composables/localization.js';
-const props = defineProps({
-    objectivesManager: {
-        type: Object,
-        required: true,
-    },
-})
-const localizationManager = useLocalization();
-const objectives = computed(() =>props.objectivesManager.controller.value.findIncomplete());
 
+const objectivesManager = useObjectives({});
+const localizationManager = useLocalization();
+const objectives = computed(() => objectivesManager.controller.value.findIncomplete());
 </script>

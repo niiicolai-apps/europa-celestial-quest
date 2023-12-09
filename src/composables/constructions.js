@@ -247,6 +247,10 @@ export const useItems = () => {
         }).length
     }
 
+    const countByTeam = (team) => {
+        return items.value.filter(item => item.userData.team === team).length
+    }
+
     const enable = () => {
         //interval.value = setInterval(loop, 1000)
     }
@@ -272,6 +276,7 @@ export const useItems = () => {
         findByNameAndUpgradeAndTeam,
         countItemsByName,
         countItemsByNameAndUpgrade,
+        countByTeam,
         dequeueAny,
         enable,
         disable,
