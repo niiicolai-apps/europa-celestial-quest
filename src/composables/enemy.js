@@ -2,16 +2,20 @@ import { getMesh } from './meshes.js'
 import { useMap } from './map.js'
 import { useItems } from './constructions.js'
 import { useUnits } from './units.js'
-import { useNavigation } from './navigation.js'
+import { usePlayers } from './player.js'
+import { useStateMachine } from './state_machine.js'
 import { ref } from 'vue'
-import ConstructionDefinitions from './definitions/constructions.js'
 
-const navigation = useNavigation()
+import ComputerBehavior from './behaviors/computer_behavior.json'
+import ComputerStates from './states/computer_states.js'
+
+const players = usePlayers()
+const enemyPlayer = ref(null)
+const enemyData = ref(null)
 const isInitialized = ref(false)
 const armyIsSpawned = ref(false)
 const armyCommand = ref({ type: 'idle' })
 const spawnInterval = ref(null)
-const constructions = ref([])
 const scene = ref(null)
 
 const spawnUnit = async (unitData, point) => {
@@ -26,8 +30,8 @@ const spawnUnit = async (unitData, point) => {
     mesh.rotation.y = 0;
     mesh.rotation.z = 0;
     scene.value.add(mesh)
-    unitData.instances.push(mesh)
     unitsManager.add(mesh, unitData.spawnData, 'enemy')
+    return mesh
 }
 
 const spawnUnits = async () => {
@@ -37,15 +41,16 @@ const spawnUnits = async () => {
     
     for (const construction of constructions.value) {
         if (construction.spawn) {
-
             const { point, units } = construction.spawn
 
             for (const unitData of units) {
                 if (unitData.instances.length > unitData.count) {
                     continue
                 }       
+                console.log(`Spawning ${unitData.name}`, unitData.instances.length, unitData.count)
 
-                await spawnUnit(unitData, point)
+                const mesh = await spawnUnit(unitData, point)
+                unitData.instances.push(mesh)
                 allUnitsSpawned = false   
             }
         }
@@ -55,20 +60,8 @@ const spawnUnits = async () => {
 }
 
 const spawnConstructions = async () => {
-    const map = useMap()
-    const items = useItems()
-    const enemyData = await map.enemy()
-
-    const { constructions: c } = enemyData
-
-    for (const construction of c) {
-
-        const definition = Object.values(ConstructionDefinitions).find(d => d.name === construction.name)
-        if (!definition) {
-            console.error(`Construction definition not found: ${construction.name}`)
-            continue
-        }
-        const mesh = await items.spawn(definition, 'enemy')
+    for (const construction of enemyData.value.constructions) {
+        const mesh = await enemyPlayer.value.spawnConstruction(construction.name)
         mesh.position.x = construction.position.x
         mesh.position.y = construction.position.y
         mesh.position.z = construction.position.z
@@ -76,26 +69,6 @@ const spawnConstructions = async () => {
         mesh.rotation.y = construction.rotation.y * Math.PI / 180
         mesh.rotation.z = construction.rotation.z * Math.PI / 180
         scene.value.add(mesh)
-        
-        const data = { mesh }
-        if (construction.spawn) {
-            data.spawn = construction.spawn
-            for (const unitData of data.spawn.units) {
-                unitData.instances = []
-                for (const upgrade of definition.upgrades) {
-                    const unit = upgrade.units.find(u => u.name === unitData.name)
-                    if (unit) {
-                        unitData.spawnData = unit
-                        break
-                    }
-                }
-                if (!unitData.spawnData) {
-                    console.error(`Spawn data not found for ${unitData.name}`)
-                }
-            }
-        }
-        
-        constructions.value.push(data)
     }
 }
 
@@ -115,29 +88,20 @@ const unitsBehaviour = async () => {
 
 export const useEnemy = () => {
 
-    const init = async (_scene) => {
+    const init = async (_scene, difficulty='easy') => {
         if (isInitialized.value) return
 
-        scene.value = _scene
-        isInitialized.value = true
-        await spawnConstructions()
-    }
-
-    const enable = () => {
         const map = useMap()
-        const enemyData = map.enemy()
-        const { spawn_every } = enemyData
-        spawnInterval.value = setInterval(unitsBehaviour, spawn_every);
-    }
+        
+        enemyData.value = await map.enemy()
+        enemyPlayer.value = players.add(true, null, difficulty)
+        scene.value = _scene
 
-    const disable = () => {
-        clearInterval(spawnInterval.value)
+        await spawnConstructions()
+        isInitialized.value = true
     }
 
     return {
         init,
-        enable,
-        disable,
-        constructions
     }
 }

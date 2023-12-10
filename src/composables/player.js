@@ -2,10 +2,15 @@ import { ref } from 'vue'
 import { getMesh } from './meshes.js'
 import { useItems } from './constructions.js'
 import { useUnits } from './units.js'
+import { useStateMachine } from './state_machine.js'
+import ConstructionDefinitions from './definitions/constructions.js'
+import ComputerBehavior from './behaviors/computer_behavior.json'
+import ComputerStates from './states/computer_states.js'
 
 const players = ref([])
 
-const Player = (isComputer=false, teamName=null) => {
+const Player = (isComputer=false, team=null) => {
+    const stateMachineId = Date.now();
     if (!team) team = `team-${players.value.length + 1}`
 
     const spawnUnit = async (unitData) => {
@@ -19,15 +24,31 @@ const Player = (isComputer=false, teamName=null) => {
         return mesh
     }
 
-    const spawnConstruction = async (constructionData) => {
+    const spawnConstruction = async (constructionName) => {
+        const definition = Object.values(ConstructionDefinitions).find(d => d.name === constructionName)
+        if (!definition) {
+            throw new Error(`Construction definition not found: ${constructionName}`)
+        }
+
         const items = useItems()
         const isOwned = isComputer ? true : false
-        return await items.spawn(constructionData, team, isOwned)
+        return await items.spawn(definition, team, isOwned)
     }
 
     const setUnitsStateByPrimaryFunction = (stateName, primaryFunction='warrior') => {
         const units = useUnits()
         units.setStateByFunction(primaryFunction, stateName, team)
+        console.log(`Setting units state to ${stateName} by primary function ${primaryFunction}`)
+    }
+
+    const setUnitsCommand = (type, position) => {
+        const units = useUnits()
+        units.setCommand(type, position, team)
+    }
+
+    const setState = (stateName) => {
+        const stateMachine = useStateMachine()
+        stateMachine.setState(stateMachineId, stateName)
     }
 
     const isDead = () => {
@@ -44,16 +65,28 @@ const Player = (isComputer=false, teamName=null) => {
         spawnUnit,
         spawnConstruction,
         setUnitsStateByPrimaryFunction,
+        setUnitsCommand,
+        setState,
+        stateMachineId,
         isDead
     }
 }
 
 export const usePlayers = () => {
 
-    const add = (isComputer=false, teamName=null) => {
-        const player = Player(isComputer, teamName)
+    const add = (isComputer=false, teamName=null, difficulty='easy') => {
+        const player = Player(isComputer, teamName, difficulty)
         
         players.value.push(player)
+
+        if (isComputer) {
+            const stateMachine = useStateMachine()
+            const behavior = ComputerBehavior[difficulty]
+            const states = ComputerStates;
+            stateMachine.add(player, player.stateMachineId, behavior, states);
+        }
+
+        return player
     }
 
     const get = (team) => {

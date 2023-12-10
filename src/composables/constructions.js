@@ -237,6 +237,12 @@ export const useItems = () => {
         })
     }
 
+    const findAllByNameAndTeam = (name, team) => {
+        return items.value.filter(item => {
+            return item.name === name && item.userData.team === team
+        })
+    }
+
     const countItemsByName = (name) => {
         return items.value.filter(item => item.name === name).length
     }
@@ -270,6 +276,7 @@ export const useItems = () => {
         findClosestItem,
         findClosestByNameAndTeam,
         recalculateStorage,
+        findAllByNameAndTeam,
         findItemByName,
         findItemByNameAndUpgrade,
         findByNameAndTeam,

@@ -108,7 +108,6 @@ export const useGameManager = () => {
     
         groundManager.enable();
         unitsManager.enable();
-        enemyManager.enable();
         billboardManager.enable();
         itemsManager.enable();
         stateMachineManager.enable();

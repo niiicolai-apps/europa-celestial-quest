@@ -142,7 +142,7 @@ class FindClosest extends Base {
         const type = this.options.type;
         const position = object3D.position;
         const team = unit.team;
-
+        
         if (type === 'resource') {
             const resourceManager = useResources();
             const collect = unitOptions.collect;
@@ -172,7 +172,7 @@ class FindClosest extends Base {
                 unitsManager.setStateByFunction('warrior', 'regroup', team);
                 return;
             }
-
+            
             this.target = closestObject;
         }
     }
