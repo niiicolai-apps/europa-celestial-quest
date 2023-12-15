@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useInspect } from "./inspect.js";
+import { useInspect } from "../managers/inspect.js";
 
 export const useCollision = () => {
 

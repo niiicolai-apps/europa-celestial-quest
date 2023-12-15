@@ -1,5 +1,5 @@
-import { useBank } from "../bank.js";
-import { useItems } from "../constructions.js";
+import { useBank } from "../../managers/bank.js";
+import { useItems } from "../../managers/constructions.js";
 import { useHealth } from "../health.js";
 
 class Base {

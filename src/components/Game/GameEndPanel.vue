@@ -22,10 +22,13 @@ import UI from 'frontend-ui'
 import Locale from '../General/Locale.vue';
 import { computed } from 'vue'
 import { useGameManager } from '../../composables/game_manager.js'
+import { useGameEnd } from '../../composables/game_end.js'
 
 const gameManager = useGameManager()
+const gameEnd = useGameEnd()
+
 const isGameStarted = computed(() => gameManager.isGameStarted())
-const isGameEnded = computed(() => gameManager.isGameEnded())
-const isGameWon = computed(() => gameManager.isGameWon())
+const isGameEnded = computed(() => gameEnd.isGameEnded())
+const isGameWon = computed(() => gameEnd.isGameWon())
 
 </script>

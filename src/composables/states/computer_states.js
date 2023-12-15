@@ -1,5 +1,5 @@
-import { useItems } from '../constructions.js';
-import { useUnits } from '../units.js';
+import { useItems } from '../../managers/constructions.js';
+import { useUnits } from '../../managers/units.js';
 import UNITS from '../definitions/units.js';
 
 class Base {

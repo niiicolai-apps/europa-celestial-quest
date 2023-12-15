@@ -1,9 +1,18 @@
 import * as THREE from 'three'
 import { ref } from 'vue'
+import { useManager } from './manager.js';
+import { useCanvas } from '../composables/canvas.js';
 
-const mapName = ref(null)
+const mapName = ref('map1')
 const isInitialized = ref(false)
 const lights = ref([])
+
+const fetchMapData = async (mapName) => {
+    if (!mapName) throw new Error('mapName is required');
+    const mapData = await fetch(`/maps/${mapName}.json`).then(r => r.json());
+    if (!mapData) throw new Error(`Map not found: ${mapName}`);
+    return mapData;
+}
 
 const createLights = (mapData, scene) => {
     for (const lightData of mapData.lights) {
@@ -48,24 +57,27 @@ const createLights = (mapData, scene) => {
     }
 }
 
-const fetchMapData = async (mapName) => {
-    if (!mapName) throw new Error('mapName is required');
-    const mapData = await fetch(`/maps/${mapName}.json`).then(r => r.json());
-    if (!mapData) throw new Error(`Map not found: ${mapName}`);
-    return mapData;
-}
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('map', {
+    init: {
+        priority: 1, // Must be lower than resources.js
+        callback: async () => {
+            if (isInitialized.value) return false
+    
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            const scene = adapter.scene
+            const mapData = await fetchMapData(mapName.value);
+            createLights(mapData, scene)
+            isInitialized.value = true;
+        }
+    }
+})
 
 export const useMap = () => {
-
-    const init = async (scene, _mapName='map1') => {
-        if (isInitialized.value) return false
-        
-        mapName.value = _mapName;
-
-        const mapData = await fetchMapData(_mapName);
-        createLights(mapData, scene)
-        isInitialized.value = true;
-    }
 
     const terrain = async () => {
         const mapData = await fetchMapData(mapName.value);
@@ -88,7 +100,6 @@ export const useMap = () => {
     }
 
     return {
-        init,
         terrain,
         resources,
         objectives,

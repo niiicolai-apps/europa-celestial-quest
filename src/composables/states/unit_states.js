@@ -1,8 +1,9 @@
-import { useResources } from "../resources.js";
-import { useNavigation } from "../navigation.js";
-import { useBank } from "../bank.js";
-import { useItems } from "../constructions.js";
-import { useUnits } from "../units.js";
+import { useResources } from "../../managers/resources.js";
+import { useNavigation } from "../../managers/navigation.js";
+import { useUnits } from "../../managers/units.js";
+import { useBank } from "../../managers/bank.js";
+import { useItems } from "../../managers/constructions.js";
+
 import { useHealth } from "../health.js";
 import { useHeightMap } from "../height_map.js";
 class Base {
@@ -108,7 +109,7 @@ class MoveToAttack extends MoveTo {
         if (!target) throw new Error('Manager target is required');
         if (!move) throw new Error('Unit Move feature is required');
         move.destination = target.position;
-        this.acceptableDistance = 50;
+        this.acceptableDistance = attack.distance;
     }
 
 }
@@ -396,7 +397,7 @@ class Attack extends Base {
         const team = unit.team;
         const damage = this.damage;
         const distance = object3D.position.distanceTo(target.position);
-
+        console.log('Attacking', distance, this.distance);
         if (distance < this.distance) {
             this.resetAttack();
             this.healthManager.applyDamage(

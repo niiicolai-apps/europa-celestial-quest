@@ -7,11 +7,20 @@ import PrivacyPanel from './General/PrivacyPanel.vue';
 import ReleaseNotesPanel from './General/ReleaseNotesPanel.vue';
 import Audio from './UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
-import { defineEmits } from 'vue';
+import { useAudio } from '../composables/audio.js';
+import { defineEmits, onMounted } from 'vue';
 
+const isWeb = true;
 const emits = defineEmits(['startGame']);
 const panelManager = usePanel();
+const audio = useAudio();
 const startGame = () => emits('startGame');
+
+onMounted(() => {
+    const audioCtrl = audio.get(0);
+    audioCtrl.setSrc('audio/sacred-garden-10377.mp3');
+    audioCtrl.setVolume(0.3);
+})
 </script>
 
 <template>
@@ -62,7 +71,7 @@ const startGame = () => emits('startGame');
                         </UI.Flex>
                     </UI.Button>
 
-                    <UI.Button type="primary" class="w-full py-3 font-bold uppercase">
+                    <UI.Button type="primary" class="w-full py-3 font-bold uppercase" v-if="!isWeb">
                         <UI.Flex direction="horizontal" items="center" justify="between">
                             <Locale id="main_menu.quit_button" />
                             <Icons.fa.StopIcon width="1em" height="1em" fill="white" />
@@ -84,7 +93,7 @@ const startGame = () => emits('startGame');
         </UI.Fixed>
 
         <UI.Fixed bottom="auto" right="auto" top="1" left="2">
-            <Audio src="/audio/music_happy_bounce.wav" :volume="0.1" showMute />
+            <Audio showMute />
         </UI.Fixed>
     </UI.Fixed>
 </template>

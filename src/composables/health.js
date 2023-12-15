@@ -1,4 +1,4 @@
-import { useBillboard } from "./billboard.js";
+import { useBillboard } from "../managers/billboard.js";
 import * as THREE from 'three';
 import { ref } from 'vue';
 

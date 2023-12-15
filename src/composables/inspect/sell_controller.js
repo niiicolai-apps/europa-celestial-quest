@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import { useBank } from '../bank.js';
-import { useItems } from '../constructions.js';
+import { useBank } from '../../managers/bank.js';
+import { useItems } from '../../managers/constructions.js';
 import { removeMesh } from '../meshes.js';
 import { useToast } from '../toast.js';
 import CONSTRUCTIONS from '../definitions/constructions.js';

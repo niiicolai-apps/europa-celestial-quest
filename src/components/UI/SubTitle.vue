@@ -9,19 +9,11 @@
 <script setup>
 import UI from 'frontend-ui';
 import Locale from '../General/Locale.vue';
-import { ref, defineExpose } from 'vue';
+import { computed } from 'vue';
+import { useSubTitle } from '../../composables/sub_title.js';
 
-const show = ref(false);
-const localeId = ref(null);
+const subTitleManager = useSubTitle();
+const show = computed(() => subTitleManager.show.value);
+const localeId = computed(() => subTitleManager.localeId.value);
 
-const showSubTitle = (id) => {
-    localeId.value = id;
-    show.value = true;
-}
-
-const hideSubTitle = () => {
-    show.value = false;
-}
-
-defineExpose({ showSubTitle, hideSubTitle });
 </script>

@@ -1,9 +1,9 @@
 import { ref } from 'vue';
-import { useBank } from '../bank.js';
-import { useItems } from '../constructions.js';
+import { useBank } from '../../managers/bank.js';
+import { useItems } from '../../managers/constructions.js';
 import { getMesh } from '../meshes.js';
-import { useUnits } from '../units.js';
-import { useObjectives } from '../objectives.js';
+import { useUnits } from '../../managers/units.js';
+import { useObjectives } from '../../managers/objectives.js';
 import { useToast } from '../toast.js';
 import ConstructionDefinitions from '../definitions/constructions.js'
 import * as THREE from 'three';

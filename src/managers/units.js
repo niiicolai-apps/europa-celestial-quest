@@ -1,22 +1,22 @@
 import { ref } from 'vue';
-import { useNavigation } from './navigation.js';
 import { useGround } from './ground.js';
-import { useResources } from './resources.js';
-import { useItems } from './constructions.js';
-import { useBank } from './bank.js';
-import { useHealth } from './health.js';
-import { removeMesh } from './meshes.js';
+import { useHealth } from '../composables/health.js';
+import { removeMesh } from '../composables/meshes.js';
 import { useStateMachine } from './state_machine.js'
-import { useHeightMap } from './height_map.js';
-import { useToast } from './toast.js';
+import { useHeightMap } from '../composables/height_map.js';
+import { useToast } from '../composables/toast.js';
+import { useGameEnd } from '../composables/game_end.js'
+import { useManager } from './manager.js';
+import { useCanvas } from '../composables/canvas.js';
 import * as THREE from 'three';
-import UnitsBehavior from './behaviors/units_behavior.json';
-import UnitStates from './states/unit_states.js';
+import UnitsBehavior from '../composables/behaviors/units_behavior.json';
+import UnitStates from '../composables/states/unit_states.js';
 
 const ground = useGround();
 const heightMap = useHeightMap();
 const units = ref([]);
 const scene = ref(null);
+const isInitialized = ref(false);
 
 const domElement = ref(null);
 const commands = ref([
@@ -33,6 +33,28 @@ const WARRIOR_COMMANDS = ['regroup', 'attack'];
 const warriorMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const warriorMarkerGeometry = new THREE.BoxGeometry(1, 1, 1);
 const warriorMarkerMesh = new THREE.Mesh(warriorMarkerGeometry, warriorMarkerMaterial);
+
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('units', {
+    init: {
+        priority: 1,
+        callback: async (options) => {
+            if (isInitialized.value) return false
+    
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            domElement.value = adapter.renderer.domElement
+            scene.value = adapter.scene
+            scene.value.add(warriorMarkerMesh);
+            warriorMarkerMesh.visible = false;
+            
+            isInitialized.value = true;
+        }
+    }
+})
 
 export const useUnits = () => {
 
@@ -67,6 +89,7 @@ export const useUnits = () => {
             remove(unit.object3D)
             scene.value.remove(unit.object3D)
             removeMesh(unit.object3D)
+            useGameEnd().endGameCheck()
         }
 
         const onDamage = (attacker) => {
@@ -98,13 +121,6 @@ export const useUnits = () => {
         )
     }
 
-    const init = async (_scene, _domElement) => {
-        scene.value = _scene;
-        scene.value.add(warriorMarkerMesh);
-        domElement.value = _domElement;
-        warriorMarkerMesh.visible = false;
-    }
-
     const add = (object3D, data, team = 'player') => {
         // Create unit options
         const options = featuresToOptions(data.features);
@@ -131,14 +147,6 @@ export const useUnits = () => {
 
     const remove = (object3D) => {
         units.value = units.value.filter(u => u.object3D.uuid !== object3D.uuid);
-    }
-
-    const enable = () => {
-        //setInterval(loop, 1000);
-    }
-
-    const disable = () => {
-        //clearInterval(loop);
     }
 
     const onPointerDown = (event) => {
@@ -213,11 +221,8 @@ export const useUnits = () => {
 
     return {
         units,
-        init,
         add,
         remove,
-        enable,
-        disable,
         startTrackWarriorCommand,
         stopTrackWarriorCommand,
         WARRIOR_COMMANDS,

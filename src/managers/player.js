@@ -1,14 +1,17 @@
 import { ref } from 'vue'
-import { getMesh } from './meshes.js'
+import { getMesh } from '../composables/meshes.js'
 import { useItems } from './constructions.js'
 import { useUnits } from './units.js'
 import { useStateMachine } from './state_machine.js'
-import ConstructionDefinitions from './definitions/constructions.js'
-import ComputerBehavior from './behaviors/computer_behavior.json'
-import ComputerStates from './states/computer_states.js'
+import { useManager } from './manager.js'
+import ConstructionDefinitions from '../composables/definitions/constructions.js'
+import ComputerBehavior from '../composables/behaviors/computer_behavior.json'
+import ComputerStates from '../composables/states/computer_states.js'
+import { useCanvas } from '../composables/canvas.js'
 
 const players = ref([])
 const scene = ref(null)
+const isInitialized = ref(false)
 
 const Player = (isComputer=false, team=null) => {
     const stateMachineId = Date.now();
@@ -74,13 +77,24 @@ const Player = (isComputer=false, team=null) => {
     }
 }
 
-export const usePlayers = () => {
-
-    const init = async (_scene) => {
-        if (!scene.value) {
-            scene.value = _scene
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('players', {
+    init: {
+        priority: 1, // Must be lower than resources.js
+        callback: async () => {
+            if (isInitialized.value) return false
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            scene.value = adapter.scene
+            isInitialized.value = true;
         }
     }
+})
+
+export const usePlayers = () => {
 
     const add = (isComputer=false, teamName=null, difficulty='easy') => {
         const player = Player(isComputer, teamName, difficulty)
@@ -108,10 +122,14 @@ export const usePlayers = () => {
         }
     }
 
+    const findAll = (isDead=false, isComputer=false) => {
+        return players.value.filter(p => p.isComputer === isComputer && p.isDead() === isDead)
+    }
+
     return {
-        init,
         add,
         get,
-        remove
+        remove,
+        findAll
     }
 }

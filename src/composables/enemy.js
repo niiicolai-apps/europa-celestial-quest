@@ -1,9 +1,11 @@
 import { getMesh } from './meshes.js'
-import { useMap } from './map.js'
-import { useItems } from './constructions.js'
-import { useUnits } from './units.js'
-import { usePlayers } from './player.js'
-import { useStateMachine } from './state_machine.js'
+import { useMap } from '../managers/map.js'
+import { useItems } from '../managers/constructions.js'
+import { useUnits } from '../managers/units.js'
+import { usePlayers } from '../managers/player.js'
+import { useStateMachine } from '../managers/state_machine.js'
+import { useManager } from '../managers/manager.js'
+import { useCanvas } from './canvas.js'
 import { ref } from 'vue'
 
 import ComputerBehavior from './behaviors/computer_behavior.json'
@@ -86,22 +88,35 @@ const unitsBehaviour = async () => {
     }
 }
 
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */ 
+useManager().create('enemy', {
+    init: {
+        priority: 1,
+        callback: async () => {
+            if (isInitialized.value) return false
+    
+            const map = useMap()
+            enemyData.value = await map.enemy()
+    
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            
+            scene.value = adapter.scene
+            enemyPlayer.value = players.add(true, null, 'easy')
+            
+            await spawnConstructions()
+            
+            isInitialized.value = true;
+        }
+    }
+})
+
 export const useEnemy = () => {
 
-    const init = async (_scene, difficulty='easy') => {
-        if (isInitialized.value) return
-
-        const map = useMap()
-        
-        enemyData.value = await map.enemy()
-        enemyPlayer.value = players.add(true, null, difficulty)
-        scene.value = _scene
-
-        await spawnConstructions()
-        isInitialized.value = true
-    }
 
     return {
-        init,
     }
 }

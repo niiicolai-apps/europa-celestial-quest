@@ -15,17 +15,10 @@
 <script setup>
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
-import { ref, computed, onMounted, defineExpose } from 'vue';
+import { useAudio } from '../../composables/audio.js';
+import { ref, computed, onMounted, onUnmounted, defineExpose } from 'vue';
 
 const props = defineProps({
-    src: {
-        type: String,
-        required: true
-    },
-    volume: {
-        type: Number,
-        default: 1
-    },
     showMute: {
         type: Boolean,
         default: true
@@ -33,37 +26,18 @@ const props = defineProps({
 });
 
 const audioRef = ref(null);
-const muted = ref(false);
+const audioCtrl = ref(null);
+const muted = computed(() => audioCtrl.value?.muted);
+const toggleMute = () => audioCtrl.value?.toggleMute();
+const audio = useAudio();
 
-const play = () => audioRef.value.play();
-const pause = () => audioRef.value.pause();
-const toggle = () => audioRef.value.paused ? play() : pause();
-const setVolume = (volume) => audioRef.value.volume = volume;
-const setSrc = (src) => audioRef.value.src = src;
-const toggleMute = () => {
-    if (audioRef.value.paused) audioRef.value.play();
-    audioRef.value.muted = !audioRef.value.muted;
-    muted.value = audioRef.value.muted;
-}
-const setMuted = (value) => {
-    audioRef.value.muted = value;
-    muted.value = value;
-}
-
-defineExpose({
-    play,
-    pause,
-    toggle,
-    setVolume,
-    setSrc,
-    toggleMute,
-    setMuted
-});
+defineExpose( audioCtrl.value );
 
 onMounted(() => {
-    setVolume(props.volume);
-    setSrc(props.src);
-    audioRef.value.muted = true;
-    muted.value = true;
+    audioCtrl.value = audio.create(audioRef.value);
+});
+
+onUnmounted(() => {
+    audio.destroy(audioCtrl.value);
 });
 </script>

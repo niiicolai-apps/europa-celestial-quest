@@ -47,10 +47,10 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import { computed } from 'vue';
-import { useInspect } from '../../composables/inspect.js';
+import { useInspect } from '../../managers/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
 import { usePanel } from '../../composables/panel.js';
-import { useUnits } from '../../composables/units.js';
+import { useUnits } from '../../managers/units.js';
 
 const panelManager = usePanel();
 const localizationManager = useLocalization();

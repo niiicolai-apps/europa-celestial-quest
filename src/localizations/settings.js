@@ -27,6 +27,19 @@ export default {
             en: 'Adjust the camera pan.',
             da: 'Juster kamerapanorering.',
         },
-
+        language: {
+            title: {
+                en: 'Language',
+                da: 'Sprog',
+            },
+            description: {
+                en: 'Adjust the language.',
+                da: 'Juster sproget.',
+            },
+            options: {
+                en: 'English',
+                da: 'Dansk',
+            },
+        }
     },
 }

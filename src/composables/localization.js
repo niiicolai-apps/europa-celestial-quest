@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import PersistentData from './persistent_data.js';
 import NOT_FOUND from '../localizations/not_found.js';
 import MAIN_MENU from '../localizations/main_menu.js';
 import GAME_DETAILS from '../localizations/game_details.js';
@@ -71,6 +72,7 @@ export const useLocalization = (_locals = locals) => {
         }
 
         LANGUAGE.value = lang;
+        PersistentData.set('language', {lang});
     }
 
     return {

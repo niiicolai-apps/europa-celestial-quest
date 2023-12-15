@@ -1,56 +1,41 @@
 <template>
     <Panel :name="localizationManager.getLocale('settings.title')" identifier="settings" :showScroll="true">
         <UI.Flex>
-            <UI.Card 
-                v-for="setting in settings" 
-                :key="setting.name"
-                class="w-full"
-                >
-                <template #header>
-                    <UI.Paragraph class="font-bold uppercase">
-                        {{ setting.name }}
-                    </UI.Paragraph>
-                </template>
+            <div v-for="setting in settings" :key="setting.name"
+                class="w-full bg-primary text-info rounded p-3 box-shadow-lg">
 
-                <template #body>
-                    <UI.Flex direction="horizontal" justify="between">
+                <UI.Flex direction="horizontal" items="start" justify="between">
+                    <div>
+                        <UI.Paragraph class="font-bold uppercase mb-3">
+                            {{ setting.name }}
+                        </UI.Paragraph>
+
                         <UI.Paragraph>
                             {{ setting.description }}
                         </UI.Paragraph>
+                    </div>
 
-                        <div>
-                            Not implemented yet.
-                        </div>
-                    </UI.Flex>
-                </template>
+                    <div v-if="setting.list">
+                        <UI.Select type="info" :options="setting.list" :startOption="setting.listStartOption"
+                            @update:value="setting.listUpdate" />
+                    </div>
+                </UI.Flex>
+            </div>
 
-                <template #footer>
-                    <UI.Button type="primary">
-                        <UI.Flex direction="horizontal" justify="between">
-                            <UI.Paragraph class="font-bold">
-                                <Locale id="settings.save_button" />
-                            </UI.Paragraph>
-                            <Icons.fa.CheckmarkIcon 
-                                width="1em" 
-                                height="1em" 
-                                fill="white" 
-                            />
-                        </UI.Flex>
-                    </UI.Button>
-                </template>
-            </UI.Card>
         </UI.Flex>
     </Panel>
 </template>
 
 <script setup>
 import UI from 'frontend-ui';
-import Icons from 'frontend-icons';
 import Panel from '../UI/Panel.vue';
-import Locale from './Locale.vue';
-import { computed } from 'vue';
-import { useLocalization } from '../../composables/localization';
+import { ref, computed, onMounted } from 'vue';
+import { useLocalization } from '../../composables/localization.js';
+import PersistentData from '../../composables/persistent_data.js';
+
 const localizationManager = useLocalization();
+const startLanguageOption = ref(null);
+
 const settings = computed(() => {
     return [{
         name: localizationManager.getLocale("settings.camera_zoom_speed_title"),
@@ -58,6 +43,21 @@ const settings = computed(() => {
     }, {
         name: localizationManager.getLocale("settings.camera_pan_speed_title"),
         description: localizationManager.getLocale("settings.camera_pan_speed_description"),
+    }, {
+        name: localizationManager.getLocale("settings.language.title"),
+        description: localizationManager.getLocale("settings.language.description"),
+        list: Object.values(localizationManager.LANGUAGE_TYPES).map(l => { return { label: l, value: l } }),
+        listStartOption: { label: startLanguageOption, value: startLanguageOption },
+        listUpdate: (option) => {
+            localizationManager.setLanguage(option.value);
+        }
     }]
 })
+
+onMounted(async () => {
+    const pd = await PersistentData.get('language');
+    const pdLanguage = pd.lang || localizationManager.LANGUAGE.value;
+    startLanguageOption.value = pdLanguage;
+    localizationManager.setLanguage(pdLanguage);
+});
 </script>

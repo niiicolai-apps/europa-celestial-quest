@@ -1,14 +1,17 @@
-import PersistentData from './persistent_data.js'
-import ConstructionDefinitions from './definitions/constructions.js'
-import ConstructionStates from './states/construction_states.js'
-import ConstructionBehaviors from './behaviors/constructions_behavior.json'
-import UnitController from './inspect/unit_controller.js'
-import { setupUpgradeVisuals, setupConstructionVisuals } from './helpers/construction_helper.js'
+import PersistentData from '../composables/persistent_data.js'
+import ConstructionDefinitions from '../composables/definitions/constructions.js'
+import ConstructionStates from '../composables/states/construction_states.js'
+import ConstructionBehaviors from '../composables/behaviors/constructions_behavior.json'
+import UnitController from '../composables/inspect/unit_controller.js'
+import { setupUpgradeVisuals, setupConstructionVisuals } from '../composables/helpers/construction_helper.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
-import { useHealth } from './health.js'
+import { useHealth } from '../composables/health.js'
 import { useStateMachine } from './state_machine.js'
-import { getMesh, removeMesh } from './meshes.js'
+import { getMesh, removeMesh } from '../composables/meshes.js'
+import { useGameEnd } from '../composables/game_end.js'
+import { useManager } from './manager.js'
+import { useCanvas } from '../composables/canvas.js';
 import { ref } from 'vue'
 
 const items = ref([])
@@ -17,15 +20,6 @@ const isInitialized = ref(false)
 const interval = ref(null)
 
 let scene = null
-
-const loseGameCheck = (team='player') => {
-    if (team !== 'player') return
-    const playerItems = items.value.filter(item => item.userData.team === team)
-    const ehd_x1_count = playerItems.filter(item => item.name === 'Europa Horizon Drifter X1').length
-    if (ehd_x1_count === 0) {
-        console.log('Player lost the game')
-    }
-}
 
 const recalculateStorage = () => {
     let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
@@ -80,7 +74,7 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
         removeItemFromState(item)
         scene.remove(item)
         removeMesh(item)
-        loseGameCheck(team)
+        useGameEnd().endGameCheck()
     }
 
     const onDamage = (attacker) => {
@@ -97,16 +91,25 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
     )
 }
 
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('constructions', {
+    init: {
+        priority: 1,
+        callback: async () => {
+            if (isInitialized.value) return false
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            scene = adapter.scene
+            await useItems().loadState()
+            isInitialized.value = true;
+        }
+    },
+})
+
 export const useItems = () => {
-    const init = async (_scene) => {
-        if (isInitialized.value) return false
-
-        scene = _scene
-        await loadState()
-
-        isInitialized.value = true
-        return true
-    }
 
     const canAfford = (costs) => {
         let canAfford = true
@@ -280,16 +283,7 @@ export const useItems = () => {
         return items.value.filter(item => item.userData.team === team).length
     }
 
-    const enable = () => {
-        //interval.value = setInterval(loop, 1000)
-    }
-
-    const disable = () => {
-        //clearInterval(interval.value)
-    }
-
     return {
-        init,
         spawn,
         canAfford,
         items,
@@ -308,8 +302,7 @@ export const useItems = () => {
         countItemsByNameAndUpgrade,
         countByTeam,
         dequeueAny,
-        enable,
-        disable,
         countByNameAndTeam,
+        loadState
     }
 }

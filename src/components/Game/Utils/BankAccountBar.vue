@@ -34,7 +34,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import { computed } from 'vue';
-import { useBank } from '../../../composables/bank.js';
+import { useBank } from '../../../managers/bank.js';
 import { useLocalization } from '../../../composables/localization.js';
 
 const props = defineProps({

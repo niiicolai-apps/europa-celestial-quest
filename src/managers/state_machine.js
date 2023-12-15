@@ -1,7 +1,7 @@
 import { ref } from 'vue'
+import { useManager } from './manager.js'
 
 const managers = ref([])
-const interval = ref(null)
 
 const setAction = (manager, actionIndex) => {
     manager.actionIndex = actionIndex;
@@ -23,7 +23,7 @@ const moveToNextAction = (manager) => {
     setAction(manager, nextActionIndex);
 }
 
-const loop = () => {
+const update = () => {
     for (const manager of managers.value) {
 
         if (!manager.state) {
@@ -41,6 +41,17 @@ const loop = () => {
         manager.action?.update();
     }
 }
+
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */ 
+useManager().create('statemachine', {
+    update: {
+        priority: 1,
+        callback: () => update()
+    }
+})
 
 export const useStateMachine = () => {
 
@@ -94,21 +105,10 @@ export const useStateMachine = () => {
         setAction(manager, 0);
     }
 
-
-    const enable = () => {
-        interval.value = setInterval(loop, 1000);
-    }
-
-    const disable = () => {
-        clearInterval(interval.value);
-    }
-
     return {
         add,
         remove,
         getById,
         setState,
-        enable,
-        disable
     }
 }

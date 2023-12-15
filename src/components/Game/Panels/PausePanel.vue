@@ -36,6 +36,21 @@
                         <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
                             :height="optionIconSize" :fill="optionIconFill" />
                     </UI.Button>
+
+                    <UI.Button v-if="option.method" :title="option.name" @click="option.method"
+                        type="info">
+                        <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
+                        :fill="optionIconFill" />
+
+                        <Icons.fa.CrownIcon v-if="option.icon === 'crown'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
+
+                        <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
+
+                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                            :height="optionIconSize" :fill="optionIconFill" />
+                    </UI.Button>
                 </UI.Flex>
             </div>
         </UI.Flex>
@@ -48,13 +63,20 @@ import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
 import { usePanel } from '../../../composables/panel.js';
 import { useLocalization } from '../../../composables/localization.js';
+import { computed } from 'vue';
 
+const props = defineProps({
+    endGame: {
+        type: Function,
+        required: true,
+    }
+})
 const panelManager = usePanel();
 const localizationManager = useLocalization();
 
 const optionIconSize = "1em";
 const optionIconFill = "#1c3144";
-const options = [{
+const options = computed(() => [{
     name: localizationManager.getLocale("pause.settings_button_title"),
     description: localizationManager.getLocale("pause.settings_button_description"),
     icon: "gear",
@@ -63,6 +85,6 @@ const options = [{
     name: localizationManager.getLocale("pause.quit_button_title"),
     description: localizationManager.getLocale("pause.quit_button_description"),
     icon: "arrow-right",
-    link: "/",
-}]
+    method: props.endGame,
+}]);
 </script>

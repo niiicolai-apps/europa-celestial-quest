@@ -1,7 +1,8 @@
 import { ref } from 'vue';
 import * as THREE from 'three';
 import { useGround } from './ground.js';
-import { useHeightMap } from './height_map.js';
+import { useHeightMap } from '../composables/height_map.js';
+import { useManager } from './manager.js';
 
 const agents = ref([]);
 const ground = useGround();
@@ -10,8 +11,9 @@ const lookAt = new THREE.Vector3();
 const direction = new THREE.Vector3();
 const remainingDistanceVector = new THREE.Vector3();
 const heightMap = useHeightMap();
+const interval = ref(null);
 
-const loop = () => {
+const update = () => {
     for (const agent of agents.value) {
         direction.subVectors(agent.destination, agent.object3D.position)
             .normalize()
@@ -47,6 +49,17 @@ const loop = () => {
     }
 }
 
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('navigation', {
+    update: {
+        priority: 1,
+        callback: () => update()
+    }
+})
+
 export const useNavigation = () => {
     const addAgent = (object3D, destination, speed, groundOffset, acceptableDistance=1) => {
         const exist = agents.value.find(a => a.object3D.uuid === object3D.uuid);
@@ -72,20 +85,10 @@ export const useNavigation = () => {
         return remainingDistance < acceptableDistance;
     }
 
-    const enable = () => {
-        setInterval(loop, 30);
-    }
-
-    const disable = () => {
-        clearInterval(loop);
-    }
-
     return {
         agents,
         addAgent,
         removeAgent,
-        enable,
-        disable,
         reachedDestination,
     }
 }

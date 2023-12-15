@@ -65,8 +65,8 @@ import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
 import Locale from '../../General/Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
-import { useItems } from '../../../composables/constructions.js';
-import { useInspect } from '../../../composables/inspect.js';
+import { useItems } from '../../../managers/constructions.js';
+import { useInspect } from '../../../managers/inspect.js';
 import { usePanel } from '../../../composables/panel';
 import { computed } from 'vue';
 

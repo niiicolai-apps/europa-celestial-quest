@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
+import { useManager } from './manager.js';
 import GameBank from 'game-bank';
-import PersistentData from './persistent_data.js';
+import PersistentData from '../composables/persistent_data.js';
 
 const BANK_NAME = 'Player Bank';
 const CURRENCIES = { 
@@ -17,46 +18,56 @@ const bank = ref(null);
 const accounts = computed(() => bank.value.accounts);
 const isInitialized = ref(false);
 
-export function useBank() {
-    const init = async () => {
-        if (isInitialized.value) return;
-
-        GameBank.Currency.createMany(
-            { name: CURRENCIES.ICE, options: { max: 100, defaultMax: 100 } },
-            { name: CURRENCIES.ROCK, options: { max: 100, defaultMax: 100 } },
-            { name: CURRENCIES.HYRDOGEN, options: { max: 100, defaultMax: 100 } },
-            { name: CURRENCIES.METAL, options: { max: 100, defaultMax: 100 } },
-            { name: CURRENCIES.POWER, options: { max: 100, defaultMax: 100 } },
-            { name: CURRENCIES.RESEARCH, options: { max: 100, defaultMax: 100 } }
-        );
-
-        const pdIce = await PersistentData.get(CURRENCIES.ICE);
-        const pdRock = await PersistentData.get(CURRENCIES.ROCK);
-        const pdHydrogen = await PersistentData.get(CURRENCIES.HYRDOGEN);
-        const pdMetal = await PersistentData.get(CURRENCIES.METAL);
-        const pdPower = await PersistentData.get(CURRENCIES.POWER);
-        const pdResearch = await PersistentData.get(CURRENCIES.RESEARCH);
-
-        const ice = pdIce?.balance || 100;
-        const rock = pdRock?.balance || 100;
-        const hydrogen = pdHydrogen?.balance || 50;
-        const metal = pdMetal?.balance || 50;
-        const power = pdPower?.balance || 100;
-        const research = pdResearch?.balance || 0;
-
-        bank.value = GameBank.Bank.create(BANK_NAME, {
-            defaultAccounts: [
-                { name: CURRENCIES.ICE, balance: ice },
-                { name: CURRENCIES.ROCK, balance: rock },
-                { name: CURRENCIES.HYRDOGEN, balance: hydrogen },
-                { name: CURRENCIES.METAL, balance: metal },
-                { name: CURRENCIES.POWER, balance: power },
-                { name: CURRENCIES.RESEARCH, balance: research }
-            ]
-        });
-        
-        isInitialized.value = true;
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('bank', {
+    init: {
+        priority: 1,
+        callback: async () => {
+            if (isInitialized.value) return false
+    
+            GameBank.Currency.createMany(
+                { name: CURRENCIES.ICE, options: { max: 100, defaultMax: 100 } },
+                { name: CURRENCIES.ROCK, options: { max: 100, defaultMax: 100 } },
+                { name: CURRENCIES.HYRDOGEN, options: { max: 100, defaultMax: 100 } },
+                { name: CURRENCIES.METAL, options: { max: 100, defaultMax: 100 } },
+                { name: CURRENCIES.POWER, options: { max: 100, defaultMax: 100 } },
+                { name: CURRENCIES.RESEARCH, options: { max: 100, defaultMax: 100 } }
+            );
+    
+            const pdIce = await PersistentData.get(CURRENCIES.ICE);
+            const pdRock = await PersistentData.get(CURRENCIES.ROCK);
+            const pdHydrogen = await PersistentData.get(CURRENCIES.HYRDOGEN);
+            const pdMetal = await PersistentData.get(CURRENCIES.METAL);
+            const pdPower = await PersistentData.get(CURRENCIES.POWER);
+            const pdResearch = await PersistentData.get(CURRENCIES.RESEARCH);
+    
+            const ice = pdIce?.balance || 100;
+            const rock = pdRock?.balance || 100;
+            const hydrogen = pdHydrogen?.balance || 50;
+            const metal = pdMetal?.balance || 50;
+            const power = pdPower?.balance || 100;
+            const research = pdResearch?.balance || 0;
+    
+            bank.value = GameBank.Bank.create(BANK_NAME, {
+                defaultAccounts: [
+                    { name: CURRENCIES.ICE, balance: ice },
+                    { name: CURRENCIES.ROCK, balance: rock },
+                    { name: CURRENCIES.HYRDOGEN, balance: hydrogen },
+                    { name: CURRENCIES.METAL, balance: metal },
+                    { name: CURRENCIES.POWER, balance: power },
+                    { name: CURRENCIES.RESEARCH, balance: research }
+                ]
+            });
+    
+            isInitialized.value = true;
+        }
     }
+})
+
+export function useBank() {
 
     const updateCurrencyMax = (currency, max) => {
         if (!isInitialized.value) throw new Error('Bank not initialized');
@@ -128,7 +139,6 @@ export function useBank() {
 
     return {
         bank,
-        init,
         deposit,
         withdraw,
         getBalance,

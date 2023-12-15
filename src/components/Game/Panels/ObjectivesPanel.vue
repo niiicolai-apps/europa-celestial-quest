@@ -8,7 +8,7 @@
 import Panel from '../../UI/Panel.vue';
 import ObjectiveCard from './ObjectiveCard.vue';
 import { computed } from 'vue';
-import { useObjectives } from '../../../composables/objectives.js';
+import { useObjectives } from '../../../managers/objectives.js';
 import { useLocalization } from '../../../composables/localization.js';
 
 const objectivesManager = useObjectives({});

@@ -1,18 +1,18 @@
 import { ref } from 'vue';
 import WebGL from 'frontend-webgl';
-import MoveController from './inspect/move_controller.js';
-import SellController from './inspect/sell_controller.js';
-import UpgradeController from './inspect/upgrade_controller.js';
-import UnitController from './inspect/unit_controller.js';
-import MarkerController from './inspect/marker_controller.js';
-import * as THREE from 'three';
+import MoveController from '../composables/inspect/move_controller.js';
+import SellController from '../composables/inspect/sell_controller.js';
+import UpgradeController from '../composables/inspect/upgrade_controller.js';
+import UnitController from '../composables/inspect/unit_controller.js';
+import MarkerController from '../composables/inspect/marker_controller.js';
 import { useGround } from './ground.js';
+import { useManager } from './manager.js';
+import { useCanvas } from '../composables/canvas.js';
 
 const scene = ref(null);
 const selected = ref(null);
 const selectableManager = ref(null);
 const isInitialized = ref(false);
-const groundManager = useGround();
 
 const moveCtrl = {
     start: () => {
@@ -107,58 +107,77 @@ const unitCtrl = {
     isBuilding: UnitController.isBuilding
 }
 
-groundManager.addOnIntersect((point) => {
-    if (!selected.value) return;
-    MoveController.onClick(selected, point);
-});
+const onSelect = (selectable) => {
+    // Find parent selectable
+    let parent = selectable;
+    while (true) {
+        if (!parent) break;
+        if (!parent.parent) break;
+        if (parent.parent.type === 'Scene') break;
+        parent = parent.parent;
+    } 
+    selected.value = parent;
+    MarkerController.onSelect(parent);
+    console.log('onSelect', parent);
+}
+
+const onDeselect = (selectable) => {
+    selected.value = null;
+    MarkerController.onDeselect();
+    console.log('onDeselect', selectable);
+}
+
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('inspect', {
+    init: {
+        priority: 1, 
+        callback: async () => {
+            if (isInitialized.value) return false
+            const canvas = useCanvas()
+            const adapter = canvas.adapter.value
+            const camera = adapter.camera;
+            const domElement = adapter.renderer.domElement;
+            const scene = adapter.scene;
+
+            selectableManager.value = WebGL.composables.useSelectable(domElement, camera, {
+                deselectOnDoubleClick: false,
+                autoDeselect: true,
+                onSelect,
+                onDeselect,
+            });
+    
+            MarkerController.init(scene);
+            useGround().addOnIntersect((point) => {
+                if (!selected.value) return;
+                MoveController.onClick(selected, point);
+            });
+    
+            selectableManager.value.enable();
+            scene.value = scene;
+            isInitialized.value = true;
+           
+        }
+    },
+    enable: {
+        priority: 1,
+        callback: async () => {
+            if (!isInitialized.value) return false;
+            selectableManager.value.enable();
+        }
+    },
+    disable: {
+        priority: 1,
+        callback: async () => {
+            if (!isInitialized.value) return false;
+            selectableManager.value.disable();
+        }
+    },
+})
 
 export const useInspect = () => {
-
-    const onSelect = (selectable) => {
-        // Find parent selectable
-        let parent = selectable;
-        while (true) {
-            if (!parent) break;
-            if (!parent.parent) break;
-            if (parent.parent.type === 'Scene') break;
-            parent = parent.parent;
-        } 
-        selected.value = parent;
-        MarkerController.onSelect(parent);
-        console.log('onSelect', parent);
-    }
-
-    const onDeselect = (selectable) => {
-        selected.value = null;
-        MarkerController.onDeselect();
-        console.log('onDeselect', selectable);
-    }
-
-    const enable = (camera, _scene, domElement) => {
-        if (isInitialized.value) return;
-
-        selectableManager.value = WebGL.composables.useSelectable(domElement, camera, {
-            deselectOnDoubleClick: false,
-            autoDeselect: true,
-            onSelect,
-            onDeselect,
-        });
-
-        MarkerController.init(_scene);
-
-        selectableManager.value.enable();
-        scene.value = _scene;
-        isInitialized.value = true;
-    }
-
-    const disable = () => {
-        if (!isInitialized.value) return;
-
-        isInitialized.value = false;
-        scene.value = null;
-        selectableManager.value.disable();
-        MarkerController.dispose();
-    }
 
     const setSelected = (selectable) => {
         if (!isInitialized.value) {
@@ -209,8 +228,6 @@ export const useInspect = () => {
     }
 
     return {
-        enable,
-        disable,
         setSelected,
         removeSelected,
         selected,

@@ -1,20 +1,17 @@
 import MarkerController from './marker_controller.js';
 import { ref } from 'vue';
 import { useCollision } from '../collision.js';
-import { useGrid } from '../grid.js';
-import { useBank } from '../bank.js';
-import { useItems } from '../constructions.js';
-import { useGround } from '../ground.js';
+import { useBank } from '../../managers/bank.js';
+import { useItems } from '../../managers/constructions.js';
+import { useGround } from '../../managers/ground.js';
 import { removeMesh } from '../meshes.js';
-import { useObjectives } from '../objectives.js';
+import { useObjectives } from '../../managers/objectives.js';
 import { useToast } from '../toast.js';
-
+import { getPosition } from '../helpers/grid_helper.js';
 import * as THREE from 'three';
 
-const grid = useGrid();
 const bankManager = useBank();
 const collisionManager = useCollision();
-const groundManager = useGround();
 
 const moveLength = 3;
 const isMoving = ref(false);
@@ -29,9 +26,9 @@ const move = (selected, dx, dy, dz) => {
     nextPosition.y += dy;
     nextPosition.z += dz;
 
-    const point = groundManager.getIntersectFromPosition(nextPosition, worldDown);
+    const point = useGround().getIntersectFromPosition(nextPosition, worldDown);
     if (!point) return false;
-    nextPosition.copy(grid.getPosition(point));
+    nextPosition.copy(getPosition(point));
 
     const placementYOffset = selected.value.userData.placementYOffset || 0;
     const box3 = new THREE.Box3().setFromObject(selected.value);
@@ -132,7 +129,7 @@ const MoveController = {
         const placementYOffset = selected.value.userData.placementYOffset || 0;
         const box3 = new THREE.Box3().setFromObject(selected.value);
         const size = box3.getSize(new THREE.Vector3());
-        point = grid.getPosition(point);
+        point = getPosition(point);
         point.y += (size.y / 2) + placementYOffset;
 
         if (collisionManager.isCollidingAt(selected.value, point))

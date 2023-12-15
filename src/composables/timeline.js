@@ -1,5 +1,8 @@
 import PersistentData from './persistent_data.js'
 import { TimelineFromJson } from './timelines/timeline.js'
+import { useAudio } from './audio.js'
+import { useSubTitle } from './sub_title.js'
+import { useCanvas } from './canvas.js'
 import { ref } from 'vue'
 
 const camera = ref(null)
@@ -13,14 +16,22 @@ const timeline = ref(null)
 
 export const useTimeline = () => {
 
-    const init = (_camera, _scene, _audioCtrl1, _audioCtrl2, _subTitleCtrl, _onStop) => {
+    const init = (_onStop) => {
         if (isInitialized.value) return
 
-        camera.value = _camera
-        scene.value = _scene
-        audioCtrl1.value = _audioCtrl1
-        audioCtrl2.value = _audioCtrl2
-        subTitleCtrl.value = _subTitleCtrl
+        const audio = useAudio()
+        const audioControllers = audio.getAll();
+        if (audioControllers.length < 2) throw new Error('AudioControllers not found')
+
+        const canvas = useCanvas()
+        const canvasAdapter = canvas.adapter.value
+        if (!canvasAdapter) throw new Error('CanvasAdapter not found')
+
+        camera.value = canvasAdapter.camera 
+        scene.value = canvasAdapter.scene
+        audioCtrl1.value = audioControllers[0]
+        audioCtrl2.value = audioControllers[1]
+        subTitleCtrl.value = useSubTitle()
         onStop.value = _onStop
         isInitialized.value = true
     }
