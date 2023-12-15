@@ -7,19 +7,27 @@
 
             <UI.ProgressBar 
                 :progress="stat.experience" 
-                :maxProgress="stat.maxExperience()" 
-                class="w-32 h-6 rounded" 
+                :maxProgress="stat.maxExperience()"
+                class="w-20 h-2 border-1 border-solid border-primary" 
                 :showPercent="false"
+                bg_color="bg-dark"
+                bar_color="bg-warning"
             >
                 <UI.Flex 
                     direction="horizontal" 
-                    justify="center"
+                    justify="between"
                     gap="1" 
-                    class="text-white uppercase font-bold text-right w-full"
+                    class="text-white uppercase font-bold text-right w-full px-1"
+                    style="font-size: .6em;"
                     >
                     
-                    <span>Lvl</span>
-                    <span>{{ stat.level }}</span>
+                    <Icons.fa.StarIcon 
+                        :width="iconSize" 
+                        :height="iconSize" 
+                        :fill="iconFill" 
+                    />
+
+                    <span >{{ stat.level }}</span>
                 </UI.Flex>
             </UI.ProgressBar>
         </UI.Flex>
@@ -28,9 +36,13 @@
 
 <script setup>
 import UI from 'frontend-ui';
+import Icons from 'frontend-icons';
 import { computed } from 'vue';
 import { useStats } from '../../../composables/stats.js';
 import { useLocalization } from '../../../composables/localization.js';
+
+const iconSize = "1em";
+const iconFill = "white";
 
 const localizationManager = useLocalization();
 const statsManager = useStats();

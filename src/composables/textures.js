@@ -1,16 +1,19 @@
 import * as THREE from 'three'
 
-let textureCache = {} 
+let textureCache = {}
 const textureLoader = new THREE.TextureLoader()
 
 const newMaterial = (type, color) => {
     let material;
     switch (type) {
         case 'MeshBasicMaterial':
-            material = new THREE.MeshBasicMaterial({ color });
+            material = new THREE.MeshBasicMaterial();
             break;
         case 'MeshPhysicalMaterial':
-            material = new THREE.MeshPhysicalMaterial({ color });
+            material = new THREE.MeshPhysicalMaterial();
+            break;
+        case 'MeshPhongMaterial':
+            material = new THREE.MeshPhongMaterial();
             break;
         default:
             throw new Error(`Unknown material type: ${type}`);
@@ -36,11 +39,33 @@ export const getTexturePack = async (name, object_uuid) => {
     if (!texturePack) return null
 
     const { material, textures } = texturePack
-    const materialInstance = newMaterial(material, texturePack.color)
+    const materialInstance = newMaterial(material)
     materialInstance.colorSpace = THREE.SRGBColorSpace;
     materialInstance.transparent = texturePack.transparent
     materialInstance.opacity = texturePack.opacity || 1
-    
+
+    if (materialInstance.emissive && texturePack.emissive) {
+        if (texturePack.emissive.name === 'red')
+            materialInstance.emissive = new THREE.Color(0xff0000);
+        else
+            materialInstance.emissive = new THREE.Color(
+                texturePack.emissive.r,
+                texturePack.emissive.g,
+                texturePack.emissive.b
+            )
+    }
+
+    if (materialInstance.color && texturePack.color) {
+        if (texturePack.color.name === 'red')
+            materialInstance.color = new THREE.Color(0xff0000);
+        else
+            materialInstance.color = new THREE.Color(
+                texturePack.color.r,
+                texturePack.color.g,
+                texturePack.color.b
+            )
+    }
+
     textures.map(async texture => {
         const { type, url } = texture
         const _texture = await textureLoader.loadAsync(url)

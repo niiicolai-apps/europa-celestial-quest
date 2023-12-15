@@ -9,7 +9,7 @@ const healthBarMaterial = ref(null);
 const healthBarYOffset = 0.1;
 const healthBarZOffset = 0.01;
 
-const createHealthBar = (object3D) => {
+const createHealthBar = (object3D, _healthBarYOffset=0) => {
     if (!healthBarGeometry.value) {
         healthBarGeometry.value = new THREE.PlaneGeometry(5, 1);
     }
@@ -30,7 +30,7 @@ const createHealthBar = (object3D) => {
     
     const box3 = new THREE.Box3().setFromObject(object3D);
     const size = box3.getSize(new THREE.Vector3());
-    healthBarBggMesh.position.y = size.y + healthBarYOffset;
+    healthBarBggMesh.position.y = size.y + healthBarYOffset + _healthBarYOffset;
     healthBarMesh.z = healthBarZOffset;
 
     const setProgress = (progress, max) => {
@@ -44,13 +44,13 @@ const createHealthBar = (object3D) => {
 
 export const useHealth = () => {
 
-    const addHealthObject = (object3D, team='player', current=100, max=100, onDie=()=>{}, onDamage=(attacker)=>{}) => {
+    const addHealthObject = (object3D, team='player', current=100, max=100, onDie=()=>{}, onDamage=(attacker)=>{}, _healthBarYOffset=0) => {
         const exist = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
         if (exist) {
             return;
         }
 
-        const healthBar = createHealthBar(object3D);
+        const healthBar = createHealthBar(object3D, _healthBarYOffset);
         healthObjects.value.push({ object3D, healthBar, team, current, max, onDie, onDamage });
     }
 

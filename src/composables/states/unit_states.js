@@ -4,7 +4,7 @@ import { useBank } from "../bank.js";
 import { useItems } from "../constructions.js";
 import { useUnits } from "../units.js";
 import { useHealth } from "../health.js";
-
+import { useHeightMap } from "../height_map.js";
 class Base {
     constructor(manager, options={}) {
         this.manager = manager;
@@ -48,9 +48,10 @@ class Timer extends Base {
 }
 
 class MoveTo extends Base {
-    constructor(manager, options={}) {
+    constructor(manager, options={}, acceptableDistance=1) {
         super(manager, options);
         this.navigation = useNavigation();
+        this.acceptableDistance = acceptableDistance;
 
         const unit = manager.object;
         const unitOptions = unit.options;
@@ -73,7 +74,8 @@ class MoveTo extends Base {
             object3D, 
             destination, 
             speed, 
-            groundOffset
+            groundOffset,
+            this.acceptableDistance
         );
     }
 
@@ -83,7 +85,7 @@ class MoveTo extends Base {
         const unitOptions = unit.options;
         const object3D = unit.object3D;
         const destination = unitOptions.move.destination;
-        const acceptableDistance = 15;
+        const acceptableDistance = this.acceptableDistance; 
 
         return this.navigation.reachedDestination(
             object3D, 
@@ -92,6 +94,25 @@ class MoveTo extends Base {
         );
     }
 }
+
+class MoveToAttack extends MoveTo {
+    constructor(manager, options={}) {
+        super(manager, options);
+
+        const unit = manager.object;
+        const unitOptions = unit.options;
+        const attack = unitOptions.attack;
+        const move = unitOptions.move;
+        const target = manager.target;
+        if (!attack) throw new Error('Unit Attack feature is required');
+        if (!target) throw new Error('Manager target is required');
+        if (!move) throw new Error('Unit Move feature is required');
+        move.destination = target.position;
+        this.acceptableDistance = 50;
+    }
+
+}
+
 
 class MoveToTarget extends Base {
     constructor(manager, options={}) {
@@ -131,6 +152,7 @@ class FindClosest extends Base {
         if (!collect && !scan && !attack) 
             throw new Error('Unit Collect, Scan, or Attack feature is required');
 
+        this.map = useHeightMap();
         this.target = null;
     }
 
@@ -188,6 +210,8 @@ class FindClosest extends Base {
         const attack = unitOptions.attack;
         const move = unitOptions.move;
         const targetPosition = this.target.position;
+        //targetPosition.y = this.map.getY(targetPosition.x, targetPosition.z)
+
         if (collect) {
             collect.target = this.target;
             manager.target = collect.speed;
@@ -421,4 +445,5 @@ export default {
     REGROUP: Regroup,
     ATTACK: Attack,
     MOVE_TO_TARGET: MoveToTarget,
+    MOVE_TO_ATTACK: MoveToAttack
 }

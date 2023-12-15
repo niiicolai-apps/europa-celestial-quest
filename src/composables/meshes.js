@@ -13,6 +13,11 @@ const getCached = (name) => {
         const userData = mesh.userData;
         mesh.userData = {}
         const clone = mesh.clone();
+        clone.traverse((child) => {
+            if (child.name === 'healthBar') {
+                child.parent.remove(child);
+            }
+        });
         mesh.userData = userData;
         meshCache[name].clones.push(clone);
         return clone;
@@ -40,11 +45,12 @@ export const getMesh = async (name) => {
                 if (child.name === 'Cube051' || child.name === 'Cube060') child.visible = false;
                 child.castShadow = true;
                 child.receiveShadow = true;
+                
                 const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
-                if (!subMesh) return;
-
-                const material = await getTexturePack(subMesh.texturePack, child.uuid);
-                child.material = material;
+                if (subMesh) {
+                    const material = await getTexturePack(subMesh.texturePack, child.uuid);
+                    child.material = material;
+                }
             }
         });
     } else {
@@ -60,7 +66,7 @@ export const getMesh = async (name) => {
     return meshInstance.mesh;
 }
 
-export const removeMesh = (object3D) => {
+export const removeMesh = async (object3D) => {
     const mesh = object3D.userData.mesh;
     if (!mesh || !mesh.url) {
         console.log('bug: mesh or mesh.url is undefined')
@@ -94,13 +100,13 @@ export const removeMesh = (object3D) => {
     }
 }
 
-export const disposeMeshCache = () => {
-    /*
+export const disposeMeshCache = async () => {
+    
     for (const key in meshCache) {
         const meshInstance = meshCache[key];
         for (const clone of meshInstance.clones) {
-            removeMesh(clone);
+            await removeMesh(clone);
         }
-    }*/
+    }
     disposeTextureCache();
 }

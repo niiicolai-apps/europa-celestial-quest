@@ -30,6 +30,7 @@ export default {
                 en: 'Incomplete Objectives',
                 da: 'Ufuldførte mål',
             },
-        }
+        },
+        
     },
 }

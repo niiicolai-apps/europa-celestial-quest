@@ -1,55 +1,38 @@
 <template>
-    <UI.Fixed bottom="auto" left="3" top="3" right="3">
-        <Transition name="slide-down">
-            <div v-if="item">
-                <UI.Card :type="item.type">
-                    <template #body>
-                        <p class="text-white font-bold text-center w-full">
-                            <Locale :id="item.localeId" />     
-                        </p>
-                    </template>
-                </UI.Card>
+    <Transition name="slide-right">
+        <UI.Fixed bottom="auto" left="auto" top="0" right="0" v-if="item" style="z-index: 10001; margin-top: 4.5em;">
+            <div class="p-3 rounded box-shadow-lg mr-2" :class="bg[item.type]">
+                <p class="text-primary font-bold text-center text-xs w-full">
+                    <Locale :id="item.localeId" />
+                </p>
             </div>
-        </Transition>
-    </UI.Fixed>
+        </UI.Fixed>
+    </Transition>
 </template>
 
 <script setup>
 import UI from 'frontend-ui';
-import { ref, defineExpose, onMounted, onUnmounted } from 'vue';
+import { computed, defineExpose, onMounted, onUnmounted } from 'vue';
 import Locale from '../General/Locale.vue';
+import { useToast } from '../../composables/toast.js';
 
-const queue = ref([]);
-const item = ref(null);
-const interval = ref(null);
-
-const add = (localeId, time=5000, type='primary') => {
-    const removeAt = Date.now() + time;
-    queue.value.push({ localeId, type, removeAt });
-}
-
-const intervalMethod = () => {
-    if (item.value) {
-        const now = Date.now();
-        if (item.value.removeAt < now) {
-            item.value = null;
-        } else {
-            return;
-        }
-    }
-
-    if (queue.value.length === 0) return;    
-
-    item.value = { ...queue.value.shift() };    
-}
+const toast = useToast();
+const item = computed(() => toast.item.value);
+const bg = {
+    primary: 'bg-primary',
+    success: 'bg-success',
+    info: 'bg-info',
+    warning: 'bg-warning',
+    danger: 'bg-danger',
+};
 
 onMounted(() => {
-    interval.value = setInterval(intervalMethod, 1000);
+    toast.enable();
 });
 
 onUnmounted(() => {
-    clearInterval(interval.value);
+    toast.disable();
 });
 
-defineExpose({ add });
+defineExpose({ add: toast.add });
 </script>

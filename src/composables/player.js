@@ -8,6 +8,7 @@ import ComputerBehavior from './behaviors/computer_behavior.json'
 import ComputerStates from './states/computer_states.js'
 
 const players = ref([])
+const scene = ref(null)
 
 const Player = (isComputer=false, team=null) => {
     const stateMachineId = Date.now();
@@ -19,6 +20,7 @@ const Player = (isComputer=false, team=null) => {
             throw new Error(`Mesh not found: ${unitData.mesh}`)
         }
 
+        scene.value.add(mesh)
         const units = useUnits()
         units.add(mesh, unitData, team)
         return mesh
@@ -74,6 +76,12 @@ const Player = (isComputer=false, team=null) => {
 
 export const usePlayers = () => {
 
+    const init = async (_scene) => {
+        if (!scene.value) {
+            scene.value = _scene
+        }
+    }
+
     const add = (isComputer=false, teamName=null, difficulty='easy') => {
         const player = Player(isComputer, teamName, difficulty)
         
@@ -101,6 +109,7 @@ export const usePlayers = () => {
     }
 
     return {
+        init,
         add,
         get,
         remove

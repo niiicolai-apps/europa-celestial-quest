@@ -1,28 +1,30 @@
 <template>
     <UI.Panel transition_name="slide-up" :show="selectedPanel === identifier">
 
-        <div class="bg-white rounded w-full h-screen" :class="showScroll ? 'overflow-y-scroll' : ''">
-            <UI.Fixed bottom="auto" class="h-15">
-                <UI.Flex direction="horizontal" justify="start" class="p-5 bg-primary">
+        <div class="bg-info rounded w-full h-screen" :class="showScroll ? 'overflow-y-scroll' : ''">
+            <UI.Fixed bottom="auto">
+                <UI.Flex direction="horizontal" justify="start" gap="2" class="p-5 bg-info">
 
-                    <UI.Button type="secondary" class="flex items-center justify-center" @click="panelManager.clearPanel()">
+                    <UI.Button type="primary" 
+                        class="flex items-center justify-center" 
+                        @click="panelManager.clearPanel()">
                         <UI.Flex>
                             <Icons.fa.ArrowDownIcon 
                                 width="1em" 
                                 height="1em" 
-                                fill="white" 
+                                fill="#3f88c5" 
                             />
                         </UI.Flex>
                     </UI.Button>
 
-                    <UI.SubTitle class="uppercase text-white">
+                    <UI.SubTitle class="uppercase text-primary">
                         {{ name }}
                     </UI.SubTitle>
 
                 </UI.Flex>
             </UI.Fixed>
             
-            <div class="p-5" style="margin-top: 3.75rem;">
+            <div class="px-5" style="margin-top: 4.35rem;">
                 <slot />
             </div>
         </div>

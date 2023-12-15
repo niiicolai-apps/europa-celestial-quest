@@ -18,6 +18,7 @@ import UNITS from '../localizations/units.js';
 import TIMELINE from '../localizations/timeline.js';
 import INTRO from '../localizations/intro.js';
 import TOASTS from '../localizations/toasts.js';
+import GAME_END from '../localizations/game_end.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
@@ -45,7 +46,8 @@ const locals = {
     ...UNITS,
     ...TIMELINE,
     ...INTRO,
-    ...TOASTS
+    ...TOASTS,
+    ...GAME_END,
 }
 
 export const useLocalization = (_locals = locals) => {

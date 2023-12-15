@@ -7,9 +7,9 @@
     --secondary-hover: #b6c3d1;
     --secondary-dark: #8b95a0;
 
-    --success: #566E3D;
-    --success-hover: #6d8b4c;
-    --success-dark: #455830;
+    --success: #95bc6c;
+    --success-hover: #abd87c;
+    --success-dark: #86a763;
 
     --info: #3F88C5;
     --info-hover: #4a9de2;
@@ -19,9 +19,9 @@
     --warning-hover: #fcbc1a;
     --warning-dark: #e6a80b;
 
-    --danger: #D00000;
-    --danger-hover: #e70000;
-    --danger-dark: #bd0000;
+    --danger: #ff6a6a;
+    --danger-hover: #ff7d7d;
+    --danger-dark: #eb5f5f;
 
     --light: #f8f9fa;
     --light-hover: #e2e6ea;

@@ -3,6 +3,7 @@ import ConstructionDefinitions from './definitions/constructions.js'
 import ConstructionStates from './states/construction_states.js'
 import ConstructionBehaviors from './behaviors/constructions_behavior.json'
 import UnitController from './inspect/unit_controller.js'
+import { setupUpgradeVisuals, setupConstructionVisuals } from './helpers/construction_helper.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
 import { useHealth } from './health.js'
@@ -16,6 +17,15 @@ const isInitialized = ref(false)
 const interval = ref(null)
 
 let scene = null
+
+const loseGameCheck = (team='player') => {
+    if (team !== 'player') return
+    const playerItems = items.value.filter(item => item.userData.team === team)
+    const ehd_x1_count = playerItems.filter(item => item.name === 'Europa Horizon Drifter X1').length
+    if (ehd_x1_count === 0) {
+        console.log('Player lost the game')
+    }
+}
 
 const recalculateStorage = () => {
     let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
@@ -61,7 +71,7 @@ const removeItemFromState = (item) => {
     return true
 }
 
-const addHealthBar = (item, healthFeature, team) => {
+const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
     if (!healthFeature) return
     const { maxHealth, current } = healthFeature.options
     const healthManager = useHealth()
@@ -70,6 +80,7 @@ const addHealthBar = (item, healthFeature, team) => {
         removeItemFromState(item)
         scene.remove(item)
         removeMesh(item)
+        loseGameCheck(team)
     }
 
     const onDamage = (attacker) => {
@@ -81,7 +92,8 @@ const addHealthBar = (item, healthFeature, team) => {
         current,
         maxHealth,
         onDie,
-        onDamage
+        onDamage,
+        healthBarYOffset
     )
 }
 
@@ -107,10 +119,10 @@ export const useItems = () => {
         return canAfford
     }
 
-    const spawn = async (itemDefinition, team = 'player', isOwned = false) => {
-        const { mesh, name, type, costs, upgrades } = itemDefinition
+    const spawn = async (itemDefinition, team = 'player', isOwned = false, upgradeIndex = 0) => {
+        const { mesh, name, type, costs, upgrades, placementYOffset } = itemDefinition
         
-        const upgrade = { index: 0 }
+        const upgrade = { index: upgradeIndex }
         const item = await getMesh(mesh)
         
         item.name = name
@@ -121,11 +133,17 @@ export const useItems = () => {
             upgrades,
             upgrade,
             isOwned,
+            placementYOffset,
             team
         }
 
         scene.add(item)
         items.value.push(item)
+        setupUpgradeVisuals(item)
+
+        if (itemDefinition.excludeSubMeshes) {
+            setupConstructionVisuals(item, [], itemDefinition.excludeSubMeshes)
+        }
 
         const produceFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'produce')
         const attackFeature = itemDefinition.upgrades[0]?.features?.find(feature => feature.name === 'attack')
@@ -137,7 +155,8 @@ export const useItems = () => {
         const canStore = storageFeature !== undefined
         const canBuild = UnitController.canBuild(item);
         
-        addHealthBar(item, healthFeature, team)
+        const healthBarYOffset = itemDefinition.healthBarYOffset || 0
+        addHealthBar(item, healthFeature, team, healthBarYOffset)
 
         const stateMachine = useStateMachine()
         const behavior = ConstructionBehaviors[itemDefinition.primary_function]
@@ -162,11 +181,9 @@ export const useItems = () => {
             const itemDefinition = ConstructionDefinitions.find(item => item.name === itemData.name)
             if (!itemDefinition) continue
 
-            const item = await spawn(itemDefinition)
+            const item = await spawn(itemDefinition, 'player', true, itemData.userData.upgrade.index)
             item.position.set(itemData.position.x, itemData.position.y, itemData.position.z)
             item.rotation.set(itemData.rotation.x, itemData.rotation.y, itemData.rotation.z)
-            item.userData.upgrade.index = itemData.userData.upgrade.index
-            item.userData.isOwned = itemData.userData.isOwned
             inspectManager.addSelectable(item)
             recalculateStorage()
         }
@@ -253,6 +270,12 @@ export const useItems = () => {
         }).length
     }
 
+    const countByNameAndTeam = (name, team) => {
+        return items.value.filter(item => {
+            return item.name === name && item.userData.team === team
+        }).length
+    }
+
     const countByTeam = (team) => {
         return items.value.filter(item => item.userData.team === team).length
     }
@@ -287,5 +310,6 @@ export const useItems = () => {
         dequeueAny,
         enable,
         disable,
+        countByNameAndTeam,
     }
 }

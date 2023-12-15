@@ -1,24 +1,11 @@
 <template>
-    <UI.Flex direction="horizontal" gap="3" v-if="isInitialized">
+    <UI.Flex direction="horizontal" gap="2" v-if="isInitialized">
         <UI.Flex 
             gap="2" 
-            v-for="account in bankManager.bank.value.accounts" 
+            v-for="account in filteredBankAccounts" 
             :key="account.name"
             :title="localizationManager.getLocale(`bank.${account.name}`)"
             >
-            <Icons.fa.CoinsIcon 
-                v-if="account.name == 'coins'" 
-                :width="iconSize" 
-                :height="iconSize" 
-                :fill="iconFill" 
-            />
-
-            <Icons.fa.GemIcon 
-                v-if="account.name == 'diamonds'" 
-                :width="iconSize" 
-                :height="iconSize" 
-                :fill="iconFill" 
-            />
 
             <Icons.fa.TrashIcon 
                 v-if="account.name == 'ice'" 
@@ -48,23 +35,16 @@
                 :fill="iconFill" 
             />
 
-            <Icons.fa.TrashIcon 
-                v-if="account.name == 'power'" 
-                :width="iconSize" 
-                :height="iconSize" 
-                :fill="iconFill" 
-            />
-
-            <Icons.fa.TrashIcon 
+            <Icons.fa.ScrollIcon 
                 v-if="account.name == 'research'" 
                 :width="iconSize" 
                 :height="iconSize" 
                 :fill="iconFill" 
             />
 
-            <UI.Paragraph class="text-white">
+            <div class="text-primary font-bold" style="font-size: .6em;">
                 {{ balance(account) }}
-            </UI.Paragraph>
+            </div>
         </UI.Flex>
     </UI.Flex>
 </template>
@@ -76,15 +56,18 @@ import { computed } from 'vue';
 import { useBank } from '../../../composables/bank.js';
 import { useLocalization } from '../../../composables/localization.js';
 
-const iconSize = "1em";
-const iconFill = "white";
+const iconSize = "0.8em";
+const iconFill = "#1c3144";
 const localizationManager = useLocalization();
 const bankManager = useBank();
 const isInitialized = computed(() => bankManager.isInitialized.value);
-
+const bankAccounts = computed(() => bankManager.bank.value.accounts);
+// filter out research and power accounts
+const filteredBankAccounts = computed(() => bankAccounts.value.filter(account => 
+    account.name !== 'power'));
 const balance = (account) => {
     if (account.max) {
-        return `${parseFloat(account.balance).toFixed(1)}/${account.max}`;
+        return `${parseInt(account.balance)}/${account.max}`;
     }
     
     return account.balance;

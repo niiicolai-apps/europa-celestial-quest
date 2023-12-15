@@ -7,6 +7,7 @@ import { useItems } from '../constructions.js';
 import { useGround } from '../ground.js';
 import { removeMesh } from '../meshes.js';
 import { useObjectives } from '../objectives.js';
+import { useToast } from '../toast.js';
 
 import * as THREE from 'three';
 
@@ -32,9 +33,10 @@ const move = (selected, dx, dy, dz) => {
     if (!point) return false;
     nextPosition.copy(grid.getPosition(point));
 
+    const placementYOffset = selected.value.userData.placementYOffset || 0;
     const box3 = new THREE.Box3().setFromObject(selected.value);
     const size = box3.getSize(new THREE.Vector3());
-    nextPosition.y += size.y / 2;
+    nextPosition.y += (size.y / 2) + placementYOffset;
 
     if (collisionManager.isCollidingAt(selected.value, nextPosition))
         return false;
@@ -68,7 +70,11 @@ const MoveController = {
         return true;
     },
     confirm: (selected) => {
-        if (!isMoving.value) return false;
+        if (!isMoving.value) {
+            useToast().add('toasts.move_controller.not_moving', 4000, 'danger');
+            return false;
+        }
+
         if (!selected.value.userData.isOwned) {
             const canAfford = useItems().canAfford(selected.value.userData.costs);
 
@@ -79,10 +85,11 @@ const MoveController = {
                 selected.value.userData.isOwned = true;
                 useObjectives().tryCompleteIncompletes();
             } else {
+                useToast().add('toasts.move_controller.cannot_afford', 4000, 'danger');
                 return false;
             }
         }
-        
+
         if (selected.value.userData.canStore) {
             useItems().recalculateStorage();
         }
@@ -90,7 +97,9 @@ const MoveController = {
         useItems().saveState();
         isMoving.value = false;
         lastPosition.value = null;
+        useToast().add('toasts.move_controller.success', 4000, 'success');
         return true;
+        
     },
     moveForward: (selected) => {
         return move(selected, 0, 0, moveLength);
@@ -120,10 +129,11 @@ const MoveController = {
         if (!isMoving.value)
             return false;
 
+        const placementYOffset = selected.value.userData.placementYOffset || 0;
         const box3 = new THREE.Box3().setFromObject(selected.value);
         const size = box3.getSize(new THREE.Vector3());
         point = grid.getPosition(point);
-        point.y += size.y / 2;
+        point.y += (size.y / 2) + placementYOffset;
 
         if (collisionManager.isCollidingAt(selected.value, point))
             return false;

@@ -197,7 +197,7 @@
                         }
                     },
                     {
-                        "method": "move_to",
+                        "method": "move_to_attack",
                         "options": {
                         }
                     },

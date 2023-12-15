@@ -116,55 +116,747 @@
         "name": "europa_horizon_drifter_x1",
         "type": "GLTF",
         "url": "meshes/human_construction/europa_horizon_drifter_x1.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Europa_Horizon_Drifter_X1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Europa_Horizon_Drifter_X1_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_04",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_04",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_04",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_04",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_03",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_03",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_03",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_03",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg3",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_02",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_02",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_02",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_02",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg4",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_01",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_01",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_01",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Parachute",
+                "texturePack": "blue_fabric"
+            },
+            {
+                "name": "Parachute_Line1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Parachute_Line2",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Parachute_Line3",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Parachute_Line4",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Parachute_Line5",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Radar_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Cube_005",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Cylinder_028",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Solar_Panel_Light_Cover_01",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Solar_Panel_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Cube_010",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Cylinder_033",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_Light_02",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Solar_Panel_Light_Cover_02",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Text_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Thrusters",
+                "texturePack": "grey_fabric"
+            }
+        ]
+    },
+    "europa_horizon_drifter_x1_no_parachute": {
+        "name": "europa_horizon_drifter_x1_no_parachute",
+        "type": "GLTF",
+        "url": "meshes/human_construction/europa_horizon_drifter_x1_no_parachute.glb",
+        "subMeshes": [
+            {
+                "name": "Europa_Horizon_Drifter_X1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Europa_Horizon_Drifter_X1_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_04",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_04",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_04",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_04",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_03",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_03",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_03",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_03",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg3",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_02",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_02",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_02",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_02",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg4",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Leg_Light_Cover_01",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Leg_Part_A_01",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Leg_Part_B_01",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Radar_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Cube_005",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Cylinder_028",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Solar_Panel_Light_Cover_01",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Solar_Panel_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Cube_010",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Cylinder_033",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel_Light_02",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Solar_Panel_Light_Cover_02",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Text_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Thrusters",
+                "texturePack": "grey_fabric"
+            }
+        ]
     },
     "Robot Facility": {
         "name": "Robot Facility",
         "type": "GLTF",
         "url": "meshes/human_construction/bot_builder.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Light_03",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Text",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Bot_Builder",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Door",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Antenna_Small",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Bot_Builder_Lvl_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Small_Lvl2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Bot_Builder_Lvl_2",
+                "texturePack": "grey_fabric"
+            }
+        ]
     },
     "Drone Facility": {
         "name": "Drone Facility",
         "type": "GLTF",
         "url": "meshes/human_construction/drone_builder.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Light_01",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Light_02",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Text",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Drone_Builder",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Antenna_Small_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Drone_Builder_Lvl_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Small_002",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Drone_Builder_Lvl_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Door_Top_Left",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Door_Top_Right",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Door_Bottom_Right",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Door_Bottom_Left",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Spot_Light_01",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Spot_Light_02",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Spot_Light_03",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Spot_Light_04",
+                "texturePack": "black_fabric"
+            }
+        ]
     },
     "Hydrogen Fuel Tank": {
         "name": "Hydrogen Fuel Tank",
         "type": "GLTF",
         "url": "meshes/human_construction/hydrogen_fuel_tank.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Hydrogen_Fuel_Tank_Lights",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Fuel_Tank_Lights_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Fuel_Tank_Skeleton",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Fuel_Tank_Skeleton_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Fuel_Tank_Lvl_1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Fuel_Tank_Lvl_2",
+                "texturePack": "black_fabric"
+            }
+        ]
     },
     "Rock Metal Extractor": {
         "name": "Rock Metal Extractor",
         "type": "GLTF",
         "url": "meshes/human_construction/rock_metal_extractor.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Rock_Metal_Extractor",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Container",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Container_Support",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Text",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Lights",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Lights_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Lights_002",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Lights_003",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Rock_Metal_Extractor_Lvl_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Rock_Metal_Extractor_Lvl_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body_002",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Container_001",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body_003",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body_003",
+                "texturePack": "black_fabric"
+            }
+        ]
     },
     "Rover Research Facility": {
         "name": "Rover Research Facility",
         "type": "GLTF",
         "url": "meshes/human_construction/rover_research_facility.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Rover_Research_Facility",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "ConRover_Research_Facility_Lvl_1tainer",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Rover_Research_Facility_Lvl_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Rover_Research_Facility_Lvl_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Door",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Text_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Wall_Light_002",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Antenna_Large_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Small",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Large_002",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Small_001",
+                "texturePack": "grey_fabric"
+            }
+        ]
     },
     "Rover Warrior Facility": {
         "name": "Rover Warrior Facility",
         "type": "GLTF",
         "url": "meshes/human_construction/rover_warrior_facility.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Rover_Warrior_Facility",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Door_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Light",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Wall_Light_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Rover_Warrior_Facility_Lvl_1",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Large",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenne_Small",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Text",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Rover_Warrior_Facility_Lvl_2",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenna_Large_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Antenne_Small_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body_001",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Body_002",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Hydrogen_Tank_Light_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Tank_Light_002",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Tank_Text_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Tank_Text_002",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Hydrogen_Tank_Skeleton_001",
+                "texturePack": "grey_fabric"
+            }
+        ]
     },
     "Machine Gun Turrent": {
         "name": "Machine Gun Turrent",
         "type": "GLTF",
         "url": "meshes/human_construction/machine_gun_turrent.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Text_005",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Text_004",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Text_001",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Machine_Gun_Turrent_Level_1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Machine_Gun_Turrent_Level_2",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Machine_Gun_Turrent_Level_3",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Barrel_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Barrel_002",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Barrel",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Stand_002",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Stand_001",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Stand",
+                "texturePack": "black_fabric"
+            }
+        ]
     },
     "Solar Panel": {
         "name": "Solar Panel",
         "type": "GLTF",
         "url": "meshes/human_construction/solar_panel.glb",
-        "subMeshes": []
+        "subMeshes": [
+            {
+                "name": "Solar_Panel_Level_1",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Solar_Panel_Level_2",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Solar_Panel_Level_3",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Skeleton_001",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Skeleton_002",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Skeleton_003",
+                "texturePack": "grey_fabric"
+            }
+        ]
     },
     "B S-1": {
         "name": "B S-1",

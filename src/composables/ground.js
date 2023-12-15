@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { ref } from 'vue';
 import { getMesh } from './meshes.js';
 import { useMap } from './map.js';
+import { useHeightMap } from './height_map.js';
 
 const isInitialized = ref(false);
 const onIntersect = [];
@@ -35,6 +36,8 @@ export const useGround = () => {
         });
 
         isInitialized.value = true;
+        await useHeightMap().init(scene);
+        //useHeightMap().bake(groundMesh, scene, 10);
         return true;
     }
 

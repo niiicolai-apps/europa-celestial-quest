@@ -107,6 +107,7 @@
             "description": "Hydrogen is a must have resource for your colony.",
             "requiredLevel": 1,
             "requiredObjectives": [],
+            "timeline": "intro",
             "goals": [
                 {
                     "name": "Build a Rover Research Facility", 

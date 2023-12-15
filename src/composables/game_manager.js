@@ -14,6 +14,7 @@ import { useEnemy } from './enemy.js';
 import { useBillboard } from './billboard.js';
 import { useStateMachine } from './state_machine.js';
 import { useTimeline } from './timeline.js';
+import { usePlayers } from './player.js';
 
 import PersistentData from './persistent_data.js';
 import Camera from './camera.js';
@@ -32,6 +33,7 @@ const enemyManager = useEnemy();
 const billboardManager = useBillboard();
 const stateMachineManager = useStateMachine();
 const timelineManager = useTimeline();
+const playersManager = usePlayers();
 const props = ref({});
 
 const webGLOptions = {
@@ -40,12 +42,13 @@ const webGLOptions = {
 
 export const useGameManager = () => {
 
-    const init = async (canvasAdapter, audio1Ctrl, audio2Ctrl, subTitleCtrl, toastCtrl) => {
+    const init = async (canvasAdapter, audio1Ctrl, audio2Ctrl, subTitleCtrl, toastCtrl, endGame) => {
         if (!canvasAdapter) throw new Error('CanvasAdapter is required');
         if (!audio1Ctrl) throw new Error('Audio1Ctrl is required');
         if (!audio2Ctrl) throw new Error('Audio2Ctrl is required');
         if (!subTitleCtrl) throw new Error('SubTitleCtrl is required');
         if (!toastCtrl) throw new Error('ToastCtrl is required');
+        if (!endGame) throw new Error('EndGame is required');
         
         props.value = {
             canvasAdapter,
@@ -53,7 +56,9 @@ export const useGameManager = () => {
             audio2Ctrl,
             subTitleCtrl,
             toastCtrl,
+            endGame,
             gameIsStarted: false,
+            endState: null,
         };
 
         timelineManager.init(
@@ -85,15 +90,17 @@ export const useGameManager = () => {
 
         const { renderer, camera, scene, lifeCycle } = props.value.canvasAdapter;
         const domElement = renderer.domElement;
+        const toastCtrl = props.value.toastCtrl;
 
         Camera.manager.enable();
-        inspectManager.enable(camera, scene, renderer);
+        inspectManager.enable(camera, scene, domElement);
         navigationManager.enable();
 
+        await playersManager.init(scene);
         await mapManager.init(scene);
-        await objectivesManager.init();
         await bankManager.init();
         await statsManager.init();
+        await objectivesManager.init(); // Must be after statsManager
         await itemsManager.init(scene);
         await unitsManager.init(scene, domElement);
         await resourcesManager.init(scene);
@@ -131,9 +138,34 @@ export const useGameManager = () => {
         return props.value.gameIsStarted;
     }
 
+    const isGameEnded = () => {
+        return props.value.endState !== null;
+    }
+
+    const isGameWon = () => {
+        return props.value.endState === 'win';
+    }
+
+    const isGameLost = () => {
+        return props.value.endState === 'lost';
+    }
+
+    const endGame = (state='win') => {
+        props.value.endState = state;
+    }
+
+    const backToMainMenu = () => {
+        props.value.endGame();
+    }
+
     return {
         init,
         resumeGame,
         isGameStarted,
+        isGameEnded,
+        isGameWon,
+        isGameLost,
+        endGame,
+        backToMainMenu,
     }
 }

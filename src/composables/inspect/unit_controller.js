@@ -4,6 +4,7 @@ import { useItems } from '../constructions.js';
 import { getMesh } from '../meshes.js';
 import { useUnits } from '../units.js';
 import { useObjectives } from '../objectives.js';
+import { useToast } from '../toast.js';
 import ConstructionDefinitions from '../definitions/constructions.js'
 import * as THREE from 'three';
 
@@ -62,15 +63,28 @@ const BuildController = {
         //useItems().saveState();
     },
     queueUnit: async (selected, unitName) => {
-        if (!isBuilding.value) return false;
-        if (!selected.value.userData.isOwned) return false;
+        if (!isBuilding.value) {
+            useToast().add('toasts.unit_controller.not_building', 4000, 'danger');
+            return false;
+        }
+
+        if (!selected.value.userData.isOwned) {
+            useToast().add('toasts.unit_controller.cannot_spawn_unowned_construction', 4000, 'danger');
+            return false;
+        }
 
         const units = BuildController.getAllowedUnits(selected);
         const unit = units.find(unit => unit.name === unitName);
-        if (!unit) return false;
+        if (!unit) {
+            useToast().add('toasts.unit_controller.invalid_unit', 4000, 'danger');
+            return false;
+        }
 
         const canAfford = bankManager.canAfford(unit.costs);
-        if (!canAfford) return false;
+        if (!canAfford) {
+            useToast().add('toasts.unit_controller.cannot_afford', 4000, 'danger');
+            return false;
+        }
 
         for (const cost of unit.costs) {
             bankManager.withdraw(cost.amount, cost.currency);
@@ -85,6 +99,8 @@ const BuildController = {
         selected.value.userData.unitQueue.push({ unit, completeTime, startTime });
 
         useItems().saveState();
+        useToast().add('toasts.unit_controller.success', 4000, 'success');
+        return true;
     },
     getAllowedUnits: (selected) => {
         if (!selected.value.userData.isOwned) return [];

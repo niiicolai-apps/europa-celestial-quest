@@ -28,8 +28,9 @@ const moveCtrl = {
         }
     },
     confirm: () => {
-        if (MoveController.confirm(selected))
+        if (MoveController.confirm(selected, scene.value)) {
             selectableManager.value.enable();
+        }
     },
     moveForward: () => {
         MoveController.moveForward(selected);
@@ -80,8 +81,9 @@ const upgradeCtrl = {
             selectableManager.value.enable();
     },
     confirm: () => {
-        if (UpgradeController.confirm(selected))
+        if (UpgradeController.confirm(selected)) {
             selectableManager.value.enable();
+        }
     },
     isUpgradeable: () => UpgradeController.isUpgradeable(selected),
     isMaxUpgradeReached: () => UpgradeController.isMaxUpgradeReached(selected),
@@ -100,7 +102,7 @@ const unitCtrl = {
     getAllowedUnits: () => UnitController.getAllowedUnits(selected),
     getQueue: () => UnitController.getQueue(selected),
     dequeueAny: () => UnitController.dequeueAny(selected, scene.value),
-    queueUnit: (unitName) => UnitController.queueUnit(selected, unitName),
+    queueUnit: async (unitName) => await UnitController.queueUnit(selected, unitName),
     canBuild: () => UnitController.canBuild(selected),
     isBuilding: UnitController.isBuilding
 }
@@ -132,10 +134,10 @@ export const useInspect = () => {
         console.log('onDeselect', selectable);
     }
 
-    const enable = (camera, _scene, renderer) => {
+    const enable = (camera, _scene, domElement) => {
         if (isInitialized.value) return;
 
-        selectableManager.value = WebGL.composables.useSelectable(renderer.domElement, camera, {
+        selectableManager.value = WebGL.composables.useSelectable(domElement, camera, {
             deselectOnDoubleClick: false,
             autoDeselect: true,
             onSelect,

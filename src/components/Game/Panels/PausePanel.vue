@@ -1,65 +1,43 @@
 <template>
     <Panel :name="localizationManager.getLocale('pause.title')" identifier="pause">
-        <UI.Flex>
-            <UI.Card v-for="option in options" :key="option.name" class="w-full">
-                <template #header>
-                    <UI.Paragraph class="font-bold uppercase">
+        <UI.Flex gap="2">
+            <div type="primary" v-for="option in options" :key="option.name"
+                class="w-full bg-primary p-3 rounded box-shadow-lg">
+                <UI.Flex direction="horizontal" justify="between" class="w-full">
+                    <UI.Paragraph class="text-info font-bold">
                         {{ option.name }}
                     </UI.Paragraph>
 
-                    <Icons.fa.GearIcon 
-                        v-if="option.icon === 'gear'"
-                        :width="optionIconSize" 
-                        :height="optionIconSize" 
-                        :fill="optionIconFill" 
-                    />
+                    <UI.Button v-if="option.link" :title="option.name" :link="option.link" type="info">
+                        <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
 
-                    <Icons.fa.CrownIcon 
-                        v-if="option.icon === 'crown'"
-                        :width="optionIconSize" 
-                        :height="optionIconSize" 
-                        :fill="optionIconFill"
-                    />
+                        <Icons.fa.CrownIcon v-if="option.icon === 'crown'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
 
-                    <Icons.fa.ScrollIcon 
-                        v-if="option.icon === 'scroll'"
-                        :width="optionIconSize" 
-                        :height="optionIconSize" 
-                        :fill="optionIconFill"
-                    />
+                        <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
 
-                    <Icons.fa.ArrowRightIcon 
-                        v-if="option.icon === 'arrow-right'"
-                        :width="optionIconSize" 
-                        :height="optionIconSize" 
-                        :fill="optionIconFill"
-                    />
-                </template>
+                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                            :height="optionIconSize" :fill="optionIconFill" />
+                    </UI.Button>
 
-                <template #body>
-                    <UI.Flex direction="horizontal" justify="between" class="w-full">
-                        <UI.Paragraph>
-                            {{ option.description }}
-                        </UI.Paragraph>
+                    <UI.Button v-if="option.panel" :title="option.name" @click="panelManager.setPanel(option.panel)"
+                        type="info">
+                        <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
+                        :fill="optionIconFill" />
 
-                        <UI.Button v-if="option.link" :title="option.name" :link="option.link">
-                            <Icons.fa.ArrowRightIcon 
-                                width="1em" 
-                                height="1em" 
-                                fill="white" 
-                            />
-                        </UI.Button>
+                        <Icons.fa.CrownIcon v-if="option.icon === 'crown'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
 
-                        <UI.Button v-if="option.panel" :title="option.name" @click="panelManager.setPanel(option.panel)">
-                            <Icons.fa.ArrowRightIcon 
-                                width="1em" 
-                                height="1em" 
-                                fill="white" 
-                            />
-                        </UI.Button>
-                    </UI.Flex>
-                </template>
-            </UI.Card>
+                        <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
+                            :fill="optionIconFill" />
+
+                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                            :height="optionIconSize" :fill="optionIconFill" />
+                    </UI.Button>
+                </UI.Flex>
+            </div>
         </UI.Flex>
     </Panel>
 </template>
@@ -75,20 +53,12 @@ const panelManager = usePanel();
 const localizationManager = useLocalization();
 
 const optionIconSize = "1em";
-const optionIconFill = "black";
+const optionIconFill = "#1c3144";
 const options = [{
     name: localizationManager.getLocale("pause.settings_button_title"),
     description: localizationManager.getLocale("pause.settings_button_description"),
     icon: "gear",
     panel: "settings",
-}, {
-    name: localizationManager.getLocale("pause.leaderboard_button_title"),
-    description: localizationManager.getLocale("pause.leaderboard_button_description"),
-    icon: "crown",
-}, {
-    name: localizationManager.getLocale("pause.achievements_button_title"),
-    description: localizationManager.getLocale("pause.achievements_button_description"),
-    icon: "scroll",
 }, {
     name: localizationManager.getLocale("pause.quit_button_title"),
     description: localizationManager.getLocale("pause.quit_button_description"),

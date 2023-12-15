@@ -97,5 +97,9 @@ export default {
             en: 'Back',
             da: 'Tilbage',
         },
+        empty_queue: {
+            en: 'Queue is empty',
+            da: 'Køen er tom',
+        },
     },
 }

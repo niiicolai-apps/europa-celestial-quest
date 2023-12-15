@@ -1,4 +1,5 @@
 <template>
+    <GameEndPanel />
     <TimelinePanel />
     <SubTitle ref="subTitleRef" />
     <Toast ref="toastRef" />
@@ -49,6 +50,7 @@ import SubTitle from './Game/SubTitle.vue';
 import TopPanel from './Game/TopPanel.vue';
 import BottomPanel from './Game/BottomPanel.vue';
 import InspectPanel from './Game/InspectPanel.vue';
+import GameEndPanel from './Game/GameEndPanel.vue';
 import Audio from './UI/Audio.vue';
 import TimelinePanel from '../components/Game/TimelinePanel.vue';
 
@@ -59,6 +61,7 @@ import { ref, computed, onMounted, defineEmits } from 'vue';
 const emits = defineEmits(['endGame']);
 const gameManager = useGameManager();
 const timelineManager = useTimeline();
+const endGame = () => emits('endGame');
 
 const subTitleRef = ref(null);
 const audioRef = ref(null);
@@ -83,7 +86,8 @@ onMounted(async () => {
         audioRef.value,
         audioRefBgg.value,
         subTitleRef.value,
-        toastRef.value
+        toastRef.value,
+        endGame
     );
     await gameManager.resumeGame();
 })

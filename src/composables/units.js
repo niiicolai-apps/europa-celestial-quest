@@ -7,11 +7,14 @@ import { useBank } from './bank.js';
 import { useHealth } from './health.js';
 import { removeMesh } from './meshes.js';
 import { useStateMachine } from './state_machine.js'
+import { useHeightMap } from './height_map.js';
+import { useToast } from './toast.js';
 import * as THREE from 'three';
 import UnitsBehavior from './behaviors/units_behavior.json';
 import UnitStates from './states/unit_states.js';
 
 const ground = useGround();
+const heightMap = useHeightMap();
 const units = ref([]);
 const scene = ref(null);
 
@@ -144,7 +147,9 @@ export const useUnits = () => {
 
         const command = commands.value.find(c => c.team === 'player');
         command.position = point;
+        //command.position.y = heightMap.getY(point.x, point.z);
         warriorMarkerMesh.position.copy(point);
+        useToast().add(`toasts.units.set_warrior_command.${command.type}`, 4000, 'info');
         stopTrackWarriorCommand();
     }
 
@@ -174,6 +179,11 @@ export const useUnits = () => {
 
         command.type = type;
         command.position = position;
+    }
+
+    const getCommand = (team='player') => {
+        const command = commands.value.find(c => c.team === team);
+        return command;
     }
 
     const setStateByFunction = (primaryFunction, stateName, team='player') => {
@@ -217,6 +227,7 @@ export const useUnits = () => {
         countByName,
         countByNameAndTeam,
         setCommand,
+        getCommand,
         countByTeam
     }
 }

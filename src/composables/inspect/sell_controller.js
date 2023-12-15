@@ -2,6 +2,8 @@ import { ref } from 'vue';
 import { useBank } from '../bank.js';
 import { useItems } from '../constructions.js';
 import { removeMesh } from '../meshes.js';
+import { useToast } from '../toast.js';
+import CONSTRUCTIONS from '../definitions/constructions.js';
 
 const bankManager = useBank();
 const isSelling = ref(false);
@@ -21,8 +23,34 @@ const SellController = {
         return true;
     },
     confirm: (selected, scene) => {
-        if (!isSelling.value) return false;
-        if (!selected.value.userData.isOwned) return false;
+        if (!isSelling.value) {
+            useToast().add('toasts.sell_controller.not_selling', 4000, 'danger');
+            return false;
+        }
+
+        if (!selected.value.userData.isOwned) {
+            useToast().add('toasts.sell_controller.cannot_sell_unowned_construction', 4000, 'danger');
+            return false;
+        }
+
+        /**
+         * Ensure that the player cannot sell constructions
+         * that the player are required to have a certain amount of.
+         */
+        const itemsManager = useItems();
+        const definition = CONSTRUCTIONS.find((construction) => construction.name === selected.value.name);
+        const requiredNumbers = definition.requiredNumbers;
+        if (requiredNumbers > 0) {
+            const requiredItemCount = itemsManager.countByNameAndTeam(
+                selected.value.name,
+                selected.value.userData.team
+            );
+            const nextAmount = (requiredItemCount - 1);
+            if (nextAmount < requiredNumbers) {
+                useToast().add('toasts.sell_controller.cannot_sell_required_construction', 4000, 'danger');
+                return false;
+            }
+        }
 
         isSelling.value = false;
         selected.value.userData.isOwned = false;
@@ -34,6 +62,7 @@ const SellController = {
         removeMesh(selected.value);
         scene.remove(selected.value);
         useItems().removeItemFromState(selected.value);
+        useToast().add('toasts.sell_controller.success', 4000, 'success');
         return true;
     },
     isSelling

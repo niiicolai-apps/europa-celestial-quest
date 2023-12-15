@@ -2,8 +2,8 @@
 export default {
     stats: {
         general: {
-            en: 'Business level',
-            da: 'Forretning niveau',
+            en: 'Level',
+            da: 'Niveau',
         },
     },
 }
