@@ -4,6 +4,7 @@ import { useCanvas } from '../composables/canvas.js';
 
 const objects = ref([]);
 const camera = ref(null);
+const isPaused = ref(false);
 
 /**
  * Manager methods.
@@ -21,9 +22,22 @@ useManager().create('billboard', {
     update: {
         priority: 1,
         callback: () => {
+            if (isPaused.value) return;
             for (const object of objects.value) {
                 object.lookAt(camera.value.position);
             }
+        }
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            isPaused.value = true;
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            isPaused.value = false;
         }
     }
 })

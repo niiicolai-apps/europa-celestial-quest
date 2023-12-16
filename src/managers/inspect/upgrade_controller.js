@@ -1,9 +1,9 @@
 import { ref } from 'vue';
-import { useBank } from '../../managers/bank.js';
-import { useItems } from '../../managers/constructions.js';
-import { useObjectives } from '../../managers/objectives.js';
-import { useToast } from '../toast.js';
-import { setupUpgradeVisuals } from '../helpers/construction_helper.js'
+import { useBank } from '../bank.js';
+import { useItems } from '../constructions.js';
+import { useObjectives } from '../objectives.js';
+import { useToast } from '../../composables/toast.js';
+import { setupUpgradeVisuals } from '../../composables/helpers/construction_helper.js'
 const bankManager = useBank();
 
 const isUpgrading = ref(false);

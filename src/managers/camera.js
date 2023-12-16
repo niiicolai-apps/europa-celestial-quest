@@ -44,6 +44,20 @@ useManager().create('camera', {
             manager.update();
         }
     },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            manager.disable();
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            manager.enable();
+            manager.camera.position.set(0, currentZoom, 0)
+            manager.camera.rotation.set(options.rotation.x, 0, 0)
+        }
+    }
 })
 
 export default {

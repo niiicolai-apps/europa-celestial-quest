@@ -4,9 +4,9 @@ import { useItems } from './constructions.js'
 import { useUnits } from './units.js'
 import { useStateMachine } from './state_machine.js'
 import { useManager } from './manager.js'
-import ConstructionDefinitions from '../composables/definitions/constructions.js'
-import ComputerBehavior from '../composables/behaviors/computer_behavior.json'
-import ComputerStates from '../composables/states/computer_states.js'
+import ConstructionDefinitions from './definitions/constructions.js'
+import ComputerBehavior from './behaviors/computer_behavior.json'
+import ComputerStates from './states/computer_states.js'
 import { useCanvas } from '../composables/canvas.js'
 
 const players = ref([])
@@ -89,6 +89,7 @@ useManager().create('players', {
             const canvas = useCanvas()
             const adapter = canvas.adapter.value
             scene.value = adapter.scene
+            usePlayers().add(false, 'player')
             isInitialized.value = true;
         }
     }

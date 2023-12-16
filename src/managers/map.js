@@ -74,6 +74,22 @@ useManager().create('map', {
             createLights(mapData, scene)
             isInitialized.value = true;
         }
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const light of lights.value) {
+                light.visible = false;
+            }
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const light of lights.value) {
+                light.visible = true;
+            }
+        }
     }
 })
 

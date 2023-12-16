@@ -10,13 +10,14 @@ const scene = ref(null)
 const audioCtrl1 = ref(null)
 const audioCtrl2 = ref(null)
 const subTitleCtrl = ref(null)
+const onBefore = ref(null)
 const onStop = ref(null)
 const isInitialized = ref(false)
 const timeline = ref(null)
 
 export const useTimeline = () => {
 
-    const init = (_onStop) => {
+    const init = (_onBefore, _onStop) => {
         if (isInitialized.value) return
 
         const audio = useAudio()
@@ -32,11 +33,14 @@ export const useTimeline = () => {
         audioCtrl1.value = audioControllers[0]
         audioCtrl2.value = audioControllers[1]
         subTitleCtrl.value = useSubTitle()
+        onBefore.value = _onBefore
         onStop.value = _onStop
         isInitialized.value = true
     }
     
     const play = async (name, _onStop=onStop.value) => {
+        await onBefore.value()
+
         const response = await fetch(`timelines/${name}.json`);
         if (!response.ok) {
             throw new Error(`Failed to load timeline: ${name}`);
@@ -61,7 +65,7 @@ export const useTimeline = () => {
                 _onStop()
             }
         )
-        console.log(timeline.value)
+        
         timeline.value.play()
     }
 

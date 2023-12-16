@@ -1,10 +1,10 @@
 import { ref } from 'vue';
 import WebGL from 'frontend-webgl';
-import MoveController from '../composables/inspect/move_controller.js';
-import SellController from '../composables/inspect/sell_controller.js';
-import UpgradeController from '../composables/inspect/upgrade_controller.js';
-import UnitController from '../composables/inspect/unit_controller.js';
-import MarkerController from '../composables/inspect/marker_controller.js';
+import MoveController from './inspect/move_controller.js';
+import SellController from './inspect/sell_controller.js';
+import UpgradeController from './inspect/upgrade_controller.js';
+import UnitController from './inspect/unit_controller.js';
+import MarkerController from './inspect/marker_controller.js';
 import { useGround } from './ground.js';
 import { useManager } from './manager.js';
 import { useCanvas } from '../composables/canvas.js';
@@ -121,10 +121,9 @@ const onSelect = (selectable) => {
     console.log('onSelect', parent);
 }
 
-const onDeselect = (selectable) => {
+const onDeselect = () => {
     selected.value = null;
     MarkerController.onDeselect();
-    console.log('onDeselect', selectable);
 }
 
 /**
@@ -175,6 +174,21 @@ useManager().create('inspect', {
             selectableManager.value.disable();
         }
     },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            if (!isInitialized.value) return false;
+            selectableManager.value.disable();
+            onDeselect();
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            if (!isInitialized.value) return false;
+            selectableManager.value.enable();
+        }
+    }
 })
 
 export const useInspect = () => {

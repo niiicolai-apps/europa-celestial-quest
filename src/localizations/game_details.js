@@ -2,12 +2,12 @@
 export default {
     game_details: {
         title: {
-            en: 'Europa The Last Hope',
-            da: 'Europa Det sidste håb',
+            en: 'Europa',
+            da: 'Europa',
         },
         subtitle: {
-            en: 'Space update',
-            da: 'Rumopdatering',
+            en: 'Codename: Arrival',
+            da: 'Kodenavn: Ankomsten',
         },
         version: {
             en: 'Version 1.0.0',

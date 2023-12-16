@@ -73,6 +73,18 @@ useManager().create('ground', {
         callback: () => {
             domElement.removeEventListener('mousedown', mouseDown);
         }
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            if (groundMesh) groundMesh.visible = false;
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            if (groundMesh) groundMesh.visible = true;
+        }
     }
 })
 

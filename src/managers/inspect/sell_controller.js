@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { useBank } from '../../managers/bank.js';
-import { useItems } from '../../managers/constructions.js';
-import { removeMesh } from '../meshes.js';
-import { useToast } from '../toast.js';
+import { useBank } from '../bank.js';
+import { useItems } from '../constructions.js';
+import { removeMesh } from '../../composables/meshes.js';
+import { useToast } from '../../composables/toast.js';
 import CONSTRUCTIONS from '../definitions/constructions.js';
 
 const bankManager = useBank();

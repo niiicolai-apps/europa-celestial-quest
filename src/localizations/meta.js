@@ -15,8 +15,8 @@ export default {
                 da: 'Hovedmenu',
             },
             game: {
-                en: 'Lemonade Shop',
-                da: 'Lemonade Shop',
+                en: 'Europa',
+                da: 'Europa',
             },
         },
     }

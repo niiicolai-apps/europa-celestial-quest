@@ -3,9 +3,11 @@ import { useNavigation } from "../../managers/navigation.js";
 import { useUnits } from "../../managers/units.js";
 import { useBank } from "../../managers/bank.js";
 import { useItems } from "../../managers/constructions.js";
+import { useParticles } from "../particles.js";
+import { useHealth } from "../../composables/health.js";
+import { useHeightMap } from "../../composables/height_map.js";
+import * as THREE from 'three';
 
-import { useHealth } from "../health.js";
-import { useHeightMap } from "../height_map.js";
 class Base {
     constructor(manager, options={}) {
         this.manager = manager;
@@ -365,6 +367,7 @@ class Regroup extends Base {
     }
 }
 
+const hidden = new THREE.Vector3(-1000, -1000, -1000);
 class Attack extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
@@ -381,6 +384,22 @@ class Attack extends Base {
         this.damage = attack.damage;
         this.nextAttack = Date.now();
         this.healthManager = useHealth();
+        this.playMuzzleParticle = () => {
+            if (!attack.muzzleParticle) return;
+            useParticles().play(`${unit.object3D.uuid}-muzzle`, null, null, unit.object3D, target, attack.muzzleParticle.force);
+        }
+        this.stopMuzzleParticle = () => {
+            if (!attack.muzzleParticle) return;
+            useParticles().setPosition(`${unit.object3D.uuid}-muzzle`, hidden);
+        }
+        this.playHitParticle = (target) => {
+            if (!attack.hitParticle) return;
+            useParticles().play(`${unit.object3D.uuid}-hit`, null, null, target);
+        }
+        this.stopHitParticle = () => {
+            if (!attack.hitParticle) return;
+            useParticles().setPosition(`${unit.object3D.uuid}-hit`, hidden);
+        }
     }
 
     resetAttack() {
@@ -397,8 +416,10 @@ class Attack extends Base {
         const team = unit.team;
         const damage = this.damage;
         const distance = object3D.position.distanceTo(target.position);
-        console.log('Attacking', distance, this.distance);
+        
         if (distance < this.distance) {
+            this.playMuzzleParticle();
+            this.playHitParticle(target);
             this.resetAttack();
             this.healthManager.applyDamage(
                 target, 
@@ -421,6 +442,8 @@ class Attack extends Base {
     }
 
     exit() {
+        this.stopMuzzleParticle();
+        this.stopHitParticle();
     }
 
     isComplete() {

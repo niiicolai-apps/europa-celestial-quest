@@ -7,7 +7,7 @@ const healthBarGeometry = ref(null);
 const healthBarBggMaterial = ref(null);
 const healthBarMaterial = ref(null);
 const healthBarYOffset = 0.1;
-const healthBarZOffset = 0.01;
+const healthBarZOffset = 0.5;
 
 const createHealthBar = (object3D, _healthBarYOffset=0) => {
     if (!healthBarGeometry.value) {
@@ -31,10 +31,11 @@ const createHealthBar = (object3D, _healthBarYOffset=0) => {
     const box3 = new THREE.Box3().setFromObject(object3D);
     const size = box3.getSize(new THREE.Vector3());
     healthBarBggMesh.position.y = size.y + healthBarYOffset + _healthBarYOffset;
-    healthBarMesh.z = healthBarZOffset;
+    healthBarMesh.position.z = healthBarZOffset;
 
     const setProgress = (progress, max) => {
         healthBarMesh.scale.x = progress / max;
+        healthBarMesh.position.x = (1 - healthBarMesh.scale.x) * -2.5;
     }
 
     useBillboard().add(healthBarBggMesh);

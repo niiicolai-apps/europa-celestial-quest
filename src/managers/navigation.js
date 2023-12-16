@@ -1,19 +1,17 @@
 import { ref } from 'vue';
 import * as THREE from 'three';
-import { useGround } from './ground.js';
 import { useHeightMap } from '../composables/height_map.js';
 import { useManager } from './manager.js';
 
 const agents = ref([]);
-const ground = useGround();
-const worldDown = new THREE.Vector3(0, -1, 0);
 const lookAt = new THREE.Vector3();
 const direction = new THREE.Vector3();
 const remainingDistanceVector = new THREE.Vector3();
 const heightMap = useHeightMap();
-const interval = ref(null);
+const paused = ref(false);
 
 const update = () => {
+    if (paused.value) return;
     for (const agent of agents.value) {
         direction.subVectors(agent.destination, agent.object3D.position)
             .normalize()
@@ -57,6 +55,18 @@ useManager().create('navigation', {
     update: {
         priority: 1,
         callback: () => update()
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            paused.value = true;
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            paused.value = false;
+        }
     }
 })
 

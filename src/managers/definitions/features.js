@@ -1,6 +1,17 @@
 
+const PARTICLES = {
+    MACHINE_GUN_MUZZLE: {
+        name: 'machine_gun_muzzle',
+        force: {x: 100, y: 100, z: 100},
+    },
+    MACHINE_GUN_HIT: {
+        name: 'machine_gun_hit',
+        force: {x: 0, y: 0, z: 0},
+    },
+}
+
 const FEATURES = {
-    MISSILE_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+    MISSILE_ATTACK: (distance = 45, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_HIT) => {
         return {
             name: 'attack',
             options: {
@@ -9,10 +20,12 @@ const FEATURES = {
                 distance,
                 rate,
                 damage,
+                muzzleParticle,
+                hitParticle,
             }
         }
     },
-    MACHINE_GUN_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+    MACHINE_GUN_ATTACK: (distance = 25, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_HIT) => {
         return {
             name: 'attack',
             options: {
@@ -21,10 +34,12 @@ const FEATURES = {
                 distance,
                 rate,
                 damage,
+                muzzleParticle,
+                hitParticle,
             }
         }
     },
-    LASER_ATTACK: (distance = 5, rate = 2, damage = 15) => {
+    LASER_ATTACK: (distance = 25, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_MUZZLE) => {
         return {
             name: 'attack',
             options: {
@@ -33,6 +48,8 @@ const FEATURES = {
                 distance,
                 rate,
                 damage,
+                muzzleParticle,
+                hitParticle,
             }
         }
     },

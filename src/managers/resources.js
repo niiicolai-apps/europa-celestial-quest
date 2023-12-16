@@ -46,6 +46,22 @@ useManager().create('resources', {
             await createResources(resourcesData, scene);
             isInitialized.value = true;
         }
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const resource of resources.value) {
+                resource.object3D.visible = false;
+            }
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const resource of resources.value) {
+                resource.object3D.visible = true;
+            }
+        }
     }
 })
 

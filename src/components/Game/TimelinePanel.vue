@@ -1,5 +1,5 @@
 <template>
-    <UI.Fixed v-if="isPlayingTimeline" bottom="auto" right="3" left="auto" top="3">
+    <UI.Fixed v-if="isPlayingTimeline" bottom="auto" right="auto" left="3" top="3">
         <UI.Button @click="skipTimeline">
             <Locale id="timeline.skip" />
         </UI.Button>

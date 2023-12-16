@@ -8,15 +8,17 @@ import { useToast } from '../composables/toast.js';
 import { useGameEnd } from '../composables/game_end.js'
 import { useManager } from './manager.js';
 import { useCanvas } from '../composables/canvas.js';
+import { useParticles } from './particles.js';
 import * as THREE from 'three';
-import UnitsBehavior from '../composables/behaviors/units_behavior.json';
-import UnitStates from '../composables/states/unit_states.js';
+import UnitsBehavior from './behaviors/units_behavior.json';
+import UnitStates from './states/unit_states.js';
 
 const ground = useGround();
 const heightMap = useHeightMap();
 const units = ref([]);
 const scene = ref(null);
 const isInitialized = ref(false);
+const isPaused = ref(false);
 
 const domElement = ref(null);
 const commands = ref([
@@ -52,6 +54,23 @@ useManager().create('units', {
             warriorMarkerMesh.visible = false;
             
             isInitialized.value = true;
+        }
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            isPaused.value = true;
+            for (const unit of units.value) {
+                unit.object3D.visible = false;
+            }
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const unit of units.value) {
+                unit.object3D.visible = true;
+            }
         }
     }
 })
@@ -134,6 +153,19 @@ export const useUnits = () => {
             command,
             team
         };
+
+        if (options.attack?.muzzleParticle) {
+            console.log('loading muzzle particle', options.attack.muzzleParticle)
+            unit.muzzleParticle = useParticles().load(`${object3D.uuid}-muzzle`, options.attack.muzzleParticle.name);           
+        }
+
+        if (options.attack?.hitParticle) {
+            unit.hitParticle = useParticles().load(`${object3D.uuid}-hit`, options.attack.hitParticle.name);           
+        }
+
+        if (isPaused.value) {
+            unit.object3D.visible = false;
+        }
         
         units.value.push(unit);
         createHealth(unit);
@@ -199,6 +231,7 @@ export const useUnits = () => {
         const unitsByFunction = units.value.filter(u => u.data.primary_function === primaryFunction);
         const unitsByTeam = unitsByFunction.filter(u => u.team === team);
         for (const unit of unitsByTeam) {
+            console.log(`Setting unit ${unit.data.name} to state ${stateName}`);
             stateMachine.setState(unit.object3D.uuid, stateName);
         }
     }

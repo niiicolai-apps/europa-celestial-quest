@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { useManager } from './manager.js'
 
 const managers = ref([])
+const paused = ref(false)
 
 const setAction = (manager, actionIndex) => {
     manager.actionIndex = actionIndex;
@@ -24,6 +25,7 @@ const moveToNextAction = (manager) => {
 }
 
 const update = () => {
+    if (paused.value) return;
     for (const manager of managers.value) {
 
         if (!manager.state) {
@@ -50,6 +52,18 @@ useManager().create('statemachine', {
     update: {
         priority: 1,
         callback: () => update()
+    },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            paused.value = true;
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            paused.value = false;
+        }
     }
 })
 

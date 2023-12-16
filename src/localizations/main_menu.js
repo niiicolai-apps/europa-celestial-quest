@@ -2,8 +2,8 @@
 export default {
     main_menu: {
         subtitle: {
-            en: 'Welcome back!',
-            da: 'Velkommen tilbage!',
+            en: 'The Celestial Quest',
+            da: 'Den Himmelske Quest',
         },
         play_button: {
             en: 'Play',

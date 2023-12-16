@@ -1,8 +1,8 @@
 import PersistentData from '../composables/persistent_data.js'
-import ConstructionDefinitions from '../composables/definitions/constructions.js'
-import ConstructionStates from '../composables/states/construction_states.js'
-import ConstructionBehaviors from '../composables/behaviors/constructions_behavior.json'
-import UnitController from '../composables/inspect/unit_controller.js'
+import ConstructionDefinitions from './definitions/constructions.js'
+import ConstructionStates from './states/construction_states.js'
+import ConstructionBehaviors from './behaviors/constructions_behavior.json'
+import UnitController from './inspect/unit_controller.js'
 import { setupUpgradeVisuals, setupConstructionVisuals } from '../composables/helpers/construction_helper.js'
 import { useBank } from './bank.js'
 import { useInspect } from './inspect.js'
@@ -15,11 +15,8 @@ import { useCanvas } from '../composables/canvas.js';
 import { ref } from 'vue'
 
 const items = ref([])
-const bankManager = useBank()
 const isInitialized = ref(false)
-const interval = ref(null)
-
-let scene = null
+const scene = ref(null)
 
 const recalculateStorage = () => {
     let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
@@ -43,6 +40,7 @@ const recalculateStorage = () => {
         }
     }
 
+    const bankManager = useBank()
     bankManager.updateCurrencyMax('ice', ice);
     bankManager.updateCurrencyMax('rock', rock);
     bankManager.updateCurrencyMax('hydrogen', hydrogen);
@@ -72,7 +70,7 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
 
     const onDie = () => {
         removeItemFromState(item)
-        scene.remove(item)
+        scene.value.remove(item)
         removeMesh(item)
         useGameEnd().endGameCheck()
     }
@@ -102,17 +100,35 @@ useManager().create('constructions', {
             if (isInitialized.value) return false
             const canvas = useCanvas()
             const adapter = canvas.adapter.value
-            scene = adapter.scene
+            scene.value = adapter.scene
             await useItems().loadState()
             isInitialized.value = true;
         }
     },
+    onBeforeTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const construction of items.value) {
+                console.log('Hiding construction', construction)
+                construction.visible = false
+            }
+        }
+    },
+    onAfterTimeline: {
+        priority: 1,
+        callback: () => {
+            for (const construction of items.value) {
+                construction.visible = true
+            }
+        }
+    }
 })
 
 export const useItems = () => {
 
     const canAfford = (costs) => {
         let canAfford = true
+        const bankManager = useBank()
         for (const cost of costs) {
             if (bankManager.getBalance(cost.currency) < cost.amount) {
                 canAfford = false
@@ -140,7 +156,7 @@ export const useItems = () => {
             team
         }
 
-        scene.add(item)
+        scene.value.add(item)
         items.value.push(item)
         setupUpgradeVisuals(item)
 
@@ -172,7 +188,7 @@ export const useItems = () => {
     }
 
     const dequeueAny = (item) => {
-        UnitController.dequeueAny(item, scene)
+        UnitController.dequeueAny(item, scene.value)
     }
 
     const loadState = async () => {

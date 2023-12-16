@@ -1,6 +1,6 @@
 import { useBank } from "../../managers/bank.js";
 import { useItems } from "../../managers/constructions.js";
-import { useHealth } from "../health.js";
+import { useHealth } from "../../composables/health.js";
 
 class Base {
     constructor(manager, options = {}) {

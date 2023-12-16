@@ -1,0 +1,197 @@
+{
+    "meshes": [
+        "womans_house",
+        "woman_with_poem",
+        "jupiter",
+        "europa",
+        "europa_horizon_drifter_x1",
+        "terrain"
+    ],
+    "lights": [
+        { 
+            "name": "ambient_light", 
+            "type": "AmbientLight",
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 1
+        },
+        {
+            "name": "womans_house_light_01", 
+            "type": "DirectionalLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.03,
+            "distance": 1,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_02", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_03", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_04", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_05", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "womans_house_light_06", 
+            "type": "PointLight", 
+            "color": { "r": 170, "g": 66, "b": 3 },
+            "intensity": 0.001,
+            "distance": 30,
+            "castShadow": true
+        },
+        { 
+            "name": "space_light_01", 
+            "type": "DirectionalLight", 
+            "color": { "r": 246, "g": 241, "b": 213 },
+            "intensity": 0.01,
+            "distance": 1,
+            "castShadow": true
+        },
+        { 
+            "name": "space_ship_light_01", 
+            "type": "PointLight", 
+            "color": { "r": 255, "g": 0, "b": 0 },
+            "intensity": 0.005,
+            "distance": 10,
+            "castShadow": true
+        }
+    ],
+    "particles": [
+        { 
+            "name": "candle_light_1", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_2", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_3", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_4", 
+            "type": "fire" 
+        },
+        { 
+            "name": "candle_light_5", 
+            "type": "fire" 
+        },
+        { 
+            "name": "air_force_1", 
+            "type": "air_force" 
+        },
+        { 
+            "name": "air_force_2", 
+            "type": "air_force2" 
+        },
+        { 
+            "name": "fire_force_1", 
+            "type": "fire_force" 
+        },
+        { 
+            "name": "fire_force_2", 
+            "type": "fire_force2" 
+        }
+    ],
+    "sequencies": [
+        {
+            "playTime": 18000,
+            "background": {
+                "type": "CubeTexture",
+                "path": "textures/cubeMaps/",
+                "load": [ "px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png" ]
+            },
+            "fog": {
+                "color": { "r": 0, "g": 0, "b": 0 },
+                "density": 0.01
+            },
+            "sub_title": "intro.dialog_1",
+            "audio_1": {
+                "clip": "audio/battle-of-the-dragons-8037.mp3",
+                "volume": 0.5,
+                "muted": false
+            },
+            "audio_2": {
+                "clip": "audio/intro_dialog_1.mp3",
+                "volume": 0.5,
+                "muted": false
+            },
+            "camera": {
+                "position": { "x": 2.2, "y": 1, "z": -2.4 },
+                "rotation": { "x": -65, "y": 15, "z": 0 },
+                "move": { "dx": -0.00001, "dy": 0, "dz": 0 },
+                "rotate": { "dx": 0, "dy": -0.0001, "dz": 0.0001 }
+            },
+            "lights": [
+                { 
+                    "name": "ambient_light",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_01", 
+                    "position": { "x": 15, "y": 15, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 },
+                    "target": { "x": 2.6, "y": 0.7, "z": -2.7 }
+                },
+                {
+                    "name": "womans_house_light_02", 
+                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_03",
+                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_04",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.97 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_05",
+                    "position": { "x": 2.7, "y": 1.310, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "name": "womans_house_light_06",
+                    "position": { "x": 2.7, "y": 1.310, "z": -1.02 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ],
+            "meshes": [
+                {
+                    "name": "womans_house",
+                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                }
+            ]
+        }
+    ]
+}
