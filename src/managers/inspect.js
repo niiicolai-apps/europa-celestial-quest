@@ -8,14 +8,30 @@ import MarkerController from './inspect/marker_controller.js';
 import { useGround } from './ground.js';
 import { useManager } from './manager.js';
 import { useCanvas } from '../composables/canvas.js';
+import { usePlayers } from './player.js';
 
 const scene = ref(null);
 const selected = ref(null);
+const selectedIsYours = ref(false);
 const selectableManager = ref(null);
 const isInitialized = ref(false);
 
+const detailCtrl = {
+    isYours: () => {        
+        if (!selected.value) return false;
+        const players = usePlayers();
+        const player = players.findYou();
+        if (!player) return false;
+        return selected.value.userData.team === player.team;
+    },
+    isOthers: () => {
+        return !detailCtrl.isYours();
+    },
+}
+
 const moveCtrl = {
     start: () => {
+        if (!selectedIsYours.value) return false;
         if (MoveController.start(selected))
             selectableManager.value.disable();
     },
@@ -55,6 +71,7 @@ const moveCtrl = {
 
 const sellCtrl = {
     start: () => {
+        if (!selectedIsYours.value) return false;
         if (SellController.start(selected))
             selectableManager.value.disable();
     },
@@ -63,7 +80,8 @@ const sellCtrl = {
             selectableManager.value.enable();
     },
     confirm: () => {
-        if (SellController.confirm(selected, scene.value)) {
+        console.log(scene.value);
+        if (SellController.confirm(selected)) {
             selectableManager.value.enable();
             selectableManager.value.removeSelected();
         }
@@ -73,6 +91,7 @@ const sellCtrl = {
 
 const upgradeCtrl = {
     start: () => {
+        if (!selectedIsYours.value) return false;
         if (UpgradeController.start(selected))
             selectableManager.value.disable();
     },
@@ -92,6 +111,7 @@ const upgradeCtrl = {
 
 const unitCtrl = {
     start: () => {
+        if (!selectedIsYours.value) return false;
         if (UnitController.start(selected))
             selectableManager.value.disable();
     },
@@ -104,7 +124,7 @@ const unitCtrl = {
     dequeueAny: () => UnitController.dequeueAny(selected, scene.value),
     queueUnit: async (unitName) => await UnitController.queueUnit(selected, unitName),
     canBuild: () => UnitController.canBuild(selected),
-    isBuilding: UnitController.isBuilding
+    isBuilding: () => UnitController.isBuilding
 }
 
 const onSelect = (selectable) => {
@@ -118,6 +138,7 @@ const onSelect = (selectable) => {
     } 
     selected.value = parent;
     MarkerController.onSelect(parent);
+    selectedIsYours.value = detailCtrl.isYours();
     console.log('onSelect', parent);
 }
 
@@ -156,6 +177,7 @@ useManager().create('inspect', {
     
             selectableManager.value.enable();
             scene.value = scene;
+            console.log(scene.value);
             isInitialized.value = true;
            
         }
@@ -241,10 +263,22 @@ export const useInspect = () => {
         selectableManager.value.selectables.remove(selectable);
     }
 
+    const isSelectable = (selectable) => {
+        if (!isInitialized.value) {
+            throw new Error('Inspect is not enabled');
+        }
+        if (!selectable) {
+            throw new Error('Selectable is required');
+        }
+
+        return selectableManager.value.selectables.has(selectable);
+    }
+
     return {
         setSelected,
         removeSelected,
         selected,
+        selectedIsYours,
         selectableManager,
         addSelectable,
         removeSelectable,
@@ -252,5 +286,6 @@ export const useInspect = () => {
         sellCtrl,
         upgradeCtrl,
         unitCtrl,
+        isSelectable
     }
 }

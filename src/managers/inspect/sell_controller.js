@@ -3,6 +3,8 @@ import { useBank } from '../bank.js';
 import { useItems } from '../constructions.js';
 import { removeMesh } from '../../composables/meshes.js';
 import { useToast } from '../../composables/toast.js';
+import { useCanvas } from '../../composables/canvas.js';
+import { usePlayers } from '../player.js';
 import CONSTRUCTIONS from '../definitions/constructions.js';
 
 const bankManager = useBank();
@@ -22,7 +24,7 @@ const SellController = {
         isSelling.value = false;
         return true;
     },
-    confirm: (selected, scene) => {
+    confirm: (selected) => {
         if (!isSelling.value) {
             useToast().add('toasts.sell_controller.not_selling', 4000, 'danger');
             return false;
@@ -59,10 +61,17 @@ const SellController = {
             bankManager.deposit(cost.amount, cost.currency);
         }
 
+        const canvas = useCanvas();
+        const adapter = canvas.adapter.value;
+        const scene = adapter.scene;
+
         removeMesh(selected.value);
         scene.remove(selected.value);
+
         useItems().removeItemFromState(selected.value);
         useToast().add('toasts.sell_controller.success', 4000, 'success');
+        usePlayers().savePlayers();
+
         return true;
     },
     isSelling

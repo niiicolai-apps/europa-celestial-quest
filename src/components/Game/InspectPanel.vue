@@ -10,9 +10,13 @@
                     <div v-if="isUpgradeable" class="bg-primary font-bold text-info text-xs p-1 rounded">
                         <Locale id="inspect.upgrade" /> {{ selected.userData.upgrade.index + 1 }}
                     </div>
+
+                    <div v-if="!selectedIsYours" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                        <Locale id="inspect.other_team_construction" />
+                    </div>
                 </UI.Flex>
                 
-                <UI.Flex direction="horizontal" justify="start" gap="1">
+                <UI.Flex direction="horizontal" justify="start" gap="1" v-if="selectedIsYours">
                     <UI.Button :title="localizationManager.getLocale('inspect.start_move_button')"
                         @click="inspectManager.moveCtrl.start()">
                         <Icons.fa.ToolboxIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
@@ -228,16 +232,23 @@ const iconFill = "#3f88c5";
 
 const localizationManager = useLocalization();
 const inspectManager = useInspect();
+
 const selected = computed(() => inspectManager.selected.value);
+const selectedIsYours = computed(() => inspectManager.selectedIsYours.value);
+
 const isMoving = computed(() => inspectManager.moveCtrl.isMoving.value);
 const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);
+
 const isUpgrading = computed(() => inspectManager.upgradeCtrl.isUpgrading.value);
 const isUpgradeable = computed(() => inspectManager.upgradeCtrl.isUpgradeable());
 const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgradeReached());
-const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding.value);
-const allowedUnits = computed(() => isBuilding ? inspectManager.unitCtrl.getAllowedUnits() : []);
+
+const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding().value);
 const canBuild = computed(() => inspectManager.unitCtrl.canBuild());
+const allowedUnits = computed(() => isBuilding ? inspectManager.unitCtrl.getAllowedUnits() : []);
 const unitsQueue = computed(() => isBuilding ? inspectManager.unitCtrl.getQueue() : []);
+
+
 
 const getUnitProgress = (queue) => {
     const start = queue.startTime;

@@ -29,5 +29,9 @@ export default {
             en: 'Mute',
             da: 'Sluk lyd',
         },
+        loading: {
+            en: 'Loading Main Menu',
+            da: 'Indlæser Hovedmenu',
+        },
     }
 }

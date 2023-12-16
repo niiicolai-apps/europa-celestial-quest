@@ -67,23 +67,32 @@ import Locale from '../../General/Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
 import { useItems } from '../../../managers/constructions.js';
 import { useInspect } from '../../../managers/inspect.js';
-import { usePanel } from '../../../composables/panel';
+import { usePanel } from '../../../composables/panel.js';
+import { usePlayers } from '../../../managers/player.js';
+import { useToast } from '../../../composables/toast.js';
 import { computed } from 'vue';
 
 const localizationManager = useLocalization();
 const inspectManager = useInspect();
 const panelManager = usePanel();
 const itemsManager = useItems();
+const playersManager = usePlayers();
+const toastManager = useToast();
+
 const definitions = computed(() => itemsManager.ConstructionDefinitions);
 const iconSize = "0.8em";
 const iconFill = "#3f88c5";
+
 const click = async (definition) => {
-    console.log(definition);
+    
     if (itemsManager.canAfford(definition.costs)) {
-        const item = await itemsManager.spawn(definition);
-        inspectManager.addSelectable(item);
-        inspectManager.setSelected(item);
+        const player = playersManager.get('player');
+        const construction = await player.spawnConstruction(definition.name);
+        inspectManager.addSelectable(construction);
+        inspectManager.setSelected(construction);
         panelManager.clearPanel();
+    } else {
+        toastManager.add('toasts.shop.cannot_afford', 4000, 'danger');
     }
 }
 </script>

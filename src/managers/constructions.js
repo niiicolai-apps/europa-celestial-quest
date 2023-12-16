@@ -101,7 +101,6 @@ useManager().create('constructions', {
             const canvas = useCanvas()
             const adapter = canvas.adapter.value
             scene.value = adapter.scene
-            await useItems().loadState()
             isInitialized.value = true;
         }
     },
@@ -192,6 +191,7 @@ export const useItems = () => {
     }
 
     const loadState = async () => {
+        /*
         const data = await PersistentData.get('items')
         console.log('Loaded items', data)
         if (!data) return false
@@ -204,11 +204,14 @@ export const useItems = () => {
             item.position.set(itemData.position.x, itemData.position.y, itemData.position.z)
             item.rotation.set(itemData.rotation.x, itemData.rotation.y, itemData.rotation.z)
             inspectManager.addSelectable(item)
-            recalculateStorage()
-        }
+            
+        }*/
+
+        recalculateStorage()
     }
 
     const saveState = () => {
+        /*
         const playerItems = items.value.filter(item => item.userData.team === 'player')
         const data = playerItems.map(item => {
             return {
@@ -219,7 +222,7 @@ export const useItems = () => {
                 uuid: item.uuid,
             }
         })
-        PersistentData.set('items', data)
+        PersistentData.set('items', data)*/
     }
 
     const findClosestItem = (position, name) => {
@@ -279,6 +282,12 @@ export const useItems = () => {
         })
     }
 
+    const findAllByTeam = (team) => {
+        return items.value.filter(item => {
+            return item.userData.team === team
+        })
+    }
+
     const countItemsByName = (name) => {
         return items.value.filter(item => item.name === name).length
     }
@@ -310,6 +319,7 @@ export const useItems = () => {
         findClosestByNameAndTeam,
         recalculateStorage,
         findAllByNameAndTeam,
+        findAllByTeam,
         findItemByName,
         findItemByNameAndUpgrade,
         findByNameAndTeam,

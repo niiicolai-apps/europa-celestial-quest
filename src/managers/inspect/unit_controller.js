@@ -5,6 +5,7 @@ import { getMesh } from '../../composables/meshes.js';
 import { useUnits } from '../units.js';
 import { useObjectives } from '../objectives.js';
 import { useToast } from '../../composables/toast.js';
+import { usePlayers } from '../player.js';
 import ConstructionDefinitions from '../definitions/constructions.js'
 import * as THREE from 'three';
 
@@ -32,15 +33,19 @@ const BuildController = {
     },
     dequeueAny: async (selected, scene) => {
         const s = selected.value || selected;
-        
         const queue = BuildController.getQueue(selected);
+        if (queue.length == 0) return;
+
+        const playerManager = usePlayers();        
+        const team = s.userData.team;
+        const player = playerManager.get(team);
         const time = Date.now();
 
         for (let i = queue.length - 1; i >= 0; i--) {
             const unit = queue[i];
             if (time < unit.completeTime) continue;
 
-            const unitMesh = await getMesh(unit.unit.mesh);
+            const unitMesh = await player.spawnUnit(unit.unit.mesh.name);
             scene.add(unitMesh);
 
             const selectedBox3 = new THREE.Box3().setFromObject(s);
@@ -58,9 +63,7 @@ const BuildController = {
         }
 
         s.userData.unitQueue = queue;
-
         useObjectives().tryCompleteIncompletes();
-        //useItems().saveState();
     },
     queueUnit: async (selected, unitName) => {
         if (!isBuilding.value) {
@@ -98,8 +101,8 @@ const BuildController = {
         const completeTime = startTime + unit.complete_time;
         selected.value.userData.unitQueue.push({ unit, completeTime, startTime });
 
-        useItems().saveState();
-        useToast().add('toasts.unit_controller.success', 4000, 'success');
+        useToast().add('toasts.unit_controller.success', 4000, 'success');        
+
         return true;
     },
     getAllowedUnits: (selected) => {

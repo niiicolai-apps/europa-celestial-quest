@@ -77,6 +77,12 @@ export default {
                 da: 'Bygning flyttet.',
             },
         },
+        shop: {
+            cannot_afford: {
+                en: 'You cannot afford this construction.',
+                da: 'Du har ikke råd til denne bygning.',
+            },
+        },
         units: {
             set_warrior_command: {
                 regroup: {

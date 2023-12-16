@@ -95,6 +95,11 @@ useManager().create('map', {
 
 export const useMap = () => {
 
+    const name = async () => {
+        const mapData = await fetchMapData(mapName.value);
+        return mapData.name;
+    }
+
     const terrain = async () => {
         const mapData = await fetchMapData(mapName.value);
         return mapData.terrain;
@@ -110,15 +115,22 @@ export const useMap = () => {
         return mapData.objectives;
     }
 
-    const enemy = async () => {
+    const players = async () => {
         const mapData = await fetchMapData(mapName.value);
-        return mapData.enemy;
+        return mapData.players;
+    }
+
+    const camera = async () => {
+        const mapData = await fetchMapData(mapName.value);
+        return mapData.camera;
     }
 
     return {
+        name,
         terrain,
         resources,
         objectives,
-        enemy
+        players,
+        camera
     }
 }

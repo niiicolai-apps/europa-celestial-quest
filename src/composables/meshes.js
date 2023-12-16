@@ -19,6 +19,9 @@ const getCached = (name) => {
             }
         });
         mesh.userData = userData;
+        mesh.scale.set(1, 1, 1);
+        mesh.rotation.set(0, 0, 0);
+        mesh.position.set(0, 0, 0);
         meshCache[name].clones.push(clone);
         return clone;
     }

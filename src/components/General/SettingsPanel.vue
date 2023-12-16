@@ -17,7 +17,28 @@
 
                     <div v-if="setting.list">
                         <UI.Select type="info" :options="setting.list" :startOption="setting.listStartOption"
-                            @update:value="setting.listUpdate" />
+                            @update:value="setting.listUpdate" class="w-33" />
+                    </div>
+
+                    <div v-if="setting.range">
+                        <UI.Input 
+                            type="range" 
+                            :min="setting.range.min" 
+                            :max="setting.range.max"
+                            :step="setting.range.step" 
+                            :startValue="setting.range.startValue"
+                            @update:value="setting.rangeUpdate"
+                            style="padding:0;" 
+                        />
+
+                        <UI.Flex direction="horizontal" justify="between" class="mt-3">
+                            <div class="text-xs font-bold">
+                                {{ setting.range.min }}
+                            </div>
+                            <div class="text-xs font-bold">
+                                {{ setting.range.max }}
+                            </div>
+                        </UI.Flex>
                     </div>
                 </UI.Flex>
             </div>
@@ -32,17 +53,31 @@ import Panel from '../UI/Panel.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useLocalization } from '../../composables/localization.js';
 import PersistentData from '../../composables/persistent_data.js';
+import Camera from '../../managers/camera.js';
 
 const localizationManager = useLocalization();
-const startLanguageOption = ref(null);
+
+const startZoomSpeed = ref(5);
+const startMoveSpeed = ref(0.1);
+const startLanguageOption = ref(localizationManager.LANGUAGE.value);
 
 const settings = computed(() => {
     return [{
         name: localizationManager.getLocale("settings.camera_zoom_speed_title"),
         description: localizationManager.getLocale("settings.camera_zoom_speed_description"),
+        range: { min: 1, max: 5, step: 0.5, startValue: startZoomSpeed },
+        rangeUpdate: async (value) => {
+            console.log(value);
+            await Camera.setZoomSpeed(value);
+        }
     }, {
         name: localizationManager.getLocale("settings.camera_pan_speed_title"),
         description: localizationManager.getLocale("settings.camera_pan_speed_description"),
+        range: { min: 0.01, max: 1, step: 0.01, startValue: startMoveSpeed },
+        rangeUpdate: async (value) => {
+            console.log(value);
+            await Camera.setMoveSpeed(value);
+        }
     }, {
         name: localizationManager.getLocale("settings.language.title"),
         description: localizationManager.getLocale("settings.language.description"),
@@ -55,9 +90,23 @@ const settings = computed(() => {
 })
 
 onMounted(async () => {
-    const pd = await PersistentData.get('language');
-    const pdLanguage = pd.lang || localizationManager.LANGUAGE.value;
-    startLanguageOption.value = pdLanguage;
-    localizationManager.setLanguage(pdLanguage);
+    const pdLanguage = await PersistentData.get('language');
+    if (pdLanguage) {
+        const language = pdLanguage.lang;
+        startLanguageOption.value = language;
+        localizationManager.setLanguage(language);
+    }
+
+    const pdZoomSpeed = await PersistentData.get('camera_zoom_speed');
+    if (pdZoomSpeed) {
+        startZoomSpeed.value = pdZoomSpeed.value;
+        console.log(startZoomSpeed.value);
+    }
+
+    const pdMoveSpeed = await PersistentData.get('camera_move_speed');
+    if (pdMoveSpeed) {
+        startMoveSpeed.value = pdMoveSpeed.value;
+        console.log(startMoveSpeed.value);
+    }
 });
 </script>

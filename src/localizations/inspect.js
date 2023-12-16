@@ -9,6 +9,10 @@ export default {
             en: 'Upgrade',
             da: 'Opgradering',
         },
+        other_team_construction: {
+            en: 'Other Team\'s Construction',
+            da: 'Anden Holds Bygning',
+        },
 
         moving_title: {
             en: 'Moving',

@@ -1,17 +1,22 @@
 import * as THREE from 'three'
 import WebGL from 'frontend-webgl'
 import { useManager } from '../managers/manager.js'
+import PersistentData from '../composables/persistent_data.js'
 
 const currentZoom = 150;
 const currentPosition = new THREE.Vector3(0, 0, 35);
 const minZoom = 50;
 const maxZoom = 620;
+const zoomSpeed = 3;
+const moveSpeed = 0.1;
 
 const manager = WebGL.composables.useTopDownCamera({
     minZoom,
     maxZoom,
     currentZoom,
     currentPosition,
+    zoomSpeed,
+    moveSpeed,
 })
 
 const options = {
@@ -19,6 +24,14 @@ const options = {
     rotation: {
         x: -60 * Math.PI / 180,
     },
+}
+
+const setZoomSpeed = async (value) => {
+    await PersistentData.set('camera_zoom_speed', {value});
+}
+
+const setMoveSpeed = async (value) => {
+    await PersistentData.set('camera_move_speed', {value});
 }
 
 /**
@@ -63,4 +76,6 @@ useManager().create('camera', {
 export default {
     manager,
     options,
+    setZoomSpeed,
+    setMoveSpeed,
 }

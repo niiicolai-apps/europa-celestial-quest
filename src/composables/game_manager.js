@@ -8,7 +8,7 @@ import '../managers/billboard.js';
 import '../managers/state_machine.js';
 import '../managers/constructions.js';
 import '../managers/camera.js';
-import '../managers/enemy.js';
+import '../managers/initializer.js';
 import '../managers/ground.js';
 import '../managers/map.js';
 import '../managers/navigation.js';

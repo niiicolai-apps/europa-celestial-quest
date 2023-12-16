@@ -8,6 +8,7 @@ import { removeMesh } from '../../composables/meshes.js';
 import { useObjectives } from '../objectives.js';
 import { useToast } from '../../composables/toast.js';
 import { getPosition } from '../../composables/helpers/grid_helper.js';
+import { usePlayers } from '../player.js';
 import * as THREE from 'three';
 
 const bankManager = useBank();
@@ -91,7 +92,8 @@ const MoveController = {
             useItems().recalculateStorage();
         }
 
-        useItems().saveState();
+        usePlayers().savePlayers();
+        
         isMoving.value = false;
         lastPosition.value = null;
         useToast().add('toasts.move_controller.success', 4000, 'success');

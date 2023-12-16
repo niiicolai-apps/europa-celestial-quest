@@ -240,6 +240,10 @@ export const useUnits = () => {
         return units.value.find(u => u.data.name === name);
     }
 
+    const findAllByTeam = (team) => {
+        return units.value.filter(u => u.team === team);
+    }
+
     const countByName = (name) => {
         return units.value.filter(u => u.data.name === name).length;
     }
@@ -262,6 +266,7 @@ export const useUnits = () => {
         isSettingWarriorCommand,
         setStateByFunction,
         findByName,
+        findAllByTeam,
         countByName,
         countByNameAndTeam,
         setCommand,

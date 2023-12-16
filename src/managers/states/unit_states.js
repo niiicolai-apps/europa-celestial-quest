@@ -418,8 +418,8 @@ class Attack extends Base {
         const distance = object3D.position.distanceTo(target.position);
         
         if (distance < this.distance) {
-            this.playMuzzleParticle();
-            this.playHitParticle(target);
+            //this.playMuzzleParticle();
+            //this.playHitParticle(target);
             this.resetAttack();
             this.healthManager.applyDamage(
                 target, 
@@ -442,8 +442,8 @@ class Attack extends Base {
     }
 
     exit() {
-        this.stopMuzzleParticle();
-        this.stopHitParticle();
+        //this.stopMuzzleParticle();
+        //this.stopHitParticle();
     }
 
     isComplete() {

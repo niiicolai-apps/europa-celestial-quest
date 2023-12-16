@@ -11,21 +11,21 @@ export default {
         },
 
         camera_zoom_speed_title: {
-            en: 'Camera Zoom',
-            da: 'Kamerazoom',
+            en: 'Camera Zoom Speed',
+            da: 'Kamerazoom hastighed',
         },
         camera_zoom_speed_description: {
-            en: 'Adjust the camera zoom.',
-            da: 'Juster kamerazoom.',
+            en: 'Adjust the camera zoom speed.',
+            da: 'Juster kamerazoom hastighed.',
         },
 
         camera_pan_speed_title: {
-            en: 'Camera Pan',
-            da: 'Kamerapanorering',
+            en: 'Camera Pan Speed',
+            da: 'Kamerapanorering hastighed',
         },
         camera_pan_speed_description: {
-            en: 'Adjust the camera pan.',
-            da: 'Juster kamerapanorering.',
+            en: 'Adjust the camera pan speed.',
+            da: 'Juster kamerapanorering hastighed.',
         },
         language: {
             title: {
