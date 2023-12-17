@@ -6,6 +6,8 @@ import { useItems } from "../../managers/constructions.js";
 import { useParticles } from "../particles.js";
 import { useHealth } from "../../composables/health.js";
 import { useHeightMap } from "../../composables/height_map.js";
+import { usePlayers } from "../../managers/player.js";
+import { useCommands } from "../../managers/commands.js";
 import * as THREE from 'three';
 
 class Base {
@@ -301,7 +303,9 @@ class Collect extends Timer {
         const collect = unitOptions.collect;
         const scan = unitOptions.scan;
         if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-        this.bank = useBank();
+        
+        const bankManager = useBank();
+        this.bank = bankManager.get(unit.team);
         this.costs = collect ? collect.costs : scan.costs;
     }
 
@@ -334,7 +338,8 @@ class Deliver extends Base {
         const scan = unitOptions.scan;
         if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
 
-        this.bank = useBank();
+        const bankManager = useBank();
+        this.bank = bankManager.get(unit.team);
         this.amount = collect ? collect.max : scan.rate;
         this.type = collect ? collect.type : scan.type;
     }
@@ -355,7 +360,12 @@ class Regroup extends Base {
         const unit = manager.object;
         const unitOptions = unit.options;
         const move = unitOptions.move;
-        const command = unit.command;
+        const team = unit.team;
+
+        const players = usePlayers();
+        const player = players.get(team);
+        const command = useCommands().createOrFindCommand(team);
+        
         if (!move) throw new Error('Unit Move feature is required');
         if (!command) throw new Error('Unit Command is required');
 

@@ -1,129 +1,126 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useManager } from './manager.js';
-import GameBank from 'game-bank';
+import { usePlayers } from './player.js';
 import PersistentData from '../composables/persistent_data.js';
 
-const BANK_NAME = 'Player Bank';
+const banks = ref([])
+
 const CURRENCIES = { 
-    COINS: 'coins', 
-    DIAMONDS: 'diamonds',
-    ICE: 'ice',
-    ROCK: 'rock',
-    HYRDOGEN: 'hydrogen',
-    METAL: 'metal',
-    POWER: 'power',
-    RESEARCH: 'research',
+    ICE: {
+        name: 'ice',
+        defaultMax: 100
+    },
+    ROCK: {
+        name: 'rock',
+        defaultMax: 100
+    },
+    HYRDOGEN: {
+        name: 'hydrogen',
+        defaultMax: 100
+    },
+    METAL: {
+        name: 'metal',
+        defaultMax: 100
+    },
+    POWER: {
+        name: 'power',
+        defaultMax: 100
+    },
+    RESEARCH: {
+        name: 'research',
+        defaultMax: 100
+    }
 }
-const bank = ref(null);
-const accounts = computed(() => bank.value.accounts);
-const isInitialized = ref(false);
 
-/**
- * Manager methods.
- * Will be called by the manager.
- */
-useManager().create('bank', {
-    init: {
-        priority: 1,
-        callback: async () => {
-            if (isInitialized.value) return false
-    
-            GameBank.Currency.createMany(
-                { name: CURRENCIES.ICE, options: { max: 100, defaultMax: 100 } },
-                { name: CURRENCIES.ROCK, options: { max: 100, defaultMax: 100 } },
-                { name: CURRENCIES.HYRDOGEN, options: { max: 100, defaultMax: 100 } },
-                { name: CURRENCIES.METAL, options: { max: 100, defaultMax: 100 } },
-                { name: CURRENCIES.POWER, options: { max: 100, defaultMax: 100 } },
-                { name: CURRENCIES.RESEARCH, options: { max: 100, defaultMax: 100 } }
-            );
-    
-            const pdIce = await PersistentData.get(CURRENCIES.ICE);
-            const pdRock = await PersistentData.get(CURRENCIES.ROCK);
-            const pdHydrogen = await PersistentData.get(CURRENCIES.HYRDOGEN);
-            const pdMetal = await PersistentData.get(CURRENCIES.METAL);
-            const pdPower = await PersistentData.get(CURRENCIES.POWER);
-            const pdResearch = await PersistentData.get(CURRENCIES.RESEARCH);
-    
-            const ice = pdIce?.balance || 100;
-            const rock = pdRock?.balance || 100;
-            const hydrogen = pdHydrogen?.balance || 50;
-            const metal = pdMetal?.balance || 50;
-            const power = pdPower?.balance || 100;
-            const research = pdResearch?.balance || 0;
-    
-            bank.value = GameBank.Bank.create(BANK_NAME, {
-                defaultAccounts: [
-                    { name: CURRENCIES.ICE, balance: ice },
-                    { name: CURRENCIES.ROCK, balance: rock },
-                    { name: CURRENCIES.HYRDOGEN, balance: hydrogen },
-                    { name: CURRENCIES.METAL, balance: metal },
-                    { name: CURRENCIES.POWER, balance: power },
-                    { name: CURRENCIES.RESEARCH, balance: research }
-                ]
+const isValidCurrency = (currency) => {
+    for (const c of Object.values(CURRENCIES)) {
+        if (c.name.toLowerCase() === currency.toLowerCase()) return true;
+    }
+    return false;
+}
+
+const getCurrency = (currency) => {
+    for (const c of Object.values(CURRENCIES)) {
+        if (c.name.toLowerCase() === currency.toLowerCase()) return c;
+    }
+    return null;
+}
+
+const Bank = (team, startAccounts=[]) => {
+    const accounts = ref(startAccounts);
+    Object.values(CURRENCIES).forEach(c => {
+        if (!accounts.value.find(a => a.currency === c.name)) {
+            accounts.value.push({ 
+                currency: c.name, 
+                balance: c.defaultMax, 
+                max: c.defaultMax, 
+                defaultMax: c.defaultMax
             });
-    
-            isInitialized.value = true;
         }
-    }
-})
+    });
 
-export function useBank() {
-
-    const updateCurrencyMax = (currency, max) => {
-        if (!isInitialized.value) throw new Error('Bank not initialized');
-        const acc = bank.value.accounts;
-        const account = acc.find(a => a.name === currency);
-        if (!account) return;
-        const index = acc.indexOf(account);
-        acc[index].max = max + acc[index].defaultMax;
-        bank.value.accounts = acc;
-    }
-
-    const getCurrency = (currency) => {
-        if (!isInitialized.value) throw new Error('Bank not initialized');
-        const acc = bank.value.accounts;
-        const account = acc.find(a => a.name === currency);
-        if (!account) return null;
+    const createOrFindAccount = (currency) => {
+        let account = accounts.value.find(a => a.currency === currency);
+        if (!account) {
+            const currencyDetails = getCurrency(currency);
+            account = { 
+                currency, 
+                balance: 0, 
+                max: currencyDetails.defaultMax, 
+                defaultMax: currencyDetails.defaultMax 
+            };
+            accounts.value.push(account);
+        }
         return account;
     }
 
-    const overrideBalance = (balance, currency) => {
-        if (!isInitialized.value) throw new Error('Bank not initialized');
-        const acc = bank.value.accounts;
-        const account = acc.find(a => a.name === currency);
-        if (!account) return;
-        const index = acc.indexOf(account);
-        acc[index].balance = balance;
-        bank.value.accounts = acc;
-    }
-
     const deposit = (balance, currency) => {
-        // Enforce max balance
-        const acc = bank.value.accounts;
-        const account = acc.find(a => a.name === currency);
-        if (!account) throw new Error(`Unknown currency: ${currency}`);
-        
-        if (account.max) {
-            const b = getBalance(currency);
-            const n = b + balance;
-            if (n > account.max) {
-                balance = account.max - b; 
-            }
-        }
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
 
-        bank.value.deposit(balance, currency);
-        PersistentData.set(currency, { balance: getBalance(currency) });
+        const account = createOrFindAccount(currency)
+        account.balance += balance;
+        if (account.balance > account.max) {
+            account.balance = account.max;
+        }
+        return true;
     }
 
     const withdraw = (balance, currency) => {
-        if (bank.value.withdraw(balance, currency))
-            PersistentData.set(currency, { balance: getBalance(currency) });
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
+
+        const account = createOrFindAccount(currency)
+        if (account.balance < balance) return false;
+        account.balance -= balance;
+
+        return true;
     }
 
     const getBalance = (currency) => {
-        for (const account of accounts.value) {
-            if (account.name === currency) return account.balance;
-        }
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
+
+        const account = createOrFindAccount(currency)
+        return account.balance;
+    }
+
+    const setMax = (currency, amount) => {
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
+
+        const account = createOrFindAccount(currency)
+        account.max = account.defaultMax + amount;
+    }
+
+    const resetMax = (currency) => {
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
+
+        const account = createOrFindAccount(currency)
+        account.max = account.defaultMax;
+    }
+
+    const getMax = (currency) => {
+        if (!isValidCurrency(currency)) throw new Error(`Unknown currency: ${currency}`);
+
+        const account = createOrFindAccount(currency)
+        return account.max;
     }
 
     const canAfford = (costs) => {
@@ -138,16 +135,61 @@ export function useBank() {
     }
 
     return {
-        bank,
+        team,
+        accounts,
         deposit,
         withdraw,
         getBalance,
-        canAfford,
-        isInitialized,
-        accounts,
-        updateCurrencyMax,
-        getCurrency,
-        overrideBalance,
-        CURRENCIES
+        setMax,
+        getMax,
+        resetMax,
+        canAfford
+    }
+}
+
+/**
+ * Manager methods.
+ * Will be called by the manager.
+ */
+useManager().create('bank', {
+})
+
+export function useBank() {
+
+    const create = (team, startAccounts=[]) => {
+        const bank = Bank(team, startAccounts);
+        banks.value.push(bank);
+        return bank;
+    }
+
+    const get = (team) => {
+        return banks.value.find(b => b.team === team);
+    }
+
+    const remove = (team) => {
+        const bank = get(team);
+        if (!bank) return false;
+        const index = banks.value.indexOf(bank);
+        banks.value.splice(index, 1);
+        return true;
+    }
+
+    const findAll = () => {
+        return banks.value;
+    }
+
+    const findYou = () => {
+        const players = usePlayers();
+        const you = players.findYou();
+        if (!you) return null;
+        return get(you.team);
+    }
+
+    return {
+        create,
+        get,
+        remove,
+        findAll,
+        findYou,
     }
 }

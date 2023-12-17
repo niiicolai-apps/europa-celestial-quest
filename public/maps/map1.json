@@ -422,10 +422,18 @@
     ],
     "players": [
         {
-            "team_name": "enemy",
             "is_you": false,
             "is_computer": true,
             "difficulty": "easy",
+            "team_name": "team-2",
+            "bankAccounts": [
+                { "currency": "ice", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "rock", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "metal", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "hydrogen", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "power", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "research", "balance": 100, "max": 100, "defaultMax": 100 }
+            ],
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
@@ -700,10 +708,18 @@
             ]
         },
         {
-            "team_name": "player",
             "is_you": true,
             "is_computer": false,
-            "difficulty": "easy",
+            "difficulty": null,
+            "team_name": "team-1",
+            "bankAccounts": [
+                { "currency": "ice", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "rock", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "metal", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "hydrogen", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "power", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "research", "balance": 0, "max": 100, "defaultMax": 100 }
+            ],
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
@@ -712,8 +728,5 @@
                 }
             ]
         }
-    ],
-    "camera": {
-        "position": { "x": -10, "y": 0, "z": 0 }
-    }
+    ]
 }

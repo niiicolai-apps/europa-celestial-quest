@@ -3,26 +3,28 @@
  * Other managers must also be import to ensure
  * they are initialized.
  */
-import { useManager } from '../managers/manager.js';
-import '../managers/billboard.js';
-import '../managers/state_machine.js';
-import '../managers/constructions.js';
-import '../managers/camera.js';
-import '../managers/initializer.js';
-import '../managers/ground.js';
-import '../managers/map.js';
-import '../managers/navigation.js';
-import '../managers/objectives.js';
-import '../managers/player.js';
-import '../managers/resources.js';
-import '../managers/stats.js';
-import '../managers/units.js';
-import '../managers/particles.js';
+import { useManager } from './manager.js';
+import './billboard.js';
+import './state_machine.js';
+import './constructions.js';
+import './camera.js';
+import './initializer.js';
+import './ground.js';
+import './map.js';
+import './navigation.js';
+import './objectives.js';
+import './player.js';
+import './resources.js';
+import './stats.js';
+import './units.js';
+import './commands.js';
+import './particles.js';
 
 import { ref } from 'vue';
-import { useTimeline } from './timeline.js';
-import { useCanvas } from './canvas.js';
-import PersistentData from './persistent_data.js';
+import { useTimeline } from '../composables/timeline.js';
+import { useCanvas } from '../composables/canvas.js';
+import { useMap } from './map.js';
+import PersistentData from '../composables/persistent_data.js';
 
 const timelineManager = useTimeline();
 const endGame = ref(null);
@@ -53,9 +55,9 @@ export const useGameManager = () => {
            
         } else {
 
-            const timelines = await PersistentData.get('timelines') || [];
-            const introExists = timelines.find(t => t === 'intro'); 
-            console.log(timelines, introExists);        
+            const mapName = await useMap().name();
+            const timelines = await PersistentData.get(`${mapName}-timelines`) || [];
+            const introExists = timelines.find(t => t === 'intro');
             if (introExists) await startNewGame();
             else await timelineManager.play('intro');
         }

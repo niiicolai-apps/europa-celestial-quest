@@ -21,7 +21,7 @@
                     style="font-size: .6em;"
                     >
                     
-                    <Icons.fa.StarIcon 
+                    <Icons.fa.MedalIcon 
                         :width="iconSize" 
                         :height="iconSize" 
                         :fill="iconFill" 
@@ -46,5 +46,5 @@ const iconFill = "white";
 
 const localizationManager = useLocalization();
 const statsManager = useStats();
-const stat = computed(() => statsManager.stat.value);
+const stat = computed(() => statsManager.findStatYou());
 </script>

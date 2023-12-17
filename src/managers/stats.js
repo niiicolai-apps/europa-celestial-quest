@@ -1,10 +1,10 @@
 import GameStats from 'game-stats'
-import PersistentData from '../composables/persistent_data.js';
 import { useManager } from './manager.js';
+import { usePlayers } from './player.js';
 import { ref } from 'vue'
 
 const stat = ref(null)
-const controller = ref(null)
+const controllers = ref([])
 const isInitialized = ref(false)
 
 const statName = 'general'
@@ -22,7 +22,7 @@ useManager().create('stats', {
         callback: async (options) => {
             if (isInitialized.value) return false
     
-            const s = GameStats.Stat.create(
+            stat.value = GameStats.Stat.create(
                 statName,
                 maxLevel,
                 experienceMultiplier,
@@ -31,16 +31,6 @@ useManager().create('stats', {
                 (options) => { }
             )
     
-            controller.value = GameStats.Controller.create()
-    
-            if (!controller.value.findByName(statName)) {
-                const statPD = await PersistentData.get(statName)
-                const level = statPD?.level || 1
-                const experience = statPD?.experience || 10
-                controller.value.add(s, level, experience)
-                stat.value = controller.value.findByName(statName)
-            }
-    
             isInitialized.value = true;
         }
     }
@@ -48,18 +38,41 @@ useManager().create('stats', {
 
 export function useStats() {
 
-    const addExperience = async (experience) => {
-        controller.value.addExperience(statName, experience)
+    const create = async (team, level=1, experience=10) => {
+        const controller = GameStats.Controller.create()
+        const extendedController = {
+            controller,
+            team
+        }
 
-        const stat = controller.value.findByName(statName)
-        await PersistentData.set(statName, {
-            level: stat.level,
-            experience: stat.experience
-        })
+        if (!controller.findByName(statName)) {
+            controller.add(stat.value, level, experience)
+        }
+
+        controllers.value.push(extendedController)
+    }
+
+    const addExperience = async (team, experience) => {
+        const extendedController = controllers.value.find(c => c.team === team)
+        extendedController.controller.addExperience(statName, experience)
+    }
+
+    const findStat = (team) => {
+        const extendedController = controllers.value.find(c => c.team === team)
+        if (!extendedController) return null
+        return extendedController.controller.findByName(statName)
+    }
+
+    const findStatYou = () => {
+        const player = usePlayers().findYou()
+        return findStat(player.team)
     }
 
     return {
         stat,
+        create,
         addExperience,
+        findStat,
+        findStatYou
     }
 }

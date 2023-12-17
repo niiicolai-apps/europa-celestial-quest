@@ -3,15 +3,20 @@ import { TimelineFromJson } from './timelines/timeline.js'
 import { useAudio } from './audio.js'
 import { useSubTitle } from './sub_title.js'
 import { useCanvas } from './canvas.js'
+import { useMap } from '../managers/map.js'
 import { ref } from 'vue'
 
 const camera = ref(null)
 const scene = ref(null)
+
 const audioCtrl1 = ref(null)
 const audioCtrl2 = ref(null)
 const subTitleCtrl = ref(null)
+
 const onBefore = ref(null)
 const onStop = ref(null)
+const showTransition = ref(false)
+
 const isInitialized = ref(false)
 const timeline = ref(null)
 
@@ -58,9 +63,11 @@ export const useTimeline = () => {
                 timeline.value = null
 
                 /* Save the timeline to persistent data */
-                const timelines = await PersistentData.get('timelines') || []
+                const mapName = await useMap().name()
+                const pdPrefix = `${mapName}-timelines`
+                const timelines = await PersistentData.get(pdPrefix) || []
                 const exists = timelines.find(t => t === name)
-                if (!exists) PersistentData.set('timelines', [...timelines, name])
+                if (!exists) PersistentData.set(pdPrefix, [...timelines, name])
 
                 _onStop()
             }
@@ -83,6 +90,7 @@ export const useTimeline = () => {
         init,
         play,
         stop,
-        isPlaying
+        isPlaying,
+        showTransition
     }
 }

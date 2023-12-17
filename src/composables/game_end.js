@@ -45,13 +45,13 @@ export const useGameEnd = () => {
         const players = usePlayers();
         const aliveHumanPlayers = players.findAll(false, false);
         if (aliveHumanPlayers.length === 0) {
-            endState.value = END_STATES.LOSE;
+            //endState.value = END_STATES.LOSE;
             return;
         }
     
         const aliveComputerPlayers = players.findAll(false, true);
         if (aliveComputerPlayers.length === 0) {
-            endState.value = END_STATES.WIN;
+            //endState.value = END_STATES.WIN;
         }
     }
 

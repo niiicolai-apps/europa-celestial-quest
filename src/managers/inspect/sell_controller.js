@@ -7,7 +7,6 @@ import { useCanvas } from '../../composables/canvas.js';
 import { usePlayers } from '../player.js';
 import CONSTRUCTIONS from '../definitions/constructions.js';
 
-const bankManager = useBank();
 const isSelling = ref(false);
 
 const SellController = {
@@ -56,9 +55,13 @@ const SellController = {
 
         isSelling.value = false;
         selected.value.userData.isOwned = false;
+
+        const team = selected.value.userData.team;
+        const bankManager = useBank();
+        const bank = bankManager.get(team);
         
         for (const cost of selected.value.userData.costs) {
-            bankManager.deposit(cost.amount, cost.currency);
+            bank.deposit(cost.amount, cost.currency);
         }
 
         const canvas = useCanvas();

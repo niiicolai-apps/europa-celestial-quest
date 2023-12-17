@@ -5,10 +5,10 @@
     />
     <UI.Button 
         v-if="showMute && audioRef" 
-        :type="muted ? 'primary' : 'danger'"
+        :type="muted ? 'danger' : 'primary'"
         @click="toggleMute">
-        <Icons.fa.PlayIcon width="1em" height="1em" fill="white" v-if="muted" />
-        <Icons.fa.StopIcon width="1em" height="1em" fill="white" v-else />
+        <Icons.fa.VolumeOffIcon width="1em" height="1em" fill="white" v-if="muted" />
+        <Icons.fa.VolumeHighIcon width="1em" height="1em" fill="white" v-else />
     </UI.Button>
 </template>
 

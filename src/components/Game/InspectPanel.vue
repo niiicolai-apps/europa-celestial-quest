@@ -19,7 +19,7 @@
                 <UI.Flex direction="horizontal" justify="start" gap="1" v-if="selectedIsYours">
                     <UI.Button :title="localizationManager.getLocale('inspect.start_move_button')"
                         @click="inspectManager.moveCtrl.start()">
-                        <Icons.fa.ToolboxIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <Icons.fa.UpDownLeftRightIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                     </UI.Button>
 
                     <UI.Button :title="localizationManager.getLocale('inspect.start_sell_button')"
@@ -30,13 +30,13 @@
                     <UI.Button v-if="isUpgradeable && !isMaxUpgradeReached"
                         :title="localizationManager.getLocale('inspect.start_upgrade_button')"
                         @click="inspectManager.upgradeCtrl.start()">
-                        <Icons.fa.ArrowUpIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <Icons.fa.CircleUpIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                     </UI.Button>
 
                     <UI.Button v-if="canBuild"
                         :title="localizationManager.getLocale('inspect.start_unit_button')"
                         @click="inspectManager.unitCtrl.start()">
-                        <Icons.fa.PersonIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <Icons.fa.UserAstronautIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>

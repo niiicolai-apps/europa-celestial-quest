@@ -31,6 +31,9 @@ export default {
                 da: 'Ufuldførte mål',
             },
         },
-        
+        no_objectives: {
+            en: 'No objectives available',
+            da: 'Ingen mål tilgængelige',
+        },
     },
 }

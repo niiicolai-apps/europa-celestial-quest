@@ -7,20 +7,28 @@ import { useManager } from './manager.js'
 import { useMap } from './map.js'
 import { useCanvas } from '../composables/canvas.js'
 import { useInspect } from './inspect.js'
+import { useStats } from './stats.js'
+import { useBank } from './bank.js'
+
 import ConstructionDefinitions from './definitions/constructions.js'
 import ComputerBehavior from './behaviors/computer_behavior.json'
 import ComputerStates from './states/computer_states.js'
 import PersistentData from '../composables/persistent_data.js'
-
 
 const players = ref([])
 const scene = ref(null)
 const mapName = ref('map1')
 const isInitialized = ref(false)
 
-const Player = (isComputer=false, isYou=false, team=null) => {
+const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10, startAccounts=[]) => {
     const stateMachineId = Date.now();
     if (!team) team = `team-${players.value.length + 1}`
+
+    const stats = useStats()
+    const statsController = stats.create(team, level, experience)
+
+    const banks = useBank()
+    const bankController = banks.create(team, startAccounts)
 
     const spawnUnit = async (unitData) => {
         const units = useUnits()
@@ -31,19 +39,20 @@ const Player = (isComputer=false, isYou=false, team=null) => {
 
         scene.value.add(mesh)
         units.add(mesh, unitData, team)
+        mesh.name = unitData.name
 
         return mesh
     }
 
-    const spawnConstruction = async (constructionName) => {
-        const items = useItems()
+    const spawnConstruction = async (constructionName, isOwned=false, upgradeIndex = 0) => {
+        
         const definition = Object.values(ConstructionDefinitions).find(d => d.name === constructionName)
         if (!definition) {
             throw new Error(`Construction definition not found: ${constructionName}`)
         }
         
-        const isOwned = isComputer ? true : false
-        const item = await items.spawn(definition, team, isOwned)
+        const items = useItems()
+        const item = await items.spawn(definition, team, isOwned, upgradeIndex)
 
         /**
          * Ensure all constructions are selectable.
@@ -69,6 +78,10 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         stateMachine.setState(stateMachineId, stateName)
     }
 
+    const addExperience = (experience) => {
+        stats.addExperience(team, experience)
+    }
+
     const isDead = () => {
         const units = useUnits()
         const constructions = useItems()
@@ -83,11 +96,10 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         /**
          * 1. Create constructions data
          */
-        const items = useItems()
-        const constructions = items.findAllByTeam(team)
-        const constructionsData = []
-        for (const construction of constructions) {
-            constructionsData.push({
+        const constructionsData = useItems().findAllByTeam(team)
+        const constructions = []
+        for (const construction of constructionsData) {
+            constructions.push({
                 name: construction.name,
                 position: {
                     x: construction.position.x,
@@ -107,12 +119,11 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         /**
          * 2. Create units data
          */
-        const units = useUnits()
-        const unitsData = units.findAllByTeam(team)
-        const unitsDataData = []
+        const unitsData = useUnits().findAllByTeam(team)
+        const units = []
         for (const unit of unitsData) {
             const object3D = unit.object3D
-            unitsDataData.push({
+            units.push({
                 name: object3D.name,
                 position: {
                     x: object3D.position.x,
@@ -130,18 +141,34 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         }
 
         /**
-         * 3. Create player data
+         * 3. Get stats data
+         */
+        const stat = stats.findStat(team)
+        const level = stat.level
+        const experience = stat.experience
+
+        /**
+         * 4. Find bank accounts data
+         */
+        const bankAccounts = bankController.accounts.value
+
+        /**
+         * 4. Create player data
          */
         const data = {
             is_computer: isComputer,
             team_name: team,
             difficulty: 'easy',
-            constructions: constructionsData,
-            units: unitsDataData
+            is_you: isYou,
+            constructions,
+            units,
+            level,
+            experience,
+            bankAccounts
         }
 
         /**
-         * 4. Find existing PD players and update
+         * 5. Find existing PD players and update
          */
         const pdPlayers = await PersistentData.get(`${mapName.value}-players`) || []
         const pdIndex = pdPlayers.findIndex(p => p.team_name === team)
@@ -149,7 +176,7 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         else pdPlayers.push(data)
 
         /**
-         * 5. Save PD players
+         * 6. Save PD players
          */
         await PersistentData.set(`${mapName.value}-players`, pdPlayers)
     }
@@ -164,6 +191,8 @@ const Player = (isComputer=false, isYou=false, team=null) => {
         setUnitsCommand,
         setState,
         stateMachineId,
+        addExperience,
+        bankController,
         isDead,
         saveData
     }
@@ -191,8 +220,8 @@ useManager().create('players', {
 
 export const usePlayers = () => {
 
-    const add = (isComputer=false, isYou=false, teamName=null, difficulty='easy') => {
-        const player = Player(isComputer, isYou, teamName)
+    const add = (isComputer=false, isYou=false, teamName=null, difficulty='easy', level=1, experience=10, startAccounts=[]) => {
+        const player = Player(isComputer, isYou, teamName, level, experience, startAccounts)
         
         players.value.push(player)
 

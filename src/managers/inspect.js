@@ -21,6 +21,7 @@ const detailCtrl = {
         if (!selected.value) return false;
         const players = usePlayers();
         const player = players.findYou();
+        console.log(player);
         if (!player) return false;
         return selected.value.userData.team === player.team;
     },

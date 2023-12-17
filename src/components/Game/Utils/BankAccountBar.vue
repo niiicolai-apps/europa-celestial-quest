@@ -1,10 +1,10 @@
 <template>
-    <div v-if="isInitialized">
+    <div v-if="bank">
         <UI.Flex 
             gap="2" 
             v-for="account in filteredBankAccounts" 
             :key="account.name"
-            :title="localizationManager.getLocale(`bank.${account.name}`)"
+            :title="localizationManager.getLocale(`bank.${account.currency}`)"
             >
             <UI.ProgressBar 
                 :progress="account.balance" 
@@ -15,13 +15,14 @@
                 bar_color="bg-warning"
             >
                 <UI.Flex direction="horizontal" justify="between" gap="1" class="w-full px-1">
-                    <Icons.fa.SunIcon 
-                        v-if="account.name == 'power'" 
+                    <Icons.fa.BoltIcon 
+                        v-if="name == 'power'" 
                         :width="iconSize" 
                         :height="iconSize" 
                         :fill="iconFill"
                     />
                     <UI.Flex class="text-white font-bold" style="font-size: .6em;">
+                        
                         {{ parseInt(account.balance) }} / {{ account.max }}
                     </UI.Flex>
                 </UI.Flex>
@@ -45,9 +46,11 @@ const props = defineProps({
 });
 const iconSize = "0.6em";
 const iconFill = "white";
+
 const localizationManager = useLocalization();
 const bankManager = useBank();
-const isInitialized = computed(() => bankManager.isInitialized.value);
-const bankAccounts = computed(() => bankManager.bank.value.accounts);
-const filteredBankAccounts = computed(() => bankAccounts.value.filter(account => account.name === props.name));
+
+const bank = computed(() => bankManager.findYou());
+const bankAccounts = computed(() => bank.value ? bank.value.accounts : []);
+const filteredBankAccounts = computed(() => bankAccounts.value.filter(account => account.currency === props.name));
 </script>

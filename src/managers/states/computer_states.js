@@ -124,13 +124,13 @@ class AttackCheck extends Base {
         }
         
         if (allUnitsSpawned && manager.state.name !== 'attack') {
-            player.setUnitsStateByPrimaryFunction('attack');
-            player.setState('attack');
+            //player.setUnitsStateByPrimaryFunction('attack');
+            //player.setState('attack');
             //console.log('Setting attack command');
         }
         else if (!allUnitsSpawned && manager.state.name === 'attack') {
-            player.setUnitsStateByPrimaryFunction('build first army');
-            player.setState('build first army');
+            //player.setUnitsStateByPrimaryFunction('build first army');
+            //player.setState('build first army');
             //console.log('Setting build army command');
         } else {
             //console.log('Waiting for army');

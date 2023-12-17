@@ -9,8 +9,8 @@
                 <Locale :id="'map_loader.tip' + tip" />
             </UI.Paragraph>
 
-            <div class="pulse">
-                <Icons.fa.CrownIcon width="2em" height="2em" fill="#a2aebb" />
+            <div>
+                <Icons.fa.CircleNotchIcon class="spin" width="2em" height="2em" fill="#a2aebb" />
             </div>
         </UI.Flex>
     </UI.Fixed>
@@ -26,21 +26,17 @@ const tip = Math.floor(Math.random() * numberOfTips) + 1;
 </script>
 
 <style scoped>
-.pulse {
-    animation: pulse .5s infinite;
+.spin {
+    animation: spin .8s infinite;
 }
 
-@keyframes pulse {
+@keyframes spin {
     0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
+        transform: rotate(0deg);
     }
 
     100% {
-        transform: scale(1);
+        transform: rotate(360deg);
     }
 }
 </style>

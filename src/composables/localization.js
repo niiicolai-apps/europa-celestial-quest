@@ -63,7 +63,7 @@ export const useLocalization = (_locals = locals) => {
             const currentKey = splitKey.shift();
             result = result[currentKey];
         }
-
+        
         return result[splitKey[0]][LANGUAGE.value];
     }
 

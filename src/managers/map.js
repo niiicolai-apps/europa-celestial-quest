@@ -120,17 +120,11 @@ export const useMap = () => {
         return mapData.players;
     }
 
-    const camera = async () => {
-        const mapData = await fetchMapData(mapName.value);
-        return mapData.camera;
-    }
-
     return {
         name,
         terrain,
         resources,
         objectives,
-        players,
-        camera
+        players
     }
 }

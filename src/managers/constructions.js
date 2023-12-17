@@ -190,40 +190,6 @@ export const useItems = () => {
         UnitController.dequeueAny(item, scene.value)
     }
 
-    const loadState = async () => {
-        /*
-        const data = await PersistentData.get('items')
-        console.log('Loaded items', data)
-        if (!data) return false
-        const inspectManager = useInspect()
-        for (const itemData of data) {
-            const itemDefinition = ConstructionDefinitions.find(item => item.name === itemData.name)
-            if (!itemDefinition) continue
-
-            const item = await spawn(itemDefinition, 'player', true, itemData.userData.upgrade.index)
-            item.position.set(itemData.position.x, itemData.position.y, itemData.position.z)
-            item.rotation.set(itemData.rotation.x, itemData.rotation.y, itemData.rotation.z)
-            inspectManager.addSelectable(item)
-            
-        }*/
-
-        recalculateStorage()
-    }
-
-    const saveState = () => {
-        /*
-        const playerItems = items.value.filter(item => item.userData.team === 'player')
-        const data = playerItems.map(item => {
-            return {
-                name: item.name,
-                position: { x: item.position.x, y: item.position.y, z: item.position.z },
-                rotation: { x: item.rotation.x, y: item.rotation.y, z: item.rotation.z },
-                userData: item.userData,
-                uuid: item.uuid,
-            }
-        })
-        PersistentData.set('items', data)*/
-    }
 
     const findClosestItem = (position, name) => {
         let closest = null
@@ -237,16 +203,6 @@ export const useItems = () => {
             }
         }
         return closest
-    }
-
-    const findItemByName = (name) => {
-        return items.value.find(item => item.name === name)
-    }
-
-    const findItemByNameAndUpgrade = (name, upgradeIndex) => {
-        return items.value.find(item => {
-            return item.name === name && item.userData.upgrade.index === upgradeIndex
-        })
     }
 
     const findClosestByNameAndTeam = (position, name, team) => {
@@ -288,19 +244,15 @@ export const useItems = () => {
         })
     }
 
-    const countItemsByName = (name) => {
-        return items.value.filter(item => item.name === name).length
-    }
-
-    const countItemsByNameAndUpgrade = (name, upgradeIndex) => {
-        return items.value.filter(item => {
-            return item.name === name && item.userData.upgrade.index === upgradeIndex
-        }).length
-    }
-
     const countByNameAndTeam = (name, team) => {
         return items.value.filter(item => {
             return item.name === name && item.userData.team === team
+        }).length
+    }
+
+    const countByNameAndTeamAndUpgrade = (name, team, upgradeIndex) => {
+        return items.value.filter(item => {
+            return item.name === name && item.userData.team === team && item.userData.upgrade.index === upgradeIndex
         }).length
     }
 
@@ -313,22 +265,17 @@ export const useItems = () => {
         canAfford,
         items,
         ConstructionDefinitions,
-        saveState,
+        dequeueAny,
         removeItemFromState,
-        findClosestItem,
-        findClosestByNameAndTeam,
         recalculateStorage,
         findAllByNameAndTeam,
         findAllByTeam,
-        findItemByName,
-        findItemByNameAndUpgrade,
+        findClosestItem,
+        findClosestByNameAndTeam,
         findByNameAndTeam,
         findByNameAndUpgradeAndTeam,
-        countItemsByName,
-        countItemsByNameAndUpgrade,
         countByTeam,
-        dequeueAny,
         countByNameAndTeam,
-        loadState
+        countByNameAndTeamAndUpgrade
     }
 }

@@ -3,8 +3,8 @@ import { useBank } from '../bank.js';
 import { useItems } from '../constructions.js';
 import { useObjectives } from '../objectives.js';
 import { useToast } from '../../composables/toast.js';
+import { usePlayers } from '../player.js';
 import { setupUpgradeVisuals } from '../../composables/helpers/construction_helper.js'
-const bankManager = useBank();
 
 const isUpgrading = ref(false);
 
@@ -45,19 +45,26 @@ const UpgradeController = {
             useToast().add('toasts.upgrade_controller.not_upgradeable', 4000, 'danger');
             return false;
         } 
-        
-        const upgradeIndex = selected.value.userData.upgrade.index;
-        const upgrades = selected.value.userData.upgrades;
+        const userData = selected.value.userData;        
+        const upgradeIndex = userData.upgrade.index;
+        const upgrades = userData.upgrades;
         const nextUpgrade = upgrades[upgradeIndex];  
 
-        const canAfford = useItems().canAfford(nextUpgrade.costs);
+        const team = userData.team;
+        const players = usePlayers();
+        const player = players.get(team);
+
+        const bankManager = useBank();
+        const bank = bankManager.get(team);
+
+        const canAfford = bank.canAfford(nextUpgrade.costs);
         if (!canAfford) {
             useToast().add('toasts.upgrade_controller.cannot_afford', 4000, 'danger');
             return false;
         }
 
         for (const cost of nextUpgrade.costs) {
-            bankManager.withdraw(cost.amount, cost.currency);
+            bank.withdraw(cost.amount, cost.currency);
         }
 
         if (selected.value.userData.canStore) {
@@ -67,11 +74,12 @@ const UpgradeController = {
         isUpgrading.value = false;
         selected.value.userData.upgrade.index++;
         useObjectives().tryCompleteIncompletes();
-        useItems().saveState();
 
-        setupUpgradeVisuals(selected.value);
-        
+        setupUpgradeVisuals(selected.value);        
         useToast().add('toasts.upgrade_controller.success', 4000, 'success');
+        
+        player.saveData();
+        
         return true;
     },
     isUpgradeable,

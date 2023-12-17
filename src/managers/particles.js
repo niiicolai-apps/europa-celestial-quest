@@ -42,7 +42,6 @@ const update = () => {
     if (Date.now() < nextUpdate.value) return;
     nextUpdate.value = Date.now() + timeBetweenFrames;
 
-    console.log('update particles, activeParticles', activeParticles.value.length);
     for (const activeParticle of activeParticles.value) {
         setupParticle(activeParticle);
     }
@@ -60,9 +59,8 @@ useManager().create('particles', {
             const adapter = canvas.adapter.value
             scene.value = adapter.scene
 
-            await useParticles().load('test', 'machine_gun_muzzle');
-            await useParticles().play('test', new THREE.Vector3(-103, 40, -103));
-
+            //await useParticles().load('test', 'machine_gun_muzzle');
+            //await useParticles().play('test', new THREE.Vector3(-103, 40, -103));
         }
     },
     update: {

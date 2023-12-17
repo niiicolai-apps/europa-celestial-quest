@@ -21,7 +21,7 @@
 import UI from 'frontend-ui'
 import Locale from '../General/Locale.vue';
 import { computed } from 'vue'
-import { useGameManager } from '../../composables/game_manager.js'
+import { useGameManager } from '../../managers/game_manager.js'
 import { useGameEnd } from '../../composables/game_end.js'
 
 const gameManager = useGameManager()

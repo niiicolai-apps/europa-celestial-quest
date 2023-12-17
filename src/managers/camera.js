@@ -27,11 +27,17 @@ const options = {
 }
 
 const setZoomSpeed = async (value) => {
+    manager.setZoomSpeed(value);
     await PersistentData.set('camera_zoom_speed', {value});
 }
 
 const setMoveSpeed = async (value) => {
+    manager.setMoveSpeed(value);
     await PersistentData.set('camera_move_speed', {value});
+}
+
+const focus = async (object) => {
+    manager.focus(object);
 }
 
 /**
@@ -78,4 +84,5 @@ export default {
     options,
     setZoomSpeed,
     setMoveSpeed,
+    focus,
 }

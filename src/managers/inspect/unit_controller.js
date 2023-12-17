@@ -10,7 +10,6 @@ import ConstructionDefinitions from '../definitions/constructions.js'
 import * as THREE from 'three';
 
 const unitManager = useUnits();
-const bankManager = useBank();
 const isBuilding = ref(false);
 
 const getConstructionDefinition = (name) => {
@@ -36,7 +35,7 @@ const BuildController = {
         const queue = BuildController.getQueue(selected);
         if (queue.length == 0) return;
 
-        const playerManager = usePlayers();        
+        const playerManager = usePlayers();
         const team = s.userData.team;
         const player = playerManager.get(team);
         const time = Date.now();
@@ -45,7 +44,7 @@ const BuildController = {
             const unit = queue[i];
             if (time < unit.completeTime) continue;
 
-            const unitMesh = await player.spawnUnit(unit.unit.mesh.name);
+            const unitMesh = await player.spawnUnit(unit.unit);
             scene.add(unitMesh);
 
             const selectedBox3 = new THREE.Box3().setFromObject(s);
@@ -55,9 +54,8 @@ const BuildController = {
 
             const unitBox3 = new THREE.Box3().setFromObject(unitMesh);
             const unitSize = unitBox3.getSize(new THREE.Vector3());
-            
+
             unitMesh.position.y += unitSize.y / 2;
-            unitManager.add(unitMesh, unit.unit);
 
             queue.splice(i, 1);
         }
@@ -83,14 +81,17 @@ const BuildController = {
             return false;
         }
 
-        const canAfford = bankManager.canAfford(unit.costs);
+        const team = selected.value.userData.team;
+        const bankManager = useBank();
+        const bank = bankManager.get(team);
+        const canAfford = bank.canAfford(unit.costs);
         if (!canAfford) {
             useToast().add('toasts.unit_controller.cannot_afford', 4000, 'danger');
             return false;
         }
 
         for (const cost of unit.costs) {
-            bankManager.withdraw(cost.amount, cost.currency);
+            bank.withdraw(cost.amount, cost.currency);
         }
 
         if (!selected.value.userData.unitQueue) {
@@ -101,7 +102,7 @@ const BuildController = {
         const completeTime = startTime + unit.complete_time;
         selected.value.userData.unitQueue.push({ unit, completeTime, startTime });
 
-        useToast().add('toasts.unit_controller.success', 4000, 'success');        
+        useToast().add('toasts.unit_controller.success', 4000, 'success');
 
         return true;
     },
@@ -129,7 +130,7 @@ const BuildController = {
     },
     canBuild: (selected) => {
         const s = selected.value || selected;
-        
+
         const construction = getConstructionDefinition(s.name);
         const upgradeIndex = s.userData.upgrade.index;
         const upgrades = construction.upgrades;

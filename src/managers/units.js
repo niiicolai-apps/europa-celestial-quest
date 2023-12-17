@@ -13,28 +13,13 @@ import * as THREE from 'three';
 import UnitsBehavior from './behaviors/units_behavior.json';
 import UnitStates from './states/unit_states.js';
 
-const ground = useGround();
 const heightMap = useHeightMap();
 const units = ref([]);
-const scene = ref(null);
+
 const isInitialized = ref(false);
 const isPaused = ref(false);
 
-const domElement = ref(null);
-const commands = ref([
-    { 
-        team: 'player', 
-        type: 'regroup', 
-        position: { x: 0, y: 0, z: 0 } 
-    }
-]);
-
-const isSettingWarriorCommand = ref(false);
-const WARRIOR_COMMANDS = ['regroup', 'attack'];
-
-const warriorMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-const warriorMarkerGeometry = new THREE.BoxGeometry(1, 1, 1);
-const warriorMarkerMesh = new THREE.Mesh(warriorMarkerGeometry, warriorMarkerMaterial);
+const scene = ref(null);
 
 /**
  * Manager methods.
@@ -48,10 +33,7 @@ useManager().create('units', {
     
             const canvas = useCanvas()
             const adapter = canvas.adapter.value
-            domElement.value = adapter.renderer.domElement
             scene.value = adapter.scene
-            scene.value.add(warriorMarkerMesh);
-            warriorMarkerMesh.visible = false;
             
             isInitialized.value = true;
         }
@@ -83,15 +65,6 @@ export const useUnits = () => {
             options[feature.name] = {...feature.options};
         }
         return options;
-    }
-
-    const createCommand = (team) => {
-        let command = commands.value.find(c => c.team === team);
-        if (!command) {
-            command = { team, type: 'regroup', position: { x: 0, y: 0, z: 0 } };
-            commands.value.push(command);
-        }
-        return command;
     }
 
     const createHealth = (unit) => {
@@ -143,19 +116,16 @@ export const useUnits = () => {
     const add = (object3D, data, team = 'player') => {
         // Create unit options
         const options = featuresToOptions(data.features);
-        const command = createCommand(team);
 
         // Create unit
         const unit = {
             object3D,
             data,
             options,
-            command,
             team
         };
 
         if (options.attack?.muzzleParticle) {
-            console.log('loading muzzle particle', options.attack.muzzleParticle)
             unit.muzzleParticle = useParticles().load(`${object3D.uuid}-muzzle`, options.attack.muzzleParticle.name);           
         }
 
@@ -181,57 +151,11 @@ export const useUnits = () => {
         units.value = units.value.filter(u => u.object3D.uuid !== object3D.uuid);
     }
 
-    const onPointerDown = (event) => {
-        const point = ground.getIntersectionFromMouse(event);
-        if (!point) return;
-
-        const command = commands.value.find(c => c.team === 'player');
-        command.position = point;
-        //command.position.y = heightMap.getY(point.x, point.z);
-        warriorMarkerMesh.position.copy(point);
-        useToast().add(`toasts.units.set_warrior_command.${command.type}`, 4000, 'info');
-        stopTrackWarriorCommand();
-    }
-
-    const startTrackWarriorCommand = (type) => {
-        if (!WARRIOR_COMMANDS.includes(type))
-            throw new Error(`Invalid warrior command type: ${type}`);
-
-        console.log('start track warrior command', type);
-
-        const command = commands.value.find(c => c.team === 'player');
-        command.type = type;
-        warriorMarkerMesh.visible = true;
-        isSettingWarriorCommand.value = true;
-        domElement.value.addEventListener('pointerdown', onPointerDown);
-        return true;
-    }
-
-    const stopTrackWarriorCommand = () => {
-        isSettingWarriorCommand.value = false;
-        const command = commands.value.find(c => c.team === 'player');
-        setStateByFunction('warrior', command.type);
-        domElement.value.removeEventListener('pointerdown', onPointerDown);
-    }
-
-    const setCommand = (type, position, team='player') => {
-        const command = createCommand(team);
-
-        command.type = type;
-        command.position = position;
-    }
-
-    const getCommand = (team='player') => {
-        const command = commands.value.find(c => c.team === team);
-        return command;
-    }
-
     const setStateByFunction = (primaryFunction, stateName, team='player') => {
         const stateMachine = useStateMachine()
         const unitsByFunction = units.value.filter(u => u.data.primary_function === primaryFunction);
         const unitsByTeam = unitsByFunction.filter(u => u.team === team);
         for (const unit of unitsByTeam) {
-            console.log(`Setting unit ${unit.data.name} to state ${stateName}`);
             stateMachine.setState(unit.object3D.uuid, stateName);
         }
     }
@@ -260,17 +184,11 @@ export const useUnits = () => {
         units,
         add,
         remove,
-        startTrackWarriorCommand,
-        stopTrackWarriorCommand,
-        WARRIOR_COMMANDS,
-        isSettingWarriorCommand,
         setStateByFunction,
         findByName,
         findAllByTeam,
         countByName,
         countByNameAndTeam,
-        setCommand,
-        getCommand,
         countByTeam
     }
 }

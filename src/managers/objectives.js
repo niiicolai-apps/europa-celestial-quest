@@ -3,20 +3,18 @@ import { useMap } from './map.js'
 import { useStats } from './stats.js';
 import { useItems } from './constructions.js';
 import { useUnits } from './units.js';
-import { useBank } from './bank.js';
 import { useToast } from '../composables/toast.js';
 import { useTimeline } from '../composables/timeline.js';
 import { useManager } from './manager.js';
+import { usePlayers } from './player.js';
+
 import PersistentData from '../composables/persistent_data.js';
 import GameObjective from 'game-objectives';
 
-const map = useMap();
-const stats = useStats();
-const bank = useBank();
 const controller = ref(null);
 const availableObjectives = ref([]);
 const isInitialized = ref(false);
-
+const mapName = ref(null);
 /**
  * Manager methods.
  * Will be called by the manager.
@@ -26,43 +24,52 @@ useManager().create('objectives', {
         priority: 2, // Must be higher than stats.js
         callback: async () => {
             if (isInitialized.value) return false
-    
+
             controller.value = GameObjective.Controller.create();
-    
-            const pd = await PersistentData.get('completed_objectives');
+
+            const map = useMap();
+            mapName.value = await map.name();
+
+            const pd = await PersistentData.get(`${mapName.value}-completed_objectives`);
             const completedObjectives = pd || [];
-    
+
             const itemsManager = useItems();
             const unitsManager = useUnits();
-    
+
+            const players = usePlayers();
+            const player = players.findYou();
+            const team = player.team;
+            const bank = player.bankController;
+
             const objectivesData = await map.objectives();
-            const rewardCache = [];        
-    
+            const rewardCache = [];
+
             for (const objectiveData of objectivesData) {
                 const goals = [];
                 const rewards = [];
-    
+
                 for (const goalData of objectiveData.goals) {
                     const goal = GameObjective.Goal.create(goalData.name, (options) => {
-    
+
                         if (goalData.options.construction) {
-                            const constructionCount = itemsManager.countItemsByName(goalData.options.construction.name);
-                            return goalData.options.min 
+                            const constructionCount = itemsManager.countByNameAndTeam(goalData.options.construction.name, team);
+                            return goalData.options.min
                                 ? constructionCount >= goalData.options.min
                                 : constructionCount > 0;
                         }
                         else if (goalData.options.unit) {
-                            const unitCount = unitsManager.countByName(goalData.options.unit.name);
+                            const unitCount = unitsManager.countByNameAndTeam(goalData.options.unit.name, team);
                             return goalData.options.min
                                 ? unitCount >= goalData.options.min
                                 : unitCount > 0;
                         }
                         else if (goalData.options.upgrade) {
-                            const constructionCount = itemsManager.countItemsByNameAndUpgrade(
-                                goalData.options.upgrade.name, 
+                            const constructionCount = itemsManager.countByNameAndTeamAndUpgrade(
+                                goalData.options.upgrade.name,
+                                team,
                                 goalData.options.upgrade.upgradeIndex
                             );
-                            return goalData.options.min 
+                            return goalData.options.min
                                 ? constructionCount >= goalData.options.min
                                 : constructionCount > 0;
                         }
@@ -73,41 +80,41 @@ useManager().create('objectives', {
                     })
                     goals.push(goal);
                 }
-    
+
                 for (const rewardData of objectiveData.rewards) {
                     const existingReward = rewardCache.find(r => r.name === rewardData.name);
                     if (existingReward) {
                         rewards.push(existingReward);
                         continue;
                     }
-    
+
                     const reward = GameObjective.Reward.create(rewardData.name, (options) => {
-    
+
                         if (rewardData.options.stat) {
-                            stats.addExperience(rewardData.options.stat.value);
+                            useStats().addExperience(team, rewardData.options.stat.value);
                         }
                     })
                     rewards.push(reward);
                     rewardCache.push(reward);
                 }
-    
+
                 const objective = GameObjective.Objective.create(
                     objectiveData.name,
                     objectiveData.description,
                     goals,
                     rewards
                 );
-    
-                availableObjectives.value.push({objective, data: objectiveData});
-    
+
+                availableObjectives.value.push({ objective, data: objectiveData });
+
                 const completed = completedObjectives.find(o => o === objective.name);
                 if (completed) {
                     controller.value.add(objective, true);
                 }
             }
-    
+
             useObjectives().addNewAvailable();
-    
+
             isInitialized.value = true;
         }
     }
@@ -127,7 +134,13 @@ export function useObjectives() {
                 break;
             }
         }
-        return isCompletedRequired && stats.stat.value.level >= requiredLevel;
+
+        const players = usePlayers();
+        const player = players.findYou();
+        const stats = useStats();
+        const stat = stats.findStat(player.team);
+
+        return isCompletedRequired && stat.level >= requiredLevel;
     }
 
     const addNewAvailable = () => {
@@ -175,7 +188,7 @@ export function useObjectives() {
             }
 
             addNewAvailable();
-            PersistentData.set('completed_objectives', completedNamesAfter);
+            PersistentData.set(`${mapName.value}-completed_objectives`, completedNamesAfter);
         }
     }
 

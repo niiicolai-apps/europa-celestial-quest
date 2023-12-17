@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import utils from "./utils.js";
 import { getMesh, removeMesh } from "../meshes.js";
+import { useTimeline } from "../timeline.js";
 const { System, SpriteRenderer } = window.Nebula;
 
 const cameraLookAt = new THREE.Vector3(0, 0, 0);
@@ -342,48 +343,6 @@ const setupParticles = (particles, meshes, sequence) => {
     }
 }
 
-let transitionInterval = null;
-let transitionTimeout = null;
-const executeTransition = (transition, scene) => {
-    if (transition.type === 'fade') {
-        let direction = -1;
-        let background = scene.background;
-
-        if (!scene.fog) {
-            scene.fog = new THREE.FogExp2(0x000000, 0);
-        }
-
-        if (scene.background) {
-            scene.background = new THREE.Color(0x000000);
-        }
-        
-        transitionInterval = setInterval(() => {
-            scene.fog.density += 0.1 * direction;
-            if (scene.fog.density >= 8) {
-                direction = -1;
-            } else if (scene.fog.density <= -8) {
-                direction = 1;
-            }
-            console.log(scene.fog.density);
-        }, (transition.time / 2) / transition.steps);
-
-        transitionTimeout = setTimeout(() => {
-            clearInterval(transitionInterval);
-            transitionInterval = null;
-            scene.fog = null;
-            scene.background = background;
-        }, transition.time);
-    } else {
-        throw new Error(`Unknown transition type: ${transition.type}`);
-    }
-}
-
-const removeTransition = () => {
-    clearInterval(transitionInterval);
-    clearTimeout(transitionTimeout);
-    transitionInterval = null;
-    transitionTimeout = null;
-}
 
 export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ctrl, subTitleCtrl, onStop = () => { }) => {
     const _meshes = [];
@@ -452,15 +411,7 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         }
 
         if (sequence.transition) {
-            s.transition = {
-                time: sequence.transition.time,
-                callback: () => {
-                    executeTransition(
-                        sequence.transition, 
-                        scene
-                    );
-                }
-            }
+            s.transition = sequence.transition
         }
 
         return s;
@@ -479,7 +430,7 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         subTitleCtrl.hideSubTitle();
         removeLights(_lights, scene);
         removeMeshes(_meshes, scene);
-        removeTransition();
+        useTimeline().showTransition.value = false;
         scene.fog = null;
         scene.background = backgroundBefore;
         onStop();
@@ -496,15 +447,18 @@ export const Timeline = (sequencies, onStop = () => { }) => {
 
     const playNext = () => {
         const nextSequence = state[player.index];
-        console.log(state);
         let playTime = nextSequence.playTime;
 
         if (nextSequence.transition) {
+
             playTime += nextSequence.transition.time;
-            nextSequence.transition.callback();
-            transitionTimeout = setTimeout(() => {
+            useTimeline().showTransition.value = true;
+            
+            setTimeout(() => {
+                useTimeline().showTransition.value = false;
                 nextSequence.callback();
             }, nextSequence.transition.time);
+
         } else {
             nextSequence.callback();
         }

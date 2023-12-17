@@ -186,7 +186,7 @@ onUnmounted(async () => {
                             class="w-full py-3 font-bold uppercase">
                             <UI.Flex direction="horizontal" items="center" justify="between">
                                 <Locale id="main_menu.release_notes_button" />
-                                <Icons.fa.ScrollIcon width="1em" height="1em" fill="white" />
+                                <Icons.fa.NewsIcon width="1em" height="1em" fill="white" />
                             </UI.Flex>
                         </UI.Button>
 

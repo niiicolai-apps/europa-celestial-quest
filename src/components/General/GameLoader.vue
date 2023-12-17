@@ -9,8 +9,8 @@
                 <Locale id="main_menu.loading" />
             </UI.SubTitle>
 
-            <div class="pulse">
-                <Icons.fa.CrownIcon width="2em" height="2em" fill="#a2aebb" />
+            <div >
+                <Icons.fa.CircleNotchIcon class="spin" width="2em" height="2em" fill="#a2aebb" />
             </div>
         </UI.Flex>
     </UI.Fixed>
@@ -23,21 +23,17 @@ import Locale from './Locale.vue';
 </script>
 
 <style scoped>
-.pulse {
-    animation: pulse .5s infinite;
+.spin {
+    animation: spin .8s infinite;
 }
 
-@keyframes pulse {
+@keyframes spin {
     0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
+        transform: rotate(0deg);
     }
 
     100% {
-        transform: scale(1);
+        transform: rotate(360deg);
     }
 }
 </style>

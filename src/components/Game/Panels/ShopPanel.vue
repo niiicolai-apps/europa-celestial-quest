@@ -27,25 +27,25 @@
                         :key="cost.currency"
                         gap="2" 
                         class="text-xs text-info">
-                        <Icons.fa.TrashIcon 
+                        <Icons.fa.RingIcon 
                             v-if="cost.currency == 'metal'" 
                             :width="iconSize" 
                             :height="iconSize" 
                             :fill="iconFill"
                         />
-                        <Icons.fa.TrashIcon 
+                        <Icons.fa.IciclesIcon 
                             v-if="cost.currency == 'ice'" 
                             :width="iconSize" 
                             :height="iconSize" 
                             :fill="iconFill"
                         />
-                        <Icons.fa.TrashIcon 
+                        <Icons.fa.AtomIcon 
                             v-if="cost.currency == 'hydrogen'" 
                             :width="iconSize" 
                             :height="iconSize" 
                             :fill="iconFill"
                         />
-                        <Icons.fa.TrashIcon 
+                        <Icons.fa.HillRockSlideIcon 
                             v-if="cost.currency == 'rock'" 
                             :width="iconSize" 
                             :height="iconSize" 
@@ -65,30 +65,31 @@ import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
 import Locale from '../../General/Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
-import { useItems } from '../../../managers/constructions.js';
 import { useInspect } from '../../../managers/inspect.js';
 import { usePanel } from '../../../composables/panel.js';
 import { usePlayers } from '../../../managers/player.js';
 import { useToast } from '../../../composables/toast.js';
+import { useItems } from '../../../managers/constructions.js';
 import { computed } from 'vue';
 
 const localizationManager = useLocalization();
 const inspectManager = useInspect();
 const panelManager = usePanel();
-const itemsManager = useItems();
 const playersManager = usePlayers();
 const toastManager = useToast();
+const itemsManager = useItems();
 
 const definitions = computed(() => itemsManager.ConstructionDefinitions);
 const iconSize = "0.8em";
 const iconFill = "#3f88c5";
 
 const click = async (definition) => {
-    
-    if (itemsManager.canAfford(definition.costs)) {
-        const player = playersManager.get('player');
+    const player = playersManager.findYou();
+    const bankController = player.bankController;
+        
+    if (bankController.canAfford(definition.costs)) {
+        
         const construction = await player.spawnConstruction(definition.name);
-        inspectManager.addSelectable(construction);
         inspectManager.setSelected(construction);
         panelManager.clearPanel();
     } else {

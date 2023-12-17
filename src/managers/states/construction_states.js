@@ -63,6 +63,20 @@ class Produce extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
         if (!manager.object.canProduce) throw new Error('Manager Produce feature is required');
+
+        const construction = manager.object.construction
+        const userData = construction.userData
+        const upgrade = userData.upgrades[userData.upgrade.index]
+        const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
+        const currency = produceFeature.options.type
+        
+        const team = manager.object.team
+        const bankManager = useBank();
+
+        this.bank = bankManager.get(team);
+        this.isFull = (this.bank.getBalance(currency) >= this.bank.getMax(currency))
+        this.costs = produceFeature.options.costs
+        this.canAfford = !this.costs ? true : this.bank.canAfford(this.costs)
     }
 
     exit() {
@@ -73,23 +87,21 @@ class Produce extends Base {
         const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
         const currency = produceFeature.options.type
         const amount = produceFeature.options.rate
-        const bankManager = useBank()
-        const isFull = (bankManager.getBalance(currency) >= bankManager.getCurrency(currency).max)
-        const time = Date.now()
-
-        if (!isFull) {
-            const canAfford = bankManager.canAfford(produceFeature.options.costs)
-            if (!canAfford) {
-                manager.target = time + 1000;
+        
+        if (!this.isFull) {
+            if (!this.canAfford) {
+                manager.target = 1000;
                 return;
             }
 
-            for (const cost of produceFeature.options.costs) {
-                bankManager.withdraw(cost.amount, cost.currency)
+            if (this.costs) {
+                for (const cost of this.costs) {
+                    this.bank.withdraw(cost.amount, cost.currency)
+                }
             }
 
-            bankManager.deposit(amount, currency)
-            manager.target = time + produceFeature.options.speed;
+            this.bank.deposit(amount, currency)
+            manager.target = produceFeature.options.speed;
         }
     }
 

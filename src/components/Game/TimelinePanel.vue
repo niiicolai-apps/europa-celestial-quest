@@ -4,6 +4,10 @@
             <Locale id="timeline.skip" />
         </UI.Button>
     </UI.Fixed>
+
+    <Transition name="fade">
+        <UI.Fixed class="bg-black" v-if="showFade" style="z-index: 9999;" />
+    </Transition>    
 </template>
 
 <script setup>
@@ -15,4 +19,5 @@ import { computed } from 'vue';
 const timelineManager = useTimeline();
 const isPlayingTimeline = computed(() => timelineManager.isPlaying());
 const skipTimeline = () => timelineManager.stop();
+const showFade = computed(() => timelineManager.showTransition.value);
 </script>

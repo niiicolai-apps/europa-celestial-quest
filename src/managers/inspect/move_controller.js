@@ -9,14 +9,17 @@ import { useObjectives } from '../objectives.js';
 import { useToast } from '../../composables/toast.js';
 import { getPosition } from '../../composables/helpers/grid_helper.js';
 import { usePlayers } from '../player.js';
+import { useCanvas } from '../../composables/canvas.js';
 import * as THREE from 'three';
 
-const bankManager = useBank();
 const collisionManager = useCollision();
 
-const moveLength = 3;
 const isMoving = ref(false);
 const lastPosition = ref(null);
+
+const placingMaterials = ref({});
+
+const moveLength = 3;
 const worldDown = new THREE.Vector3(0, -1, 0);
 
 const move = (selected, dx, dy, dz) => {
@@ -44,23 +47,64 @@ const move = (selected, dx, dy, dz) => {
     return true;
 }
 
+const setupMovingVisual = (selected, placed = false) => {
+    const transparent = placed ? false : true;
+    const opacity = placed ? 1 : 0.5;
+
+    const setToOriginalMaterial = (child) => {
+        if (child.isMesh) {
+            const data = placingMaterials.value[child.uuid];
+            const original = data.original;
+            const clone = data.clone
+            child.material = original;
+            clone.dispose();
+        }
+    }
+
+    const setToCloneMaterial = (child) => {
+        if (child.isMesh) {
+            const original = child.material;    
+            const clone = original.clone();
+            clone.transparent = transparent;
+            clone.opacity = opacity;
+            child.material = clone;
+            placingMaterials.value[child.uuid] = {clone, original}
+        }
+    }
+
+    selected.value.traverse((child) => {
+        if (child.isMesh) {
+            if (placed) setToOriginalMaterial(child);
+            else setToCloneMaterial(child);
+        }
+    });
+}
+
 const MoveController = {
     start: (selected) => {
         if (isMoving.value) return false;
         if (!selected.value) return false;
 
         isMoving.value = true,
-            lastPosition.value = selected.value.position.clone();
+        lastPosition.value = selected.value.position.clone();
+
+        setupMovingVisual(selected);
+        
         return true;
     },
-    cancel: (selected, scene) => {
+    cancel: (selected) => {
         if (!isMoving.value) return false;
 
         isMoving.value = false;
+        setupMovingVisual(selected, true);
 
         if (selected.value.userData.isOwned) {
             selected.value.position.copy(lastPosition.value);
         } else {
+            const canvas = useCanvas();
+            const adapter = canvas.adapter.value;
+            const scene = adapter.scene;
+
             removeMesh(selected.value);
             scene.remove(selected.value);
             useItems().removeItemFromState(selected.value);
@@ -73,12 +117,17 @@ const MoveController = {
             return false;
         }
 
+        setupMovingVisual(selected, true);
+
         if (!selected.value.userData.isOwned) {
-            const canAfford = useItems().canAfford(selected.value.userData.costs);
+            const team = selected.value.userData.team;
+            const bankManager = useBank();
+            const bank = bankManager.get(team);
+            const canAfford = bank.canAfford(selected.value.userData.costs);
 
             if (canAfford) {
                 for (const cost of selected.value.userData.costs) {
-                    bankManager.withdraw(cost.amount, cost.currency);
+                    bank.withdraw(cost.amount, cost.currency);
                 }
                 selected.value.userData.isOwned = true;
                 useObjectives().tryCompleteIncompletes();
