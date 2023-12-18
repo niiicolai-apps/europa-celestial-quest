@@ -72,6 +72,14 @@ export default {
                 en: 'You cannot afford to move.',
                 da: 'Du har ikke råd til at flytte.',
             },
+            under_attack: {
+                en: 'You cannot move the construction while it is under attack.',
+                da: 'Du kan ikke flytte bygningen mens den er under angreb.',
+            },
+            too_close_to_enemy_building: {
+                en: 'You cannot move the construction so close to an enemy building.',
+                da: 'Du kan ikke flytte bygningen så tæt på en fjendtlig bygning.',
+            },
             success: {
                 en: 'Construction moved.',
                 da: 'Bygning flyttet.',

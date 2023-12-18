@@ -17,7 +17,8 @@ const scene = ref(null)
 const setup = async (player, data) => {
 
     for (const construction of data.constructions) {
-        const mesh = await player.spawnConstruction(construction.name, true)
+        const upgradeIndex = construction.upgradeIndex || 0
+        const mesh = await player.spawnConstruction(construction.name, true, upgradeIndex)
         mesh.position.x = construction.position.x
         mesh.position.y = construction.position.y
         mesh.position.z = construction.position.z

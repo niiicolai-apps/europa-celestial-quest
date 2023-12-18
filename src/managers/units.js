@@ -4,12 +4,10 @@ import { useHealth } from '../composables/health.js';
 import { removeMesh } from '../composables/meshes.js';
 import { useStateMachine } from './state_machine.js'
 import { useHeightMap } from '../composables/height_map.js';
-import { useToast } from '../composables/toast.js';
 import { useGameEnd } from '../composables/game_end.js'
 import { useManager } from './manager.js';
 import { useCanvas } from '../composables/canvas.js';
-import { useParticles } from './particles.js';
-import * as THREE from 'three';
+import { useParticlesPool } from './particles_pool.js';
 import UnitsBehavior from './behaviors/units_behavior.json';
 import UnitStates from './states/unit_states.js';
 
@@ -113,7 +111,7 @@ export const useUnits = () => {
         )
     }
 
-    const add = (object3D, data, team = 'player') => {
+    const add = async (object3D, data, team = 'player') => {
         // Create unit options
         const options = featuresToOptions(data.features);
 
@@ -126,11 +124,17 @@ export const useUnits = () => {
         };
 
         if (options.attack?.muzzleParticle) {
-            unit.muzzleParticle = useParticles().load(`${object3D.uuid}-muzzle`, options.attack.muzzleParticle.name);           
+            const particlesPools = useParticlesPool();
+            if (!particlesPools.findPool(options.attack.muzzleParticle.name)) {
+                await particlesPools.create(options.attack.muzzleParticle.name);
+            }   
         }
 
         if (options.attack?.hitParticle) {
-            unit.hitParticle = useParticles().load(`${object3D.uuid}-hit`, options.attack.hitParticle.name);           
+            const particlesPools = useParticlesPool();
+            if (!particlesPools.findPool(options.attack.hitParticle.name)) {
+                await particlesPools.create(options.attack.hitParticle.name);
+            }   
         }
 
         if (isPaused.value) {
@@ -168,6 +172,28 @@ export const useUnits = () => {
         return units.value.filter(u => u.team === team);
     }
 
+    const findAllNotOnTeam = (team) => {
+        return units.value.filter(u => u.team !== team);
+    }
+
+    const findClosestNotOnTeam = (team, position) => {
+        const notOnTeam = findAllNotOnTeam(team);
+        return findClosest(notOnTeam, position);
+    }
+
+    const findClosest = (units, position) => {
+        let closest = null;
+        let closestDistance = Infinity;
+        for (const unit of units) {
+            const distance = unit.object3D.position.distanceTo(position);
+            if (distance < closestDistance) {
+                closest = unit;
+                closestDistance = distance;
+            }
+        }
+        return { unit: closest, closestDistance };
+    }
+
     const countByName = (name) => {
         return units.value.filter(u => u.data.name === name).length;
     }
@@ -187,6 +213,9 @@ export const useUnits = () => {
         setStateByFunction,
         findByName,
         findAllByTeam,
+        findAllNotOnTeam,
+        findClosestNotOnTeam,
+        findClosest,
         countByName,
         countByNameAndTeam,
         countByTeam

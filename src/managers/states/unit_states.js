@@ -4,6 +4,7 @@ import { useUnits } from "../../managers/units.js";
 import { useBank } from "../../managers/bank.js";
 import { useItems } from "../../managers/constructions.js";
 import { useParticles } from "../particles.js";
+import { useParticlesPool } from "../particles_pool.js";
 import { useHealth } from "../../composables/health.js";
 import { useHeightMap } from "../../composables/height_map.js";
 import { usePlayers } from "../../managers/player.js";
@@ -11,7 +12,7 @@ import { useCommands } from "../../managers/commands.js";
 import * as THREE from 'three';
 
 class Base {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         this.manager = manager;
         this.options = options;
         if (!manager) throw new Error('Manager is required');
@@ -27,7 +28,7 @@ class Base {
 }
 
 class Wait extends Base {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         super(manager, options);
     }
 
@@ -40,7 +41,7 @@ class Wait extends Base {
 }
 
 class Timer extends Base {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         super(manager, options);
 
         const duration = manager.target || 1000;
@@ -53,7 +54,7 @@ class Timer extends Base {
 }
 
 class MoveTo extends Base {
-    constructor(manager, options={}, acceptableDistance=1) {
+    constructor(manager, options = {}, acceptableDistance = 1) {
         super(manager, options);
         this.navigation = useNavigation();
         this.acceptableDistance = acceptableDistance;
@@ -76,9 +77,9 @@ class MoveTo extends Base {
         const groundOffset = unitOptions.move.groundOffset;
 
         this.navigation.addAgent(
-            object3D, 
-            destination, 
-            speed, 
+            object3D,
+            destination,
+            speed,
             groundOffset,
             this.acceptableDistance
         );
@@ -90,18 +91,18 @@ class MoveTo extends Base {
         const unitOptions = unit.options;
         const object3D = unit.object3D;
         const destination = unitOptions.move.destination;
-        const acceptableDistance = this.acceptableDistance; 
+        const acceptableDistance = this.acceptableDistance;
 
         return this.navigation.reachedDestination(
-            object3D, 
-            destination, 
+            object3D,
+            destination,
             acceptableDistance
         );
     }
 }
 
 class MoveToAttack extends MoveTo {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         super(manager, options);
 
         const unit = manager.object;
@@ -118,9 +119,8 @@ class MoveToAttack extends MoveTo {
 
 }
 
-
 class MoveToTarget extends Base {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         super(manager, options);
 
         const unit = manager.object;
@@ -146,15 +146,15 @@ class MoveToTarget extends Base {
 }
 
 class FindClosest extends Base {
-    constructor(manager, options={}) {
-        super(manager, options);       
-        
+    constructor(manager, options = {}) {
+        super(manager, options);
+
         const unit = manager.object;
         const unitOptions = unit.options;
         const collect = unitOptions.collect;
         const scan = unitOptions.scan;
-        const attack = unitOptions.attack;  
-        if (!collect && !scan && !attack) 
+        const attack = unitOptions.attack;
+        if (!collect && !scan && !attack)
             throw new Error('Unit Collect, Scan, or Attack feature is required');
 
         this.map = useHeightMap();
@@ -169,7 +169,7 @@ class FindClosest extends Base {
         const type = this.options.type;
         const position = object3D.position;
         const team = unit.team;
-        
+
         if (type === 'resource') {
             const resourceManager = useResources();
             const collect = unitOptions.collect;
@@ -185,7 +185,7 @@ class FindClosest extends Base {
                 : scan.deliver_construction;
 
             this.target = itemsManager.findClosestByNameAndTeam(
-                position, 
+                position,
                 constructionName,
                 team
             );
@@ -199,7 +199,7 @@ class FindClosest extends Base {
                 unitsManager.setStateByFunction('warrior', 'regroup', team);
                 return;
             }
-            
+
             this.target = closestObject;
         }
     }
@@ -228,7 +228,7 @@ class FindClosest extends Base {
         else if (attack) {
             manager.target = this.target;
         }
-        
+
         move.destination = targetPosition;
     }
 
@@ -238,7 +238,7 @@ class FindClosest extends Base {
 }
 
 class FindRandom extends Base {
-    constructor(manager, options={}) {
+    constructor(manager, options = {}) {
         super(manager, options);
 
         const unit = manager.object;
@@ -285,7 +285,7 @@ class FindRandom extends Base {
             scan.target = this.target;
             manager.target = scan.speed;
         }
-        
+
         move.destination = targetPosition;
     }
 
@@ -303,7 +303,7 @@ class Collect extends Timer {
         const collect = unitOptions.collect;
         const scan = unitOptions.scan;
         if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-        
+
         const bankManager = useBank();
         this.bank = bankManager.get(unit.team);
         this.costs = collect ? collect.costs : scan.costs;
@@ -365,7 +365,7 @@ class Regroup extends Base {
         const players = usePlayers();
         const player = players.get(team);
         const command = useCommands().createOrFindCommand(team);
-        
+
         if (!move) throw new Error('Unit Move feature is required');
         if (!command) throw new Error('Unit Command is required');
 
@@ -377,7 +377,46 @@ class Regroup extends Base {
     }
 }
 
-const hidden = new THREE.Vector3(-1000, -1000, -1000);
+class DefendPosition extends Base {
+    constructor(manager, options = {}) {
+        super(manager, options);
+
+        const unit = manager.object;
+        const unitOptions = unit.options;
+        const attack = unitOptions.attack;
+        if (!attack) throw new Error('Unit Attack feature is required');
+        this.attackDistance = attack.distance;
+    }
+
+    exit() {
+        /**
+         * Check if there are any enemies nearby.
+         */
+        const healthManager = useHealth();
+        const manager = this.manager;
+        const unit = manager.object;
+        const team = unit.team;
+        const position = unit.object3D.position;
+        const closestResult = healthManager.findClosestNotOnTeam(team, position);
+        const closestObject = closestResult?.healthObject?.object3D;
+        const closestDistance = closestResult?.closestDistance;
+        const shouldAttack = closestObject && closestDistance < this.attackDistance;
+        /**
+         * Set the state to attack if there are enemies nearby.
+         * And set the target to the closest enemy.
+         * Otherwise, do nothing.
+         */
+        if (shouldAttack) {
+            manager.state = manager.behavior.states.find(s => s.name === 'attack');
+            manager.target = closestObject;
+        }
+    }
+
+    isComplete() {
+        return true;
+    }
+}
+
 class Attack extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
@@ -394,21 +433,35 @@ class Attack extends Base {
         this.damage = attack.damage;
         this.nextAttack = Date.now();
         this.healthManager = useHealth();
-        this.playMuzzleParticle = () => {
-            if (!attack.muzzleParticle) return;
-            useParticles().play(`${unit.object3D.uuid}-muzzle`, null, null, unit.object3D, target, attack.muzzleParticle.force);
+
+        const particlesPool = useParticlesPool();
+        this.muzzleParticle = particlesPool.get(attack.muzzleParticle.name);
+        this.hitParticle = particlesPool.get(attack.hitParticle.name);
+
+        this.playParticles = () => {
+            const particlesManager = useParticles();
+            const position = null
+            const direction = null
+            particlesManager.play(
+                this.muzzleParticle.id,
+                position,
+                direction,
+                unit.object3D,
+                target,
+                attack.muzzleParticle.force
+            );
+            particlesManager.play(
+                this.hitParticle.id,
+                position,
+                direction,
+                target
+            );
         }
-        this.stopMuzzleParticle = () => {
-            if (!attack.muzzleParticle) return;
-            useParticles().setPosition(`${unit.object3D.uuid}-muzzle`, hidden);
-        }
-        this.playHitParticle = (target) => {
-            if (!attack.hitParticle) return;
-            useParticles().play(`${unit.object3D.uuid}-hit`, null, null, target);
-        }
-        this.stopHitParticle = () => {
-            if (!attack.hitParticle) return;
-            useParticles().setPosition(`${unit.object3D.uuid}-hit`, hidden);
+
+        this.stopParticles = () => {
+            const particlesManager = useParticles();
+            particlesManager.stop(this.muzzleParticle.id);
+            particlesManager.stop(this.hitParticle.id);
         }
     }
 
@@ -426,22 +479,21 @@ class Attack extends Base {
         const team = unit.team;
         const damage = this.damage;
         const distance = object3D.position.distanceTo(target.position);
-        
+
         if (distance < this.distance) {
-            //this.playMuzzleParticle();
-            //this.playHitParticle(target);
+            this.playParticles();
             this.resetAttack();
             this.healthManager.applyDamage(
-                target, 
-                damage, 
-                object3D, 
+                target,
+                damage,
+                object3D,
                 team
             );
-            
-            const targetIsDead = this.healthManager.isDead(target);
-            if (targetIsDead) {
-                manager.target = null;
-            }
+        }
+
+        const targetIsDead = this.healthManager.isDead(target);
+        if (targetIsDead) {
+            manager.target = null;
         }
     }
 
@@ -452,8 +504,7 @@ class Attack extends Base {
     }
 
     exit() {
-        //this.stopMuzzleParticle();
-        //this.stopHitParticle();
+        this.stopParticles();
     }
 
     isComplete() {
@@ -477,6 +528,7 @@ export default {
     DELIVER: Deliver,
     WAIT: Wait,
     REGROUP: Regroup,
+    DEFEND_POSITION: DefendPosition,
     ATTACK: Attack,
     MOVE_TO_TARGET: MoveToTarget,
     MOVE_TO_ATTACK: MoveToAttack

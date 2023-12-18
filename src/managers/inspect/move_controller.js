@@ -10,6 +10,7 @@ import { useToast } from '../../composables/toast.js';
 import { getPosition } from '../../composables/helpers/grid_helper.js';
 import { usePlayers } from '../player.js';
 import { useCanvas } from '../../composables/canvas.js';
+import { useHealth } from '../../composables/health.js';
 import * as THREE from 'three';
 
 const collisionManager = useCollision();
@@ -19,6 +20,8 @@ const lastPosition = ref(null);
 
 const placingMaterials = ref({});
 
+const acceptablePlacementDistance = 20;
+const hitCooldown = 5000;
 const moveLength = 3;
 const worldDown = new THREE.Vector3(0, -1, 0);
 
@@ -84,6 +87,7 @@ const MoveController = {
     start: (selected) => {
         if (isMoving.value) return false;
         if (!selected.value) return false;
+        if (!MoveController.isMoveable(selected)) return false;
 
         isMoving.value = true,
         lastPosition.value = selected.value.position.clone();
@@ -119,8 +123,19 @@ const MoveController = {
 
         setupMovingVisual(selected, true);
 
+        /**
+         * Check if the selected item is too close to an enemy building.
+         */
+        const constructions = useItems();
+        const team = selected.value.userData.team;
+        const closestNonTeamConstruction = constructions.findClosestNotOnTeam(selected.value.position, team);
+        if (closestNonTeamConstruction && closestNonTeamConstruction.position.distanceTo(selected.value.position) < acceptablePlacementDistance) {
+            useToast().add('toasts.move_controller.too_close_to_enemy_building', 4000, 'danger');
+            return false;
+        }
+
         if (!selected.value.userData.isOwned) {
-            const team = selected.value.userData.team;
+            
             const bankManager = useBank();
             const bank = bankManager.get(team);
             const canAfford = bank.canAfford(selected.value.userData.costs);
@@ -188,6 +203,27 @@ const MoveController = {
 
         selected.value.position.copy(point);
         MarkerController.onSelect(selected.value);
+        return true;
+    },
+    isMoveable: (selected) => {
+        if (!selected.value) return false;
+
+        /**
+         * Do not allow moving within 5 seconds after being hit.
+         */
+        const userData = selected.value.userData;
+        const upgrade = userData.upgrades[userData.upgrade.index];
+        const features = upgrade.features;
+        const healthFeature = features.find(f => f.name === 'health');
+        if (healthFeature) {
+            
+            const isUnderAttack = useHealth().isHittedWithin(selected.value, hitCooldown);
+            if (isUnderAttack) {
+                useToast().add('toasts.move_controller.under_attack', 4000, 'danger');
+                return false;
+            }
+        }
+
         return true;
     },
     isMoving

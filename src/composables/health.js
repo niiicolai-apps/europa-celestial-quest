@@ -52,7 +52,16 @@ export const useHealth = () => {
         }
 
         const healthBar = createHealthBar(object3D, _healthBarYOffset);
-        healthObjects.value.push({ object3D, healthBar, team, current, max, onDie, onDamage });
+        healthObjects.value.push({ 
+            lastHit: null,
+            object3D, 
+            healthBar, 
+            team, 
+            current, 
+            max, 
+            onDie, 
+            onDamage,
+        });
     }
 
     const removeHealthObject = (object3D) => {
@@ -79,6 +88,8 @@ export const useHealth = () => {
             healthObject.current, 
             healthObject.max
         );
+
+        healthObject.lastHit = Date.now();
     }
 
     const isDead = (object3D) => {
@@ -101,6 +112,13 @@ export const useHealth = () => {
         healthBarMaterial.value?.dispose();
         healthBarGeometry.value = null;
         healthBarMaterial.value = null;
+    }
+
+    const isHittedWithin = (object3D, time) => {
+        const healthObject = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
+        if (!healthObject) return false;
+
+        return healthObject.lastHit !== null && Date.now() - healthObject.lastHit <= time;
     }
 
     const findAllByTeam = (team, isDead=false) => {
@@ -138,6 +156,7 @@ export const useHealth = () => {
         reset,
         findAllByTeam,
         findAllNotOnTeam,
-        findClosestNotOnTeam
+        findClosestNotOnTeam,
+        isHittedWithin
     }
 }

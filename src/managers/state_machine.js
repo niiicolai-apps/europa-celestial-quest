@@ -28,10 +28,14 @@ const update = () => {
     if (paused.value) return;
     for (const manager of managers.value) {
 
+        /**
+         * Note:
+         * If a manager is not in a state, then it will be set to the first state.
+         * If a manager does not have an action, then it will be set to the first action.
+         */
         if (!manager.state) {
             manager.state = manager.behavior.states[0];
         }
-
         if (!manager.action) {
             setAction(manager, 0);
         }

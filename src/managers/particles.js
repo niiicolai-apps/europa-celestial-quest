@@ -108,12 +108,14 @@ export const useParticles = () => {
         const nebulaSystem = await System.fromJSONAsync(json, THREE);
         const nebulaRenderer = new SpriteRenderer(scene.value, THREE);
         const nebula = nebulaSystem.addRenderer(nebulaRenderer);
-
-        particles.value.push({
+        const particle = {
             id,
             type,
             nebula
-        });
+        };
+        particles.value.push(particle);
+
+        return particle;
     }
 
     const unload = (id) => {
@@ -176,6 +178,7 @@ export const useParticles = () => {
         const index = activeParticles.value.findIndex(p => p.particle.id === id);
         if (index !== -1) {
             activeParticles.value.splice(index, 1);
+            
         }
     }
 

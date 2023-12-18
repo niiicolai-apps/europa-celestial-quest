@@ -2,16 +2,22 @@
 const PARTICLES = {
     MACHINE_GUN_MUZZLE: {
         name: 'machine_gun_muzzle',
-        force: {x: 100, y: 100, z: 100},
+        force: { x: 100, y: 100, z: 100 },
     },
     MACHINE_GUN_HIT: {
         name: 'machine_gun_hit',
-        force: {x: 0, y: 0, z: 0},
+        force: { x: 0, y: 0, z: 0 },
     },
 }
 
 const FEATURES = {
-    MISSILE_ATTACK: (distance = 45, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_HIT) => {
+    MISSILE_ATTACK: (
+        distance = 45,
+        rate = 1000,
+        damage = 1,
+        muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
+        hitParticle = PARTICLES.MACHINE_GUN_HIT
+    ) => {
         return {
             name: 'attack',
             options: {
@@ -25,7 +31,13 @@ const FEATURES = {
             }
         }
     },
-    MACHINE_GUN_ATTACK: (distance = 25, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_HIT) => {
+    MACHINE_GUN_ATTACK: (
+        distance = 25,
+        rate = 1000,
+        damage = 1,
+        muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
+        hitParticle = PARTICLES.MACHINE_GUN_HIT
+    ) => {
         return {
             name: 'attack',
             options: {
@@ -39,7 +51,13 @@ const FEATURES = {
             }
         }
     },
-    LASER_ATTACK: (distance = 25, rate = 1000, damage = 1, muzzleParticle=PARTICLES.MACHINE_GUN_MUZZLE, hitParticle=PARTICLES.MACHINE_GUN_MUZZLE) => {
+    LASER_ATTACK: (
+        distance = 25,
+        rate = 1000,
+        damage = 1,
+        muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
+        hitParticle = PARTICLES.MACHINE_GUN_MUZZLE
+    ) => {
         return {
             name: 'attack',
             options: {
@@ -53,7 +71,11 @@ const FEATURES = {
             }
         }
     },
-    MOVE: (speed = 1.1, type = 'walk', groundOffset = 1) => {
+    MOVE: (
+        speed = 1.1,
+        type = 'walk',
+        groundOffset = 1
+    ) => {
         return {
             name: 'move',
             options: {
@@ -69,12 +91,17 @@ const FEATURES = {
             name: 'health',
             options: {
                 current: maxHealth,
-                maxHealth,
-                onDie: () => { },
+                maxHealth
             }
         }
     },
-    COLLECT: (type = 'rock', costs=[{ currency: "power", amount: 1 }], max = 1, speed = 5000, deliver_construction = 'Hydrogen Fuel Tank') => {
+    COLLECT: (
+        type = 'rock',
+        costs = [{ currency: "power", amount: 1 }],
+        max = 1,
+        speed = 5000,
+        deliver_construction = 'Hydrogen Fuel Tank'
+    ) => {
         return {
             name: 'collect',
             options: {
@@ -88,7 +115,10 @@ const FEATURES = {
             }
         }
     },
-    STORAGE: (type = 'rock', max = 100) => {
+    STORAGE: (
+        type = 'rock',
+        max = 100
+    ) => {
         return {
             name: 'storage',
             options: {
@@ -97,7 +127,12 @@ const FEATURES = {
             }
         }
     },
-    PRODUCE: (type = 'hydrogen', costs=[], rate = 1, speed = 5000) => {
+    PRODUCE: (
+        type = 'hydrogen',
+        costs = [],
+        rate = 1,
+        speed = 5000
+    ) => {
         return {
             name: 'produce',
             options: {
@@ -109,7 +144,13 @@ const FEATURES = {
             }
         }
     },
-    SCAN: (type = 'research', costs=[{ currency: "power", amount: 1 }], rate = 0.1, speed = 5000, deliver_construction = 'Europa Horizon Drifter X1') => {
+    SCAN: (
+        type = 'research',
+        costs = [{ currency: "power", amount: 1 }],
+        rate = 0.1,
+        speed = 5000,
+        deliver_construction = 'Europa Horizon Drifter X1'
+    ) => {
         return {
             name: 'scan',
             options: {
@@ -120,6 +161,18 @@ const FEATURES = {
                 speed,
                 costs,
                 deliver_construction
+            }
+        }
+    },
+    LOOK_AT: (
+        rotateable_child_names = [],
+        rotate_speed = 0.1
+    ) => {
+        return {
+            name: 'look_at',
+            options: {
+                rotateable_child_names,
+                rotate_speed
             }
         }
     },

@@ -48,7 +48,7 @@ useManager().create('ground', {
             groundMesh.position.set(position.x, position.y, position.z);
             groundMesh.rotation.set(rotation.x, rotation.y, rotation.z);
             groundMesh.scale.set(scale.x, scale.y, scale.z);
-            scene.add(groundMesh);
+            //scene.add(groundMesh);
 
             camera = adapter.camera;
             domElement = renderer.domElement;

@@ -67,6 +67,7 @@ const moveCtrl = {
     rotateRight: () => {
         MoveController.rotateRight(selected);
     },
+    isMoveable: () => MoveController.isMoveable(selected),
     isMoving: MoveController.isMoving
 }
 

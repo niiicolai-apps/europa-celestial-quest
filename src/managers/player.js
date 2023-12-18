@@ -38,7 +38,7 @@ const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10
         }
 
         scene.value.add(mesh)
-        units.add(mesh, unitData, team)
+        await units.add(mesh, unitData, team)
         mesh.name = unitData.name
 
         return mesh
@@ -111,7 +111,7 @@ const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10
                     y: radToDeg(construction.rotation.y), 
                     z: radToDeg(construction.rotation.z)
                 },
-                userData: construction.userData,
+                upgradeIndex: construction.userData.upgrade.index,
                 uuid: construction.uuid
             })
         }

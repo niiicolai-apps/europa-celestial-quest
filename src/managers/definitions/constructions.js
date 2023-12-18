@@ -333,6 +333,7 @@ const CONSTRUCTIONS = [
                 features: [
                     FEATURES.MACHINE_GUN_ATTACK(),
                     FEATURES.HEALTH(),
+                    FEATURES.LOOK_AT(['Stand', 'Stand_001', 'Stand_002'], 1),
                 ],
             },
             {
@@ -349,6 +350,7 @@ const CONSTRUCTIONS = [
                 features: [
                     FEATURES.MACHINE_GUN_ATTACK(),
                     FEATURES.HEALTH(),
+                    FEATURES.LOOK_AT(['Stand', 'Stand_001', 'Stand_002'], 1),
                 ],
             },
             {
@@ -365,6 +367,7 @@ const CONSTRUCTIONS = [
                 features: [
                     FEATURES.MACHINE_GUN_ATTACK(),
                     FEATURES.HEALTH(),
+                    FEATURES.LOOK_AT(['Stand', 'Stand_001', 'Stand_002'], 1),
                 ],
             },
         ],

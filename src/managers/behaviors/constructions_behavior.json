@@ -30,20 +30,20 @@
     "tower": {
         "states": [
             {
-                "name": "idle",
-                "actions": [
-                    {
-                        "method": "wait",
-                        "options": {
-                        }
-                    }
-                ]
-            },
-            {
                 "name": "defend",
                 "actions": [
                     {
+                        "method": "look_for_enemy",
+                        "options": {
+                        }
+                    },
+                    {
                         "method": "attack",
+                        "options": {
+                        }
+                    },
+                    {
+                        "method": "timer",
                         "options": {
                         }
                     }

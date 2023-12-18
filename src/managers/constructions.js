@@ -12,6 +12,7 @@ import { getMesh, removeMesh } from '../composables/meshes.js'
 import { useGameEnd } from '../composables/game_end.js'
 import { useManager } from './manager.js'
 import { useCanvas } from '../composables/canvas.js';
+import { useParticlesPool } from './particles_pool.js'
 import { ref } from 'vue'
 
 const items = ref([])
@@ -175,6 +176,20 @@ export const useItems = () => {
         
         const healthBarYOffset = itemDefinition.healthBarYOffset || 0
         addHealthBar(item, healthFeature, team, healthBarYOffset)
+        console.log(attackFeature)
+        if (attackFeature && attackFeature.options.muzzleParticle) {
+            const particlesPools = useParticlesPool();
+            if (!particlesPools.findPool(attackFeature.options.muzzleParticle.name)) {
+                await particlesPools.create(attackFeature.options.muzzleParticle.name);
+            }   
+        }
+
+        if (attackFeature && attackFeature.options.hitParticle) {
+            const particlesPools = useParticlesPool();
+            if (!particlesPools.findPool(attackFeature.options.hitParticle.name)) {
+                await particlesPools.create(attackFeature.options.hitParticle.name);
+            }   
+        }
 
         const stateMachine = useStateMachine()
         const behavior = ConstructionBehaviors[itemDefinition.primary_function]
@@ -189,7 +204,6 @@ export const useItems = () => {
     const dequeueAny = (item) => {
         UnitController.dequeueAny(item, scene.value)
     }
-
 
     const findClosestItem = (position, name) => {
         let closest = null
@@ -211,6 +225,20 @@ export const useItems = () => {
         for (const item of items.value) {
             if (item.name !== name) continue
             if (item.userData.team !== team) continue
+            const distance = item.position.distanceTo(position)
+            if (distance < closestDistance) {
+                closest = item
+                closestDistance = distance
+            }
+        }
+        return closest
+    }
+
+    const findClosestNotOnTeam = (position, team) => {
+        let closest = null
+        let closestDistance = Infinity
+        for (const item of items.value) {
+            if (item.userData.team === team) continue
             const distance = item.position.distanceTo(position)
             if (distance < closestDistance) {
                 closest = item
@@ -244,6 +272,12 @@ export const useItems = () => {
         })
     }
 
+    const findAllNotOnTeam = (team) => {
+        return items.value.filter(item => {
+            return item.userData.team !== team
+        })
+    }
+
     const countByNameAndTeam = (name, team) => {
         return items.value.filter(item => {
             return item.name === name && item.userData.team === team
@@ -270,6 +304,8 @@ export const useItems = () => {
         recalculateStorage,
         findAllByNameAndTeam,
         findAllByTeam,
+        findAllNotOnTeam,
+        findClosestNotOnTeam,
         findClosestItem,
         findClosestByNameAndTeam,
         findByNameAndTeam,

@@ -1,6 +1,10 @@
 import { useBank } from "../../managers/bank.js";
 import { useItems } from "../../managers/constructions.js";
+import { useUnits } from "../../managers/units.js";
 import { useHealth } from "../../composables/health.js";
+import { useParticles } from "../../managers/particles.js";
+import { useParticlesPool } from "../particles_pool.js";
+import * as THREE from 'three';
 
 class Base {
     constructor(manager, options = {}) {
@@ -69,7 +73,7 @@ class Produce extends Base {
         const upgrade = userData.upgrades[userData.upgrade.index]
         const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
         const currency = produceFeature.options.type
-        
+
         const team = manager.object.team
         const bankManager = useBank();
 
@@ -87,7 +91,7 @@ class Produce extends Base {
         const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
         const currency = produceFeature.options.type
         const amount = produceFeature.options.rate
-        
+
         if (!this.isFull) {
             if (!this.canAfford) {
                 manager.target = 1000;
@@ -110,11 +114,119 @@ class Produce extends Base {
     }
 }
 
+class LookForEnemy extends Base {
+    constructor(manager, options = {}) {
+        super(manager, options);
+        if (!manager.object.canAttack) throw new Error('Manager Attack feature is required');
+    }
+
+    update() {
+    }
+
+    exit() {
+        const manager = this.manager;
+        const team = manager.object.team;
+        const construction = manager.object.construction;
+        const upgrades = construction.userData.upgrades[construction.userData.upgrade.index];
+        const attackFeature = upgrades.features.find(feature => feature.name === 'attack');
+
+        /**
+         * If the attack feature already has a target, do nothing.
+         */
+        if (attackFeature.options.target) return;
+
+        /**
+         * Find the closest non-team construction and unit.
+         */
+        const closestNonTeamConstruction = useItems().findClosestNotOnTeam(construction.position, team)
+        const closestNonTeamUnit = useUnits().findClosestNotOnTeam(team, construction.position).unit?.object3D
+        let target = null;
+        /**
+         * If both a construction and unit are found,
+         * choose the closest one.
+         */
+        if (closestNonTeamConstruction && closestNonTeamUnit) {
+            const constructionDistance = construction.position.distanceTo(closestNonTeamConstruction.position)
+            const unitDistance = construction.position.distanceTo(closestNonTeamUnit.position)
+            target = constructionDistance < unitDistance
+                ? closestNonTeamConstruction
+                : closestNonTeamUnit
+
+            /**
+             * If only a construction is found, choose it.
+             * If only a unit is found, choose it.
+             * If neither are found, do nothing.
+             */
+        } else if (closestNonTeamConstruction) {
+            target = closestNonTeamConstruction
+        } else if (closestNonTeamUnit) {
+            target = closestNonTeamUnit
+        }
+
+        /**
+         * If a target is found, set it as the attack target.
+         * Otherwise, do nothing.
+         */
+        if (target) {
+            const userData = construction.userData;
+            const upgrades = userData.upgrades[userData.upgrade.index];
+            const attackFeature = upgrades.features.find(feature => feature.name === 'attack');
+            const distance = construction.position.distanceTo(target.position);
+            const attackDistance = attackFeature.options.distance;
+            /**
+             * Only set the target if it is within the attack distance.
+             */
+            if (distance <= attackDistance)
+                attackFeature.options.target = target;
+        }
+    }
+
+    isComplete() {
+        return true;
+    }
+}
+
 class Attack extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
-        if (!manager.canAttack) throw new Error('Manager Attack feature is required');
+        if (!manager.object.canAttack) throw new Error('Manager Attack feature is required');
         this.healthManager = useHealth();
+
+        const construction = manager.object.construction;
+        const userData = construction.userData;
+        const upgrades = userData.upgrades[userData.upgrade.index];
+        const attackFeature = upgrades.features.find(feature => feature.name === 'attack');
+        const attackOptions = attackFeature.options;
+        const target = attackOptions.target;
+        const particlesPool = useParticlesPool();
+        this.muzzleParticle = particlesPool.get(attackOptions.muzzleParticle.name);
+        this.hitParticle = particlesPool.get(attackOptions.hitParticle.name);
+
+        this.playParticles = () => {
+            const particlesManager = useParticles();
+            const position = null
+            const direction = null
+            particlesManager.play(
+                this.muzzleParticle.id, 
+                position, 
+                direction, 
+                construction, 
+                target, 
+                attackOptions.muzzleParticle.force
+            );
+            particlesManager.play(
+                this.hitParticle.id, 
+                position, 
+                direction, 
+                target 
+            );
+        }
+
+        this.stopParticles = () => {
+            const particlesManager = useParticles();
+            particlesManager.stop(this.muzzleParticle.id);
+            particlesManager.stop(this.hitParticle.id);
+        }
     }
 
     findClosestObject(objects, position) {
@@ -136,25 +248,10 @@ class Attack extends Base {
         const position = construction.position;
         const userData = construction.userData;
         const healthManager = this.healthManager;
-        const team = manager.team;
-
-        const upgrade = userData.upgrades[userData.upgrade.index];
-        const attackFeature = upgrade.features.find(feature => feature.name === 'attack');
-
-        let target = attackFeature.options.target;
-        if (!target) {
-
-            const healthObjects = healthManager
-                .findAllNotOnTeam(team)
-                .map(h => h.object3D);
-
-            if (healthObjects.length === 0) {
-                return;
-            }
-
-            target = this.findClosestObject(healthObjects, position).object;
-            attackFeature.options.target = target;
-        }
+        const team = manager.object.team;
+        const upgrades = userData.upgrades[userData.upgrade.index];
+        const attackFeature = upgrades.features.find(feature => feature.name === 'attack');
+        const target = attackFeature.options.target;
 
         if (!target) return;
 
@@ -163,9 +260,41 @@ class Attack extends Base {
         const attackDamage = attackFeature.options.damage;
 
         if (distance <= attackDistance) {
+            /**
+             * Look at target.
+             */
+            const lookAtFeature = upgrades.features.find(feature => feature.name === 'look_at');
+            if (lookAtFeature) {
+                const rotateable_child_names = lookAtFeature.options.rotateable_child_names;
+                construction.traverse(child => {
+                    if (child.isMesh && rotateable_child_names.includes(child.name)) {
+                        /**
+                         * Look at target on y axis.
+                         */
+                        child.lookAt(target.position);
+                        child.rotateY(Math.PI);
+                    }
+                });
+            }
+
+            /**
+             * Attack target.
+             */
             healthManager.applyDamage(target, attackDamage, construction, team);
+
+            /**
+             * Play particles.
+             */
+            this.playParticles();
+
+            /**
+             * If the target is dead, remove it from the attack feature.
+             * Otherwise, do nothing.
+             */
             const isDead = healthManager.isDead(target);
             if (isDead) attackFeature.options.target = null;
+        } else {
+            attackFeature.options.target = null;
         }
     }
 
@@ -176,9 +305,9 @@ class Attack extends Base {
         const upgrade = userData.upgrades[userData.upgrade.index];
         const attackFeature = upgrade.features.find(feature => feature.name === 'attack');
         const attackRate = attackFeature.options.rate;
-        const time = Date.now()
 
-        manager.target = time + attackRate;
+        manager.target = attackRate;
+        this.stopParticles();
     }
 
     isComplete() {
@@ -191,5 +320,6 @@ export default {
     TIMER: Timer,
     TRY_SPAWN: TrySpawn,
     PRODUCE: Produce,
+    LOOK_FOR_ENEMY: LookForEnemy,
     ATTACK: Attack,
 }
