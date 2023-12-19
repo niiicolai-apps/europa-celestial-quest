@@ -38,7 +38,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import { computed } from 'vue';
-import { useStats } from '../../../managers/stats.js';
+import { useStats } from '../../../game/stats/stats.js';
 import { useLocalization } from '../../../composables/localization.js';
 
 const iconSize = "1em";

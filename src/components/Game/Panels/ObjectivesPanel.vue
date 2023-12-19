@@ -23,7 +23,7 @@ import Panel from '../../UI/Panel.vue';
 import Locale from '../../General/Locale.vue';
 import ObjectiveCard from './ObjectiveCard.vue';
 import { computed } from 'vue';
-import { useObjectives } from '../../../managers/objectives.js';
+import { useObjectives } from '../../../game/objectives/objectives.js';
 import { useLocalization } from '../../../composables/localization.js';
 
 const iconSize = "2em";

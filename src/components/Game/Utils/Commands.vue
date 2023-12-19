@@ -20,7 +20,7 @@
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import { useLocalization } from '../../../composables/localization.js';
-import { useCommands } from '../../../managers/commands.js';
+import { useCommands } from '../../../game/units/commands.js';
 import { computed } from 'vue';
 
 const localizationManager = useLocalization();

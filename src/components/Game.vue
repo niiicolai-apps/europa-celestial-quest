@@ -45,7 +45,7 @@ import Canvas from './UI/Canvas.vue';
 import MapLoader from './General/MapLoader.vue';
 
 import { useTimeline } from '../composables/timeline.js';
-import { useGameManager } from '../managers/game_manager.js';
+import { useGameManager } from '../game/managers/game_manager.js';
 import { ref, computed, onMounted, onUnmounted, defineEmits } from 'vue';
 
 const emits = defineEmits(['endGame']);

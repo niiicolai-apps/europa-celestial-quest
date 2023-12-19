@@ -224,7 +224,7 @@ import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Locale from '../General/Locale.vue';
 import { ref, computed, watch } from 'vue';
-import { useInspect } from '../../managers/inspect.js';
+import { useInspect } from '../../game/inspect/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
 
 const iconSize = "1.5em";

@@ -34,10 +34,10 @@ import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
 import Commands from './Utils/Commands.vue';
 import { computed } from 'vue';
-import { useInspect } from '../../managers/inspect.js';
+import { useInspect } from '../../game/inspect/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
 import { usePanel } from '../../composables/panel.js';
-import { useCommands } from '../../managers/commands.js';
+import { useCommands } from '../../game/units/commands.js';
 
 const panelManager = usePanel();
 const localizationManager = useLocalization();

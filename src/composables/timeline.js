@@ -1,9 +1,9 @@
-import PersistentData from './persistent_data.js'
-import { TimelineFromJson } from './timelines/timeline.js'
+import PersistentData from '../game/persistent_data/persistent_data.js'
+import { TimelineFromJson } from '../game/timelines/timeline.js'
 import { useAudio } from './audio.js'
 import { useSubTitle } from './sub_title.js'
 import { useCanvas } from './canvas.js'
-import { useMap } from '../managers/map.js'
+import { useMap } from '../game/map/map.js'
 import { ref } from 'vue'
 
 const camera = ref(null)

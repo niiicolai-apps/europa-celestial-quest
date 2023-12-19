@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import Camera from '../managers/camera.js';
+import Camera from '../game/camera/camera.js';
 import * as THREE from 'three';
 
 const adapter = ref(null);

@@ -65,11 +65,11 @@ import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
 import Locale from '../../General/Locale.vue';
 import { useLocalization } from '../../../composables/localization.js';
-import { useInspect } from '../../../managers/inspect.js';
+import { useInspect } from '../../../game/inspect/inspect.js';
 import { usePanel } from '../../../composables/panel.js';
-import { usePlayers } from '../../../managers/player.js';
+import { usePlayers } from '../../../game/players/player.js';
 import { useToast } from '../../../composables/toast.js';
-import { useItems } from '../../../managers/constructions.js';
+import { useItems } from '../../../game/constructions/constructions.js';
 import { computed } from 'vue';
 
 const localizationManager = useLocalization();

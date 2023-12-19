@@ -52,8 +52,8 @@ import UI from 'frontend-ui';
 import Panel from '../UI/Panel.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useLocalization } from '../../composables/localization.js';
-import PersistentData from '../../composables/persistent_data.js';
-import Camera from '../../managers/camera.js';
+import PersistentData from '../../game/persistent_data/persistent_data.js';
+import Camera from '../../game/camera/camera.js';
 
 const localizationManager = useLocalization();
 
