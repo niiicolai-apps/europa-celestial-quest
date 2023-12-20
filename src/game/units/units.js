@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useGround } from '../map/ground.js';
-import { useHealth } from '../../composables/health.js';
-import { removeMesh } from '../../composables/meshes.js';
+import { useHealth } from '../health/health.js';
+import { removeMesh } from '../models/meshes.js';
 import { useStateMachine } from '../state_machine/state_machine.js'
 import { useHeightMap } from '../navigation/height_map.js';
 import { useGameEnd } from '../managers/game_end.js'

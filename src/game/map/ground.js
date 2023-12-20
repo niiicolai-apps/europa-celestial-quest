@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { ref } from 'vue';
-import { getMesh } from '../../composables/meshes.js';
+import { getMesh } from '../models/meshes.js';
 import { useMap } from './map.js';
 import { useHeightMap } from '../navigation/height_map.js';
 import { useManager } from '../managers/manager.js';

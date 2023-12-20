@@ -5,7 +5,7 @@ import { useBank } from "../../bank/bank.js";
 import { useItems } from "../../constructions/constructions.js";
 import { useParticles } from "../../particles/particles.js";
 import { useParticlesPool } from "../../particles/particles_pool.js";
-import { useHealth } from "../../../composables/health.js";
+import { useHealth } from "../../health/health.js";
 import { useHeightMap } from "../../navigation/height_map.js";
 import { usePlayers } from "../../players/player.js";
 import { useCommands } from "../../units/commands.js";

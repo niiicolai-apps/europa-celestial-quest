@@ -1,7 +1,7 @@
 import { useBank } from "../../bank/bank.js";
 import { useItems } from "../../constructions/constructions.js";
 import { useUnits } from "../../units/units.js";
-import { useHealth } from "../../../composables/health.js";
+import { useHealth } from "../../health/health.js";
 import { useParticles } from "../../particles/particles.js";
 import { useParticlesPool } from "../../particles/particles_pool.js";
 

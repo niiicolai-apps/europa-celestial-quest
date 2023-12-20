@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { getMesh } from '../../composables/meshes.js'
+import { getMesh } from '../models/meshes.js'
 import { useItems } from '../constructions/constructions.js'
 import { useUnits } from '../units/units.js'
 import { useStateMachine } from '../state_machine/state_machine.js'

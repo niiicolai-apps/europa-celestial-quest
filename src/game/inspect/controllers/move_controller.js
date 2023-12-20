@@ -1,16 +1,16 @@
 import MarkerController from './marker_controller.js';
 import { ref } from 'vue';
-import { useCollision } from '../../../composables/collision.js';
+import { useCollision } from '../../collision/collision.js';
 import { useBank } from '../../bank/bank.js';
 import { useItems } from '../../constructions/constructions.js';
 import { useGround } from '../../map/ground.js';
-import { removeMesh } from '../../../composables/meshes.js';
+import { removeMesh } from '../../models/meshes.js';
 import { useObjectives } from '../../objectives/objectives.js';
 import { useToast } from '../../../composables/toast.js';
 import { getPosition } from '../../../composables/helpers/grid_helper.js';
 import { usePlayers } from '../../players/player.js';
 import { useCanvas } from '../../../composables/canvas.js';
-import { useHealth } from '../../../composables/health.js';
+import { useHealth } from '../../health/health.js';
 import * as THREE from 'three';
 
 const collisionManager = useCollision();

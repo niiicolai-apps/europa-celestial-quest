@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import utils from "./utils.js";
-import { getMesh, removeMesh } from "../../composables/meshes.js";
+import { getMesh, removeMesh } from "../models/meshes.js";
 import { useTimeline } from "../../composables/timeline.js";
 import System, { SpriteRenderer } from 'https://cdn.jsdelivr.net/npm/three-nebula@10.0.3/+esm'
 

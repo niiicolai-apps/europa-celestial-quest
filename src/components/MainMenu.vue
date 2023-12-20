@@ -10,8 +10,8 @@ import GameLoader from './General/GameLoader.vue';
 import Audio from './UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
 import { useAudio } from '../composables/audio.js';
-import { getMesh, removeMesh } from '../composables/meshes.js';
-import { getTexturePack, removeTexturePack } from '../composables/textures.js';
+import { getMesh, removeMesh } from '../game/models/meshes.js';
+import { getTexturePack, removeTexturePack } from '../game/models/textures.js';
 import { ref, defineEmits, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
 

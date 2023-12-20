@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useBank } from '../../bank/bank.js';
 import { useItems } from '../../constructions/constructions.js';
-import { removeMesh } from '../../../composables/meshes.js';
+import { removeMesh } from '../../models/meshes.js';
 import { useToast } from '../../../composables/toast.js';
 import { useCanvas } from '../../../composables/canvas.js';
 import { usePlayers } from '../../players/player.js';

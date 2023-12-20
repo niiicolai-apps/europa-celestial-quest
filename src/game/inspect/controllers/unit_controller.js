@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useBank } from '../../bank/bank.js';
 import { useItems } from '../../constructions/constructions.js';
-import { getMesh } from '../../../composables/meshes.js';
+import { getMesh } from '../../models/meshes.js';
 import { useUnits } from '../../units/units.js';
 import { useObjectives } from '../../objectives/objectives.js';
 import { useToast } from '../../../composables/toast.js';

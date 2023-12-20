@@ -1,0 +1,51 @@
+name: Build Docker Image and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and save Docker image
+        run: |
+          docker build -t ${{ secrets.IMAGE_NAME }} .
+          docker save ${{ secrets.IMAGE_NAME }} > "${{ secrets.IMAGE_NAME }}.tar"
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ secrets.IMAGE_NAME }}
+          path: "${{ secrets.IMAGE_NAME }}.tar"
+
+      - name: Copy Docker Image to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "${{ secrets.IMAGE_NAME }}.tar"
+          target: /root/containers/
+
+      - name: Start new container using the new image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker stop ${{ secrets.IMAGE_NAME }}
+            docker rm ${{ secrets.IMAGE_NAME }}
+            docker load < "/root/containers/${{ secrets.IMAGE_NAME }}.tar"
+            docker run -d --name ${{ secrets.IMAGE_NAME }} -p ${{ secrets.IMAGE_PORT_OUT }}:${{ secrets.IMAGE_PORT_IN }} ${{ secrets.IMAGE_NAME }}
+            exit
+      
+      - name: Delete uploaded artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: ${{ secrets.IMAGE_NAME }}
