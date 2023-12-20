@@ -23,7 +23,7 @@
     "resources": [
         {
             "mesh": { "name": "rock_resource_01" },
-            "position": { "x": -39, "y": 38, "z": -54 },
+            "position": { "x": -39, "y": 0, "z": -54 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "rock",
@@ -31,7 +31,7 @@
         },
         {
             "mesh": { "name": "rock_resource_01" },
-            "position": { "x": -48, "y": 41, "z": 186 },
+            "position": { "x": -48, "y": 0, "z": 186 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "rock",
@@ -39,7 +39,7 @@
         },
         {
             "mesh": { "name": "rock_resource_01" },
-            "position": { "x": 6, "y": 33, "z": -321 },
+            "position": { "x": 6, "y": 0, "z": -321 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "rock",
@@ -47,7 +47,7 @@
         },
         {
             "mesh": { "name": "rock_resource_01" },
-            "position": { "x": 213, "y": 26, "z": -201 },
+            "position": { "x": 213, "y": 0, "z": -201 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "rock",
@@ -55,7 +55,7 @@
         },
         {
             "mesh": { "name": "rock_resource_01" },
-            "position": { "x": 207, "y": 34, "z": 60 },
+            "position": { "x": 207, "y": 0, "z": 60 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "rock",
@@ -63,7 +63,7 @@
         },
         {
             "mesh": { "name": "ice_resource_01" },
-            "position": { "x": 72, "y": 41, "z": -264 },
+            "position": { "x": 72, "y": 0, "z": -264 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "ice",
@@ -71,7 +71,7 @@
         },
         {
             "mesh": { "name": "ice_resource_01" },
-            "position": { "x": 267, "y": 26, "z": -282 },
+            "position": { "x": 267, "y": 0, "z": -282 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "ice",
@@ -79,7 +79,7 @@
         },
         {
             "mesh": { "name": "ice_resource_01" },
-            "position": { "x": 132, "y": 44, "z": 264 },
+            "position": { "x": 132, "y": 0, "z": 264 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "ice",
@@ -87,7 +87,7 @@
         },
         {
             "mesh": { "name": "ice_resource_01" },
-            "position": { "x": -258, "y": 35, "z": -144 },
+            "position": { "x": -258, "y": 0, "z": -144 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "ice",
@@ -95,7 +95,7 @@
         },
         {
             "mesh": { "name": "ice_resource_01" },
-            "position": { "x": 147, "y": 34, "z": -45 },
+            "position": { "x": 147, "y": 0, "z": -45 },
             "rotation": { "x": 0, "y": 0, "z": 0 },
             "scale": { "x": 1, "y": 1, "z": 1 },
             "type": "ice",
@@ -105,7 +105,6 @@
     "objectives": [
         {
             "name": "Start Producing Hydrogen",
-            "description": "Hydrogen is a must have resource for your colony.",
             "requiredLevel": 1,
             "requiredObjectives": [],
             "timeline": "timeline1",
@@ -140,7 +139,6 @@
         },
         {
             "name": "Start Producing Metal",
-            "description": "You need metal to build more advanced buildings.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Hydrogen"
@@ -176,7 +174,6 @@
         },
         {
             "name": "Start Producing Power",
-            "description": "You need power to produce units and buildings.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Hydrogen", 
@@ -201,7 +198,6 @@
         },
         {
             "name": "Scan The Area For Information",
-            "description": "Gather information about Europa for the doctor.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -233,7 +229,6 @@
         },
         {
             "name": "Build Defense Turrets",
-            "description": "You need to protect your colony from enemies.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -261,7 +256,6 @@
         },
         {
             "name": "The Best Defense is a Good Offense",
-            "description": "Get ready to attack the enemy.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -296,7 +290,6 @@
         },
         {
             "name": "Upgrade Your Power",
-            "description": "Increase your power production.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -333,7 +326,6 @@
         },
         {
             "name": "Increase Your Scan ability",
-            "description": "Increase your scan ability to research the moon faster.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -370,7 +362,6 @@
         },
         {
             "name": "Improve Your Offense",
-            "description": "Robots and drones are the best way to attack the enemy.",
             "requiredLevel": 1,
             "requiredObjectives": [
                 "Start Producing Power",
@@ -437,117 +428,117 @@
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
-                    "position": { "x": -99, "y": 49, "z": 297 },
+                    "position": { "x": -99, "y": 0, "z": 297 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": -63, "y": 43.2, "z": 306 },
+                    "position": { "x": -63, "y": 0, "z": 306 },
                     "rotation": { "x": 0, "y": 90, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 45, "y": 34.2, "z": 318 },
+                    "position": { "x": 45, "y": 0, "z": 318 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 81, "y": 33.2, "z": 318 },
+                    "position": { "x": 81, "y": 0, "z": 318 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 15, "y": 36.2, "z": 261 },
+                    "position": { "x": 15, "y": 0, "z": 261 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 24, "y": 36.2, "z": 294 },
+                    "position": { "x": 24, "y": 0, "z": 294 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": -33, "y": 38.2, "z": 321 },
+                    "position": { "x": -33, "y": 0, "z": 321 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 273, "y": 21.2, "z": 156 },
+                    "position": { "x": 273, "y": 0, "z": 156 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 282, "y": 22.2, "z": 180 },
+                    "position": { "x": 282, "y": 0, "z": 180 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 66, "y": 32.2, "z": -381 },
+                    "position": { "x": 66, "y": 0, "z": -381 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 75, "y": 33.2, "z": -381 },
+                    "position": { "x": 75, "y": 0, "z": -381 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 78, "y": 39.2, "z": -336 },
+                    "position": { "x": 78, "y": 0, "z": -336 },
                     "rotation": { "x": 0, "y": 270, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 30, "y": 33.2, "z": -357 },
+                    "position": { "x": 30, "y": 0, "z": -357 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 198, "y": 23.2, "z": -399 },
+                    "position": { "x": 198, "y": 0, "z": -399 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 249, "y": 26.2, "z": -390 },
+                    "position": { "x": 249, "y": 0, "z": -390 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 225, "y": 22.2, "z": -396 },
+                    "position": { "x": 225, "y": 0, "z": -396 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 216, "y": 29.2, "z": -354 },
+                    "position": { "x": 216, "y": 0, "z": -354 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 387, "y": 7.2, "z": 318 },
+                    "position": { "x": 387, "y": 0, "z": 318 },
                     "rotation": { "x": 0, "y": 270, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 339, "y": 7.2, "z": 348 },
+                    "position": { "x": 339, "y": 0, "z": 348 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 366, "y": 7.2, "z": 315 },
+                    "position": { "x": 366, "y": 0, "z": 315 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Hydrogen Fuel Tank",
-                    "position": { "x": 372, "y": 5, "z": 339 },
+                    "position": { "x": 372, "y": 0, "z": 339 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Rock Metal Extractor",
-                    "position": { "x": 382, "y": 5, "z": 349 },
+                    "position": { "x": 382, "y": 0, "z": 349 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Rover Research Facility",
-                    "position": { "x": 362, "y": 5, "z": 329 },
+                    "position": { "x": 362, "y": 0, "z": 329 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
                         "point": { "x": 373, "y": 5, "z": 339 },
@@ -558,7 +549,7 @@
                 },
                 {
                     "name": "Rover Warrior Facility",
-                    "position": { "x": 246, "y": 20, "z": -423 },
+                    "position": { "x": 246, "y": 0, "z": -423 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
                         "point": { "x": 247, "y": 20, "z": -423 },
@@ -569,7 +560,7 @@
                 },
                 {
                     "name": "Robot Facility",
-                    "position": { "x": 255, "y": 18, "z": -459 },
+                    "position": { "x": 255, "y": 0, "z": -459 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
                         "point": { "x": 256, "y": 18, "z": -459 },
@@ -580,7 +571,7 @@
                 },
                 {
                     "name": "Robot Facility",
-                    "position": { "x": 69, "y": 36, "z": -402 },
+                    "position": { "x": 69, "y": 0, "z": -402 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
                         "point": { "x": 70, "y": 36, "z": -402 },
@@ -591,7 +582,7 @@
                 },
                 {
                     "name": "Robot Facility",
-                    "position": { "x": 69, "y": 34, "z": 354 },
+                    "position": { "x": 69, "y": 0, "z": 354 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
                         "point": { "x": 70, "y": 34, "z": 354 },
@@ -602,7 +593,7 @@
                 },
                 {
                     "name": "Robot Facility",
-                    "position": { "x": 261, "y": 30, "z": 198 },
+                    "position": { "x": 261, "y": 0, "z": 198 },
                     "rotation": { "x": 0, "y": 90, "z": 0 },
                     "spawn" : {
                         "point": { "x": 262, "y": 30, "z": 198 },
@@ -613,7 +604,7 @@
                 },
                 {
                     "name": "Drone Facility",
-                    "position": { "x": 219, "y": 23, "z": -441 },
+                    "position": { "x": 219, "y": 0, "z": -441 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
                         "point": { "x": 220, "y": 23, "z": -441 },
@@ -624,7 +615,7 @@
                 },
                 {
                     "name": "Drone Facility",
-                    "position": { "x": 48, "y": 34, "z": 342 },
+                    "position": { "x": 48, "y": 0, "z": 342 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
                         "point": { "x": 49, "y": 34, "z": 342 },
@@ -635,7 +626,7 @@
                 },
                 {
                     "name": "Drone Facility",
-                    "position": { "x": 276, "y": 23, "z": 222 },
+                    "position": { "x": 276, "y": 0, "z": 222 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
                         "point": { "x": 277, "y": 23, "z": 222 },
@@ -646,7 +637,7 @@
                 },
                 {
                     "name": "Drone Facility",
-                    "position": { "x": 54, "y": 38, "z": -417 },
+                    "position": { "x": 54, "y": 0, "z": -417 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
                         "point": { "x": 55, "y": 38, "z": -417 },
@@ -657,52 +648,52 @@
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": -120, "y": 48, "z": 300 },
+                    "position": { "x": -120, "y": 0, "z": 300 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 75, "y": 33, "z": 333 },
+                    "position": { "x": 75, "y": 0, "z": 333 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 363, "y": 6, "z": 357 },
+                    "position": { "x": 363, "y": 0, "z": 357 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 384, "y": 7, "z": 354 },
+                    "position": { "x": 384, "y": 0, "z": 354 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 285, "y": 22, "z": 201 },
+                    "position": { "x": 285, "y": 0, "z": 201 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 231, "y": 20, "z": -480 },
+                    "position": { "x": 231, "y": 0, "z": -480 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 252, "y": 18, "z": -480 },
+                    "position": { "x": 252, "y": 0, "z": -480 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 57, "y": 41, "z": -432 },
+                    "position": { "x": 57, "y": 0, "z": -432 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": 60, "y": 34, "z": 333 },
+                    "position": { "x": 60, "y": 0, "z": 333 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": -120, "y": 48, "z": 306 },
+                    "position": { "x": -120, "y": 0, "z": 306 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 }
             ]
@@ -723,7 +714,7 @@
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
-                    "position": { "x": -114, "y": 31, "z": -45 },
+                    "position": { "x": -114, "y": 0, "z": -45 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 }
             ]

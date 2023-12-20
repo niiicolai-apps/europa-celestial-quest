@@ -15,6 +15,28 @@
         "textures": []
     },
     {
+        "name": "jupiter",
+        "material": "MeshPhysicalMaterial",
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/jupiter/jupiter_basecolor.jpg"
+            }
+        ]
+    },
+    {
+        "name": "europa",
+        "material": "MeshPhysicalMaterial",
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/europa/europa_basecolor.png"
+            }
+        ]
+    },
+    {
         "name": "wood",
         "material": "MeshPhysicalMaterial",
         "transparent": false,

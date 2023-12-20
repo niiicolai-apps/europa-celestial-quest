@@ -42,8 +42,9 @@
                 :fill="iconFill" 
             />
 
-            <div class="text-primary font-bold" style="font-size: .6em;">
-                {{ balance(account) }}
+            <div class="text-primary font-bold text-center" style="font-size: .6em;">
+                <p class="mb-1"><Locale :id="`bank.${account.currency}`" /></p>
+                <p>{{ balance(account) }}</p>
             </div>
         </UI.Flex>
     </UI.Flex>
@@ -52,6 +53,7 @@
 <script setup>
 import UI from 'frontend-ui';
 import Icons from 'frontend-icons';
+import Locale from '../../General/Locale.vue';
 import { computed } from 'vue';
 import { useBank } from '../../../game/bank/bank.js';
 import { useLocalization } from '../../../composables/localization.js';

@@ -1,6 +1,6 @@
 <template>
     <Transition name="slide-right">
-        <UI.Fixed bottom="auto" left="auto" top="0" right="0" v-if="item" style="z-index: 10001; margin-top: 4.5em;">
+        <UI.Fixed bottom="auto" left="auto" top="0" right="0" v-if="item" style="z-index: 10001; margin-top: 5em;">
             <div class="p-3 rounded box-shadow-lg mr-2" :class="bg[item.type]">
                 <p class="text-primary font-bold text-center text-xs w-full">
                     <Locale :id="item.localeId" />

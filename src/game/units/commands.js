@@ -36,7 +36,7 @@ const PositionTracker = () => {
         const team = isSettingTeam.value;
 
         command.position = point;
-        command.type = type;
+        
         //command.position.y = heightMap.getY(point.x, point.z);
         markerMesh.value.position.copy(point);
         markerMesh.value.position.y += markerYOffset;
@@ -69,6 +69,9 @@ const PositionTracker = () => {
         isSettingCommand.value = true;
         isSettingTeam.value = team;
         isSettingType.value = type;
+
+        const command = useCommands().createOrFindCommand(team);
+        command.type = type;
 
         const canvas = useCanvas()
         const adapter = canvas.adapter.value

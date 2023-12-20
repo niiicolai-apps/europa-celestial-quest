@@ -66,14 +66,14 @@ export const getTexturePack = async (name, object_uuid) => {
             )
     }
 
-    textures.map(async texture => {
+    for (const texture of textures) {
         const { type, url } = texture
         const _texture = await textureLoader.loadAsync(url)
         _texture.wrapS = THREE.RepeatWrapping
         _texture.wrapT = THREE.RepeatWrapping
         _texture.repeat.set(1, 1)
         materialInstance[type] = _texture
-    })
+    }
 
     const texture = {
         material: materialInstance,

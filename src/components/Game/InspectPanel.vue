@@ -1,10 +1,10 @@
 <template>
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && !isMoving && !isSelling && !isUpgrading && !isBuilding" top="auto">
-            <UI.Flex items="start" gap="3" class="bg-info p-3">
+            <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <div class="bg-primary font-bold text-info text-xs p-1 rounded">
-                        <Locale :id="`constructions.${selected.name}`" />
+                        <Locale :id="`constructions.${selected.name}.title`" />
                     </div>
 
                     <div v-if="isUpgradeable" class="bg-primary font-bold text-info text-xs p-1 rounded">
@@ -17,26 +17,33 @@
                 </UI.Flex>
                 
                 <UI.Flex direction="horizontal" justify="start" gap="1" v-if="selectedIsYours">
-                    <UI.Button :title="localizationManager.getLocale('inspect.start_move_button')"
-                        @click="inspectManager.moveCtrl.start()">
+                    <UI.Button @click="inspectManager.moveCtrl.start()" class="h-15 w-17">
                         <Icons.fa.UpDownLeftRightIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.start_move_button" />
+                        </p>
                     </UI.Button>
 
-                    <UI.Button :title="localizationManager.getLocale('inspect.start_sell_button')"
-                        @click="inspectManager.sellCtrl.start()">
+                    <UI.Button @click="inspectManager.sellCtrl.start()" class="h-15 w-17">
                         <Icons.fa.TrashIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.start_sell_button" />
+                        </p>
                     </UI.Button>
 
                     <UI.Button v-if="isUpgradeable && !isMaxUpgradeReached"
-                        :title="localizationManager.getLocale('inspect.start_upgrade_button')"
-                        @click="inspectManager.upgradeCtrl.start()">
+                        @click="inspectManager.upgradeCtrl.start()" class="h-15 w-17">
                         <Icons.fa.CircleUpIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.start_upgrade_button" />
+                        </p>
                     </UI.Button>
 
-                    <UI.Button v-if="canBuild"
-                        :title="localizationManager.getLocale('inspect.start_unit_button')"
-                        @click="inspectManager.unitCtrl.start()">
+                    <UI.Button v-if="canBuild" @click="inspectManager.unitCtrl.start()" class="h-15 w-17">
                         <Icons.fa.UserAstronautIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.start_unit_button" />
+                        </p>
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>
@@ -45,57 +52,73 @@
 
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isMoving" top="auto">
-            <UI.Flex items="start" gap="3" class="bg-info p-3">
+            <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
                 <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
-                    <Locale id="inspect.moving_title" /> 
+                    <Locale id="inspect.moving_title" /> <Locale :id="`constructions.${selected.name}.title`" />
                     <span>
                         <Locale :id="`constructions.${selected.name}`" />
                     </span>
                 </UI.Flex>
                 <UI.Flex direction="horizontal" justify="between" gap="1" class="w-full">
                     <UI.Flex justify="start" gap="1">
-                        <UI.Button :title="localizationManager.getLocale('inspect.confirm_move_button')" type="success"
-                            @click="inspectManager.moveCtrl.confirm()">
+                        <UI.Button type="success" @click="inspectManager.moveCtrl.confirm()" class="h-15 w-17">
                             <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                            <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                <Locale id="inspect.confirm_move_button" />
+                            </p>
                         </UI.Button>
 
-                        <UI.Button :title="localizationManager.getLocale('inspect.cancel_move_button')"
-                            @click="inspectManager.moveCtrl.cancel()">
+                        <UI.Button @click="inspectManager.moveCtrl.cancel()" class="h-15 w-17">
                             <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                            <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                <Locale id="inspect.cancel_move_button" />
+                            </p>
                         </UI.Button>
                     </UI.Flex>
                     <UI.Flex direction="horizontal" justify="between" gap="1">
                         <UI.Flex justify="start" gap="1">
                             
-                            <UI.Button :title="localizationManager.getLocale('inspect.rotate_left_button')"
-                                @click="inspectManager.moveCtrl.rotateRight()">
+                            <UI.Button @click="inspectManager.moveCtrl.rotateRight()" class="h-15 w-17">
                                 <Icons.fa.RotateLeftIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.rotate_left_button" />
+                                </p>
                             </UI.Button>
                             
-                            <UI.Button :title="localizationManager.getLocale('inspect.move_left_button')"
-                                @click="inspectManager.moveCtrl.moveLeft()">
+                            <UI.Button @click="inspectManager.moveCtrl.moveLeft()" class="h-15 w-17">
                                 <Icons.fa.ArrowLeftIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.move_left_button" />
+                                </p>
                             </UI.Button>
                         </UI.Flex>
                         <UI.Flex justify="start" gap="1">
-                            <UI.Button :title="localizationManager.getLocale('inspect.move_up_button')"
-                                @click="inspectManager.moveCtrl.moveBackward()">
+                            <UI.Button @click="inspectManager.moveCtrl.moveBackward()" class="h-15 w-17">
                                 <Icons.fa.ArrowUpIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.move_up_button" />
+                                </p>
                             </UI.Button>
 
-                            <UI.Button :title="localizationManager.getLocale('inspect.move_down_button')"
-                                @click="inspectManager.moveCtrl.moveForward()">
+                            <UI.Button @click="inspectManager.moveCtrl.moveForward()" class="h-15 w-17">
                                 <Icons.fa.ArrowDownIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.move_down_button" />
+                                </p>
                             </UI.Button>
                         </UI.Flex>
                         <UI.Flex justify="start" gap="1">
-                            <UI.Button :title="localizationManager.getLocale('inspect.rotate_right_button')"
-                                @click="inspectManager.moveCtrl.rotateLeft()">
+                            <UI.Button @click="inspectManager.moveCtrl.rotateLeft()" class="h-15 w-17">
                                 <Icons.fa.RotateRightIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.rotate_right_button" />
+                                </p>
                             </UI.Button>
-                            <UI.Button :title="localizationManager.getLocale('inspect.move_right_button')"
-                                @click="inspectManager.moveCtrl.moveRight()">
+                            <UI.Button @click="inspectManager.moveCtrl.moveRight()" class="h-15 w-17">
                                 <Icons.fa.ArrowRightIcon width="1.5em" height="1.5em" fill="#3f88c5" />
+                                <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                                    <Locale id="inspect.move_right_button" />
+                                </p>
                             </UI.Button>
 
                             
@@ -108,24 +131,28 @@
 
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isSelling" top="auto">
-            <UI.Flex items="start" gap="3" class="bg-info p-3">
+            <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
                 <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.selling_title" /> 
                     <span>
-                        <Locale :id="`constructions.${selected.name}`" />
+                        <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
                         <span>?</span>
                     </span>
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
-                    <UI.Button :title="localizationManager.getLocale('inspect.confirm_sell_button')" type="danger"
-                        @click="inspectManager.sellCtrl.confirm()">
+                    <UI.Button type="danger" @click="inspectManager.sellCtrl.confirm()" class="h-15 w-17">
                         <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.confirm_sell_button" />
+                        </p>
                     </UI.Button>
 
-                    <UI.Button :title="localizationManager.getLocale('inspect.cancel_sell_button')" type="primary"
-                        @click="inspectManager.sellCtrl.cancel()">
+                    <UI.Button type="primary" @click="inspectManager.sellCtrl.cancel()" class="h-15 w-17">
                         <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.cancel_sell_button" />
+                        </p>
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>
@@ -134,24 +161,28 @@
 
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isUpgrading" top="auto">
-            <UI.Flex items="start" gap="3" class="bg-info p-3">
+            <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
                 <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.upgrading_title" /> 
                     <span>
-                        <Locale :id="`constructions.${selected.name}`" />
+                        <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
                         <span>?</span>
                     </span>
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
-                    <UI.Button :title="localizationManager.getLocale('inspect.confirm_upgrade_button')" type="success"
-                        @click="inspectManager.upgradeCtrl.confirm()">
+                    <UI.Button type="success" @click="inspectManager.upgradeCtrl.confirm()" class="h-15 w-17">
                         <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.confirm_upgrade_button" />
+                        </p>
                     </UI.Button>
 
-                    <UI.Button :title="localizationManager.getLocale('inspect.cancel_upgrade_button')" type="primary"
-                        @click="inspectManager.upgradeCtrl.cancel()">
+                    <UI.Button type="primary" @click="inspectManager.upgradeCtrl.cancel()" class="h-15 w-17">
                         <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.cancel_upgrade_button" />
+                        </p>
                     </UI.Button>
                 </UI.Flex>
             </UI.Flex>            
@@ -160,10 +191,9 @@
 
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isBuilding" top="auto">
-            <UI.Flex items="start" gap="3" class="bg-info p-3">
+            <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
                 <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
-                    <Locale id="inspect.unit_title" />
-                    <span>?</span>
+                    <Locale id="inspect.unit_title" /> <Locale :id="`constructions.${selected.name}.title`" />
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
@@ -172,44 +202,60 @@
                         :key="queued.unit.name"
                         :title="localizationManager.getLocale('units.' + queued.unit.name)"
                         type="primary"
-                        class="h-10"
+                        class="w-10 h-10"
                         style="padding: 0 .3em 1em .3em;"
                     >
-                        <img 
-                            :src="queued.unit.image" 
-                            :alt="queued.unit.name" 
-                            class="block h-6 mx-auto rounded mt-1 mb-1" 
-                        />
-                        <UI.ProgressBar
-                            :progress="getUnitProgress(queued)"
-                            :maxProgress="getUnitMaxProgress(queued)"
-                            class="w-full mx-auto rounded text-sm"
-                            style="height: .3em;"
-                            :showPercent="false"
-                            bg_color="bg-dark"
-                            bar_color="bg-warning"
-                        />
+                            <img 
+                                :src="queued.unit.image" 
+                                :alt="queued.unit.name" 
+                                class="block w-5 h-5 mx-auto rounded mt-1 mb-1" 
+                            />
+                            <UI.ProgressBar
+                                :progress="getUnitProgress(queued)"
+                                :maxProgress="getUnitMaxProgress(queued)"
+                                class="w-full mx-auto rounded text-sm"
+                                style="height: .3em;"
+                                :showPercent="false"
+                                bg_color="bg-dark"
+                                bar_color="bg-warning"
+                            />
                     </UI.Button>
                     <UI.Flex class="h-10 bg-primary text-info font-bold rounded text-xs px-2" v-if="unitsQueue.length == 0">
                         <Locale id="inspect.empty_queue" />
                     </UI.Flex>
                 </UI.Flex>
 
-                <UI.Flex direction="horizontal" justify="start" gap="3">
-                    <UI.Button :title="localizationManager.getLocale('inspect.cancel_unit_button')"
-                        @click="inspectManager.unitCtrl.cancel()">
+                <UI.Flex direction="horizontal" items="auto" justify="start" gap="3">
+                    <UI.Button @click="inspectManager.unitCtrl.cancel()" class="h-15 w-17">
                         <Icons.fa.ArrowLeftIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
+                        <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
+                            <Locale id="inspect.cancel_unit_button" />
+                        </p>
                     </UI.Button>
 
-                    <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <UI.Flex direction="horizontal" justify="start" gap="2">
                         <UI.Button 
                             v-for="unit in allowedUnits"
                             :key="unit.name"
-                            :title="localizationManager.getLocale('units.' + unit.name)"
                             type="primary"
                             @click="inspectManager.unitCtrl.queueUnit(unit.name)"
+                            class="w-40 h-15"
                         >
-                            <img :src="unit.image" :alt="unit.name" class="block h-6 mx-auto rounded" />
+                            <UI.Flex direction="horizontal" justify="between" gap="1">
+                                <div class="text-left text-info">
+                                    <p class="font-bold uppercase text-xs text-info mb-1">
+                                        <Locale :id="`units.${unit.name}.title`" />
+                                    </p>
+                                    <p class="text-xs text-info" style="font-size: 0.8em;">
+                                        <Locale :id="`units.${unit.name}.description`" />
+                                    </p>
+                                </div>
+                                <div>
+                                    <UI.Flex class="w-12 h-10 bg-info rounded">
+                                        <img :src="unit.image" :alt="unit.name" class="block w-7 mx-auto" />
+                                    </UI.Flex>
+                                </div>
+                            </UI.Flex>
                         </UI.Button>
                     </UI.Flex>
                 </UI.Flex>

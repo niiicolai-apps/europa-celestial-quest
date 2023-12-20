@@ -29,6 +29,22 @@ const getCached = (name) => {
     return null;
 }
 
+const applyTexturePacks = async (object3D, mesh) => {
+    // Apply texture packs
+    object3D.traverse(async (child) => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            
+            const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
+            if (subMesh) {
+                const material = await getTexturePack(subMesh.texturePack, child.uuid);
+                child.material = material;
+            }
+        }
+    });
+}
+
 export const getMesh = async (name) => {
     const cached = getCached(name);
     if (cached) return cached;
@@ -39,23 +55,18 @@ export const getMesh = async (name) => {
 
     let object3D = null;
     if (mesh.type === 'GLTF') {
+
         const gltf = await gltfLoader.loadAsync(mesh.url);
         object3D = gltf.scene;
+        await applyTexturePacks(object3D, mesh);
 
-        // Apply texture packs
-        object3D.traverse(async (child) => {
-            if (child.isMesh) {
-                if (child.name === 'Cube051' || child.name === 'Cube060') child.visible = false;
-                child.castShadow = true;
-                child.receiveShadow = true;
-                
-                const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
-                if (subMesh) {
-                    const material = await getTexturePack(subMesh.texturePack, child.uuid);
-                    child.material = material;
-                }
-            }
-        });
+    } else if (mesh.type === 'sphere') {
+
+        const geometry = new THREE.SphereGeometry(1, 32, 32);
+        object3D = new THREE.Mesh(geometry);
+        object3D.name = name;
+        await applyTexturePacks(object3D, mesh);
+        
     } else {
         throw new Error(`Unknown mesh type: ${mesh.type}`);
     }

@@ -2,13 +2,13 @@
     <Panel :name="localizationManager.getLocale('pause.title')" identifier="pause">
         <UI.Flex gap="2">
             <div type="primary" v-for="option in options" :key="option.name"
-                class="w-full bg-primary p-3 rounded box-shadow-lg">
+                class="w-full bg-info text-primary border-1 border-solid border-primary p-3 rounded box-shadow-lg">
                 <UI.Flex direction="horizontal" justify="between" class="w-full">
-                    <UI.Paragraph class="text-info font-bold">
+                    <p class="font-bold uppercase text-sm">
                         {{ option.name }}
-                    </UI.Paragraph>
+                    </p>
 
-                    <UI.Button v-if="option.link" :title="option.name" :link="option.link" type="info">
+                    <UI.Button v-if="option.link" :title="option.name" :link="option.link" type="primary">
                         <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
                             :fill="optionIconFill" />
 
@@ -18,12 +18,11 @@
                         <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
                             :fill="optionIconFill" />
 
-                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                        <Icons.fa.DungeonIcon v-if="option.icon === 'dungeon'"
                             :height="optionIconSize" :fill="optionIconFill" />
                     </UI.Button>
 
-                    <UI.Button v-if="option.panel" :title="option.name" @click="panelManager.setPanel(option.panel)"
-                        type="info">
+                    <UI.Button v-if="option.panel" :title="option.name" @click="panelManager.setPanel(option.panel)" type="primary">
                         <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
                         :fill="optionIconFill" />
 
@@ -33,12 +32,11 @@
                         <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
                             :fill="optionIconFill" />
 
-                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                        <Icons.fa.DungeonIcon v-if="option.icon === 'dungeon'"
                             :height="optionIconSize" :fill="optionIconFill" />
                     </UI.Button>
 
-                    <UI.Button v-if="option.method" :title="option.name" @click="option.method"
-                        type="info">
+                    <UI.Button v-if="option.method" :title="option.name" @click="option.method" type="primary">
                         <Icons.fa.GearIcon v-if="option.icon === 'gear'" :width="optionIconSize" :height="optionIconSize"
                         :fill="optionIconFill" />
 
@@ -48,7 +46,7 @@
                         <Icons.fa.ScrollIcon v-if="option.icon === 'scroll'" :width="optionIconSize" :height="optionIconSize"
                             :fill="optionIconFill" />
 
-                        <Icons.fa.ArrowRightIcon v-if="option.icon === 'arrow-right'" :width="optionIconSize"
+                        <Icons.fa.DungeonIcon v-if="option.icon === 'dungeon'" :width="optionIconSize"
                             :height="optionIconSize" :fill="optionIconFill" />
                     </UI.Button>
                 </UI.Flex>
@@ -75,7 +73,7 @@ const panelManager = usePanel();
 const localizationManager = useLocalization();
 
 const optionIconSize = "1em";
-const optionIconFill = "#1c3144";
+const optionIconFill = "#3f88c5";
 const options = computed(() => [{
     name: localizationManager.getLocale("pause.settings_button_title"),
     description: localizationManager.getLocale("pause.settings_button_description"),
@@ -84,7 +82,7 @@ const options = computed(() => [{
 }, {
     name: localizationManager.getLocale("pause.quit_button_title"),
     description: localizationManager.getLocale("pause.quit_button_description"),
-    icon: "arrow-right",
+    icon: "dungeon",
     method: props.endGame,
 }]);
 </script>

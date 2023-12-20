@@ -1,72 +1,59 @@
 <template>
-    <UI.Card class="mb-3" type="primary">
-        <template #header>
-            <UI.Paragraph class="text-info uppercase">
-                {{ objective.name }}
-            </UI.Paragraph>
-        </template>
+    <div type="info" class="mb-3 bg-info text-primary border-1 border-solid border-primary rounded w-full p-2 box-shadow-lg">
+        <p class="uppercase text-primary font-bold text-sm mb-1">
+            <Locale :id="`objectives.implemented.${objective.name}.title`" />
+        </p>
 
-        <template #body>
-            <div class="text-info text-sm mb-5">
-                {{ objective.description }}
+        <div class="text-sm mb-3">
+            <Locale :id="`objectives.implemented.${objective.name}.description`" />
+        </div>
+
+        <div class="mb-3">
+            <div class="text-sm font-bold mb-1">
+                <Locale id="objectives.goals" />
             </div>
 
-            <div>
-                <div class="text-info text-sm font-bold mb-3">
-                    <Locale id="objectives.goals" />:
-                </div>
+            <UI.Flex items="start" justify="start" gap="3" class="bg-primary text-info rounded p-3">
+                <UI.Flex v-for="goal in objective.goals" :key="goal.name" direction="horizontal" items="center"
+                    justify="between" gap="1" class="w-full">
+                    <UI.Flex direction="horizontal" justify="start" gap="3" class="w-50 text-xs">
+                        <span>-</span>
+                        <span>
+                            <Locale :id="`objectives.implemented.${objective.name}.goals.${goal.name}`" />
+                        </span>
+                    </UI.Flex>
 
-                <UI.Flex items="start" justify="start" gap="1">
-                    <UI.Flex 
-                        v-for="goal in objective.goals" 
-                        :key="goal.name" 
-                        direction="horizontal" 
-                        items="center"
-                        justify="between" 
-                        gap="1"
-                        class="w-full">
-                        <UI.Flex direction="horizontal" justify="start" gap="3" class="w-50 text-info text-xs">
-                            <span>-</span>
-                            <span>{{ goal.name }}</span>
-                        </UI.Flex>
-
-                        <UI.Flex direction="horizontal" 
-                            gap="1" 
-                            class="text-xs text-primary uppercase p-1 rounded w-65"
-                            :class="goal.completed ? 'bg-success' : 'bg-info'">
-                            <Icons.fa.CheckmarkIcon v-if="goal.completed" width="1em" height="1em" fill="#3f88c5" />
-                            <Icons.fa.TimesIcon v-else width="1em" height="1em" fill="#1c3144" />
-                            {{ goal.completed
-                                ? localizationManager.getLocale('objectives.completed')
-                                : localizationManager.getLocale('objectives.not_completed') }}
-                        </UI.Flex>
+                    <UI.Flex direction="horizontal" gap="1" class="text-xs text-info uppercase p-1 rounded w-65"
+                        :class="goal.completed ? 'bg-success' : 'bg-primary'">
+                        <Icons.fa.CheckmarkIcon v-if="goal.completed" width="1em" height="1em" fill="#3f88c5" />
+                        <Icons.fa.TimesIcon v-else width="1em" height="1em" fill="#3f88c5" />
+                        {{ goal.completed
+                            ? localizationManager.getLocale('objectives.completed')
+                            : localizationManager.getLocale('objectives.not_completed') }}
                     </UI.Flex>
                 </UI.Flex>
+            </UI.Flex>
+        </div>
+
+        <div>
+            <div class="text-sm font-bold mb-1">
+                <Locale id="objectives.rewards" />
             </div>
-        </template>
 
-        <template #footer>
-            <div>
-                <div class="text-info text-sm font-bold mb-3">
-                    <Locale id="objectives.rewards" />:
-                </div>
-
-                <UI.Flex items="start" justify="start" gap="1">
-                    <UI.Flex 
-                        v-for="reward in objective.rewards" 
-                        :key="reward.name" 
-                        direction="horizontal" 
-                        items="center"
-                        justify="between">
-                        <UI.Flex direction="horizontal" justify="start" gap="3" class="w-50 text-info text-xs">
-                            <span>-</span>
-                            <span>{{ reward.name }}</span>
-                        </UI.Flex>
+            <UI.Flex items="start" justify="start" gap="3" class="bg-primary text-info rounded p-3">
+                <UI.Flex v-for="reward in objective.rewards" :key="reward.name" direction="horizontal" items="center"
+                    justify="between">
+                    <UI.Flex direction="horizontal" justify="start" gap="3" class="w-50 text-xs">
+                        <span>-</span>
+                        <span>
+                            <Locale :id="`objectives.implemented.${objective.name}.rewards.${reward.name}`" />
+                        </span>
                     </UI.Flex>
                 </UI.Flex>
-            </div>
-        </template>
-    </UI.Card>
+            </UI.Flex>
+        </div>
+
+    </div>
 </template>
 
 <script setup>

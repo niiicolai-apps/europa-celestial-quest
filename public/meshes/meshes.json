@@ -76,15 +76,23 @@
     },
     "jupiter": {
         "name": "jupiter",
-        "type": "GLTF",
-        "url": "meshes/utils/jupiter.glb",
-        "subMeshes": []
+        "type": "sphere",
+        "subMeshes": [
+            {
+                "name": "jupiter",
+                "texturePack": "jupiter"
+            }
+        ]
     },
     "europa": {
         "name": "europa",
-        "type": "GLTF",
-        "url": "meshes/utils/europa.glb",
-        "subMeshes": []
+        "type": "sphere",
+        "subMeshes": [
+            {
+                "name": "europa",
+                "texturePack": "europa"
+            }
+        ]
     },
     "rock_resource_01": {
         "name": "rock_resource_01",

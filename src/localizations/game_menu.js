@@ -15,12 +15,24 @@ export default {
         },
         warrior: {
             regroup_button: {
-                en: 'Regroup Warriors',
-                da: 'Saml krigere',
+                en: 'Regroup',
+                da: 'Saml',
             },
             attack_button: {
-                en: 'Attack Area',
-                da: 'Angrib område',
+                en: 'Attack',
+                da: 'Angrib',
+            },
+            regroup: {
+                en: 'Regrouping',
+                da: 'Samler',
+            },
+            attack: {
+                en: 'Attacking',
+                da: 'Angriber',
+            },
+            none: {
+                en: 'None',
+                da: 'Ingen',
             },
         }
     }

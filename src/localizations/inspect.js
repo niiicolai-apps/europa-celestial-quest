@@ -90,8 +90,8 @@ export default {
         },
 
         unit_title: {
-            en: 'Spawn Unit',
-            da: 'Spawn Enhed',
+            en: 'Spawn unit from',
+            da: 'Spawn enhed fra',
         },
         start_unit_button: {
             en: 'Spawn Unit',

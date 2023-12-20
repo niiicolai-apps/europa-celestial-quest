@@ -8,7 +8,7 @@ const UNITS = {
         name: 'B S-1',
         image: 'thumbnails/human_units/bot_spider_1.png',
         requiredLevel: 1,
-        complete_time: 1000,
+        complete_time: 10000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MISSILE_ATTACK(),

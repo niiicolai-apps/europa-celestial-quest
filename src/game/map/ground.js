@@ -52,9 +52,9 @@ useManager().create('ground', {
 
             const planeSize = 1000;
             const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
-            const planeMat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF, depthWrite: false });
+            const planeMat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
             groundMesh = new THREE.Mesh(planeGeo, planeMat);
-            groundMesh.position.y = 0;
+            groundMesh.position.y = -1;
             groundMesh.rotation.x = Math.PI * -.5;
             scene.add(groundMesh);
 

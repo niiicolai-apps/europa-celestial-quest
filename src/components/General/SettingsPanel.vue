@@ -2,7 +2,7 @@
     <Panel :name="localizationManager.getLocale('settings.title')" identifier="settings" :showScroll="true">
         <UI.Flex>
             <div v-for="setting in settings" :key="setting.name"
-                class="w-full bg-primary text-info rounded p-3 box-shadow-lg">
+                class="w-full bg-info border-1 border-solid border-primary text-primary rounded p-3 box-shadow-lg">
 
                 <UI.Flex direction="horizontal" items="start" justify="between">
                     <div>
@@ -16,7 +16,7 @@
                     </div>
 
                     <div v-if="setting.list">
-                        <UI.Select type="info" :options="setting.list" :startOption="setting.listStartOption"
+                        <UI.Select type="primary" :options="setting.list" :startOption="setting.listStartOption"
                             @update:value="setting.listUpdate" class="w-33" />
                     </div>
 

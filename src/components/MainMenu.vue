@@ -11,6 +11,7 @@ import Audio from './UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
 import { useAudio } from '../composables/audio.js';
 import { getMesh, removeMesh } from '../composables/meshes.js';
+import { getTexturePack, removeTexturePack } from '../composables/textures.js';
 import { ref, defineEmits, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
 
@@ -28,7 +29,6 @@ const options = {
         far: 2000,
     }
 }
-const meshes = ref([]);
 
 onMounted(async () => {
     const audioCtrl = audio.get(0);
@@ -40,37 +40,40 @@ onMounted(async () => {
     const camera = adapter.camera;
     const lifeCycle = adapter.lifeCycle;
 
-    scene.fog = new THREE.FogExp2(0x000000, 0.12);
+    scene.fog = new THREE.FogExp2(0x000000, 0.005);
     scene.background = new THREE.CubeTextureLoader()
         .setPath("textures/cubeMaps/")
         .load(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"]);
 
-    const jupiter = await getMesh('jupiter');
-    jupiter.position.set(-1, 0, -5);
-    jupiter.scale.set(0.002, 0.002, 0.002);
+    const geometry = new THREE.SphereGeometry(5, 32, 16);
+    const jupiter = new THREE.Mesh(geometry);
+    const jupiterMaterial = await getTexturePack('jupiter', jupiter.uuid);
+    jupiter.material = jupiterMaterial;
+    jupiter.position.set(0, 0, -30);
+    jupiter.scale.set(1, 1, 1);
     scene.add(jupiter);
 
-    const europa = await getMesh('europa');
-    europa.position.set(-16, 0, -5);
-    europa.scale.set(0.002, 0.002, 0.002);
+    const europa = new THREE.Mesh(geometry);
+    const europaMaterial = await getTexturePack('europa');
+    europa.material = europaMaterial;
+    europa.rotation.y = 35 * Math.PI / 180;
+    europa.rotation.z = 65 * Math.PI / 180;
+    europa.scale.set(.1, .1, .1);
     scene.add(europa);
 
-    const ehdx1Light = new THREE.PointLight(0xff0000, 5, 0.05);
+    const ehdx1Light = new THREE.PointLight(0xff0000, 35, .4);
     const ehdx1 = await getMesh('europa_horizon_drifter_x1_no_parachute');
-    ehdx1.position.set(-16, 0, -5);
-    ehdx1.rotation.z = 25 * Math.PI / 180;
-    ehdx1.scale.set(0.004, 0.004, 0.004);
+    ehdx1.position.set(0, 0,- 3);
+    ehdx1.rotation.y = 15 * Math.PI / 180;
+    ehdx1.scale.set(.02, .02, .02);
     scene.add(ehdx1);
-    scene.add(ehdx1Light);
+    ehdx1.add(ehdx1Light);
+    ehdx1Light.position.set(0, 0, 5)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(100, 100, 1);
     directionalLight.target = jupiter;
     scene.add(directionalLight);
-
-    meshes.value.push(jupiter);
-    meshes.value.push(europa);
-    meshes.value.push(ehdx1);
 
     camera.position.set(-1, -1, 0);
 
@@ -92,20 +95,19 @@ onMounted(async () => {
 
     const orbitRotation = 0.001;
     const orbitSpeed = 0.0002;
-    const orbitRadius = 1.7;
-    const ehdx1Radius = 0.3;
+    const orbitRadius = 8;
+
+    const ehdx1Radius = 1.3;
     const ehdx1Speed = 0.0005;
+
     const orbit = () => {
         jupiter.rotation.y -= orbitRotation;
-        europa.rotation.y += orbitRotation;
 
-        europa.position.x = -1 + Math.cos(Date.now() * orbitSpeed) * orbitRadius;
-        europa.position.z = -5 + Math.sin(Date.now() * orbitSpeed) * orbitRadius;
+        europa.position.x = jupiter.position.x + Math.cos(Date.now() * orbitSpeed) * orbitRadius;
+        europa.position.z = jupiter.position.z + Math.sin(Date.now() * orbitSpeed) * orbitRadius;
 
         ehdx1.position.x = europa.position.x + Math.cos(Date.now() * ehdx1Speed) * ehdx1Radius;
         ehdx1.position.z = europa.position.z + Math.sin(Date.now() * ehdx1Speed) * ehdx1Radius;
-        ehdx1Light.position.set(ehdx1.position.x, ehdx1.position.y, ehdx1.position.z+0.01);
-        ehdx1Light.rotation.y += 0.01;
     }
 
     lifeCycle.onAnimate.push(() => {
@@ -113,24 +115,24 @@ onMounted(async () => {
         orbit();
     })
 
+    lifeCycle.onDispose.push(async () => {
+        ehdx1.scale.set(1, 1, 1);
+        await removeMesh(ehdx1);
+        removeTexturePack('jupiter');
+        removeTexturePack('europa');
+
+        geometry.dispose();
+    })
+
     const blinkRate = 1000;
     blinkInterval.value = setInterval(() => {
-        if (ehdx1Light.intensity === 0) {
-            ehdx1Light.intensity = 5;
-        } else {
-            ehdx1Light.intensity = 0;
-        }
+        ehdx1Light.intensity = ehdx1Light.intensity === 0 ? 5 : 0;
     }, blinkRate);
 
     isInitialized.value = true;
 })
 
 onUnmounted(async () => {
-    for (const mesh of meshes.value) {
-        mesh.scale.set(1, 1, 1);
-        await removeMesh(mesh);
-    }
-
     if (blinkInterval.value) {
         clearInterval(blinkInterval.value);
     }

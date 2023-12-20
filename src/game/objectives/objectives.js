@@ -100,7 +100,7 @@ useManager().create('objectives', {
 
                 const objective = GameObjective.Objective.create(
                     objectiveData.name,
-                    objectiveData.description,
+                    objectiveData.name,
                     goals,
                     rewards
                 );
