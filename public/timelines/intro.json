@@ -1,11 +1,44 @@
 {
     "meshes": [
-        "womans_house",
-        "woman_with_poem",
-        "jupiter",
-        "europa",
-        "europa_horizon_drifter_x1",
-        "terrain"
+        { "name": "woman_house_skeleton", "id": "woman_house_skeleton" },
+        { "name": "woman_house_walls", "id": "woman_house_walls" },
+        { "name": "window", "id": "window_1" },
+        { "name": "window", "id": "window_2" },
+        { "name": "window", "id": "window_3" },
+        { "name": "curtain_1", "id": "curtain_1" },
+        { "name": "curtain_2", "id": "curtain_2" },
+        { "name": "curtain_3", "id": "curtain_3" },
+        { "name": "wall_painting_1", "id": "wall_painting_1_a" },
+        { "name": "wall_painting_1", "id": "wall_painting_1_b" },
+        { "name": "wall_painting_2", "id": "wall_painting_2" },
+        { "name": "shelf", "id": "shelf_1" },
+        { "name": "shelf", "id": "shelf_2" },
+        { "name": "shelf", "id": "shelf_3" },
+        { "name": "desk", "id": "desk" },
+        { "name": "chair", "id": "chair" },
+        { "name": "candle", "id": "candle_1" },
+        { "name": "pillow_1", "id": "pillow_1" },
+        { "name": "blanket_1", "id": "blanket_1" },
+        { "name": "blanket_2", "id": "blanket_2" },
+        { "name": "carpet", "id": "carpet" },
+        { "name": "lantern_no_hook", "id": "lantern_no_hook" },
+        { "name": "ehdx1_toy", "id": "ehdx1_toy" },
+        { "name": "book_shelf", "id": "book_shelf" },
+        { "name": "book_blue", "id": "book_blue_1" },
+        { "name": "book_blue", "id": "book_blue_2" },
+        { "name": "book_blue", "id": "book_blue_3" },
+        { "name": "book_red", "id": "book_red_1" },
+        { "name": "book_red", "id": "book_red_2" },
+        { "name": "book_red", "id": "book_red_3" },
+        { "name": "book_black", "id": "book_black_1" },
+        { "name": "book_black", "id": "book_black_2" },
+        { "name": "book_black", "id": "book_black_3" },
+
+        { "name": "woman", "id": "woman" },
+        { "name": "europa_horizon_drifter_x1", "id": "europa_horizon_drifter_x1" },
+        { "name": "terrain", "id": "terrain" },
+        { "name": "jupiter", "id": "jupiter" },
+        { "name": "europa", "id": "europa" }
     ],
     "lights": [
         { 
@@ -120,7 +153,7 @@
     ],
     "sequencies": [
         {
-            "playTime": 18000,
+            "playTime": 1,
             "background": {
                 "type": "CubeTexture",
                 "path": "textures/cubeMaps/",
@@ -142,9 +175,9 @@
                 "muted": false
             },
             "camera": {
-                "position": { "x": 2.2, "y": 1, "z": -2.4 },
-                "rotation": { "x": -65, "y": 15, "z": 0 },
-                "move": { "dx": -0.00001, "dy": 0, "dz": 0 },
+                "position": { "x": 1, "y": 1.2, "z": -1 },
+                "rotation": { "x": -20, "y": 0, "z": 0 },
+                "move": { "dx": 0, "dy": -0.00001, "dz": 0 },
                 "rotate": { "dx": 0, "dy": -0.0001, "dz": 0.0001 }
             },
             "lights": [
@@ -161,12 +194,12 @@
                 },
                 {
                     "name": "womans_house_light_02", 
-                    "position": { "x": 2.6, "y": 0.8, "z": -2.6 },
+                    "position": { "x": 1.6, "y": 0.8, "z": -2.6 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "womans_house_light_03",
-                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "position": { "x": 1.22, "y": 1.535, "z": -2.6 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
@@ -187,8 +220,8 @@
             ],
             "meshes": [
                 {
-                    "name": "womans_house",
-                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "id": "woman_house_walls",
+                    "position": { "x": 1, "y": 1, "z": 0 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 }
             ]
@@ -199,7 +232,7 @@
                 "type": "fade",
                 "steps": 50
             },
-            "playTime": 20000,
+            "playTime": 120000,
             "fog": {
                 "color": { "r": 0, "g": 0, "b": 0 },
                 "density": 0.01
@@ -210,8 +243,8 @@
                 "volume": 0.5
             },
             "camera": {
-                "position": { "x": 0, "y": 1, "z": 0 },
-                "rotation": { "x": 0, "y": -55, "z": 0 },
+                "position": { "x": -0.3, "y": 0.8, "z": 0.3 },
+                "rotation": { "x": 0, "y": -45, "z": 0 },
                 "move": { "dx": 0, "dy": 0, "dz": 0.0001 },
                 "rotate": { "dx": 0, "dy": 0, "dz": 0 }
             },
@@ -233,7 +266,7 @@
                 },
                 {
                     "name": "womans_house_light_03",
-                    "position": { "x": 1.82, "y": 1.535, "z": -2.6 },
+                    "position": { "x": 1.22, "y": 1.535, "z": -2.6 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
@@ -254,15 +287,155 @@
             ],
             "meshes": [
                 {
-                    "name": "womans_house",
-                    "position": { "x": 0, "y": 0, "z": 0 },
+                    "id": "woman_house_walls",
+                    "position": { "x": 1, "y": 1, "z": 0 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
-                    "name": "woman_with_poem",
-                    "position": { "x": 2.25, "y": 0.6, "z": -1.3 },
+                    "id": "woman_house_skeleton",
+                    "position": { "x": 1.22, "y": 1.85, "z": 0 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "window_1",
+                    "position": { "x": 2.45, "y": 0.925, "z": -2.26 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "window_2",
+                    "position": { "x": 2.45, "y": 0.925, "z": -1.40 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "window_3",
+                    "position": { "x": 2.45, "y": 0.925, "z": -0.54 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "curtain_1",
+                    "position": { "x": 2.36, "y": 1.565, "z": -2.26 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "curtain_2",
+                    "position": { "x": 2.36, "y": 1.565, "z": -1.40 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "curtain_3",
+                    "position": { "x": 2.36, "y": 1.565, "z": -0.54 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "wall_painting_1_a",
+                    "position": { "x": 1.70, "y": 0.925, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "wall_painting_1_b",
+                    "position": { "x": 2.00, "y": 0.925, "z": -2.90 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "wall_painting_2",
+                    "position": { "x": 1.85, "y": 1.425, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "shelf_1",
+                    "position": { "x": 1.25, "y": 0.80, "z": -2.85 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "shelf_2",
+                    "position": { "x": 1.25, "y": 1.05, "z": -2.85 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "shelf_3",
+                    "position": { "x": 1.25, "y": 1.30, "z": -2.85 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "desk",
+                    "position": { "x": 1.45, "y": 0.40, "z": -2.51 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_shelf",
+                    "position": { "x": 0.2, "y": 0.80, "z": -2.51 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "chair",
+                    "position": { "x": 1.55, "y": 0.40, "z": -2.01 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "pillow_1",
+                    "position": { "x": 1.55, "y": 0.40, "z": -2.11 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "blanket_1",
+                    "position": { "x": 1.65, "y": 0.60, "z": -1.85 },
+                    "rotation": { "x": 0, "y": 0, "z": 0.1 }
+                },
+                {
+                    "id": "carpet",
+                    "position": { "x": 0.9, "y": 0.00, "z": 0.35 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "lantern_no_hook",
+                    "position": { "x": 1.15, "y": 1.43, "z": -2.86 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "ehdx1_toy",
+                    "position": { "x": 1.15, "y": 1.10, "z": -2.88 },
+                    "rotation": { "x": 0, "y": 3, "z": 0 }
+                },
+                {
+                    "id": "candle_1",
+                    "position": { "x": 1.15, "y": 1.36, "z": -2.86 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_blue_1",
+                    "position": { "x": 1.45, "y": 1.38, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_blue_2",
+                    "position": { "x": 1.45, "y": 1.12, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0.5 }
+                },
+                {
+                    "id": "book_red_1",
+                    "position": { "x": 1.43, "y": 1.38, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_red_2",
+                    "position": { "x": 1.37, "y": 1.12, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_black_1",
+                    "position": { "x": 1.40, "y": 1.38, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "book_black_2",
+                    "position": { "x": 1.39, "y": 1.12, "z": -2.91 },
+                    "rotation": { "x": 0, "y": 0, "z": 0 }
+                },
+                {
+                    "id": "woman",
+                    "position": { "x": 2, "y": 0.53, "z": -1.3 },
                     "rotation": { "x": 0, "y": 90, "z": 0 },
-                    "scale": { "x": 1.1, "y": 1.1, "z": 1.1 }
+                    "scale": { "x": 1, "y": 1, "z": 1 }
                 }
             ],
             "particles": [
@@ -273,7 +446,7 @@
                 },
                 {
                     "name": "candle_light_1",
-                    "position": { "x": 1.90, "y": 1.510, "z": -2.95 }
+                    "position": { "x": 1.20, "y": 1.400, "z": -2.99 }
                 },
                 {
                     "name": "candle_light_2",
@@ -281,7 +454,7 @@
                 },
                 {
                     "name": "candle_light_3",
-                    "position": { "x": 2.77, "y": 1.310, "z": -1.02 }
+                    "position": { "x": 2.77, "y": 1.313, "z": -1.00 }
                 },
                 {
                     "name": "candle_light_4",

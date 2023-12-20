@@ -94,6 +94,552 @@
             }
         ]
     },
+
+    "ball_pen_stand": {
+        "name": "ball_pen_stand",
+        "type": "GLTF",
+        "url": "meshes/utils/ball_pen_stand.glb",
+        "subMeshes": [
+            {
+                "name": "Cylinder_001",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "ball_pen": {
+        "name": "ball_pen",
+        "type": "GLTF",
+        "url": "meshes/utils/ball_pen.glb",
+        "subMeshes": [
+            {
+                "name": "Cylinder_005",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Cylinder_006",
+                "texturePack": "grey_fabric"
+            }
+        ]
+    },
+    "blanket_1": {
+        "name": "blanket_1",
+        "type": "GLTF",
+        "url": "meshes/utils/blanket_1.glb",
+        "subMeshes": [
+            {
+                "name": "Cube_099",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "blanket_2": {
+        "name": "blanket_2",
+        "type": "GLTF",
+        "url": "meshes/utils/blanket_2.glb",
+        "subMeshes": [
+            {
+                "name": "Plane_004",
+                "texturePack": "grey_fabric"
+            }
+        ]
+    },
+    "book_blue": {
+        "name": "book_blue",
+        "type": "GLTF",
+        "url": "meshes/utils/book.glb",
+        "subMeshes": [
+            {
+                "name": "Outside",
+                "texturePack": "blue_fabric"
+            },
+            {
+                "name": "Paper",
+                "texturePack": "book_paper"
+            }
+        ]
+    },
+    "book_red": {
+        "name": "book_red",
+        "type": "GLTF",
+        "url": "meshes/utils/book.glb",
+        "subMeshes": [
+            {
+                "name": "Outside",
+                "texturePack": "red_fabric"
+            },
+            {
+                "name": "Paper",
+                "texturePack": "book_paper"
+            }
+        ]
+    },
+    "book_black": {
+        "name": "book_black",
+        "type": "GLTF",
+        "url": "meshes/utils/book.glb",
+        "subMeshes": [
+            {
+                "name": "Outside",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Paper",
+                "texturePack": "book_paper"
+            }
+        ]
+    },
+    "book_shelf": {
+        "name": "book_shelf",
+        "type": "GLTF",
+        "url": "meshes/utils/book_shelf.glb",
+        "subMeshes": [
+            {
+                "name": "Wood_012",
+                "texturePack": "wood"
+            }
+        ]
+    },
+    "candle": {
+        "name": "candle",
+        "type": "GLTF",
+        "url": "meshes/utils/candle.glb",
+        "subMeshes": [
+            {
+                "name": "Candle",
+                "texturePack": "white_fabric"
+            },
+            {
+                "name": "Top",
+                "texturePack": "white_fabric"
+            }
+        ]
+    },
+    "carpet": {
+        "name": "carpet",
+        "type": "GLTF",
+        "url": "meshes/utils/carpet.glb",
+        "subMeshes": [
+            {
+                "name": "Plane_006",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "chair": {
+        "name": "chair",
+        "type": "GLTF",
+        "url": "meshes/utils/chair.glb",
+        "subMeshes": [
+            {
+                "name": "Wood_005",
+                "texturePack": "wood"
+            }
+        ]
+    },
+    "coffee_cup": {
+        "name": "coffee_cup",
+        "type": "GLTF",
+        "url": "meshes/utils/coffee_cup.glb",
+        "subMeshes": [
+            {
+                "name": "Coffee_Cup",
+                "texturePack": "white_fabric"
+            }
+        ]
+    },
+    "curtain_1": {
+        "name": "curtain_1",
+        "type": "GLTF",
+        "url": "meshes/utils/curtain_1.glb",
+        "subMeshes": [
+            {
+                "name": "Rod",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Curtain",
+                "texturePack": "white_fabric_transparent"
+            }
+        ]
+    },
+    "curtain_2": {
+        "name": "curtain_2",
+        "type": "GLTF",
+        "url": "meshes/utils/curtain_2.glb",
+        "subMeshes": [
+            {
+                "name": "Rod",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Curtain",
+                "texturePack": "white_fabric_transparent"
+            }
+        ]
+    },
+    "curtain_3": {
+        "name": "curtain_3",
+        "type": "GLTF",
+        "url": "meshes/utils/curtain_3.glb",
+        "subMeshes": [
+            {
+                "name": "Rod",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Curtain",
+                "texturePack": "white_fabric_transparent"
+            }
+        ]
+    },
+    "desk_cover": {
+        "name": "desk_cover",
+        "type": "GLTF",
+        "url": "meshes/utils/desk_cover.glb",
+        "subMeshes": [
+            {
+                "name": "Cover",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "desk": {
+        "name": "desk",
+        "type": "GLTF",
+        "url": "meshes/utils/desk.glb",
+        "subMeshes": [
+            {
+                "name": "Desk",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Handles",
+                "texturePack": "cardboard"
+            }
+        ]
+    },
+    "ehdx1_toy": {
+        "name": "ehdx1_toy",
+        "type": "GLTF",
+        "url": "meshes/utils/ehdx1_toy.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Feets",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Legs_Hydrolic",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Legs_Springs",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Lights",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Radar",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Solar_Panel",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Solar_Panel_Skeleton",
+                "texturePack": "grey_fabric"
+            },
+            {
+                "name": "Text",
+                "texturePack": "red_light"
+            },
+            {
+                "name": "Thrusters",
+                "texturePack": "grey_fabric"
+            }
+        ]
+    },
+    "lantern": {
+        "name": "lantern",
+        "type": "GLTF",
+        "url": "meshes/utils/lantern.glb",
+        "subMeshes": [
+            {
+                "name": "Skeleton",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Glass",
+                "texturePack": "glass"
+            }
+        ]
+    },
+    "lantern_no_hook": {
+        "name": "lantern_no_hook",
+        "type": "GLTF",
+        "url": "meshes/utils/lantern_no_hook.glb",
+        "subMeshes": [
+            {
+                "name": "Skeleton",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Glass",
+                "texturePack": "glass"
+            }
+        ]
+    },
+    "pillow_1": {
+        "name": "pillow_1",
+        "type": "GLTF",
+        "url": "meshes/utils/pillow_1.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "pillow_2": {
+        "name": "pillow_2",
+        "type": "GLTF",
+        "url": "meshes/utils/pillow_2.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "rose": {
+        "name": "rose",
+        "type": "GLTF",
+        "url": "meshes/utils/rose.glb",
+        "subMeshes": [
+            {
+                "name": "Stem",
+                "texturePack": "green_fabric"
+            },
+            {
+                "name": "Leaves",
+                "texturePack": "green_fabric"
+            },
+            {
+                "name": "Flowers",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "ruler": {
+        "name": "ruler",
+        "type": "GLTF",
+        "url": "meshes/utils/ruler.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "ruler"
+            }
+        ]
+    },
+    "shelf": {
+        "name": "shelf",
+        "type": "GLTF",
+        "url": "meshes/utils/shelf.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "cardboard"
+            }
+        ]
+    },
+    "small_crate_top": {
+        "name": "small_crate_top",
+        "type": "GLTF",
+        "url": "meshes/utils/small_crate_top.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "small_crate": {
+        "name": "small_crate",
+        "type": "GLTF",
+        "url": "meshes/utils/small_crate.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "stool": {
+        "name": "stool",
+        "type": "GLTF",
+        "url": "meshes/utils/stool.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            }
+        ]
+    },
+    "table_mirror": {
+        "name": "table_mirror",
+        "type": "GLTF",
+        "url": "meshes/utils/table_mirror.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Glass",
+                "texturePack": "glass"
+            }
+        ]
+    },
+    "table_painting": {
+        "name": "table_painting",
+        "type": "GLTF",
+        "url": "meshes/utils/table_painting.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Image",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "telescope": {
+        "name": "telescope",
+        "type": "GLTF",
+        "url": "meshes/utils/telescope.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Top",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Connector",
+                "texturePack": "black_fabric"
+            },
+            {
+                "name": "Legs",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "vase": {
+        "name": "vase",
+        "type": "GLTF",
+        "url": "meshes/utils/vase.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "black_fabric"
+            }
+        ]
+    },
+    "wall_painting_1": {
+        "name": "wall_painting_1",
+        "type": "GLTF",
+        "url": "meshes/utils/wall_painting_1.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Image",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "wall_painting_2": {
+        "name": "wall_painting_2",
+        "type": "GLTF",
+        "url": "meshes/utils/wall_painting_2.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Image",
+                "texturePack": "red_fabric"
+            }
+        ]
+    },
+    "window": {
+        "name": "window",
+        "type": "GLTF",
+        "url": "meshes/utils/window.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Glass",
+                "texturePack": "glass"
+            }
+        ]
+    },
+    "woman_house_skeleton": {
+        "name": "woman_house_skeleton",
+        "type": "GLTF",
+        "url": "meshes/utils/woman_house_skeleton.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            }
+        ]
+    },
+    "woman_house_walls": {
+        "name": "woman_house_walls",
+        "type": "GLTF",
+        "url": "meshes/utils/woman_house_walls.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            }
+        ]
+    },
+    "woman": {
+        "name": "woman",
+        "type": "GLTF",
+        "url": "meshes/utils/woman.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "white_fabric"
+            },
+            {
+                "name": "Cloth",
+                "texturePack": "blue_fabric"
+            }
+        ]
+    },
+
+
+
     "rock_resource_01": {
         "name": "rock_resource_01",
         "type": "GLTF",
@@ -120,6 +666,7 @@
             }
         ]
     },
+
     "europa_horizon_drifter_x1": {
         "name": "europa_horizon_drifter_x1",
         "type": "GLTF",
@@ -866,6 +1413,7 @@
             }
         ]
     },
+
     "B S-1": {
         "name": "B S-1",
         "type": "GLTF",
@@ -920,4 +1468,5 @@
         "url": "meshes/human_units/rover_warrior_6.glb",
         "subMeshes": []
     }
+    
 }

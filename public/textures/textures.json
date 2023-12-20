@@ -74,7 +74,7 @@
         "transparent": true,
         "textures": []
     },
-    {
+        {
         "name": "transparent_fabric",
         "material": "MeshPhysicalMaterial",
         "color": {"r": 255, "g": 255, "b": 255},
@@ -143,6 +143,54 @@
             {
                 "type": "normalMap",
                 "url": "textures/blue_fabric/blue_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "white_fabric",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/white_fabric/white_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/white_fabric/white_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "white_fabric_transparent",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 0.6,
+        "transparent": true,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/white_fabric/white_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/white_fabric/white_fabric_normal.png"
+            }
+        ]
+    },
+    {
+        "name": "green_fabric",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/green_fabric/green_fabric_basecolor.png"
+            },
+            {
+                "type": "normalMap",
+                "url": "textures/green_fabric/green_fabric_normal.png"
             }
         ]
     },

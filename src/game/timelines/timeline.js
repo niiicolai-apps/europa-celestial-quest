@@ -218,7 +218,7 @@ const setupMeshes = (meshes, scene, sequence) => {
     if (sequence.meshes) {
         const _meshes = []
         for (const meshData of sequence.meshes) {
-            const meshSystem = meshes.find(m => m.name === meshData.name);
+            const meshSystem = meshes.find(m => m.id === meshData.id);
 
             if (meshData.position)
                 meshSystem.mesh.position.set(
@@ -346,9 +346,10 @@ const setupParticles = (particles, meshes, sequence) => {
 
 export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ctrl, subTitleCtrl, onStop = () => { }) => {
     const _meshes = [];
-    for (const mesh of json.meshes) {
-        const _mesh = await getMesh(mesh);
-        _meshes.push({ name: mesh, mesh: _mesh });
+    for (const meshData of json.meshes) {
+        const { name, id } = meshData;
+        const mesh = await getMesh(name);
+        _meshes.push({ name, mesh, id });
     }
 
     const _particles = [];
