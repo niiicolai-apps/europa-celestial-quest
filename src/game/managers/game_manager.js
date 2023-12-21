@@ -20,6 +20,7 @@ import '../stats/stats.js';
 import '../units/units.js';
 import '../units/commands.js';
 import '../particles/particles.js';
+import '../../composables/tutorial.js';
 
 import { ref } from 'vue';
 import { useTimeline } from '../../composables/timeline.js';

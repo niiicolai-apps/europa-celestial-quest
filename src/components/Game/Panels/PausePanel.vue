@@ -61,6 +61,7 @@ import Icons from 'frontend-icons';
 import Panel from '../../UI/Panel.vue';
 import { usePanel } from '../../../composables/panel.js';
 import { useLocalization } from '../../../composables/localization.js';
+import { useTutorial } from '../../../composables/tutorial.js';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -69,8 +70,14 @@ const props = defineProps({
         required: true,
     }
 })
+
 const panelManager = usePanel();
 const localizationManager = useLocalization();
+const tutorialManager = useTutorial();
+const replayStartTutorial = () => {
+    tutorialManager.replay("start_tutorial");
+    panelManager.clearPanel();
+}
 
 const optionIconSize = "1em";
 const optionIconFill = "#3f88c5";
@@ -79,6 +86,11 @@ const options = computed(() => [{
     description: localizationManager.getLocale("pause.settings_button_description"),
     icon: "gear",
     panel: "settings",
+}, {
+    name: localizationManager.getLocale("pause.replay.title"),
+    description: localizationManager.getLocale("pause.replay.description"),
+    icon: "scroll",
+    method: replayStartTutorial,
 }, {
     name: localizationManager.getLocale("pause.quit_button_title"),
     description: localizationManager.getLocale("pause.quit_button_description"),

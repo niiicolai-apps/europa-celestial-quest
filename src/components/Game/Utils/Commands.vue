@@ -2,7 +2,7 @@
     <UI.Flex direction="horizontal" justify="start" gap="1">
         <UI.Button
             @click="toggleWarriorCommand('regroup')" :disabled="isSettingCommand && !isGrouping"
-            :type="regroupBtnClasses" class="h-15 w-17">
+            :type="regroupBtnClasses" class="h-15">
             <Icons.fa.ShieldIcon width="1.5em" height="1.5em" fill="#3f88c5" />
             <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                 <Locale id="game_menu.warrior.regroup_button" />
@@ -11,7 +11,7 @@
 
         <UI.Button
             @click="toggleWarriorCommand('attack')" :disabled="isSettingCommand && !isAttacking"
-            :type="attackBtnClasses" class="h-15 w-17">
+            :type="attackBtnClasses" class="h-15">
             <Icons.fa.SkullCrossbonesIcon width="1.5em" height="1.5em" fill="#3f88c5" />
             <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                 <Locale id="game_menu.warrior.attack_button" />

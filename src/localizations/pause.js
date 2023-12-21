@@ -5,6 +5,17 @@ export default {
             en: 'Pause',
             da: 'Pauset',
         },
+
+        replay: {
+            title: {
+                en: 'Replay the start tutorial',
+                da: 'Genafspil start tutorial',
+            },
+            description: {
+                en: 'Rewatch the start tutorial to learn the basics of the game.',
+                da: 'Gense start tutorial for at lære spillets grundlæggende.',
+            },
+        },
         
         settings_button_title: {
             en: 'Change settings',

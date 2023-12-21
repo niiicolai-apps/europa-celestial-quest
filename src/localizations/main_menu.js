@@ -13,6 +13,10 @@ export default {
             en: 'Privacy',
             da: 'Privatliv',
         },
+        licens_button: {
+            en: 'Licens',
+            da: 'Licens',
+        },
         release_notes_button: {
             en: 'Release Notes',
             da: 'Versionsnoter',
@@ -29,9 +33,13 @@ export default {
             en: 'Mute',
             da: 'Sluk lyd',
         },
-        loading: {
+        loading_title: {
             en: 'Loading Main Menu',
             da: 'Indlæser Hovedmenu',
+        },
+        loading: {
+            en: 'Welcome back commander',
+            da: 'Velkommen tilbage kommandør',
         },
     }
 }

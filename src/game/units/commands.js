@@ -27,6 +27,15 @@ const attackColor = 0xff0000;
 const isInitialized = ref(false);
 
 const PositionTracker = () => {
+
+    const setMarkerPosition = (position) => {
+        markerMesh.value.position.x = position.x;
+        markerMesh.value.position.y = position.y + markerYOffset;
+        markerMesh.value.position.z = position.z;
+        
+        markerLastPosition.value = markerMesh.value.position.clone();
+    }
+
     const onPointerDown = (event) => {
         const point = useGround().getIntersectionFromMouse(event);
         if (!point) return;
@@ -38,9 +47,7 @@ const PositionTracker = () => {
         command.position = point;
         
         //command.position.y = heightMap.getY(point.x, point.z);
-        markerMesh.value.position.copy(point);
-        markerMesh.value.position.y += markerYOffset;
-        markerLastPosition.value = markerMesh.value.position.clone();
+        setMarkerPosition(command.position);
         markerMesh.value.material.color.set(type === COMMAND_TYPES.REGROUP 
             ? regroupColor 
             : attackColor);
@@ -95,6 +102,7 @@ const PositionTracker = () => {
         startTrackCommandPositionYou,
         startTrackCommandPosition,
         stopTrackCommandPosition,
+        setMarkerPosition,
     }
 }
 
@@ -116,10 +124,9 @@ useManager().create('units_command', {
             const markerHeight = 5;  
             const markerRadialSegments = 16;  
             const markerGeometry = new THREE.ConeGeometry( markerRadius, markerHeight, markerRadialSegments );
-            const markerMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: .9 });
+            const markerMaterial = new THREE.MeshBasicMaterial({ color: regroupColor, transparent: true, opacity: .9 });
             markerMesh.value = new THREE.Mesh(markerGeometry, markerMaterial);
             markerMesh.value.rotation.x = Math.PI;
-            markerMesh.value.visible = false;
             scene.add(markerMesh.value);
 
             isInitialized.value = true;

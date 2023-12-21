@@ -3,6 +3,7 @@ import { usePlayers } from './players/player.js'
 import { useManager } from './managers/manager.js'
 import { useCanvas } from '../composables/canvas.js'
 import { useItems } from './constructions/constructions.js'
+import { useCommands } from './units/commands.js'
 import Camera from './camera/camera.js'
 import PersistentData from './persistent_data/persistent_data.js'
 import { ref } from 'vue'
@@ -93,10 +94,26 @@ useManager().create('initializer', {
                 await setup(player, mapPlayer)
             }
 
+            /**
+             * Find player (you)
+             */
             const you = players.findYou()
             const ehdx1 = useItems().findByNameAndTeam('Europa Horizon Drifter X1', you.team)
+
+            /**
+             * Setup player camera.
+             */
             await Camera.manager.setPosition(ehdx1.position.x, ehdx1.position.z + 150);
             await Camera.manager.setZoom(250)
+
+            /**
+             * Setup player command.
+             */
+            const commands = useCommands()
+            const commandZOffset = -15
+            const position = { x: ehdx1.position.x, y: ehdx1.position.y, z: ehdx1.position.z + commandZOffset}
+            commands.setCommand(commands.COMMAND_TYPES.REGROUP, position, you.team)
+            commands.PositionTracker().setMarkerPosition(position)
             
             isInitialized.value = true;
         }

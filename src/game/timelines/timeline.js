@@ -353,12 +353,18 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
     }
 
     const _particles = [];
+    const _particlesJson = {};
     for (const particle of json.particles) {
-        const response = await fetch(`particles/${particle.type}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to load particle: ${particle.type}`);
+        let json = _particlesJson[particle.type];
+        if (!json) {
+            const response = await fetch(`particles/${particle.type}.json`);
+            if (!response.ok) {
+                throw new Error(`Failed to load particle: ${particle.type}`);
+            }
+            json = await response.json();
+            _particlesJson[particle.type] = json;
         }
-        const json = await response.json();
+        
         const nebulaSystem = await System.fromJSONAsync(json, THREE);
         const nebulaRenderer = new SpriteRenderer(scene, THREE);
         const nebula = nebulaSystem.addRenderer(nebulaRenderer);

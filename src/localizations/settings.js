@@ -10,6 +10,21 @@ export default {
             da: 'Gem',
         },
 
+        reset: {
+            title: {
+                en: 'Reset',
+                da: 'Nulstil',
+            },
+            description: {
+                en: 'Reset all settings to default',
+                da: 'Nulstil alle indstillinger til standard',
+            },
+            button: {
+                en: 'Reset',
+                da: 'Nulstil',
+            },
+        },
+
         camera_zoom_speed_title: {
             en: 'Camera Zoom Speed',
             da: 'Kamerazoom hastighed',

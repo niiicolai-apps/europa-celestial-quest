@@ -719,5 +719,168 @@
                 }
             ]
         }
-    ]
+    ],
+    "tutorials": {
+        "start_tutorial": {
+            "name": "Europa Start Tutorial",
+            "items": [
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.shop.text",
+                    "top": "auto",
+                    "bottom": "7em",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "auto",
+                    "arrow_bottom": "-3em",
+                    "arrow_left": "0.5em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-down"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.objectives.text",
+                    "top": "auto",
+                    "bottom": "7em",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "auto",
+                    "arrow_bottom": "-3em",
+                    "arrow_left": "4.5em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-down"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.pause.text",
+                    "top": "auto",
+                    "bottom": "7em",
+                    "left": "3.7em",
+                    "right": "auto",
+                    "arrow_top": "auto",
+                    "arrow_bottom": "-3em",
+                    "arrow_left": "6.5em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-down"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.regroup.text",
+                    "top": "auto",
+                    "bottom": "7em",
+                    "left": "auto",
+                    "right": "1em",
+                    "arrow_top": "auto",
+                    "arrow_bottom": "-3em",
+                    "arrow_left": "auto",
+                    "arrow_right": "4.5em",
+                    "icon": "arrow-down"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.attack.text",
+                    "top": "auto",
+                    "bottom": "7em",
+                    "left": "auto",
+                    "right": "1em",
+                    "arrow_top": "auto",
+                    "arrow_bottom": "-3em",
+                    "arrow_left": "auto",
+                    "arrow_right": "0.3em",
+                    "icon": "arrow-down"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.ice.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "0.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.rock.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "3.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.metal.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "6.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.hydrogen.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "4.2em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "6.1em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.research.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "7.2em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "6.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.power.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "auto",
+                    "right": "1em",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "auto",
+                    "arrow_right": "2.2em",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.level.text",
+                    "top": "7em",
+                    "bottom": "auto",
+                    "left": "auto",
+                    "right": "1em",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "auto",
+                    "arrow_right": "2.2em",
+                    "icon": "arrow-up"
+                }
+            ]
+        }
+    }
 }

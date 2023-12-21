@@ -5,8 +5,9 @@ import Icons from 'frontend-icons';
 import Locale from './General/Locale.vue';
 import SettingsPanel from './General/SettingsPanel.vue';
 import PrivacyPanel from './General/PrivacyPanel.vue';
+import LicensPanel from './General/LicensPanel.vue';
 import ReleaseNotesPanel from './General/ReleaseNotesPanel.vue';
-import GameLoader from './General/GameLoader.vue';
+import Loader from './UI/Loader.vue';
 import Audio from './UI/Audio.vue';
 import { usePanel } from '../composables/panel.js';
 import { useAudio } from '../composables/audio.js';
@@ -49,26 +50,27 @@ onMounted(async () => {
     const jupiter = new THREE.Mesh(geometry);
     const jupiterMaterial = await getTexturePack('jupiter', jupiter.uuid);
     jupiter.material = jupiterMaterial;
-    jupiter.position.set(0, 0, -30);
+    jupiter.position.set(-1, 5, -30);
     jupiter.scale.set(1, 1, 1);
     scene.add(jupiter);
 
     const europa = new THREE.Mesh(geometry);
     const europaMaterial = await getTexturePack('europa');
     europa.material = europaMaterial;
+    europa.position.set(0, 5, 0);
     europa.rotation.y = 35 * Math.PI / 180;
     europa.rotation.z = 65 * Math.PI / 180;
-    europa.scale.set(.1, .1, .1);
+    europa.scale.set(.15, .15, .15);
     scene.add(europa);
 
     const ehdx1Light = new THREE.PointLight(0xff0000, 35, .4);
-    const ehdx1 = await getMesh('europa_horizon_drifter_x1_no_parachute');
-    ehdx1.position.set(0, 0,- 3);
+    const ehdx1 = await getMesh('ehdx1_toy');
+    ehdx1.position.set(0, 5, -3);
     ehdx1.rotation.y = 15 * Math.PI / 180;
-    ehdx1.scale.set(.02, .02, .02);
+    ehdx1.scale.set(2, 2, 2);
     scene.add(ehdx1);
     ehdx1.add(ehdx1Light);
-    ehdx1Light.position.set(0, 0, 5)
+    ehdx1Light.position.set(0, 0, 0.1)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(100, 100, 1);
@@ -147,6 +149,7 @@ onUnmounted(async () => {
 
         <SettingsPanel />
         <PrivacyPanel />
+        <LicensPanel />
         <ReleaseNotesPanel />
 
         <UI.Fixed>
@@ -176,6 +179,14 @@ onUnmounted(async () => {
                             </UI.Flex>
                         </UI.Button>
 
+                        <UI.Button type="primary" @click="panelManager.setPanel('release_notes')"
+                            class="w-full py-3 font-bold uppercase">
+                            <UI.Flex direction="horizontal" items="center" justify="between">
+                                <Locale id="main_menu.release_notes_button" />
+                                <Icons.fa.NewsIcon width="1em" height="1em" fill="white" />
+                            </UI.Flex>
+                        </UI.Button>
+
                         <UI.Button type="primary" @click="panelManager.setPanel('privacy')"
                             class="w-full py-3 font-bold uppercase">
                             <UI.Flex direction="horizontal" items="center" justify="between">
@@ -184,11 +195,11 @@ onUnmounted(async () => {
                             </UI.Flex>
                         </UI.Button>
 
-                        <UI.Button type="primary" @click="panelManager.setPanel('release_notes')"
+                        <UI.Button type="primary" @click="panelManager.setPanel('licens')"
                             class="w-full py-3 font-bold uppercase">
                             <UI.Flex direction="horizontal" items="center" justify="between">
-                                <Locale id="main_menu.release_notes_button" />
-                                <Icons.fa.NewsIcon width="1em" height="1em" fill="white" />
+                                <Locale id="main_menu.licens_button" />
+                                <Icons.fa.ShieldIcon width="1em" height="1em" fill="white" />
                             </UI.Flex>
                         </UI.Button>
 
@@ -221,7 +232,10 @@ onUnmounted(async () => {
 
     <TransitionGroup name="fade">
         <div v-if="!isInitialized">
-            <GameLoader />
+            <Loader 
+                titleLocaleId="main_menu.loading_title"
+                descriptionLocaleId="main_menu.loading"
+            />
         </div>
     </TransitionGroup>
 </template>

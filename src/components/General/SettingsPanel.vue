@@ -15,6 +15,12 @@
                         </UI.Paragraph>
                     </div>
 
+                    <div v-if="setting.button">
+                        <UI.Button type="primary" @click="setting.button.action" class="w-33 h-11">
+                            {{ setting.button.label }}
+                        </UI.Button>
+                    </div>
+
                     <div v-if="setting.list">
                         <UI.Select type="primary" :options="setting.list" :startOption="setting.listStartOption"
                             @update:value="setting.listUpdate" class="w-33" />
@@ -42,7 +48,6 @@
                     </div>
                 </UI.Flex>
             </div>
-
         </UI.Flex>
     </Panel>
 </template>
@@ -57,34 +62,51 @@ import Camera from '../../game/camera/camera.js';
 
 const localizationManager = useLocalization();
 
-const startZoomSpeed = ref(5);
-const startMoveSpeed = ref(0.1);
-const startLanguageOption = ref(localizationManager.LANGUAGE.value);
+const defaultLanguage = localizationManager.LANGUAGE_TYPES.ENGLISH;
+const defaultZoomSpeed = 5;
+const defaultMoveSpeed = 0.1;
+
+const startZoomSpeed = ref(defaultZoomSpeed);
+const startMoveSpeed = ref(defaultMoveSpeed);
+const startLanguageOption = ref({ label: defaultLanguage, value: defaultLanguage });
 
 const settings = computed(() => {
     return [{
-        name: localizationManager.getLocale("settings.camera_zoom_speed_title"),
-        description: localizationManager.getLocale("settings.camera_zoom_speed_description"),
-        range: { min: 1, max: 5, step: 0.5, startValue: startZoomSpeed },
-        rangeUpdate: async (value) => {
-            console.log(value);
-            await Camera.setZoomSpeed(value);
-        }
-    }, {
-        name: localizationManager.getLocale("settings.camera_pan_speed_title"),
-        description: localizationManager.getLocale("settings.camera_pan_speed_description"),
-        range: { min: 0.01, max: 1, step: 0.01, startValue: startMoveSpeed },
-        rangeUpdate: async (value) => {
-            console.log(value);
-            await Camera.setMoveSpeed(value);
+        name: localizationManager.getLocale("settings.reset.title"),
+        description: localizationManager.getLocale("settings.reset.description"),
+        button: {
+            label: localizationManager.getLocale("settings.reset.button"),
+            action: () => {
+                localizationManager.setLanguage(defaultLanguage);
+                Camera.setZoomSpeed(defaultZoomSpeed);
+                Camera.setMoveSpeed(defaultMoveSpeed);
+
+                startLanguageOption.value = { label: defaultLanguage, value: defaultLanguage };
+                startZoomSpeed.value = defaultZoomSpeed;
+                startMoveSpeed.value = defaultMoveSpeed;
+            }
         }
     }, {
         name: localizationManager.getLocale("settings.language.title"),
         description: localizationManager.getLocale("settings.language.description"),
         list: Object.values(localizationManager.LANGUAGE_TYPES).map(l => { return { label: l, value: l } }),
-        listStartOption: { label: startLanguageOption, value: startLanguageOption },
+        listStartOption: startLanguageOption,
         listUpdate: (option) => {
             localizationManager.setLanguage(option.value);
+        }
+    }, {
+        name: localizationManager.getLocale("settings.camera_zoom_speed_title"),
+        description: localizationManager.getLocale("settings.camera_zoom_speed_description"),
+        range: { min: 1, max: 15, step: 0.5, startValue: startZoomSpeed },
+        rangeUpdate: async (value) => {
+            await Camera.setZoomSpeed(value);
+        }
+    }, {
+        name: localizationManager.getLocale("settings.camera_pan_speed_title"),
+        description: localizationManager.getLocale("settings.camera_pan_speed_description"),
+        range: { min: 0.01, max: 5, step: 0.01, startValue: startMoveSpeed },
+        rangeUpdate: async (value) => {
+            await Camera.setMoveSpeed(value);
         }
     }]
 })
@@ -93,20 +115,18 @@ onMounted(async () => {
     const pdLanguage = await PersistentData.get('language');
     if (pdLanguage) {
         const language = pdLanguage.lang;
-        startLanguageOption.value = language;
+        startLanguageOption.value = { label: language, value: language };
         localizationManager.setLanguage(language);
     }
 
     const pdZoomSpeed = await PersistentData.get('camera_zoom_speed');
     if (pdZoomSpeed) {
         startZoomSpeed.value = pdZoomSpeed.value;
-        console.log(startZoomSpeed.value);
     }
 
     const pdMoveSpeed = await PersistentData.get('camera_move_speed');
     if (pdMoveSpeed) {
         startMoveSpeed.value = pdMoveSpeed.value;
-        console.log(startMoveSpeed.value);
     }
 });
 </script>

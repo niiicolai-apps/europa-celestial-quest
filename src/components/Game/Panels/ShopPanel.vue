@@ -12,7 +12,7 @@
                         <p class="font-bold uppercase mb-1">
                             <Locale :id="`constructions.${definition.name}.title`" />
                         </p>
-                        <p style="font-size: .9em;">
+                        <p style="font-size: .9em;" class="font-bold">
                             <Locale :id="`constructions.${definition.name}.description`" />
                         </p>
                     </div>  

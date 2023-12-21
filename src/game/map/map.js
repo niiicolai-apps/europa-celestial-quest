@@ -115,6 +115,11 @@ export const useMap = () => {
         return mapData.objectives;
     }
 
+    const tutorials = async () => {
+        const mapData = await fetchMapData(mapName.value);
+        return mapData.tutorials;
+    }
+
     const players = async () => {
         const mapData = await fetchMapData(mapName.value);
         return mapData.players;
@@ -125,6 +130,7 @@ export const useMap = () => {
         terrain,
         resources,
         objectives,
+        tutorials,
         players
     }
 }

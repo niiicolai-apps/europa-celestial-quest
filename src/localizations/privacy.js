@@ -1,17 +1,45 @@
 
 export default {
     privacy: {
+        loading: {
+            en: 'Loading Privacy Policy',
+            da: 'Indlæser privatlivspolitik',
+        },
+        accept_button: {
+            en: 'Accept',
+            da: 'Accepter',
+        },
         title: {
             en: 'Privacy Policy',
             da: 'Privatlivspolitik',
         },
+        requirements: {
+            en: 'You must read and accept the privacy policy to continue',
+            da: 'Du skal læse og acceptere privatlivspolitikken for at fortsætte',
+        },
+        new_modifications: {
+            en: 'New modifications since your last aceptance',
+            da: 'Nye ændringer siden din sidste accept',
+        },
         published: {
-            en: 'Published',
-            da: 'Udgivet',
+            label: {
+                en: 'Published',
+                da: 'Udgivet',
+            },
+            date: {
+                en: '2021-01-01',
+                da: '2021-01-01',
+            },
         },
         updated: {
-            en: 'Updated',
-            da: 'Opdateret',
+            label: {
+                en: 'Updated',
+                da: 'Opdateret',
+            },
+            date: {
+                en: '2021-02-01',
+                da: '2021-02-01',
+            },
         },
 
         data_collection_title: {

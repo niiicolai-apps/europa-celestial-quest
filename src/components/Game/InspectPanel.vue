@@ -16,15 +16,15 @@
                     </div>
                 </UI.Flex>
                 
-                <UI.Flex direction="horizontal" justify="start" gap="1" v-if="selectedIsYours">
-                    <UI.Button @click="inspectManager.moveCtrl.start()" class="h-15 w-17">
+                <UI.Grid columns="4" justify="start" gap="1" v-if="selectedIsYours">
+                    <UI.Button @click="inspectManager.moveCtrl.start()" class="h-15">
                         <Icons.fa.UpDownLeftRightIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.start_move_button" />
                         </p>
                     </UI.Button>
 
-                    <UI.Button @click="inspectManager.sellCtrl.start()" class="h-15 w-17">
+                    <UI.Button @click="inspectManager.sellCtrl.start()" class="h-15">
                         <Icons.fa.TrashIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.start_sell_button" />
@@ -32,20 +32,20 @@
                     </UI.Button>
 
                     <UI.Button v-if="isUpgradeable && !isMaxUpgradeReached"
-                        @click="inspectManager.upgradeCtrl.start()" class="h-15 w-17">
+                        @click="inspectManager.upgradeCtrl.start()" class="h-15">
                         <Icons.fa.CircleUpIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.start_upgrade_button" />
                         </p>
                     </UI.Button>
 
-                    <UI.Button v-if="canBuild" @click="inspectManager.unitCtrl.start()" class="h-15 w-17">
+                    <UI.Button v-if="canBuild" @click="inspectManager.unitCtrl.start()" class="h-15">
                         <Icons.fa.UserAstronautIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.start_unit_button" />
                         </p>
                     </UI.Button>
-                </UI.Flex>
+                </UI.Grid>
             </UI.Flex>
         </UI.Fixed>
     </Transition>
@@ -60,69 +60,67 @@
                     </span>
                 </UI.Flex>
                 <UI.Flex direction="horizontal" justify="between" gap="1" class="w-full">
-                    <UI.Flex justify="start" gap="1">
-                        <UI.Button type="success" @click="inspectManager.moveCtrl.confirm()" class="h-15 w-17">
+                    <UI.Grid gap="1">
+                        <UI.Button type="success" @click="inspectManager.moveCtrl.confirm()" class="h-15">
                             <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                             <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                 <Locale id="inspect.confirm_move_button" />
                             </p>
                         </UI.Button>
 
-                        <UI.Button @click="inspectManager.moveCtrl.cancel()" class="h-15 w-17">
+                        <UI.Button @click="inspectManager.moveCtrl.cancel()" class="h-15">
                             <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                             <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                 <Locale id="inspect.cancel_move_button" />
                             </p>
                         </UI.Button>
-                    </UI.Flex>
+                    </UI.Grid>
                     <UI.Flex direction="horizontal" justify="between" gap="1">
-                        <UI.Flex justify="start" gap="1">
+                        <UI.Grid gap="1">
                             
-                            <UI.Button @click="inspectManager.moveCtrl.rotateRight()" class="h-15 w-17">
+                            <UI.Button @click="inspectManager.moveCtrl.rotateRight()" class="h-15">
                                 <Icons.fa.RotateLeftIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.rotate_left_button" />
                                 </p>
                             </UI.Button>
                             
-                            <UI.Button @click="inspectManager.moveCtrl.moveLeft()" class="h-15 w-17">
+                            <UI.Button @click="inspectManager.moveCtrl.moveLeft()" class="h-15">
                                 <Icons.fa.ArrowLeftIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.move_left_button" />
                                 </p>
                             </UI.Button>
-                        </UI.Flex>
-                        <UI.Flex justify="start" gap="1">
-                            <UI.Button @click="inspectManager.moveCtrl.moveBackward()" class="h-15 w-17">
+                        </UI.Grid>
+                        <UI.Grid gap="1">
+                            <UI.Button @click="inspectManager.moveCtrl.moveBackward()" class="h-15">
                                 <Icons.fa.ArrowUpIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.move_up_button" />
                                 </p>
                             </UI.Button>
 
-                            <UI.Button @click="inspectManager.moveCtrl.moveForward()" class="h-15 w-17">
+                            <UI.Button @click="inspectManager.moveCtrl.moveForward()" class="h-15">
                                 <Icons.fa.ArrowDownIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.move_down_button" />
                                 </p>
                             </UI.Button>
-                        </UI.Flex>
-                        <UI.Flex justify="start" gap="1">
-                            <UI.Button @click="inspectManager.moveCtrl.rotateLeft()" class="h-15 w-17">
+                        </UI.Grid>
+                        <UI.Grid gap="1">
+                            <UI.Button @click="inspectManager.moveCtrl.rotateLeft()" class="h-15">
                                 <Icons.fa.RotateRightIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.rotate_right_button" />
                                 </p>
                             </UI.Button>
-                            <UI.Button @click="inspectManager.moveCtrl.moveRight()" class="h-15 w-17">
+                            <UI.Button @click="inspectManager.moveCtrl.moveRight()" class="h-15">
                                 <Icons.fa.ArrowRightIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                                 <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                                     <Locale id="inspect.move_right_button" />
                                 </p>
                             </UI.Button>
-
-                            
-                        </UI.Flex>
+                        </UI.Grid>
                     </UI.Flex>
                 </UI.Flex>
             </UI.Flex>
@@ -140,21 +138,21 @@
                     </span>
                 </UI.Flex>
 
-                <UI.Flex direction="horizontal" justify="start" gap="1">
-                    <UI.Button type="danger" @click="inspectManager.sellCtrl.confirm()" class="h-15 w-17">
+                <UI.Grid columns="2" gap="1">
+                    <UI.Button type="danger" @click="inspectManager.sellCtrl.confirm()" class="h-15">
                         <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.confirm_sell_button" />
                         </p>
                     </UI.Button>
 
-                    <UI.Button type="primary" @click="inspectManager.sellCtrl.cancel()" class="h-15 w-17">
+                    <UI.Button type="primary" @click="inspectManager.sellCtrl.cancel()" class="h-15">
                         <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.cancel_sell_button" />
                         </p>
                     </UI.Button>
-                </UI.Flex>
+                </UI.Grid>
             </UI.Flex>
         </UI.Fixed>
     </Transition>
@@ -170,21 +168,21 @@
                     </span>
                 </UI.Flex>
 
-                <UI.Flex direction="horizontal" justify="start" gap="1">
-                    <UI.Button type="success" @click="inspectManager.upgradeCtrl.confirm()" class="h-15 w-17">
+                <UI.Grid columns="2" gap="1">
+                    <UI.Button type="success" @click="inspectManager.upgradeCtrl.confirm()" class="h-15">
                         <Icons.fa.CheckmarkIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.confirm_upgrade_button" />
                         </p>
                     </UI.Button>
 
-                    <UI.Button type="primary" @click="inspectManager.upgradeCtrl.cancel()" class="h-15 w-17">
+                    <UI.Button type="primary" @click="inspectManager.upgradeCtrl.cancel()" class="h-15">
                         <Icons.fa.TimesIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.cancel_upgrade_button" />
                         </p>
                     </UI.Button>
-                </UI.Flex>
+                </UI.Grid>
             </UI.Flex>            
         </UI.Fixed>
     </Transition>
@@ -226,7 +224,7 @@
                 </UI.Flex>
 
                 <UI.Flex direction="horizontal" items="auto" justify="start" gap="3">
-                    <UI.Button @click="inspectManager.unitCtrl.cancel()" class="h-15 w-17">
+                    <UI.Button @click="inspectManager.unitCtrl.cancel()" class="h-25 w-17">
                         <Icons.fa.ArrowLeftIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.cancel_unit_button" />
@@ -239,10 +237,10 @@
                             :key="unit.name"
                             type="primary"
                             @click="inspectManager.unitCtrl.queueUnit(unit.name)"
-                            class="w-40 h-15"
+                            class="h-25"
                         >
-                            <UI.Flex direction="horizontal" justify="between" gap="1">
-                                <div class="text-left text-info">
+                            <div>
+                                <div class="text-left text-info mb-3">
                                     <p class="font-bold uppercase text-xs text-info mb-1">
                                         <Locale :id="`units.${unit.name}.title`" />
                                     </p>
@@ -250,12 +248,13 @@
                                         <Locale :id="`units.${unit.name}.description`" />
                                     </p>
                                 </div>
+                                
                                 <div>
-                                    <UI.Flex class="w-12 h-10 bg-info rounded">
+                                    <UI.Flex class="w-full h-10 bg-info rounded">
                                         <img :src="unit.image" :alt="unit.name" class="block w-7 mx-auto" />
                                     </UI.Flex>
                                 </div>
-                            </UI.Flex>
+                            </div>
                         </UI.Button>
                     </UI.Flex>
                 </UI.Flex>

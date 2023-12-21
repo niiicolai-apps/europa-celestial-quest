@@ -21,6 +21,8 @@ import INTRO from '../localizations/intro.js';
 import TOASTS from '../localizations/toasts.js';
 import GAME_END from '../localizations/game_end.js';
 import MAP_LOADER from '../localizations/map_loader.js';
+import SOFTWARE_LICENS from '../localizations/software_licens.js';
+import TUTORIAL from '../localizations/tutorials.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
@@ -50,7 +52,9 @@ const locals = {
     ...INTRO,
     ...TOASTS,
     ...GAME_END,
-    ...MAP_LOADER
+    ...MAP_LOADER,
+    ...SOFTWARE_LICENS,
+    ...TUTORIAL,
 }
 
 export const useLocalization = (_locals = locals) => {

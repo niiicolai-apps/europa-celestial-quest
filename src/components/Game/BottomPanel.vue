@@ -5,7 +5,7 @@
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Button
                         :disabled="isSettingCommand"
-                        @click="panelManager.setPanel('shop')" class="h-15 w-17">
+                        @click="panelManager.setPanel('shop')" class="h-15">
                         <Icons.fa.SpaceAwesomeIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="game_menu.shop_button" />
@@ -14,7 +14,7 @@
 
                     <UI.Button
                         :disabled="isSettingCommand"
-                        @click="panelManager.setPanel('objectives')" class="h-15 w-17">
+                        @click="panelManager.setPanel('objectives')" class="h-15">
                         <Icons.fa.TowerBroadcastIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="game_menu.objectives_button" />
@@ -23,7 +23,7 @@
 
                     <UI.Button
                         :disabled="isSettingCommand"
-                        @click="panelManager.setPanel('pause')" class="h-15 w-17">
+                        @click="panelManager.setPanel('pause')" class="h-15">
                         <Icons.fa.PauseIcon width="1.5em" height="1.5em" fill="#3f88c5" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="game_menu.pause_button" />
