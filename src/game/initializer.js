@@ -98,12 +98,15 @@ useManager().create('initializer', {
              * Find player (you)
              */
             const you = players.findYou()
-            const ehdx1 = useItems().findByNameAndTeam('Europa Horizon Drifter X1', you.team)
+            const items = useItems().findAllByTeam(you.team)
+            if (items.length === 0) return
+
+            const startConstruction = items[0]
 
             /**
              * Setup player camera.
              */
-            await Camera.manager.setPosition(ehdx1.position.x, ehdx1.position.z + 150);
+            await Camera.manager.setPosition(startConstruction.position.x, startConstruction.position.z + 150);
             await Camera.manager.setZoom(250)
 
             /**
@@ -111,7 +114,7 @@ useManager().create('initializer', {
              */
             const commands = useCommands()
             const commandZOffset = -15
-            const position = { x: ehdx1.position.x, y: ehdx1.position.y, z: ehdx1.position.z + commandZOffset}
+            const position = { x: startConstruction.position.x, y: startConstruction.position.y, z: startConstruction.position.z + commandZOffset}
             commands.setCommand(commands.COMMAND_TYPES.REGROUP, position, you.team)
             commands.PositionTracker().setMarkerPosition(position)
             
