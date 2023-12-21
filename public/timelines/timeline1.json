@@ -1,11 +1,7 @@
 {
     "meshes": [
-        "womans_house",
-        "woman_with_poem",
-        "jupiter",
-        "europa",
-        "europa_horizon_drifter_x1",
-        "terrain"
+        { "name": "woman_house_skeleton", "id": "woman_house_skeleton" },
+        { "name": "woman_house_walls", "id": "woman_house_walls" }
     ],
     "lights": [
         { 
@@ -186,11 +182,6 @@
                 }
             ],
             "meshes": [
-                {
-                    "name": "womans_house",
-                    "position": { "x": 0, "y": 0, "z": 0 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                }
             ]
         }
     ]

@@ -6,11 +6,13 @@ import { useUnits } from '../../units/units.js';
 import { useObjectives } from '../../objectives/objectives.js';
 import { useToast } from '../../../composables/toast.js';
 import { usePlayers } from '../../players/player.js';
+import { useMax } from '../../map/max.js';
 import ConstructionDefinitions from '../../definitions/constructions.js'
 import * as THREE from 'three';
 
 const unitManager = useUnits();
 const isBuilding = ref(false);
+const queues = ref([]);
 
 const getConstructionDefinition = (name) => {
     return ConstructionDefinitions.find(definition => definition.name === name);
@@ -32,9 +34,10 @@ const BuildController = {
     },
     dequeueAny: async (selected, scene) => {
         const s = selected.value || selected;
-        const queue = BuildController.getQueue(selected);
-        if (queue.length == 0) return;
+        const queueData = BuildController.getQueue(s);
+        if (!queueData || queueData.queue.length == 0) return;
 
+        const queue = queueData.queue;
         const playerManager = usePlayers();
         const team = s.userData.team;
         const player = playerManager.get(team);
@@ -58,9 +61,11 @@ const BuildController = {
             unitMesh.position.y += unitSize.y / 2;
 
             queue.splice(i, 1);
+            console.log('dequeueing unit', unit.unit.name)
+            break;
         }
 
-        s.userData.unitQueue = queue;
+        BuildController.setQueue(selected, queue);
         useObjectives().tryCompleteIncompletes();
     },
     queueUnit: async (selected, unitName) => {
@@ -74,6 +79,15 @@ const BuildController = {
             return false;
         }
 
+        const team = selected.value.userData.team;
+        const maxManager = useMax();
+        const maxController = maxManager.find(team);
+        if (!maxController.canSpawnOneMoreUnit()) {
+            useToast().add('toasts.unit_controller.max_units', 4000, 'danger');
+            return false;
+        }
+
+
         const units = BuildController.getAllowedUnits(selected);
         const unit = units.find(unit => unit.name === unitName);
         if (!unit) {
@@ -81,7 +95,6 @@ const BuildController = {
             return false;
         }
 
-        const team = selected.value.userData.team;
         const bankManager = useBank();
         const bank = bankManager.get(team);
         const canAfford = bank.canAfford(unit.costs);
@@ -94,13 +107,9 @@ const BuildController = {
             bank.withdraw(cost.amount, cost.currency);
         }
 
-        if (!selected.value.userData.unitQueue) {
-            selected.value.userData.unitQueue = [];
-        }
-
         const startTime = Date.now();
         const completeTime = startTime + unit.complete_time;
-        selected.value.userData.unitQueue.push({ unit, completeTime, startTime });
+        BuildController.addToQueue(selected, { unit, completeTime, startTime });
 
         useToast().add('toasts.unit_controller.success', 4000, 'success');
 
@@ -126,7 +135,24 @@ const BuildController = {
     },
     getQueue: (selected) => {
         const s = selected.value || selected;
-        return s.userData.unitQueue || [];
+        return queues.value.find(q => q.uuid === s.uuid);        
+    },
+    setQueue: (selected, queue=[]) => {
+        const s = selected.value || selected;
+        const uuid = s.uuid;
+        const index = queues.value.findIndex(q => q.uuid === uuid);
+        if (index === -1) {
+            queues.value.push({ uuid, queue });
+        } else {
+            queues.value[index] = { uuid, queue };
+        }
+    },
+    addToQueue: (selected, unit) => {
+        const queueData = BuildController.getQueue(selected);
+        const queueArray = queueData ? queueData.queue : [];
+        console.log('adding to queue', queueData)
+        queueArray.push(unit);
+        BuildController.setQueue(selected, queueArray);
     },
     canBuild: (selected) => {
         const s = selected.value || selected;

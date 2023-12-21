@@ -11,6 +11,7 @@ import { getPosition } from '../../../composables/helpers/grid_helper.js';
 import { usePlayers } from '../../players/player.js';
 import { useCanvas } from '../../../composables/canvas.js';
 import { useHealth } from '../../health/health.js';
+import { useMax } from '../../map/max.js';
 import * as THREE from 'three';
 
 const collisionManager = useCollision();
@@ -144,6 +145,11 @@ const MoveController = {
             removeMesh(selected.value);
             scene.remove(selected.value);
             useItems().removeItemFromState(selected.value);
+
+            const team = selected.value.userData.team;
+            const playerManager = usePlayers();
+            const player = playerManager.get(team);
+            player.maxController.recalculateMax()
         }
         return true;
     },
@@ -187,12 +193,16 @@ const MoveController = {
         if (selected.value.userData.canStore) {
             useItems().recalculateStorage();
         }
-
-        usePlayers().savePlayers();
         
         isMoving.value = false;
         lastPosition.value = null;
         useToast().add('toasts.move_controller.success', 4000, 'success');
+
+        const playerManager = usePlayers();
+        const player = playerManager.get(team);
+        player.saveData();
+        player.maxController.recalculateMax()
+
         return true;
         
     },

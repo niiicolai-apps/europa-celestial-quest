@@ -19,7 +19,7 @@ const setup = async (player, data) => {
 
     for (const construction of data.constructions) {
         const upgradeIndex = construction.upgradeIndex || 0
-        const mesh = await player.spawnConstruction(construction.name, true, upgradeIndex)
+        const mesh = await player.spawnConstruction(construction.name, true, upgradeIndex, true)
         mesh.position.x = construction.position.x
         mesh.position.y = construction.position.y
         mesh.position.z = construction.position.z

@@ -34,6 +34,7 @@ const CONSTRUCTIONS = [
             features: [
                 FEATURES.HEALTH(),
                 FEATURES.PRODUCE('power', [], 2, 5000),
+                FEATURES.MAX_INCREASER(2)
             ],
         }],
     },

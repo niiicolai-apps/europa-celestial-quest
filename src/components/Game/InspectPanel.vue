@@ -248,7 +248,7 @@
                                         <Locale :id="`units.${unit.name}.description`" />
                                     </p>
                                 </div>
-                                
+
                                 <div>
                                     <UI.Flex class="w-full h-10 bg-info rounded">
                                         <img :src="unit.image" :alt="unit.name" class="block w-7 mx-auto" />
@@ -291,19 +291,19 @@ const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgra
 const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding().value);
 const canBuild = computed(() => inspectManager.unitCtrl.canBuild());
 const allowedUnits = computed(() => isBuilding ? inspectManager.unitCtrl.getAllowedUnits() : []);
-const unitsQueue = computed(() => isBuilding ? inspectManager.unitCtrl.getQueue() : []);
-
-
+const unitsQueue = computed(() => isBuilding ? inspectManager.unitCtrl.getQueue()?.queue || [] : []);
 
 const getUnitProgress = (queue) => {
     const start = queue.startTime;
     const completeTime = queue.completeTime;
     const now = Date.now();
-    const progress = completeTime - (now - start);
-    return progress;    
+    const progress = Math.abs(completeTime - now);
+    return progress > (completeTime - start) ? (completeTime - start) : progress;
 }
 
 const getUnitMaxProgress = (queue) => {
-    return queue.completeTime;    
+    const start = queue.startTime;
+    const completeTime = queue.completeTime;
+    return completeTime - start;   
 }
 </script>

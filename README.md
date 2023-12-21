@@ -1,3 +1,5 @@
+[![Build Docker Image and Deploy](https://github.com/niiicolai-apps/europa-celestial-quest/actions/workflows/main.yml/badge.svg)](https://github.com/niiicolai-apps/europa-celestial-quest/actions/workflows/main.yml)
+
 # Install
 
 ```bash

@@ -9,6 +9,7 @@ import { useCanvas } from '../../composables/canvas.js'
 import { useInspect } from '../inspect/inspect.js'
 import { useStats } from '../stats/stats.js'
 import { useBank } from '../bank/bank.js'
+import { useMax } from '../map/max.js'
 
 import ConstructionDefinitions from '../definitions/constructions.js'
 import ComputerBehavior from '../state_machine/behaviors/computer_behavior.json'
@@ -30,7 +31,14 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
     const banks = useBank()
     const bankController = await banks.create(team, startAccounts)
 
-    const spawnUnit = async (unitData) => {
+    const maxManager = useMax()
+    const maxController = await maxManager.add(team)
+
+    const spawnUnit = async (unitData, byPassMax=false) => {
+        if (!byPassMax && maxController.hasReachedMaxUnits()) {
+            throw new Error(`Max constructions reached: ${maxController.units.max}`)
+        }
+
         const units = useUnits()
         const mesh = await getMesh(unitData.mesh)
         if (!mesh) {
@@ -44,12 +52,16 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         return mesh
     }
 
-    const spawnConstruction = async (constructionName, isOwned=false, upgradeIndex = 0) => {
+    const spawnConstruction = async (constructionName, isOwned=false, upgradeIndex = 0, byPassMax=false) => {
         
         const definition = Object.values(ConstructionDefinitions).find(d => d.name === constructionName)
         if (!definition) {
             throw new Error(`Construction definition not found: ${constructionName}`)
-        }        
+        }
+
+        if (!byPassMax && maxController.hasReachedMaxConstructions()) {
+            throw new Error(`Max constructions reached: ${maxController.constructions.max}`)
+        }
         
         const items = useItems()
         const item = await items.spawn(definition, team, isOwned, upgradeIndex)
@@ -58,6 +70,11 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
          * Ensure all constructions are selectable.
          */
         useInspect().addSelectable(item)
+
+        /**
+         * Check if definition is max_increaser
+         */
+        maxController.recalculateMax();
 
         return item
     }
@@ -197,6 +214,7 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         stateMachineId,
         addExperience,
         bankController,
+        maxController,
         getStat,
         isDead,
         saveData

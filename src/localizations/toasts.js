@@ -40,6 +40,10 @@ export default {
                 en: 'Invalid unit.',
                 da: 'Ugyldig enhed.',
             },
+            max_units: {
+                en: 'You have reached the maximum amount of units.',
+                da: 'Du har nået det maksimale antal enheder.',
+            },
             success: {
                 en: 'Unit queued.',
                 da: 'Enhed i kø.',
@@ -89,6 +93,10 @@ export default {
             cannot_afford: {
                 en: 'You cannot afford this construction.',
                 da: 'Du har ikke råd til denne bygning.',
+            },
+            max_constructions: {
+                en: 'You have reached the maximum amount of constructions.',
+                da: 'Du har nået det maksimale antal bygninger.',
             },
         },
         units: {

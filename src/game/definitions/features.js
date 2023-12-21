@@ -127,6 +127,16 @@ const FEATURES = {
             }
         }
     },
+    MAX_INCREASER: (
+        amount = 2
+    ) => {
+        return {
+            name: 'max_increaser',
+            options: {
+                amount,
+            }
+        }
+    },
     PRODUCE: (
         type = 'hydrogen',
         costs = [],

@@ -125,6 +125,11 @@ const click = async (definition) => {
     const bankController = you.value.bankController;
     
     if (!isRequiredLevel(definition)) return;
+
+    if (!you.value.maxController.canSpawnOneMoreConstruction()) {
+        toastManager.add('toasts.shop.max_constructions', 4000, 'danger');
+        return 
+    }
         
     if (bankController.canAfford(definition.costs)) {
         

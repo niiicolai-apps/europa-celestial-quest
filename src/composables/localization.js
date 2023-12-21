@@ -23,6 +23,7 @@ import GAME_END from '../localizations/game_end.js';
 import MAP_LOADER from '../localizations/map_loader.js';
 import SOFTWARE_LICENS from '../localizations/software_licens.js';
 import TUTORIAL from '../localizations/tutorials.js';
+import MAX from '../localizations/max.js';
 
 const LANGUAGE_TYPES = {
     ENGLISH: 'en',
@@ -55,6 +56,7 @@ const locals = {
     ...MAP_LOADER,
     ...SOFTWARE_LICENS,
     ...TUTORIAL,
+    ...MAX
 }
 
 export const useLocalization = (_locals = locals) => {

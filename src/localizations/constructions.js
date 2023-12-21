@@ -7,8 +7,8 @@ export default {
                 da: 'Europa Horizon Drifter X1',
             },
             description: {
-                en: 'Used by scanners to deliver research',
-                da: 'Bruges af scannere til at levere forskning',
+                en: 'Used by scanners to deliver research, produce minimal power, and increase max no. of allowed constructions and units',
+                da: 'Bruges af scannere til at levere forskning, producere minimal energi, og øge max antal tilladte konstruktioner og enheder',
             },
         },
         'Robot Facility': {

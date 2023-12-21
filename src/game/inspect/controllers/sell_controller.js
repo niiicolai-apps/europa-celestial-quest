@@ -73,7 +73,11 @@ const SellController = {
 
         useItems().removeItemFromState(selected.value);
         useToast().add('toasts.sell_controller.success', 4000, 'success');
-        usePlayers().savePlayers();
+
+        const playerManager = usePlayers();
+        const player = playerManager.get(team);
+        player.saveData()
+        player.maxController.recalculateMax()
 
         return true;
     },
