@@ -8,7 +8,6 @@
   "main": "electron/main.prod.cjs",
   "scripts": {
     "setup": "npm install && npx cap add android && npx cap add ios",
-    "preview": "vite preview",
     "dev-web": "vite",
     "dev-ios": "npx cap open ios",
     "dev-android": "npx cap open android",
@@ -58,7 +57,7 @@
     "frontend-icons": "github:niiicolai-apps/frontend-icons#v1.0.1",
     "frontend-persistent-data": "github:niiicolai-apps/frontend-persistent-data#v1.0.0",
     "frontend-ui": "github:niiicolai-apps/frontend-ui#v1.0.2",
-    "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.3",
+    "frontend-webgl": "github:niiicolai-apps/frontend-webgl#v1.0.4",
     "game-bank": "github:niiicolai-apps/game-bank#v1.0.0",
     "game-objectives": "github:niiicolai-apps/game-objectives#v1.0.0",
     "game-stats": "github:niiicolai-apps/game-stats#v1.0.1",

@@ -123,6 +123,13 @@ export const useGround = () => {
         return null;
     }
 
+    const getGroundAtCameraViewPoint = () => {
+        const camera = useCanvas().adapter.value.camera;
+        const position = camera.position;
+        const direction = camera.getWorldDirection(new THREE.Vector3());
+        return getIntersectFromPosition(position, direction);
+    }
+
     const addOnIntersect = (callback) => {
         onIntersect.push(callback);
     }
@@ -131,5 +138,6 @@ export const useGround = () => {
         addOnIntersect,
         getIntersectFromPosition,
         getIntersectionFromMouse,
+        getGroundAtCameraViewPoint,
     }
 }

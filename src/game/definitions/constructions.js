@@ -41,7 +41,7 @@ const CONSTRUCTIONS = [
         name: 'Robot Facility',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
         image: 'thumbnails/human_construction/bot_builder.png',
-        requiredLevel: 1,
+        requiredLevel: 2,
         requiredNumbers: 0,
         mesh: 'Robot Facility',
         costs: [

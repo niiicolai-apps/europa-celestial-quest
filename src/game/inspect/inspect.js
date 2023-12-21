@@ -228,6 +228,7 @@ export const useInspect = () => {
         selected.value = selectable;
         selectableManager.value.setSelected(selectable);
         MarkerController.onSelect(selectable);
+        
         if (!selectable.userData.isOwned) {
             moveCtrl.start();
         }

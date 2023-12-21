@@ -5,5 +5,9 @@ export default {
             en: 'Shop',
             da: 'Butik',
         },
+        require_level: {
+            en: 'Requires level',
+            da: 'Kræver niveau',
+        },
     },
 }

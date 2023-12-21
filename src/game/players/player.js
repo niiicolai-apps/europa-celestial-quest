@@ -20,15 +20,15 @@ const scene = ref(null)
 const mapName = ref('map1')
 const isInitialized = ref(false)
 
-const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10, startAccounts=[]) => {
+const Player = async (isComputer=false, isYou=false, team=null, level=1, experience=10, startAccounts=[]) => {
     const stateMachineId = Date.now();
     if (!team) team = `team-${players.value.length + 1}`
 
     const stats = useStats()
-    const statsController = stats.create(team, level, experience)
+    const statsController = await stats.create(team, level, experience)
 
     const banks = useBank()
-    const bankController = banks.create(team, startAccounts)
+    const bankController = await banks.create(team, startAccounts)
 
     const spawnUnit = async (unitData) => {
         const units = useUnits()
@@ -49,7 +49,7 @@ const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10
         const definition = Object.values(ConstructionDefinitions).find(d => d.name === constructionName)
         if (!definition) {
             throw new Error(`Construction definition not found: ${constructionName}`)
-        }
+        }        
         
         const items = useItems()
         const item = await items.spawn(definition, team, isOwned, upgradeIndex)
@@ -181,6 +181,10 @@ const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10
         await PersistentData.set(`${mapName.value}-players`, pdPlayers)
     }
 
+    const getStat = () => {
+        return stats.findStat(team)
+    }
+
     return {
         team,
         isYou,
@@ -193,6 +197,7 @@ const Player = (isComputer=false, isYou=false, team=null, level=1, experience=10
         stateMachineId,
         addExperience,
         bankController,
+        getStat,
         isDead,
         saveData
     }
@@ -220,8 +225,8 @@ useManager().create('players', {
 
 export const usePlayers = () => {
 
-    const add = (isComputer=false, isYou=false, teamName=null, difficulty='easy', level=1, experience=10, startAccounts=[]) => {
-        const player = Player(isComputer, isYou, teamName, level, experience, startAccounts)
+    const add = async (isComputer=false, isYou=false, teamName=null, difficulty='easy', level=1, experience=10, startAccounts=[]) => {
+        const player = await Player(isComputer, isYou, teamName, level, experience, startAccounts)
         
         players.value.push(player)
 

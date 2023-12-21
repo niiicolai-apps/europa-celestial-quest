@@ -55,7 +55,7 @@ useManager().create('initializer', {
             const spawnedTeams = []
             if (pdPlayers) {
                 for (const pdPlayer of pdPlayers) {
-                    const player = players.add(
+                    const player = await players.add(
                         pdPlayer.is_computer, 
                         pdPlayer.is_you, 
                         pdPlayer.team_name, 
@@ -80,7 +80,7 @@ useManager().create('initializer', {
                 const exists = spawnedTeams.includes(mapPlayer.team_name)
                 if (exists) continue
                 
-                const player = players.add(
+                const player = await players.add(
                     mapPlayer.is_computer, 
                     mapPlayer.is_you, 
                     mapPlayer.team_name, 

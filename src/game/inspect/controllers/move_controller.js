@@ -50,6 +50,37 @@ const move = (selected, dx, dy, dz) => {
     return true;
 }
 
+const setStartPoint = (selected) => {
+    if (selected.value.userData.isOwned) return;
+
+    const ground = useGround();
+    const groundCameraViewPoint = ground.getGroundAtCameraViewPoint();
+    const nextPosition = new THREE.Vector3();
+    const getNextPosition = (i, j) => {
+        nextPosition.copy(groundCameraViewPoint);
+        nextPosition.x += j * moveLength;
+        nextPosition.z += i * moveLength;
+        return nextPosition;
+    }
+    const maxLookAtDistance = 10;
+    for (let i = 0; i < maxLookAtDistance; i++) {
+        let foundPosition = false;
+        for (let j = 0; j < maxLookAtDistance; j++) {
+            const point = getNextPosition(i, j);
+
+            if (collisionManager.isCollidingAt(selected.value, point)) {
+                continue;
+            }
+            
+            selected.value.position.copy(point); 
+            move(selected, 0, 0, 0);
+            foundPosition = true;
+            break;
+        }
+        if (foundPosition) break;
+    }
+}
+
 const setupMovingVisual = (selected, placed = false) => {
     const transparent = placed ? false : true;
     const opacity = placed ? 1 : 0.5;
@@ -93,6 +124,7 @@ const MoveController = {
         lastPosition.value = selected.value.position.clone();
 
         setupMovingVisual(selected);
+        setStartPoint(selected);
         
         return true;
     },
