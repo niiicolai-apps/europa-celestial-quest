@@ -18,6 +18,7 @@ const collisionManager = useCollision();
 
 const isMoving = ref(false);
 const lastPosition = ref(null);
+const nextPosition = new THREE.Vector3();
 
 const placingMaterials = ref({});
 
@@ -28,11 +29,9 @@ const worldDown = new THREE.Vector3(0, -1, 0);
 
 const move = (selected, dx, dy, dz) => {
     if (!isMoving.value) return false;
-
-    const nextPosition = selected.value.position.clone();
-    nextPosition.x += dx;
-    nextPosition.y += dy;
-    nextPosition.z += dz;
+    nextPosition.x = dx + selected.value.position.x;
+    nextPosition.y = dy + selected.value.position.y;
+    nextPosition.z = dz + selected.value.position.z;
 
     const point = useGround().getIntersectFromPosition(nextPosition, worldDown);
     if (!point) return false;
@@ -138,12 +137,6 @@ const MoveController = {
         if (selected.value.userData.isOwned) {
             selected.value.position.copy(lastPosition.value);
         } else {
-            const canvas = useCanvas();
-            const adapter = canvas.adapter.value;
-            const scene = adapter.scene;
-
-            removeMesh(selected.value);
-            scene.remove(selected.value);
             useItems().removeItemFromState(selected.value);
 
             const team = selected.value.userData.team;
@@ -235,10 +228,7 @@ const MoveController = {
             return false;
 
         const placementYOffset = selected.value.userData.placementYOffset || 0;
-        const box3 = new THREE.Box3().setFromObject(selected.value);
-        const size = box3.getSize(new THREE.Vector3());
-        point = getPosition(point);
-        point.y += (size.y / 2) + placementYOffset;
+        point.y += placementYOffset;
 
         if (collisionManager.isCollidingAt(selected.value, point))
             return false;

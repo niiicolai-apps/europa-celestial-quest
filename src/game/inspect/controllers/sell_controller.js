@@ -54,7 +54,6 @@ const SellController = {
         }
 
         isSelling.value = false;
-        selected.value.userData.isOwned = false;
 
         const team = selected.value.userData.team;
         const bankManager = useBank();
@@ -63,14 +62,7 @@ const SellController = {
         for (const cost of selected.value.userData.costs) {
             bank.deposit(cost.amount, cost.currency);
         }
-
-        const canvas = useCanvas();
-        const adapter = canvas.adapter.value;
-        const scene = adapter.scene;
-
-        removeMesh(selected.value);
-        scene.remove(selected.value);
-
+        
         useItems().removeItemFromState(selected.value);
         useToast().add('toasts.sell_controller.success', 4000, 'success');
 

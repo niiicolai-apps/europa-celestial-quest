@@ -1,48 +1,67 @@
 import { ref } from 'vue';
 import * as THREE from 'three';
-import { useHeightMap } from './height_map.js';
 import { useManager } from '../managers/manager.js';
 
 const agents = ref([]);
-const lookAt = new THREE.Vector3();
-const direction = new THREE.Vector3();
-const remainingDistanceVector = new THREE.Vector3();
-const heightMap = useHeightMap();
+const lookAtInstance = new THREE.Vector3();
+const directionInstance = new THREE.Vector3();
+const remainingDistanceInstance = new THREE.Vector3();
+
 const paused = ref(false);
+
+const Navigator = (object3D, destination, speed, groundOffset = 0, acceptableDistance = 1) => {
+    const position = object3D.position;
+    const uuid = object3D.uuid;
+    position.y = groundOffset;
+    destination.y = groundOffset;
+
+    const move = () => {
+        directionInstance
+            .subVectors(destination, position)
+            .normalize()
+            .multiplyScalar(speed);
+        object3D.position.x += directionInstance.x;
+        object3D.position.z += directionInstance.z;
+    }
+
+    const lookAt = () => {
+        lookAtInstance.x = destination.x;
+        lookAtInstance.z = destination.z;
+        lookAtInstance.y = position.y;
+        object3D.lookAt(lookAtInstance);
+    }
+
+    const remainingDistance = () => {
+        return remainingDistanceInstance
+            .subVectors(destination, position)
+            .length();
+    }
+
+    const reachedDestination = () => {
+        return remainingDistance() < acceptableDistance;
+    }
+
+    const setSpeed = (newSpeed) => {
+        speed = newSpeed;
+    }
+
+    return {
+        move,
+        lookAt,
+        remainingDistance,
+        reachedDestination,
+        setSpeed,
+        uuid,
+    }
+}
 
 const update = () => {
     if (paused.value) return;
     for (const agent of agents.value) {
-        direction.subVectors(agent.destination, agent.object3D.position)
-            .normalize()
-            .multiplyScalar(agent.speed);
-        agent.object3D.position.add(direction);
+        agent.move();
 
-        /*
-        const y = heightMap.getY(agent.object3D.position.x, agent.object3D.position.z);
-        if (y !== null) {
-            agent.object3D.position.y = y + agent.groundOffset;
-        }*/
-
-        lookAt.x = agent.destination.x;
-        lookAt.z = agent.destination.z;
-        lookAt.y = agent.object3D.position.y;
-        agent.object3D.lookAt(lookAt);
-        /*
-         direction.add(agent.object3D.position)
-         direction.y += 1;
-         const intersect = ground.getIntersectFromPosition(direction, worldDown);
-         if (intersect) {
-             direction.copy(intersect);
-         }
-         agent.object3D.position.copy(direction);*/
-
-        const remainingDistance = remainingDistanceVector
-            .subVectors(agent.destination, agent.object3D.position)
-            .length();
-            //console.log(remainingDistance, agent.acceptableDistance);   
-        if (remainingDistance < agent.acceptableDistance) {
-            agents.value = agents.value.filter(a => a !== agent);
+        if (agent.reachedDestination()) {
+            agents.value = agents.value.filter(a => a.uuid !== agent.uuid);
         }
     }
 }
@@ -71,28 +90,28 @@ useManager().create('navigation', {
 })
 
 export const useNavigation = () => {
-    const addAgent = (object3D, destination, speed, groundOffset, acceptableDistance=1) => {
-        const exist = agents.value.find(a => a.object3D.uuid === object3D.uuid);
-        if (exist) {
-            exist.destination = destination;
-            exist.speed = speed;
-            exist.groundOffset = groundOffset;
-            exist.acceptableDistance = acceptableDistance;
-            return;
-        }
 
-        agents.value.push({ object3D, destination, speed, groundOffset, acceptableDistance });
+    const addAgent = (object3D, destination, speed, groundOffset=0, acceptableDistance = 1) => {
+        if (findAgent(object3D)) return;
+        
+        const agent = Navigator(object3D, destination, speed, groundOffset, acceptableDistance);
+        agent.lookAt();
+        agents.value.push(agent);
+        return agent;
     }
 
-    const removeAgent = (agent) => {
-        agents.value = agents.value.filter(a => a !== agent);
+    const removeAgent = (object3D) => {
+        agents.value = agents.value.filter(a => a.uuid !== object3D.uuid);
     }
 
-    const reachedDestination = (object3D, destination, acceptableDistance = 0.1) => {
-        const remainingDistance = remainingDistanceVector
-            .subVectors(destination, object3D.position)
-            .length();
-        return remainingDistance < acceptableDistance;
+    const findAgent = (object3D) => {
+        return agents.value.find(a => a.uuid === object3D.uuid);
+    }
+
+    const reachedDestination = (object3D) => {
+        const agent = findAgent(object3D);
+        if (!agent) return false;
+        return agent.reachedDestination();
     }
 
     return {
@@ -100,5 +119,6 @@ export const useNavigation = () => {
         addAgent,
         removeAgent,
         reachedDestination,
+        findAgent,
     }
 }

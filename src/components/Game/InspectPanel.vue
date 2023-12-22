@@ -53,12 +53,12 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isMoving" top="auto">
             <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
-                <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                <span class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.moving_title" /> <Locale :id="`constructions.${selected.name}.title`" />
                     <span>
                         <Locale :id="`constructions.${selected.name}`" />
                     </span>
-                </UI.Flex>
+                </span>
                 <UI.Flex direction="horizontal" justify="between" gap="1" class="w-full">
                     <UI.Grid gap="1">
                         <UI.Button type="success" @click="inspectManager.moveCtrl.confirm()" class="h-15">
@@ -130,13 +130,13 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isSelling" top="auto">
             <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
-                <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                <span class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.selling_title" /> 
                     <span>
                         <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
                         <span>?</span>
                     </span>
-                </UI.Flex>
+                </span>
 
                 <UI.Grid columns="2" gap="1">
                     <UI.Button type="danger" @click="inspectManager.sellCtrl.confirm()" class="h-15">
@@ -160,13 +160,13 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isUpgrading" top="auto">
             <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
-                <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                <span class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.upgrading_title" /> 
                     <span>
                         <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
                         <span>?</span>
                     </span>
-                </UI.Flex>
+                </span>
 
                 <UI.Grid columns="2" gap="1">
                     <UI.Button type="success" @click="inspectManager.upgradeCtrl.confirm()" class="h-15">
@@ -190,9 +190,9 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isBuilding" top="auto">
             <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
-                <UI.Flex direction="horizontal" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                <span class="bg-primary font-bold text-info text-xs p-1 rounded">
                     <Locale id="inspect.unit_title" /> <Locale :id="`constructions.${selected.name}.title`" />
-                </UI.Flex>
+                </span>
 
                 <UI.Flex direction="horizontal" justify="start" gap="1">
                     <UI.Button 

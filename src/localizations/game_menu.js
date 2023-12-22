@@ -1,6 +1,10 @@
 
 export default {
     game_menu: {
+        close_button: {
+            en: 'Close',
+            da: 'Luk',
+        },
         shop_button: {
             en: 'Shop',
             da: 'Butik',

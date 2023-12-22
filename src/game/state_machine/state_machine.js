@@ -96,7 +96,6 @@ export const useStateMachine = () => {
 
     const remove = (id) => {
         if (!id) throw new Error('id is required');
-        
         const index = managers.value.findIndex(m => m.id === id);
         if (index !== -1) {
             managers.value.splice(index, 1);
@@ -109,7 +108,7 @@ export const useStateMachine = () => {
         return managers.value.find(m => m.id === id);
     }
 
-    const setState = (id, stateName) => {
+    const setState = (id, stateName, target=null) => {
         if (!id) throw new Error('id is required');
         if (!stateName) throw new Error('stateName is required');
 
@@ -120,6 +119,11 @@ export const useStateMachine = () => {
         if (!state) throw new Error(`State not found: ${stateName}`);
 
         manager.state = state;
+
+        if (target) {
+            manager.target = target;
+        }
+
         setAction(manager, 0);
     }
 

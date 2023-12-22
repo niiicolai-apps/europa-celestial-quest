@@ -264,17 +264,32 @@ export const useInspect = () => {
         }
 
         selectableManager.value.selectables.remove(selectable);
+        
+        const selectablesArray = selectableManager.value.selectables.get();
+        for (const s of selectablesArray) {
+            if (s.uuid === selectable.uuid) {
+                selectablesArray.splice(selectablesArray.indexOf(s), 1);
+            }
+        }
     }
 
     const isSelectable = (selectable) => {
         if (!isInitialized.value) {
             throw new Error('Inspect is not enabled');
         }
+
         if (!selectable) {
             throw new Error('Selectable is required');
         }
 
-        return selectableManager.value.selectables.has(selectable);
+        const selectablesArray = selectableManager.value.selectables.get();
+        for (const s of selectablesArray) {
+            if (s.uuid === selectable.uuid) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     return {

@@ -16,7 +16,7 @@ const isInitialized = ref(false)
 const scene = ref(null)
 
 const setup = async (player, data) => {
-
+    
     for (const construction of data.constructions) {
         const upgradeIndex = construction.upgradeIndex || 0
         const mesh = await player.spawnConstruction(construction.name, true, upgradeIndex, true)
@@ -47,7 +47,7 @@ useManager().create('initializer', {
             const map = useMap()
             const mapName = await map.name()
             playersMapData.value = await map.players()
-
+            
             /**
              * 1. Load PD players
              */

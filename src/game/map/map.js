@@ -52,6 +52,15 @@ const createLights = (mapData, scene) => {
                 lightData.target.z
             );
         }
+
+        if (lightData.type === 'directional') {
+            light.castShadow = true;
+            light.shadow.mapSize.width = 2048;
+            light.shadow.mapSize.height = 2048;
+            light.shadow.camera.near = 0.5;
+            light.shadow.camera.far = 500;
+        }
+
         scene.add(light);
         lights.value.push(light);
     }

@@ -4,7 +4,7 @@ let textureCache = {}
 let textureJson = null
 const textureLoader = new THREE.TextureLoader()
 
-const newMaterial = (type, color) => {
+const newMaterial = (type) => {
     let material;
     switch (type) {
         case 'MeshBasicMaterial':
@@ -37,6 +37,7 @@ export const getTexturePack = async (name, object_uuid) => {
 
     if (!textureJson)
         textureJson = await fetch('/textures/textures.json').then(res => res.json())
+
     const texturePack = textureJson.find(texturePack => texturePack.name === name)
     if (!texturePack) return null
 
@@ -83,7 +84,8 @@ export const getTexturePack = async (name, object_uuid) => {
     }
 
     textureCache[name] = texture
-
+    
+    
     return texture.material
 }
 

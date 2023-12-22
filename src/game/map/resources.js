@@ -6,13 +6,14 @@ import { useCanvas } from '../../composables/canvas.js';
 
 const resources = ref([]);
 const isInitialized = ref(false);
+const yOffset = 3;
 
 const createResources = async (resourcesData, scene) => {
     for (const resourceData of resourcesData) {
         const resource = await getMesh(resourceData.mesh.name);
         const { position, rotation, scale } = resourceData;
 
-        resource.position.set(position.x, position.y, position.z);
+        resource.position.set(position.x, position.y + yOffset, position.z);
         resource.rotation.set(rotation.x, rotation.y, rotation.z);
         resource.scale.set(scale.x, scale.y, scale.z);
         scene.add(resource);

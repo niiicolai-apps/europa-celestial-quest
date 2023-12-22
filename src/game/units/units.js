@@ -1,17 +1,15 @@
 import { ref } from 'vue';
-import { useGround } from '../map/ground.js';
 import { useHealth } from '../health/health.js';
 import { removeMesh } from '../models/meshes.js';
 import { useStateMachine } from '../state_machine/state_machine.js'
-import { useHeightMap } from '../navigation/height_map.js';
 import { useGameEnd } from '../managers/game_end.js'
 import { useManager } from '../managers/manager.js';
 import { useCanvas } from '../../composables/canvas.js';
 import { useParticlesPool } from '../particles/particles_pool.js';
+import { useCommands } from './commands.js';
 import UnitsBehavior from '../state_machine/behaviors/units_behavior.json';
 import UnitStates from '../state_machine/states/unit_states.js';
 
-const heightMap = useHeightMap();
 const units = ref([]);
 
 const isInitialized = ref(false);
@@ -28,11 +26,11 @@ useManager().create('units', {
         priority: 1,
         callback: async (options) => {
             if (isInitialized.value) return false
-    
+
             const canvas = useCanvas()
             const adapter = canvas.adapter.value
             scene.value = adapter.scene
-            
+
             isInitialized.value = true;
         }
     },
@@ -60,7 +58,7 @@ export const useUnits = () => {
     const featuresToOptions = (features) => {
         const options = {};
         for (const feature of features) {
-            options[feature.name] = {...feature.options};
+            options[feature.name] = { ...feature.options };
         }
         return options;
     }
@@ -77,28 +75,22 @@ export const useUnits = () => {
 
         const onDie = () => {
             remove(unit.object3D)
-            scene.value.remove(unit.object3D)
-            removeMesh(unit.object3D)
             useGameEnd().endGameCheck()
         }
 
         const onDamage = (attacker) => {
-            /*
-                    const behavior = UnitsBehavior[unit.data.primary_function];
-                    const { state: reactStateName, blocking_states } = behavior.on_damage;
-                    if (blocking_states.includes(unit.state?.name)) {
-                        return;
-                    }
+            const behavior = UnitsBehavior[unit.data.primary_function];
+            const { state: reactStateName, blocking_states } = behavior.on_damage;
+            if (blocking_states.includes(unit.state?.name)) {
+                return;
+            }
 
-                    const state = behavior.states.find(s => s.name === reactStateName);
-                    if (!state) {
-                        throw new Error(`State not found: ${reactStateName}`);
-                    }
+            const state = behavior.states.find(s => s.name === reactStateName);
+            if (!state) {
+                throw new Error(`State not found: ${reactStateName}`);
+            }
 
-                    console.log(attacker)
-                    unit.state = state;
-                    unit.target = attacker;
-                    setAction(unit, 0);*/
+            useStateMachine().setState(unit.object3D.uuid, reactStateName, attacker);
         }
 
         healthManager.addHealthObject(
@@ -112,10 +104,14 @@ export const useUnits = () => {
     }
 
     const add = async (object3D, data, team = 'player') => {
-        // Create unit options
+        /**
+         * Create unit options
+         */
         const options = featuresToOptions(data.features);
 
-        // Create unit
+        /**
+         * Create unit data
+         */
         const unit = {
             object3D,
             data,
@@ -123,39 +119,86 @@ export const useUnits = () => {
             team
         };
 
+        /**
+         * Create muzzle particle pool.
+         */
         if (options.attack?.muzzleParticle) {
             const particlesPools = useParticlesPool();
             if (!particlesPools.findPool(options.attack.muzzleParticle.name)) {
                 await particlesPools.create(options.attack.muzzleParticle.name);
-            }   
+            }
         }
 
+        /**
+         * Create hit particle pool.
+         */
         if (options.attack?.hitParticle) {
             const particlesPools = useParticlesPool();
             if (!particlesPools.findPool(options.attack.hitParticle.name)) {
                 await particlesPools.create(options.attack.hitParticle.name);
-            }   
+            }
         }
 
+        /**
+         * Hide unit if paused.
+         */
         if (isPaused.value) {
             unit.object3D.visible = false;
         }
-        
+
+        /**
+         * Add to units array.
+         */
         units.value.push(unit);
+
+        /**
+         * Add to health manager.
+         */
         createHealth(unit);
 
+        /**
+         * Add to state machine.
+         */
         const stateMachine = useStateMachine()
         const behavior = UnitsBehavior[data.primary_function]
         const states = UnitStates;
         const id = object3D.uuid
         stateMachine.add(unit, id, behavior, states);
+
+        /**
+         * Ensure Unit warrior is set to last command.
+         */
+        const command = useCommands().findCommand(team);
+        if (command && data.primary_function === 'warrior') {
+            setStateByFunction('warrior', command.type, team);
+        }
     }
 
     const remove = (object3D) => {
         units.value = units.value.filter(u => u.object3D.uuid !== object3D.uuid);
+
+        /**
+         * Remove from state machine.
+         */
+        useStateMachine().remove(object3D.uuid);
+
+        /**
+         * Remove from health manager.
+         */
+        useHealth().removeHealthObject(object3D);
+
+        /**
+         * Remove from scene.
+         */
+        scene.value.remove(object3D)
+
+        /**
+         * Remove from cache.
+         */
+        removeMesh(object3D)
     }
 
-    const setStateByFunction = (primaryFunction, stateName, team='player') => {
+    const setStateByFunction = (primaryFunction, stateName, team = 'player') => {
         const stateMachine = useStateMachine()
         const unitsByFunction = units.value.filter(u => u.data.primary_function === primaryFunction);
         const unitsByTeam = unitsByFunction.filter(u => u.team === team);

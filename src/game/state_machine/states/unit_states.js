@@ -6,10 +6,10 @@ import { useItems } from "../../constructions/constructions.js";
 import { useParticles } from "../../particles/particles.js";
 import { useParticlesPool } from "../../particles/particles_pool.js";
 import { useHealth } from "../../health/health.js";
-import { useHeightMap } from "../../navigation/height_map.js";
 import { usePlayers } from "../../players/player.js";
 import { useCommands } from "../../units/commands.js";
 import * as THREE from 'three';
+import { useStateMachine } from "../state_machine.js";
 
 class Base {
     constructor(manager, options = {}) {
@@ -53,54 +53,118 @@ class Timer extends Base {
     }
 }
 
+class Collect extends Timer {
+    constructor(manager, options = {}) {
+        super(manager, options);
+
+        const unit = manager.object;
+        const unitOptions = unit.options;
+        const collect = unitOptions.collect;
+        const scan = unitOptions.scan;
+        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
+
+        const bankManager = useBank();
+        this.bank = bankManager.get(unit.team);
+        this.costs = collect ? collect.costs : scan.costs;
+    }
+
+    exit() {
+        if (this.costs) {
+            for (const cost of this.costs) {
+                this.bank.withdraw(cost.amount, cost.currency);
+            }
+        }
+    }
+
+    isComplete() {
+        const timerIsComplete = super.isComplete();
+        let canAfford = true;
+        if (this.costs) {
+            canAfford = this.bank.canAfford(this.costs);
+        }
+
+        return (timerIsComplete && canAfford);
+    }
+}
+
+class Deliver extends Base {
+    constructor(manager, options = {}) {
+        super(manager, options);
+
+        const unit = manager.object;
+        const unitOptions = unit.options;
+        const collect = unitOptions.collect;
+        const scan = unitOptions.scan;
+        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
+
+        const bankManager = useBank();
+        this.bank = bankManager.get(unit.team);
+        this.amount = collect ? collect.max : scan.rate;
+        this.type = collect ? collect.type : scan.type;
+    }
+
+    exit() {
+        this.bank.deposit(this.amount, this.type);
+    }
+
+    isComplete() {
+        return true
+    }
+}
+
+/**
+ * Move behavior.
+ */
 class MoveTo extends Base {
     constructor(manager, options = {}, acceptableDistance = 1) {
         super(manager, options);
-        this.navigation = useNavigation();
         this.acceptableDistance = acceptableDistance;
 
         const unit = manager.object;
         const unitOptions = unit.options;
+        const object3D = unit.object3D;
         const move = unitOptions.move;
-        const moveDestination = move ? move.destination : null;
+        this.destination = move ? move.destination : null;
+
         if (!move) throw new Error('Unit Move feature is required');
-        if (!moveDestination) throw new Error('Unit Move feature destination is required');
+        if (!this.destination) throw new Error('Unit Move feature destination is required');
+
+        this.speed = move.speed
+        this.groundOffset = move.groundOffset,
+        this.object3D = object3D;
+        this.agent = null;
     }
 
     update() {
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const object3D = unit.object3D;
-        const speed = unitOptions.move.speed;
-        const destination = unitOptions.move.destination;
-        const groundOffset = unitOptions.move.groundOffset;
+        if (!this.agent) {
+            this.agent = useNavigation().addAgent(
+                this.object3D,
+                this.destination,
+                this.speed,
+                this.groundOffset,
+                this.acceptableDistance
+            );
+        }
+    }
 
-        this.navigation.addAgent(
-            object3D,
-            destination,
-            speed,
-            groundOffset,
-            this.acceptableDistance
-        );
+    exit() {
+        useNavigation().removeAgent(this.object3D);
     }
 
     isComplete() {
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const object3D = unit.object3D;
-        const destination = unitOptions.move.destination;
-        const acceptableDistance = this.acceptableDistance;
-
-        return this.navigation.reachedDestination(
-            object3D,
-            destination,
-            acceptableDistance
-        );
+        if (!this.agent) return false;
+        const isComplete = this.agent.reachedDestination();
+        return isComplete;
     }
 }
 
+/**
+ * Move Attack behavior.
+ * 
+ * Follows the same move behavior,
+ * but ensures the unit is within
+ * attack distance of the target.
+ */
 class MoveToAttack extends MoveTo {
     constructor(manager, options = {}) {
         super(manager, options);
@@ -157,7 +221,6 @@ class FindClosest extends Base {
         if (!collect && !scan && !attack)
             throw new Error('Unit Collect, Scan, or Attack feature is required');
 
-        this.map = useHeightMap();
         this.target = null;
     }
 
@@ -215,7 +278,6 @@ class FindClosest extends Base {
         const attack = unitOptions.attack;
         const move = unitOptions.move;
         const targetPosition = this.target.position;
-        //targetPosition.y = this.map.getY(targetPosition.x, targetPosition.z)
 
         if (collect) {
             collect.target = this.target;
@@ -294,64 +356,6 @@ class FindRandom extends Base {
     }
 }
 
-class Collect extends Timer {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-
-        const bankManager = useBank();
-        this.bank = bankManager.get(unit.team);
-        this.costs = collect ? collect.costs : scan.costs;
-    }
-
-    exit() {
-        if (this.costs) {
-            for (const cost of this.costs) {
-                this.bank.withdraw(cost.amount, cost.currency);
-            }
-        }
-    }
-
-    isComplete() {
-        const timerIsComplete = super.isComplete();
-        let canAfford = true;
-        if (this.costs) {
-            canAfford = this.bank.canAfford(this.costs);
-        }
-
-        return (timerIsComplete && canAfford);
-    }
-}
-
-class Deliver extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-
-        const bankManager = useBank();
-        this.bank = bankManager.get(unit.team);
-        this.amount = collect ? collect.max : scan.rate;
-        this.type = collect ? collect.type : scan.type;
-    }
-
-    exit() {
-        this.bank.deposit(this.amount, this.type);
-    }
-
-    isComplete() {
-        return true
-    }
-}
 
 class Regroup extends Base {
     constructor(manager, options = {}) {
@@ -417,6 +421,9 @@ class DefendPosition extends Base {
     }
 }
 
+/**
+ * Attack behavior.
+ */
 class Attack extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
@@ -519,6 +526,29 @@ class Attack extends Base {
     }
 }
 
+/**
+ * Defend Attack behavior.
+ * 
+ * Used by units currently regrouped at a position,
+ * but are being attacked by an enemy.
+ * The unit follows the normal attack behavior,
+ * but when the attack is complete, the unit
+ * returns to the regroup position.
+ */
+class DefendAttack extends Attack {
+    constructor(manager, options = {}) {
+        super(manager, options);
+    }
+
+    exit() {
+        super.exit();
+
+        if (!this.manager.target) {
+            useStateMachine().setState(this.manager.object.object3D.uuid, 'defend');
+        }
+    }
+}
+
 export default {
     TIMER: Timer,
     MOVE_TO: MoveTo,
@@ -531,5 +561,6 @@ export default {
     DEFEND_POSITION: DefendPosition,
     ATTACK: Attack,
     MOVE_TO_TARGET: MoveToTarget,
-    MOVE_TO_ATTACK: MoveToAttack
+    MOVE_TO_ATTACK: MoveToAttack,
+    DEFEND_ATTACK: DefendAttack
 }

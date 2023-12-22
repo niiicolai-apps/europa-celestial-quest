@@ -51,6 +51,10 @@ const recalculateStorage = () => {
 }
 
 const removeItemFromState = (item) => {
+
+    /**
+     * Remove from the items array.
+     */
     let index = -1
     for (let i = 0; i < items.value.length; i++) {
         if (items.value[i].uuid === item.uuid) {
@@ -58,9 +62,37 @@ const removeItemFromState = (item) => {
             break
         }
     }
-    if (index === -1) return false
+    if (index !== -1) {
+        items.value.splice(index, 1)
+    }
+
+    /**
+     * Remove from the state machine.
+     */
+    useStateMachine().remove(item.uuid)
+
+    /**
+     * Remove from the inspect controller.
+     */
+    useInspect().removeSelectable(item)
+
+    /**
+     * Remove from health manager.
+     */
+    useHealth().removeHealthObject(item)
+
+    /**
+     * Remove from the scene.
+     */
+    scene.value.remove(item);
+
+    /**
+     * Remove from the mesh cache.
+     */
+    removeMesh(item);  
+    
     console.log('Removing item from state', item)
-    items.value.splice(index, 1)
+
     return true
 }
 
@@ -71,8 +103,6 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
 
     const onDie = () => {
         removeItemFromState(item)
-        scene.value.remove(item)
-        removeMesh(item)
         useGameEnd().endGameCheck()
     }
 

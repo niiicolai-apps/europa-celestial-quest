@@ -90,9 +90,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "200 Experience Points": {
+                        en: '200 Experience Points',
+                        da: '200 Erfarings Point',
                     },
                 },
             },
@@ -112,9 +112,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "300 Experience Points": {
+                        en: '300 Experience Points',
+                        da: '300 Erfarings Point',
                     },
                 },
             },
@@ -132,15 +132,15 @@ export default {
                         en: 'Deploy a RR S-1 from a Rover Research Facility',
                         da: 'Udsend en RR S-1 fra en Rover Forsknings Facilitet',
                     },
-                    "Scan 0.5% of the map" : {
+                    "Scan 0_5% of the map" : {
                         en: 'Scan 0.5% of the map',
                         da: 'Scan 0.5% af kortet',
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "400 Experience Points": {
+                        en: '400 Experience Points',
+                        da: '400 Erfarings Point',
                     },
                 },
             },
@@ -160,9 +160,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "500 Experience Points": {
+                        en: '500 Experience Points',
+                        da: '500 Erfarings Point',
                     },
                 },
             },
@@ -186,9 +186,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "600 Experience Points": {
+                        en: '600 Experience Points',
+                        da: '600 Erfarings Point',
                     },
                 },
             },
@@ -212,9 +212,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "700 Experience Points": {
+                        en: '700 Experience Points',
+                        da: '700 Erfarings Point',
                     },
                 },
             },
@@ -238,9 +238,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "800 Experience Points": {
+                        en: '800 Experience Points',
+                        da: '800 Erfarings Point',
                     },
                 },
             },
@@ -272,9 +272,9 @@ export default {
                     },
                 },
                 rewards: {
-                    "100 Experience Points": {
-                        en: '100 Experience Points',
-                        da: '100 Erfarings Point',
+                    "900 Experience Points": {
+                        en: '900 Experience Points',
+                        da: '900 Erfarings Point',
                     },
                 },
             },

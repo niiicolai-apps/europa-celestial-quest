@@ -42,7 +42,7 @@
                 :fill="iconFill" 
             />
 
-            <div class="text-primary font-bold text-center" style="font-size: .6em;">
+            <div class="text-primary font-bold text-center accounts-text">
                 <p class="mb-1"><Locale :id="`bank.${account.currency}`" /></p>
                 <p>{{ balance(account) }}</p>
             </div>
@@ -76,3 +76,9 @@ const balance = (account) => {
     return account.balance;
 }
 </script>
+
+<style scoped>
+.accounts-text {
+    font-size: 0.57em;
+}
+</style>

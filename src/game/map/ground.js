@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { ref } from 'vue';
 import { getMesh } from '../models/meshes.js';
 import { useMap } from './map.js';
-import { useHeightMap } from '../navigation/height_map.js';
 import { useManager } from '../managers/manager.js';
 import { useCanvas } from '../../composables/canvas.js';
 
@@ -54,8 +53,9 @@ useManager().create('ground', {
             const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
             const planeMat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
             groundMesh = new THREE.Mesh(planeGeo, planeMat);
-            groundMesh.position.y = -1;
+            groundMesh.position.y = 3;
             groundMesh.rotation.x = Math.PI * -.5;
+            groundMesh.receiveShadow = true;
             scene.add(groundMesh);
 
             camera = adapter.camera;
@@ -66,8 +66,6 @@ useManager().create('ground', {
             });
 
             isInitialized.value = true;
-            await useHeightMap().init(scene);
-            //useHeightMap().bake(groundMesh, scene, 10);
         }
     },
     enable: {

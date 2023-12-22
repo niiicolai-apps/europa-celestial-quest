@@ -12,7 +12,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MISSILE_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(0.3, 'walk', 11.5),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -32,7 +32,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MISSILE_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(0.5, 'walk', 11.5),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -52,7 +52,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.LASER_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(1, 'walk', 25),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -72,7 +72,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.LASER_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(1.3, 'walk', 25),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -92,7 +92,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
             FEATURES.COLLECT("ice", [{ currency: "power", amount: 1 }], 1, 5000, "Hydrogen Fuel Tank"),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(0.6, 'walk', 4.1),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -112,7 +112,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
         features: [
             FEATURES.COLLECT("rock", [{ currency: "power", amount: 1 }], 1, 5000, "Rock Metal Extractor"),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(0.6, 'walk', 4.1),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -131,9 +131,9 @@ const UNITS = {
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.SCANNER,
         features: [
-            FEATURES.MOVE(),
-            FEATURES.HEALTH(),
+            FEATURES.MOVE(0.6, 'walk', 4.1),
             FEATURES.SCAN(),
+            FEATURES.HEALTH(),
         ],
         costs: [
             { currency: "metal", amount: 0 },
@@ -152,7 +152,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MACHINE_GUN_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(0.8, 'walk', 4.1),
             FEATURES.HEALTH(),
         ],
         costs: [
@@ -172,7 +172,7 @@ const UNITS = {
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
         features: [
             FEATURES.MACHINE_GUN_ATTACK(),
-            FEATURES.MOVE(),
+            FEATURES.MOVE(1, 'walk', 4.1),
             FEATURES.HEALTH(),
         ],
         costs: [

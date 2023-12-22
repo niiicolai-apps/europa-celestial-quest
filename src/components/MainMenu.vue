@@ -55,7 +55,7 @@ onMounted(async () => {
     scene.add(jupiter);
 
     const europa = new THREE.Mesh(geometry);
-    const europaMaterial = await getTexturePack('europa');
+    const europaMaterial = await getTexturePack('europa', europa.uuid);
     europa.material = europaMaterial;
     europa.position.set(0, 5, 0);
     europa.rotation.y = 35 * Math.PI / 180;
@@ -120,8 +120,8 @@ onMounted(async () => {
     lifeCycle.onDispose.push(async () => {
         ehdx1.scale.set(1, 1, 1);
         await removeMesh(ehdx1);
-        removeTexturePack('jupiter');
-        removeTexturePack('europa');
+        removeTexturePack('jupiter', jupiter.uuid);
+        removeTexturePack('europa', europa.uuid);
 
         geometry.dispose();
     })

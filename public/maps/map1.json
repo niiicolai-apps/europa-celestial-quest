@@ -107,7 +107,6 @@
             "name": "Start Producing Hydrogen",
             "requiredLevel": 1,
             "requiredObjectives": [],
-            "timeline": "timeline1",
             "goals": [
                 {
                     "name": "Build a Rover Research Facility", 
@@ -165,9 +164,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "200 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 200 }
                     }
                 }
             ]
@@ -189,9 +188,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "300 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 300 }
                     }
                 }
             ]
@@ -212,7 +211,7 @@
                     }
                 },
                 {
-                    "name": "Scan 0.5% of the map",
+                    "name": "Scan 0_5% of the map",
                     "options": { 
                         "bank": { "currency": "research", "balance": 0.5 }
                     }
@@ -220,9 +219,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "400 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 400 }
                     }
                 }
             ]
@@ -247,9 +246,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "500 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 500 }
                     }
                 }
             ]
@@ -281,9 +280,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "600 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 600 }
                     }
                 }
             ]
@@ -317,9 +316,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "700 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 700 }
                     }
                 }
             ]
@@ -353,9 +352,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "800 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 800 }
                     }
                 }
             ]
@@ -403,9 +402,9 @@
             ],
             "rewards": [
                 {
-                    "name": "100 Experience Points", 
+                    "name": "900 Experience Points", 
                     "options": { 
-                        "stat": { "name": "general", "value": 100 }
+                        "stat": { "name": "general", "value": 900 }
                     }
                 }
             ]
@@ -428,120 +427,35 @@
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
-                    "position": { "x": -99, "y": 0, "z": 297 },
+                    "position": { "x": 255.7118050529374, "y": 6.000000000000041, "z": -184.20992629885924 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": -63, "y": 0, "z": 306 },
+                    "position": { "x": 266.9317345923081, "y": 5.000000000000037, "z": -170.2497474008041 },
                     "rotation": { "x": 0, "y": 90, "z": 0 }
                 },
                 {
                     "name": "Machine Gun Turrent",
-                    "position": { "x": 45, "y": 0, "z": 318 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 81, "y": 0, "z": 318 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 15, "y": 0, "z": 261 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 24, "y": 0, "z": 294 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": -33, "y": 0, "z": 321 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 273, "y": 0, "z": 156 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 282, "y": 0, "z": 180 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 66, "y": 0, "z": -381 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 75, "y": 0, "z": -381 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 78, "y": 0, "z": -336 },
-                    "rotation": { "x": 0, "y": 270, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 30, "y": 0, "z": -357 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 198, "y": 0, "z": -399 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 249, "y": 0, "z": -390 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 225, "y": 0, "z": -396 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 216, "y": 0, "z": -354 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 387, "y": 0, "z": 318 },
-                    "rotation": { "x": 0, "y": 270, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 339, "y": 0, "z": 348 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 }
-                },
-                {
-                    "name": "Machine Gun Turrent",
-                    "position": { "x": 366, "y": 0, "z": 315 },
+                    "position": { "x": 247.9967824787545, "y": 4.999999999999981, "z": -172.21860362427924 },
                     "rotation": { "x": 0, "y": 180, "z": 0 }
                 },
                 {
                     "name": "Hydrogen Fuel Tank",
-                    "position": { "x": 372, "y": 0, "z": 339 },
+                    "position": { "x": 269.3777093400818, "y": 8.899999999999988, "z": -195.96966689963995 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Rock Metal Extractor",
-                    "position": { "x": 382, "y": 0, "z": 349 },
+                    "position": { "x": 248.232988637291, "y": 3.0000000000000435, "z": -195.4045429825244 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 },
                 {
                     "name": "Rover Research Facility",
-                    "position": { "x": 362, "y": 0, "z": 329 },
+                    "position": { "x": 279.2486388999051, "y": 4.400000000000041, "z": -185.32159492174236 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
-                        "point": { "x": 373, "y": 5, "z": 339 },
+                        "point": { "x": 279.2486388999051, "y": 4.400000000000041, "z": -185.32159492174236 },
                         "units": [
                             { "name": "RR H20", "count": 3 }
                         ]
@@ -549,10 +463,10 @@
                 },
                 {
                     "name": "Rover Warrior Facility",
-                    "position": { "x": 246, "y": 0, "z": -423 },
+                    "position": { "x": 291.2065582226422, "y": 4.400000000000041, "z": -186.67988530632869 },
                     "rotation": { "x": 0, "y": 0, "z": 0 },
                     "spawn" : {
-                        "point": { "x": 247, "y": 20, "z": -423 },
+                        "point": { "x": 291.2065582226422, "y": 4.400000000000041, "z": -186.67988530632869 },
                         "units": [
                             { "name": "RR W-6", "count": 3, "speed": 0.1, "groundOffset": 0 }
                         ]
@@ -560,43 +474,10 @@
                 },
                 {
                     "name": "Robot Facility",
-                    "position": { "x": 255, "y": 0, "z": -459 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 256, "y": 18, "z": -459 },
-                        "units": [
-                            { "name": "B S-1", "count": 3, "speed": 0.1, "groundOffset": 0 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Robot Facility",
-                    "position": { "x": 69, "y": 0, "z": -402 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 70, "y": 36, "z": -402 },
-                        "units": [
-                            { "name": "B S-1", "count": 3, "speed": 0.1, "groundOffset": 0 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Robot Facility",
-                    "position": { "x": 69, "y": 0, "z": 354 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 70, "y": 34, "z": 354 },
-                        "units": [
-                            { "name": "B S-1", "count": 3, "speed": 0.1, "groundOffset": 0 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Robot Facility",
-                    "position": { "x": 261, "y": 0, "z": 198 },
+                    "position": { "x": 249.65516628945414, "y": 3.8000000000000336, "z": -151.40547746208375 },
                     "rotation": { "x": 0, "y": 90, "z": 0 },
                     "spawn" : {
-                        "point": { "x": 262, "y": 30, "z": 198 },
+                        "point": { "x": 249.65516628945414, "y": 3.8000000000000336, "z": -151.40547746208375 },
                         "units": [
                             { "name": "B S-1", "count": 3, "speed": 0.1, "groundOffset": 0 }
                         ]
@@ -604,43 +485,10 @@
                 },
                 {
                     "name": "Drone Facility",
-                    "position": { "x": 219, "y": 0, "z": -441 },
+                    "position": { "x": 287.0126766431057, "y": 3.9999999999999893, "z": -207.21571943291826 },
                     "rotation": { "x": 0, "y": 180, "z": 0 },
                     "spawn" : {
-                        "point": { "x": 220, "y": 23, "z": -441 },
-                        "units": [
-                            { "name": "D L-1", "count": 3, "speed": 0.1, "groundOffset": 2 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Drone Facility",
-                    "position": { "x": 48, "y": 0, "z": 342 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 49, "y": 34, "z": 342 },
-                        "units": [
-                            { "name": "D L-1", "count": 3, "speed": 0.1, "groundOffset": 2 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Drone Facility",
-                    "position": { "x": 276, "y": 0, "z": 222 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 277, "y": 23, "z": 222 },
-                        "units": [
-                            { "name": "D L-1", "count": 3, "speed": 0.1, "groundOffset": 2 }
-                        ]
-                    }
-                },
-                {
-                    "name": "Drone Facility",
-                    "position": { "x": 54, "y": 0, "z": -417 },
-                    "rotation": { "x": 0, "y": 180, "z": 0 },
-                    "spawn" : {
-                        "point": { "x": 55, "y": 38, "z": -417 },
+                        "point": { "x": 287.0126766431057, "y": 3.9999999999999893, "z": -207.21571943291826 },
                         "units": [
                             { "name": "D L-1", "count": 3, "speed": 0.1, "groundOffset": 2 }
                         ]
@@ -648,52 +496,7 @@
                 },
                 {
                     "name": "Solar Panel",
-                    "position": { "x": -120, "y": 0, "z": 300 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 75, "y": 0, "z": 333 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 363, "y": 0, "z": 357 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 384, "y": 0, "z": 354 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 285, "y": 0, "z": 201 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 231, "y": 0, "z": -480 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 252, "y": 0, "z": -480 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 57, "y": 0, "z": -432 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": 60, "y": 0, "z": 333 },
-                    "rotation": { "x": 0, "y": 0, "z": 0 }
-                },
-                {
-                    "name": "Solar Panel",
-                    "position": { "x": -120, "y": 0, "z": 306 },
+                    "position": { "x": 291.04502313921114, "y": 3.3000000000000336, "z": -151.28291182651748 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 }
             ]
@@ -706,15 +509,15 @@
             "bankAccounts": [
                 { "currency": "ice", "balance": 100, "max": 100, "defaultMax": 100 },
                 { "currency": "rock", "balance": 100, "max": 100, "defaultMax": 100 },
-                { "currency": "metal", "balance": 100, "max": 100, "defaultMax": 100 },
-                { "currency": "hydrogen", "balance": 100, "max": 100, "defaultMax": 100 },
+                { "currency": "metal", "balance": 0, "max": 100, "defaultMax": 100 },
+                { "currency": "hydrogen", "balance": 0, "max": 100, "defaultMax": 100 },
                 { "currency": "power", "balance": 100, "max": 100, "defaultMax": 100 },
                 { "currency": "research", "balance": 0, "max": 100, "defaultMax": 100 }
             ],
             "constructions": [
                 {
                     "name": "Europa Horizon Drifter X1",
-                    "position": { "x": -114, "y": 0, "z": -45 },
+                    "position": { "x": -228.1803223536897, "y": 6.000000000000024, "z": -108.87948537478132 },
                     "rotation": { "x": 0, "y": 0, "z": 0 }
                 }
             ]
@@ -811,7 +614,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "3.2em",
+                    "arrow_left": "3em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -824,7 +627,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "6.2em",
+                    "arrow_left": "5.7em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -837,7 +640,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "6.1em",
+                    "arrow_left": "5.1em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -850,7 +653,33 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "6.2em",
+                    "arrow_left": "5.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.constructions_max.text",
+                    "top": "9em",
+                    "bottom": "auto",
+                    "left": "1em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "0.2em",
+                    "arrow_right": "auto",
+                    "icon": "arrow-up"
+                },
+                {
+                    "type": "primary",
+                    "textLocaleId": "tutorials.map_1.units_max.text",
+                    "top": "9em",
+                    "bottom": "auto",
+                    "left": "5em",
+                    "right": "auto",
+                    "arrow_top": "-3em",
+                    "arrow_bottom": "auto",
+                    "arrow_left": "3.2em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },

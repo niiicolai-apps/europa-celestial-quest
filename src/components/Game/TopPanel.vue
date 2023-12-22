@@ -4,7 +4,6 @@
             
             <UI.Flex direction="horizontal" gap="1">
                 <BankAccounts />
-                <Max />
             </UI.Flex>
             
             <UI.Flex direction="horizontal" gap="1">
@@ -14,7 +13,10 @@
                 </UI.Flex>
             </UI.Flex>
         </UI.Flex>
-        
+
+        <UI.Flex direction="horizontal" justify="start" gap="2" class="bg-info box-shadow-lg p-2 border-b-1 border-solid border-primary">
+            <Max />
+        </UI.Flex>
     </UI.Fixed>
 </template>
 

@@ -107,8 +107,8 @@ export const useTutorial = () => {
         const mapTutorials = await map.tutorials();
         const tutorial = mapTutorials[name];
         if (!tutorial) throw new Error('Tutorial not found');
-        await removeFromPlayed(name);
-        await set(name, tutorial.items);
+        await removeFromPlayed(tutorial.name);
+        await set(tutorial.name, tutorial.items);
     }
 
     const isPlaying = () => {

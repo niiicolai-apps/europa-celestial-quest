@@ -1,109 +1,134 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { getTexturePack, removeTexturePack, disposeTextureCache } from './textures.js';
-import { ref } from 'vue';
 
 const gltfLoader = new GLTFLoader();
 const meshCache = {};
 let meshesJson = null;
 
-const getCached = (name) => {
+const applyTexturePacks = async (object3D, mesh) => {
+    const subMeshData = []
+    object3D.traverse((child) => {
+        if (child.isMesh) {
+            const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
+            if (subMesh) {
+                subMeshData.push({ subMesh, child });
+            }
+        }
+    });
+
+    for (const data of subMeshData) {
+        const { subMesh, child } = data;
+        const material = await getTexturePack(subMesh.texturePack, child.uuid);
+        child.material = material;
+    }
+}
+
+const createObject3D = async (name) => {
+    if (!meshesJson) {
+        const response = await fetch('/meshes/meshes.json');
+        meshesJson = await response.json();
+    }
+
+    const data = meshesJson[name];
+
+    let object3D = null;
+
+    if (data.type === 'GLTF') {
+
+        const gltf = await gltfLoader.loadAsync(data.url);
+        object3D = gltf.scene;
+
+    } else if (data.type === 'sphere') {
+
+        const geometry = new THREE.SphereGeometry(1, 32, 32);
+        object3D = new THREE.Mesh(geometry);
+
+    } else {
+        throw new Error(`Unknown mesh type: ${data.type}`);
+    }
+
+    object3D.castShadow = true;
+    object3D.receiveShadow = true;
+    object3D.userData.mesh = data;
+    object3D.name = name;
+    await applyTexturePacks(object3D, data);
+
+    return { object3D, data };
+}
+
+const createCache = async (object3D, name, data, uuid) => {
+    meshCache[name] = {
+        mesh: object3D,
+        data,
+        clones: [uuid],
+    }
+}
+
+const getCached = async (name) => {
     if (meshCache[name]) {
         const mesh = meshCache[name].mesh;
         const userData = mesh.userData;
         mesh.userData = {}
         const clone = mesh.clone();
+        mesh.userData = userData;
+
         clone.traverse((child) => {
             if (child.name === 'healthBar') {
                 child.parent.remove(child);
             }
         });
-        mesh.userData = userData;
-        mesh.scale.set(1, 1, 1);
-        mesh.rotation.set(0, 0, 0);
-        mesh.position.set(0, 0, 0);
-        meshCache[name].clones.push(clone);
+
+        clone.scale.set(1, 1, 1);
+        clone.rotation.set(0, 0, 0);
+        clone.position.set(0, 0, 0);
+
+        await applyTexturePacks(clone, meshCache[name].data);
+        meshCache[name].clones.push(clone.uuid);
+
         return clone;
     }
 
     return null;
 }
 
-const applyTexturePacks = async (object3D, mesh) => {
-    // Apply texture packs
-    object3D.traverse(async (child) => {
-        if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
-            
-            const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
-            if (subMesh) {
-                const material = await getTexturePack(subMesh.texturePack, child.uuid);
-                child.material = material;
-            }
-        }
-    });
-}
-
 export const getMesh = async (name) => {
-    const cached = getCached(name);
+    const cached = await getCached(name);
     if (cached) return cached;
-    if (!meshesJson) 
-        meshesJson = await fetch('/meshes/meshes.json').then(res => res.json());
 
-    const mesh = meshesJson[name];
+    const { object3D, data } = await createObject3D(name);
+    await createCache(object3D, name, data, object3D.uuid);
 
-    let object3D = null;
-    if (mesh.type === 'GLTF') {
-
-        const gltf = await gltfLoader.loadAsync(mesh.url);
-        object3D = gltf.scene;
-        await applyTexturePacks(object3D, mesh);
-
-    } else if (mesh.type === 'sphere') {
-
-        const geometry = new THREE.SphereGeometry(1, 32, 32);
-        object3D = new THREE.Mesh(geometry);
-        object3D.name = name;
-        await applyTexturePacks(object3D, mesh);
-        
-    } else {
-        throw new Error(`Unknown mesh type: ${mesh.type}`);
+    let str = ''
+    for (const key in meshCache) {
+        str += `${key}: ${meshCache[key].clones.length}\n`
     }
-    object3D.userData.mesh = mesh;
-    const meshInstance = {
-        mesh: object3D,
-        clones: [object3D.uuid],
-    }
+    console.log('meshCache', str)
 
-    meshCache[name] = meshInstance;
-    return meshInstance.mesh;
+    return object3D;
 }
 
 export const removeMesh = async (object3D) => {
-    const mesh = object3D.userData.mesh;
-    if (!mesh || !mesh.url) {
-        console.log('bug: mesh or mesh.url is undefined')
+    const cached = meshCache[object3D.name];
+    if (!cached) {
         return;
     }
-    const cached = meshCache[mesh.url];
-    if (!cached) return;
 
     const index = cached.clones.indexOf(object3D.uuid);
     if (index === -1) return;
     cached.clones.splice(index, 1);
-    
+
     // Remove child texture packs
     object3D.traverse(async (child) => {
         if (child.isMesh) {
-            const subMesh = mesh.subMeshes.find(subMesh => subMesh.name === child.name);
+            const subMesh = cached.data.subMeshes.find(subMesh => subMesh.name === child.name);
             if (!subMesh) return;
             removeTexturePack(subMesh.texturePack, child.uuid);
         }
     });
-    
+
     if (cached.clones.length === 0) {
-        delete meshCache[mesh.url];
+        delete meshCache[object3D.name];
 
         // dispose geometry
         object3D.traverse((child) => {
@@ -112,10 +137,16 @@ export const removeMesh = async (object3D) => {
             }
         });
     }
+
+    let str = ''
+    for (const key in meshCache) {
+        str += `${key}: ${meshCache[key].clones.length}\n`
+    }
+    console.log('meshCache', str)
 }
 
 export const disposeMeshCache = async () => {
-    
+
     for (const key in meshCache) {
         const meshInstance = meshCache[key];
         for (const clone of meshInstance.clones) {

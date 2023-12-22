@@ -78,6 +78,18 @@ export default {
                     da: 'Forskning er en ressource, der kan indsamles på kortet af rovere og leveres på Europa Horizon Drifter X1.',
                 },
             },
+            constructions_max: {
+                text: {
+                    en: 'You can have a maximum number of constructions on the map. You can increase this limit by building several Europa Horizon Drifter X1.',
+                    da: 'Du kan have et maksimalt antal konstruktioner på kortet. Du kan øge denne grænse ved at bygge flere Europa Horizon Drifter X1.',
+                },
+            },
+            units_max: {
+                text: {
+                    en: 'You can have a maximum number of units on the map. You can increase this limit by building several Europa Horizon Drifter X1.',
+                    da: 'Du kan have et maksimalt antal enheder på kortet. Du kan øge denne grænse ved at bygge flere Europa Horizon Drifter X1.',
+                },
+            },
             power: {
                 text: {
                     en: 'Power is a resource produced by Solar Panels',
