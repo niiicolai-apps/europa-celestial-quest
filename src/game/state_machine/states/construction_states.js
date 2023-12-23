@@ -52,8 +52,7 @@ class TrySpawn extends Base {
     }
 
     exit() {
-        const time = Date.now()
-        this.manager.target = time + 1000;
+        this.manager.target = 1000;
         useItems().dequeueAny(this.manager.object.construction)
     }
 
@@ -90,7 +89,7 @@ class Produce extends Base {
         const produceFeature = upgrade.features.find(feature => feature.name === 'produce')
         const currency = produceFeature.options.type
         const amount = produceFeature.options.rate
-
+        
         if (!this.isFull) {
             if (!this.canAfford) {
                 manager.target = 1000;
@@ -104,6 +103,7 @@ class Produce extends Base {
             }
 
             this.bank.deposit(amount, currency)
+            console.log('deposit', currency, amount, this.bank)
             manager.target = produceFeature.options.speed;
         }
     }

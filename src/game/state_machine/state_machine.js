@@ -4,27 +4,27 @@ import { useManager } from '../managers/manager.js'
 const managers = ref([])
 const paused = ref(false)
 
-const setAction = (manager, actionIndex) => {
+const setAction = async (manager, actionIndex) => {
     manager.actionIndex = actionIndex;
 
     if (manager.action) {
-        manager.action.exit();
+        await manager.action.exit();
     }
 
     const action = manager.state.actions[actionIndex];
     const method = action.method.toUpperCase();
     const nextClazz = manager.states[method];
     manager.action = new nextClazz(manager, action.options);
-    manager.action.enter();
+    await manager.action.enter();
 }
 
-const moveToNextAction = (manager) => {
+const moveToNextAction = async (manager) => {
     const actionIndex = manager.actionIndex;
     const nextActionIndex = (actionIndex + 1) % manager.state.actions.length;
-    setAction(manager, nextActionIndex);
+    await setAction(manager, nextActionIndex);
 }
 
-const update = () => {
+const update = async () => {
     if (paused.value) return;
     for (const manager of managers.value) {
 
@@ -37,14 +37,14 @@ const update = () => {
             manager.state = manager.behavior.states[0];
         }
         if (!manager.action) {
-            setAction(manager, 0);
+            await setAction(manager, 0);
         }
 
         if (manager.action?.isComplete()) {
-            moveToNextAction(manager);
+            await moveToNextAction(manager);
         }
 
-        manager.action?.update();
+        await manager.action?.update();
     }
 }
 
@@ -55,7 +55,7 @@ const update = () => {
 useManager().create('statemachine', {
     update: {
         priority: 1,
-        callback: () => update()
+        callback: async () => await update()
     },
     onBeforeTimeline: {
         priority: 1,

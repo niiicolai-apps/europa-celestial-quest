@@ -157,7 +157,7 @@ const FEATURES = {
     SCAN: (
         type = 'research',
         costs = [{ currency: "power", amount: 1 }],
-        rate = 0.1,
+        rate = 1,
         speed = 5000,
         deliver_construction = 'Europa Horizon Drifter X1'
     ) => {

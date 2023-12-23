@@ -7,7 +7,7 @@ const CONSTRUCTION_PRIMARY_FUNCTIONS = PRIMARY_FUNCTIONS.CONSTRUCTIONS;
 const CONSTRUCTIONS = [
     {
         name: 'Europa Horizon Drifter X1',
-        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.BASE,
+        primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
         image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
         requiredNumbers: 1,
@@ -33,7 +33,7 @@ const CONSTRUCTIONS = [
             subMesh: {},
             features: [
                 FEATURES.HEALTH(),
-                FEATURES.PRODUCE('power', [], 2, 5000),
+                FEATURES.PRODUCE('power', [], 10, 5000),
                 FEATURES.MAX_INCREASER(2)
             ],
         }],

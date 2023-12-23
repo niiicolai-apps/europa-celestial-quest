@@ -41,7 +41,16 @@ const createObject3D = async (name) => {
 
     } else if (data.type === 'sphere') {
 
-        const geometry = new THREE.SphereGeometry(1, 32, 32);
+        const radius = data.radius || 1;
+        const widthSegments = data.widthSegments || 32;
+        const heightSegments = data.heightSegments || 32;
+        const geometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+        object3D = new THREE.Mesh(geometry);
+
+    } else if (data.type === 'plane') {
+        const width = data.width || 1;
+        const height = data.height || 1;
+        const geometry = new THREE.PlaneGeometry(width, height);
         object3D = new THREE.Mesh(geometry);
 
     } else {
@@ -99,12 +108,6 @@ export const getMesh = async (name) => {
     const { object3D, data } = await createObject3D(name);
     await createCache(object3D, name, data, object3D.uuid);
 
-    let str = ''
-    for (const key in meshCache) {
-        str += `${key}: ${meshCache[key].clones.length}\n`
-    }
-    console.log('meshCache', str)
-
     return object3D;
 }
 
@@ -137,12 +140,6 @@ export const removeMesh = async (object3D) => {
             }
         });
     }
-
-    let str = ''
-    for (const key in meshCache) {
-        str += `${key}: ${meshCache[key].clones.length}\n`
-    }
-    console.log('meshCache', str)
 }
 
 export const disposeMeshCache = async () => {

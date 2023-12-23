@@ -22,6 +22,11 @@
                         "method": "try_spawn",
                         "options": {
                         }
+                    },
+                    {
+                        "method": "timer",
+                        "options": {
+                        }
                     }
                 ]
             }

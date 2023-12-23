@@ -14,43 +14,41 @@ import { useManager } from '../managers/manager.js'
 import { useCanvas } from '../../composables/canvas.js';
 import { useParticlesPool } from '../particles/particles_pool.js'
 import { ref } from 'vue'
+import { usePlayers } from '../players/player.js'
 
 const items = ref([])
 const isInitialized = ref(false)
 const scene = ref(null)
 
-const recalculateStorage = () => {
-    let ice = 0, rock = 0, hydrogen = 0, metal = 0, power = 0;
-    for (const item of items.value) {
-        if (!item.userData.canStore) continue
+const recalculateStorage = (team) => {
+    const max = { ice: 0, rock: 0, hydrogen: 0, metal: 0, power: 0 }
 
-        const features = item.userData.upgrades[item.userData.upgrade.index].features;
+    const constructions = useItems().findAllByTeam(team);
+    
+    for (const construction of constructions) {
+        const upgradeIndex = construction.userData.upgrade.index;
+        const features = construction.userData.upgrades[upgradeIndex].features;
+        console.log(features)
         for (const feature of features) {
             if (feature.name !== 'storage') continue
-            if (feature.options.type === 'ice') {
-                ice += feature.options.max;
-            } else if (feature.options.type === 'rock') {
-                rock += feature.options.max;
-            } else if (feature.options.type === 'hydrogen') {
-                hydrogen += feature.options.max;
-            } else if (feature.options.type === 'metal') {
-                metal += feature.options.max;
-            } else if (feature.options.type === 'power') {
-                power += feature.options.max;
-            }
+            max[feature.options.type] += feature.options.max
         }
     }
 
     const bankManager = useBank()
-    bankManager.updateCurrencyMax('ice', ice);
-    bankManager.updateCurrencyMax('rock', rock);
-    bankManager.updateCurrencyMax('hydrogen', hydrogen);
-    bankManager.updateCurrencyMax('metal', metal);
-    bankManager.updateCurrencyMax('power', power);
-    bankManager.overrideBalance(power + bankManager.getCurrency('power').defaultMax, 'power');
+    const bank = bankManager.get(team)
+    bank.setMax('ice', max.ice)
+    bank.setMax('rock', max.rock)
+    bank.setMax('hydrogen', max.hydrogen)
+    bank.setMax('metal', max.metal)
+    bank.setMax('power', max.power)
+    console.log('Recalculating storage', team, max)
 }
 
 const removeItemFromState = (item) => {
+
+    const uuid = item.uuid
+    const team = item.userData.team
 
     /**
      * Remove from the items array.
@@ -69,7 +67,7 @@ const removeItemFromState = (item) => {
     /**
      * Remove from the state machine.
      */
-    useStateMachine().remove(item.uuid)
+    useStateMachine().remove(uuid)
 
     /**
      * Remove from the inspect controller.
@@ -90,6 +88,16 @@ const removeItemFromState = (item) => {
      * Remove from the mesh cache.
      */
     removeMesh(item);  
+
+    /**
+     * Recalculate storage.
+     */
+    recalculateStorage(team)
+
+    /**
+     * Save the player
+     */
+    usePlayers().get(team).saveData()
     
     console.log('Removing item from state', item)
 
@@ -228,11 +236,15 @@ export const useItems = () => {
         const id = item.uuid
         stateMachine.add(object, id, behavior, states);
 
+        if (canStore) {
+            recalculateStorage(team)
+        }
+
         return item
     }
 
-    const dequeueAny = (item) => {
-        UnitController.dequeueAny(item, scene.value)
+    const dequeueAny = async (item) => {
+        await UnitController.dequeueAny(item, scene.value)
     }
 
     const findClosestItem = (position, name) => {

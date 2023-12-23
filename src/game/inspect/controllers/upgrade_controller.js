@@ -67,13 +67,10 @@ const UpgradeController = {
             bank.withdraw(cost.amount, cost.currency);
         }
 
-        if (selected.value.userData.canStore) {
-            useItems().recalculateStorage();
-        }
-
         isUpgrading.value = false;
         selected.value.userData.upgrade.index++;
         useObjectives().tryCompleteIncompletes();
+        useItems().recalculateStorage(team);
 
         setupUpgradeVisuals(selected.value);        
         useToast().add('toasts.upgrade_controller.success', 4000, 'success');

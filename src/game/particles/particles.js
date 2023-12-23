@@ -10,6 +10,7 @@ const waitingParticles = ref([]);
 const scene = ref(null);
 const timeBetweenFrames = 50;
 const nextUpdate = ref(0);
+const jsonCache = {};
 
 const setupParticle = (activeParticle) => {
     const { particle, position, direction, parent, target, force } = activeParticle;
@@ -100,11 +101,16 @@ export const useParticles = () => {
             throw new Error(`Particle type not specified: ${type}`);
         }
 
-        const response = await fetch(`particles/${type}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to load particle: ${type}`);
+        let json = jsonCache[type];
+        if (!json) {
+            const response = await fetch(`particles/${type}.json`);
+            if (!response.ok) {
+                throw new Error(`Failed to load particle: ${type}`);
+            }
+            json = await response.json();
+            jsonCache[type] = json;
         }
-        const json = await response.json();
+
         const nebulaSystem = await System.fromJSONAsync(json, THREE);
         const nebulaRenderer = new SpriteRenderer(scene.value, THREE);
         const nebula = nebulaSystem.addRenderer(nebulaRenderer);
@@ -125,6 +131,8 @@ export const useParticles = () => {
 
         const index = particles.value.findIndex(p => p.id === id);
         if (index !== -1) {
+            const particle = particles.value[index];
+            particle.nebula.destroy();
             particles.value.splice(index, 1);
         }
     }

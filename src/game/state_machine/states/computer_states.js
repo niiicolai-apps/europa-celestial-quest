@@ -71,7 +71,7 @@ class SpawnArmy extends Base {
             const randomConstruction = construtions[randomIndex];
             const unitName = solider.name.toUpperCase();
             const unitData = Object.values(UNITS).find(u => u.name === unitName);
-            const unit = await player.spawnUnit(unitData);
+            const unit = await player.spawnUnit(unitData, true);
 
             unit.position.copy(randomConstruction.position);
         }

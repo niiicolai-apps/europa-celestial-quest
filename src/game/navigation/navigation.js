@@ -12,8 +12,16 @@ const paused = ref(false);
 const Navigator = (object3D, destination, speed, groundOffset = 0, acceptableDistance = 1) => {
     const position = object3D.position;
     const uuid = object3D.uuid;
-    position.y = groundOffset;
+    let looked = false;
+
+    /**
+     * Ensure to clone to avoid messing up the reference.
+     */
+    if (destination instanceof THREE.Vector3)
+        destination = destination.clone();
+
     destination.y = groundOffset;
+    position.y = groundOffset;
 
     const move = () => {
         directionInstance
@@ -25,6 +33,9 @@ const Navigator = (object3D, destination, speed, groundOffset = 0, acceptableDis
     }
 
     const lookAt = () => {
+        if (looked) return;
+        looked = true;
+        if (reachedDestination()) return;
         lookAtInstance.x = destination.x;
         lookAtInstance.z = destination.z;
         lookAtInstance.y = position.y;
@@ -59,6 +70,7 @@ const update = () => {
     if (paused.value) return;
     for (const agent of agents.value) {
         agent.move();
+        agent.lookAt();
 
         if (agent.reachedDestination()) {
             agents.value = agents.value.filter(a => a.uuid !== agent.uuid);
@@ -94,8 +106,7 @@ export const useNavigation = () => {
     const addAgent = (object3D, destination, speed, groundOffset=0, acceptableDistance = 1) => {
         if (findAgent(object3D)) return;
         
-        const agent = Navigator(object3D, destination, speed, groundOffset, acceptableDistance);
-        agent.lookAt();
+        const agent = Navigator(object3D, destination, speed, groundOffset, acceptableDistance);        
         agents.value.push(agent);
         return agent;
     }

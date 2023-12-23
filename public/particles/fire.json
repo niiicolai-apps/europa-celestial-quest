@@ -41,7 +41,7 @@
                     "type": "Life",
                     "properties": {
                         "min": 0.3,
-                        "max": 0.7,
+                        "max": 0.5,
                         "isEnabled": true
                     }
                 },
@@ -111,7 +111,7 @@
                     "type": "Force",
                     "properties": {
                         "fx": 0,
-                        "fy": 0.1,
+                        "fy": 0.08,
                         "fz": 0,
                         "life": null,
                         "easing": "easeLinear"

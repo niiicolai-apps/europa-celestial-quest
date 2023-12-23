@@ -68,7 +68,6 @@ const SellController = {
 
         const playerManager = usePlayers();
         const player = playerManager.get(team);
-        player.saveData()
         player.maxController.recalculateMax()
 
         return true;

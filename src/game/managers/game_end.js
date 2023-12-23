@@ -43,15 +43,15 @@ export const useGameEnd = () => {
      */
     const endGameCheck = () => {
         const players = usePlayers();
-        const aliveHumanPlayers = players.findAll(false, false);
-        if (aliveHumanPlayers.length === 0) {
-            //endState.value = END_STATES.LOSE;
+        const you = players.findYou();
+        if (you.isDead()) {
+            endState.value = END_STATES.LOSE;
             return;
         }
     
-        const aliveComputerPlayers = players.findAll(false, true);
+        const aliveComputerPlayers = players.findAll(false, true, false);
         if (aliveComputerPlayers.length === 0) {
-            //endState.value = END_STATES.WIN;
+            endState.value = END_STATES.WIN;
         }
     }
 

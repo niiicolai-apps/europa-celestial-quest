@@ -44,8 +44,8 @@ export const useGameManager = () => {
         }
 
         const onAfterTimeline = async () => {
-            resumeGame();
             await useManager().runMethod('onAfterTimeline');
+            await resumeGame();
         }
 
         endGame.value = _endGame;
@@ -91,7 +91,6 @@ export const useGameManager = () => {
          */
         lifeCycle.onDispose.push(async () => {
             await useManager().runMethod('disable');
-            //disposeMeshCache();
         });
 
         /**

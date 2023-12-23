@@ -4,6 +4,7 @@ import { useManager } from './managers/manager.js'
 import { useCanvas } from '../composables/canvas.js'
 import { useItems } from './constructions/constructions.js'
 import { useCommands } from './units/commands.js'
+import UNITS from './definitions/units.js';
 import Camera from './camera/camera.js'
 import PersistentData from './persistent_data/persistent_data.js'
 import { ref } from 'vue'
@@ -27,6 +28,45 @@ const setup = async (player, data) => {
         mesh.rotation.y = construction.rotation.y * Math.PI / 180
         mesh.rotation.z = construction.rotation.z * Math.PI / 180
         scene.value.add(mesh)
+    }
+
+    if (data.units) {
+        for (const unit of data.units) {
+            const unitData = Object.values(UNITS).find(u => u.name === unit.name);
+            const mesh = await player.spawnUnit(unitData, true)
+            mesh.position.x = unit.position.x
+            mesh.position.y = unit.position.y
+            mesh.position.z = unit.position.z
+            mesh.rotation.x = unit.rotation.x * Math.PI / 180
+            mesh.rotation.y = unit.rotation.y * Math.PI / 180
+            mesh.rotation.z = unit.rotation.z * Math.PI / 180
+            scene.value.add(mesh)
+        }
+    }
+    
+    const items = useItems().findAllByTeam(player.team)
+    if (items.length === 0) return
+
+    const startConstruction = items[0]
+
+    /**
+     * Setup player camera.
+     */
+    if (player.isYou) {
+        await Camera.manager.setPosition(startConstruction.position.x, startConstruction.position.z + 150);
+        await Camera.manager.setZoom(250)
+    }
+
+    /**
+     * Setup player command.
+     */
+    const commands = useCommands()
+    const commandZOffset = -15
+    const position = { x: startConstruction.position.x, y: startConstruction.position.y, z: startConstruction.position.z + commandZOffset}
+    commands.setCommand(commands.COMMAND_TYPES.REGROUP, position, player.team)
+
+    if (player.isYou) {
+        commands.PositionTracker().setMarkerPosition(position)
     }
 }
 
@@ -92,31 +132,7 @@ useManager().create('initializer', {
                 
                 playerInstances.value.push(player)
                 await setup(player, mapPlayer)
-            }
-
-            /**
-             * Find player (you)
-             */
-            const you = players.findYou()
-            const items = useItems().findAllByTeam(you.team)
-            if (items.length === 0) return
-
-            const startConstruction = items[0]
-
-            /**
-             * Setup player camera.
-             */
-            await Camera.manager.setPosition(startConstruction.position.x, startConstruction.position.z + 150);
-            await Camera.manager.setZoom(250)
-
-            /**
-             * Setup player command.
-             */
-            const commands = useCommands()
-            const commandZOffset = -15
-            const position = { x: startConstruction.position.x, y: startConstruction.position.y, z: startConstruction.position.z + commandZOffset}
-            commands.setCommand(commands.COMMAND_TYPES.REGROUP, position, you.team)
-            commands.PositionTracker().setMarkerPosition(position)
+            }                        
             
             isInitialized.value = true;
         }

@@ -417,6 +417,42 @@
             }
         ]
     },
+    "blueprint_1": {
+        "name": "blueprint_1",
+        "type": "plane",
+        "width": "0.5",
+        "height": "0.8",
+        "subMeshes": [
+            {
+                "name": "blueprint_1",
+                "texturePack": "blueprint_1"
+            }
+        ]
+    },
+    "blueprint_2": {
+        "name": "blueprint_2",
+        "type": "plane",
+        "width": "0.5",
+        "height": "0.8",
+        "subMeshes": [
+            {
+                "name": "blueprint_2",
+                "texturePack": "blueprint_2"
+            }
+        ]
+    },
+    "poem": {
+        "name": "poem",
+        "type": "plane",
+        "width": "0.5",
+        "height": "0.8",
+        "subMeshes": [
+            {
+                "name": "poem",
+                "texturePack": "poem"
+            }
+        ]
+    },
     "rose": {
         "name": "rose",
         "type": "GLTF",
@@ -600,6 +636,21 @@
             }
         ]
     },
+    "wooden_chest": {
+        "name": "wooden_chest",
+        "type": "GLTF",
+        "url": "meshes/utils/wooden_chest.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Handles",
+                "texturePack": "cardboard"
+            }
+        ]
+    },
     "woman_house_skeleton": {
         "name": "woman_house_skeleton",
         "type": "GLTF",
@@ -618,7 +669,7 @@
         "subMeshes": [
             {
                 "name": "Body",
-                "texturePack": "wood"
+                "texturePack": "cardboard"
             }
         ]
     },

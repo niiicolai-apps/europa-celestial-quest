@@ -237,7 +237,10 @@ class FindClosest extends Base {
             const resourceManager = useResources();
             const collect = unitOptions.collect;
             const targetType = collect.type;
-            this.target = resourceManager.findClosest(position, targetType);
+            const resource = resourceManager.findClosest(position, targetType);
+            if (resource) {
+                this.target = resource;
+            }
         }
         else if (type === 'construction') {
             const itemsManager = useItems();
@@ -252,6 +255,7 @@ class FindClosest extends Base {
                 constructionName,
                 team
             );
+            
         } else if (type === 'enemy') {
             const healthManager = useHealth();
             const closestResult = healthManager.findClosestNotOnTeam(team, position);

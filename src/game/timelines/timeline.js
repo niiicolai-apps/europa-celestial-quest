@@ -219,7 +219,8 @@ const setupMeshes = (meshes, scene, sequence) => {
         const _meshes = []
         for (const meshData of sequence.meshes) {
             const meshSystem = meshes.find(m => m.id === meshData.id);
-
+            if (meshSystem === undefined)
+                throw new Error(`Unknown mesh id: ${JSON.stringify(meshData)}`);
             if (meshData.position)
                 meshSystem.mesh.position.set(
                     meshData.position.x,
@@ -344,11 +345,14 @@ const setupParticles = (particles, meshes, sequence) => {
 }
 
 
-export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ctrl, subTitleCtrl, onStop = () => { }) => {
+export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ctrl, subTitleCtrl, onStop = async () => { }) => {
     const _meshes = [];
     for (const meshData of json.meshes) {
         const { name, id } = meshData;
         const mesh = await getMesh(name);
+        if (!mesh) {
+            throw new Error(`Failed to load mesh: ${name}`);
+        }
         _meshes.push({ name, mesh, id });
     }
 
@@ -426,7 +430,7 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
 
     const backgroundBefore = scene.background;
 
-    const stop = () => {
+    const stop = async () => {
         utils.stopCamera();
         utils.stopCameraLoop();
         utils.stopLoop();
@@ -435,15 +439,16 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         audio1Ctrl.pause();
         audio2Ctrl.pause();
         subTitleCtrl.hideSubTitle();
-        removeLights(_lights, scene);
-        removeMeshes(_meshes, scene);
-        useTimeline().showTransition.value = false;
         scene.fog = null;
         scene.background = backgroundBefore;
-        onStop();
+        removeLights(_lights, scene);
+        useTimeline().showTransition.value = false;
+        await removeMeshes(_meshes, scene);
+        await onStop();
+        console.log('Timeline stopped');
     }
 
-    return Timeline([...sequencies, { playTime: 1, callback: stop }], stop);
+    return Timeline([...sequencies, { playTime: 1000, callback: stop }], stop);
 }
 
 export const Timeline = (sequencies, onStop = () => { }) => {

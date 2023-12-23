@@ -47,7 +47,7 @@ const focus = async (object) => {
 useManager().create('camera', {
     enable: {
         priority: 1,
-        callback: async (options) => {
+        callback: async () => {
             manager.enable();
         }
     },
@@ -59,22 +59,21 @@ useManager().create('camera', {
     },
     onAnimate: {
         priority: 1,
-        callback: async (options) => {
+        callback: async () => {
             manager.update();
         }
     },
     onBeforeTimeline: {
         priority: 1,
-        callback: () => {
-            manager.disable();
+        callback: async () => {
         }
     },
     onAfterTimeline: {
         priority: 1,
-        callback: () => {
-            manager.enable();
-            manager.camera.position.set(0, currentZoom, 0)
-            manager.camera.rotation.set(options.rotation.x, 0, 0)
+        callback: async () => {
+            manager.camera.rotation.x = -60 * Math.PI / 180;
+            manager.camera.rotation.y = 0 * Math.PI / 180;
+            manager.camera.rotation.z = 0 * Math.PI / 180;
         }
     }
 })

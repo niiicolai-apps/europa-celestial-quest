@@ -107,6 +107,10 @@ const Bank = (team, startAccounts=[]) => {
 
         const account = createOrFindAccount(currency)
         account.max = account.defaultMax + amount;
+        
+        if (account.balance > account.max) {
+            account.balance = account.max;
+        }
     }
 
     const resetMax = (currency) => {
@@ -114,6 +118,10 @@ const Bank = (team, startAccounts=[]) => {
 
         const account = createOrFindAccount(currency)
         account.max = account.defaultMax;
+
+        if (account.balance > account.max) {
+            account.balance = account.max;
+        }
     }
 
     const getMax = (currency) => {

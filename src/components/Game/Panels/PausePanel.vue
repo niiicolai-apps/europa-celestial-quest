@@ -95,6 +95,8 @@ const options = computed(() => [{
     name: localizationManager.getLocale("pause.quit_button_title"),
     description: localizationManager.getLocale("pause.quit_button_description"),
     icon: "dungeon",
-    method: props.endGame,
+    method: () => {
+        window.location.reload();
+    },
 }]);
 </script>

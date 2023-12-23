@@ -217,6 +217,42 @@
         ]
     },
     {
+        "name": "blueprint_1",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/blueprint_1/blueprint_1_basecolor.png"
+            }
+        ]
+    },
+    {
+        "name": "blueprint_2",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/blueprint_2/blueprint_2_basecolor.png"
+            }
+        ]
+    },
+    {
+        "name": "poem",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "textures/poem/poem_basecolor.png"
+            }
+        ]
+    },
+    {
         "name": "terrain",
         "material": "MeshPhysicalMaterial",
         "transparent": false,

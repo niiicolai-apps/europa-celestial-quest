@@ -43,7 +43,7 @@ export const useTimeline = () => {
         isInitialized.value = true
     }
     
-    const play = async (name, _onStop=onStop.value) => {
+    const play = async (name) => {
         await onBefore.value()
 
         const response = await fetch(`timelines/${name}.json`);
@@ -69,7 +69,7 @@ export const useTimeline = () => {
                 const exists = timelines.find(t => t === name)
                 if (!exists) PersistentData.set(pdPrefix, [...timelines, name])
 
-                _onStop()
+                await onStop.value()
             }
         )
         

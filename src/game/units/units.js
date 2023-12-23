@@ -9,6 +9,7 @@ import { useParticlesPool } from '../particles/particles_pool.js';
 import { useCommands } from './commands.js';
 import UnitsBehavior from '../state_machine/behaviors/units_behavior.json';
 import UnitStates from '../state_machine/states/unit_states.js';
+import { usePlayers } from '../players/player.js';
 
 const units = ref([]);
 
@@ -175,7 +176,15 @@ export const useUnits = () => {
     }
 
     const remove = (object3D) => {
-        units.value = units.value.filter(u => u.object3D.uuid !== object3D.uuid);
+        const unitIndex = units.value.findIndex(u => u.object3D.uuid === object3D.uuid);
+        if (unitIndex === -1) return;
+
+        const team = units.value[unitIndex].team;
+        
+        /**
+         * Remove from units array.
+         */
+        units.value.splice(unitIndex, 1);
 
         /**
          * Remove from state machine.
@@ -196,6 +205,11 @@ export const useUnits = () => {
          * Remove from cache.
          */
         removeMesh(object3D)
+
+        /**
+         * Save player data.
+         */
+        usePlayers().get(team).saveData()
     }
 
     const setStateByFunction = (primaryFunction, stateName, team = 'player') => {
