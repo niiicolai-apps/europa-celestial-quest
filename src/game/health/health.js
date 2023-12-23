@@ -1,150 +1,123 @@
 import { useBillboard } from "../billboard/billboard.js";
-import * as THREE from 'three';
-import { ref } from 'vue';
+import HealthController from './health_controller.js';
 
-const healthObjects = ref([]);
-const healthBarGeometry = ref(null);
-const healthBarBggMaterial = ref(null);
-const healthBarMaterial = ref(null);
-const healthBarYOffset = 0.1;
-const healthBarZOffset = 0.5;
-
-const createHealthBar = (object3D, _healthBarYOffset=0) => {
-    if (!healthBarGeometry.value) {
-        healthBarGeometry.value = new THREE.PlaneGeometry(5, 1);
-    }
-
-    if (!healthBarBggMaterial.value) {
-        healthBarBggMaterial.value = new THREE.MeshBasicMaterial({ color: 0x000000 });
-    }
-
-    if (!healthBarMaterial.value) {
-        healthBarMaterial.value = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    }
-
-    const healthBarBggMesh = new THREE.Mesh(healthBarGeometry.value, healthBarBggMaterial.value);
-    const healthBarMesh = new THREE.Mesh(healthBarGeometry.value, healthBarMaterial.value);
-    healthBarBggMesh.name = 'healthBar';
-    object3D.add(healthBarBggMesh);
-    healthBarBggMesh.add(healthBarMesh);
-    
-    const box3 = new THREE.Box3().setFromObject(object3D);
-    const size = box3.getSize(new THREE.Vector3());
-    healthBarBggMesh.position.y = size.y + healthBarYOffset + _healthBarYOffset;
-    healthBarMesh.position.z = healthBarZOffset;
-
-    const setProgress = (progress, max) => {
-        healthBarMesh.scale.x = progress / max;
-        healthBarMesh.position.x = (1 - healthBarMesh.scale.x) * -2.5;
-    }
-
-    useBillboard().add(healthBarBggMesh);
-
-    return { setProgress }
-}
-
+/**
+ * The health interface
+ */
 export const useHealth = () => {
 
-    const addHealthObject = (object3D, team='player', current=100, max=100, onDie=()=>{}, onDamage=(attacker)=>{}, _healthBarYOffset=0) => {
-        const exist = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
-        if (exist) {
-            return;
-        }
-
-        const healthBar = createHealthBar(object3D, _healthBarYOffset);
-        healthObjects.value.push({ 
-            lastHit: null,
-            object3D, 
-            healthBar, 
-            team, 
-            current, 
-            max, 
-            onDie, 
-            onDamage,
-        });
-    }
-
-    const removeHealthObject = (object3D) => {
-        healthObjects.value = healthObjects.value.filter(h => h.object3D.uuid !== object3D.uuid);
-    }
-
-    const applyDamage = (object3D, damage, attacker, attackerTeam='player') => {
-        const healthObject = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
-        if (!healthObject) return;
-
-        if (healthObject.team === attackerTeam) {
-            throw new Error('Cannot damage own team');
-        }
-
-        healthObject.current -= damage;
-        healthObject.onDamage(attacker);
-
-        if (healthObject.current <= 0) {
-            healthObject.current = 0;
-            healthObject.onDie();
-        }
-
-        healthObject.healthBar.setProgress(
-            healthObject.current, 
-            healthObject.max
+    /**
+     * Add a health object
+     * 
+     * @param {object} object3D
+     * @param {string} team
+     * @param {number} current
+     * @param {number} max
+     * @param {function} onDie
+     * @param {function} onDamage
+     * @param {number} _healthBarYOffset
+     * @returns {HealthModel}
+     * @throws {Error} if the health model already exists
+     */
+    const addHealthObject = (
+        object3D, team='player', current=100, max=100, 
+        onDie=()=>{}, onDamage=(attacker)=>{}, _healthBarYOffset=0
+        ) => {
+        const hc = HealthController.create(
+            object3D, team, current, max,
+            onDie, onDamage, _healthBarYOffset
         );
-
-        healthObject.lastHit = Date.now();
+        useBillboard().add(hc.barModel.bggMesh);
     }
 
+    /**
+     * Remove the health object
+     * 
+     * @param {object} object3D
+     * @returns {HealthModel}
+     */
+    const removeHealthObject = (object3D) => {
+        const model = HealthController.getByObject3D(object3D);
+        if (model) {
+            HealthController.remove(object3D);
+            useBillboard().remove(model.barModel.bggMesh);
+        }
+    }
+
+    /**
+     * Apply damage to the health object
+     * 
+     * @param {object} object3D
+     * @param {number} damage
+     * @param {object} attacker
+     * @param {string} attackerTeam
+     * @returns {HealthModel}
+     */
+    const applyDamage = (object3D, damage, attacker, attackerTeam='player') => {
+        HealthController.applyDamage(object3D, damage, attacker, attackerTeam);
+    }
+
+    /**
+     * Check if the health object is dead
+     * 
+     * @param {object} object3D
+     * @returns {boolean}
+     */
     const isDead = (object3D) => {
-        const healthObject = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
-        if (!healthObject) return false;
-
-        return healthObject.current <= 0;
+        return HealthController.isDead(object3D);
     }
 
-    const revive = (object3D) => {
-        const healthObject = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
-        if (!healthObject) return;
-
-        healthObject.current = healthObject.max;
+    /**
+     * Reset the health object
+     * 
+     * @param {object} object3D
+     */
+    const reset = (object3D) => {
+        HealthController.reset(object3D);
     }
 
-    const reset = () => {
-        healthObjects.value = [];
-        healthBarGeometry.value?.dispose();
-        healthBarMaterial.value?.dispose();
-        healthBarGeometry.value = null;
-        healthBarMaterial.value = null;
-    }
-
+    /**
+     * check if the health object is hitted within time
+     * 
+     * @param {object} object3D
+     * @param {number} time
+     * @returns {boolean}
+     */
     const isHittedWithin = (object3D, time) => {
-        const healthObject = healthObjects.value.find(h => h.object3D.uuid === object3D.uuid);
-        if (!healthObject) return false;
-
-        return healthObject.lastHit !== null && Date.now() - healthObject.lastHit <= time;
+        return HealthController.isHittedWithin(object3D, time);        
     }
 
+    /**
+     * find all health objects by team
+     * 
+     * @param {string} team
+     * @param {boolean} isDead
+     * @returns {Array<HealthModel>}
+     */
     const findAllByTeam = (team, isDead=false) => {
-        return healthObjects.value.filter(h => h.team === team && (isDead ? h.current <= 0 : h.current > 0))
+        return HealthController.findAllByTeam(team, isDead);        
     }
 
+    /**
+     * find all health objects not on team
+     * 
+     * @param {string} team
+     * @param {boolean} isDead
+     * @returns {Array<HealthModel>}
+     */
     const findAllNotOnTeam = (team, isDead=false) => {
-        return healthObjects.value.filter(h => h.team !== team && (isDead ? h.current <= 0 : h.current > 0))
+        return HealthController.findAllNotOnTeam(team, isDead);        
     }
 
+    /**
+     * find the closest health object not on team
+     * 
+     * @param {string} team
+     * @param {object} position
+     * @returns {HealthModel}
+     */
     const findClosestNotOnTeam = (team, position) => {
-        const healthObjects = findAllNotOnTeam(team);
-        if (healthObjects.length === 0) {
-            return null;
-        }
-
-        let closest = null;
-        let closestDistance = Infinity;
-        for (const healthObject of healthObjects) {
-            const distance = healthObject.object3D.position.distanceTo(position);
-            if (distance < closestDistance) {
-                closest = healthObject;
-                closestDistance = distance;
-            }
-        }
-        return { healthObject: closest, closestDistance };
+        return HealthController.findClosestNotOnTeam(team, position);
     }
 
     return {
@@ -152,7 +125,6 @@ export const useHealth = () => {
         removeHealthObject,
         applyDamage,
         isDead,
-        revive,
         reset,
         findAllByTeam,
         findAllNotOnTeam,

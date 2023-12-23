@@ -16,7 +16,7 @@
 
 
         <TransitionGroup name="fade">
-            <div v-if="isDelayed">
+            <div v-if="isDelayed" class="w-full">
                 <UI.Flex direction="horizontal" items="center" justify="between" class="w-full mb-5">
                     <div>
                         <p class="uppercase text-lg font-bold mb-2">

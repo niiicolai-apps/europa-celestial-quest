@@ -13,6 +13,7 @@ import { useGameEnd } from '../managers/game_end.js'
 import { useManager } from '../managers/manager.js'
 import { useCanvas } from '../../composables/canvas.js';
 import { useParticlesPool } from '../particles/particles_pool.js'
+import { useCollision } from '../collision/collision.js'
 import { ref } from 'vue'
 import { usePlayers } from '../players/player.js'
 
@@ -93,6 +94,11 @@ const removeItemFromState = async (item) => {
      * Recalculate storage.
      */
     recalculateStorage(team)
+
+    /**
+     * Remove from the collision system.
+     */
+    useCollision().remove(item)
 
     /**
      * Save the player
@@ -239,6 +245,8 @@ export const useItems = () => {
         if (canStore) {
             recalculateStorage(team)
         }
+
+        useCollision().add(item)
 
         return item
     }

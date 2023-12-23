@@ -37,10 +37,8 @@ const move = (selected, dx, dy, dz) => {
     if (!point) return false;
     nextPosition.copy(getPosition(point));
 
-    const placementYOffset = selected.value.userData.placementYOffset || 0;
-    const box3 = new THREE.Box3().setFromObject(selected.value);
-    const size = box3.getSize(new THREE.Vector3());
-    nextPosition.y += (size.y / 2) + placementYOffset;
+    const placementYOffset = selected.value.userData.placementYOffset || 0;    
+    nextPosition.y = placementYOffset;
 
     if (collisionManager.isCollidingAt(selected.value, nextPosition))
         return false;
