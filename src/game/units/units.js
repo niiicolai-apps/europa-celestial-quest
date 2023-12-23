@@ -7,6 +7,7 @@ import { useManager } from '../managers/manager.js';
 import { useCanvas } from '../../composables/canvas.js';
 import { useParticlesPool } from '../particles/particles_pool.js';
 import { useCommands } from './commands.js';
+import { useNavigation } from '../navigation/navigation.js';
 import UnitsBehavior from '../state_machine/behaviors/units_behavior.json';
 import UnitStates from '../state_machine/states/unit_states.js';
 import { usePlayers } from '../players/player.js';
@@ -158,6 +159,18 @@ export const useUnits = () => {
         createHealth(unit);
 
         /**
+         * Add to navigation.
+         */
+        if (options.move) {
+            useNavigation().add(
+                object3D, 
+                options.move.speed, 
+                options.move.acceptableDistance, 
+                options.move.groundOffset
+            );
+        }
+
+        /**
          * Add to state machine.
          */
         const stateMachine = useStateMachine()
@@ -195,6 +208,11 @@ export const useUnits = () => {
          * Remove from health manager.
          */
         useHealth().removeHealthObject(object3D);
+
+        /**
+         * Remove from navigation.
+         */
+        useNavigation().remove(object3D);
 
         /**
          * Remove from scene.

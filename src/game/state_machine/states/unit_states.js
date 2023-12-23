@@ -8,8 +8,8 @@ import { useParticlesPool } from "../../particles/particles_pool.js";
 import { useHealth } from "../../health/health.js";
 import { usePlayers } from "../../players/player.js";
 import { useCommands } from "../../units/commands.js";
-import * as THREE from 'three';
 import { useStateMachine } from "../state_machine.js";
+import * as THREE from 'three';
 
 class Base {
     constructor(manager, options = {}) {
@@ -116,45 +116,32 @@ class Deliver extends Base {
  * Move behavior.
  */
 class MoveTo extends Base {
-    constructor(manager, options = {}, acceptableDistance = 1) {
+    constructor(manager, options = {}) {
         super(manager, options);
-        this.acceptableDistance = acceptableDistance;
 
         const unit = manager.object;
         const unitOptions = unit.options;
         const object3D = unit.object3D;
         const move = unitOptions.move;
-        this.destination = move ? move.destination : null;
+        const destination = move ? move.destination : null;
 
         if (!move) throw new Error('Unit Move feature is required');
-        if (!this.destination) throw new Error('Unit Move feature destination is required');
+        if (!destination) throw new Error('Unit Move feature destination is required');
 
-        this.speed = move.speed
-        this.groundOffset = move.groundOffset,
-        this.object3D = object3D;
-        this.agent = null;
-    }
-
-    update() {
-        if (!this.agent) {
-            this.agent = useNavigation().addAgent(
-                this.object3D,
-                this.destination,
-                this.speed,
-                this.groundOffset,
-                this.acceptableDistance
-            );
-        }
+        this.nModel = useNavigation().find(object3D);
+        this.nModel.setDestination(destination);
     }
 
     exit() {
-        useNavigation().removeAgent(this.object3D);
+        const manager = this.manager;
+        const unit = manager.object;
+        const unitOptions = unit.options;
+        const move = unitOptions.move;
+        move.destination = null;
     }
 
     isComplete() {
-        if (!this.agent) return false;
-        const isComplete = this.agent.reachedDestination();
-        return isComplete;
+        return this.nModel.reachedDestination();
     }
 }
 
@@ -165,7 +152,7 @@ class MoveTo extends Base {
  * but ensures the unit is within
  * attack distance of the target.
  */
-class MoveToAttack extends MoveTo {
+class MoveToAttack extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
 
@@ -177,10 +164,16 @@ class MoveToAttack extends MoveTo {
         if (!attack) throw new Error('Unit Attack feature is required');
         if (!target) throw new Error('Manager target is required');
         if (!move) throw new Error('Unit Move feature is required');
-        move.destination = target.position;
-        this.acceptableDistance = attack.distance;
+        
+
+        this.nModel = useNavigation().find(object3D);        
+        this.nModel.setAcceptableDistance(attack.distance);
+        this.nModel.setDestination(target.position);
     }
 
+    isComplete() {
+        return this.nModel.reachedDestination();
+    }
 }
 
 class MoveToTarget extends Base {
