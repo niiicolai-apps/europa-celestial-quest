@@ -43,6 +43,12 @@ const BuildController = {
         const player = playerManager.get(team);
         const time = Date.now();
 
+        const maxManager = useMax();
+        const maxController = maxManager.find(team);
+        if (!maxController.canSpawnOneMoreUnit()) {
+            return;
+        }
+
         for (let i = queue.length - 1; i >= 0; i--) {
             const unit = queue[i];
             if (time < unit.completeTime) continue;
@@ -61,7 +67,6 @@ const BuildController = {
             unitMesh.position.y += unitSize.y / 2;
 
             queue.splice(i, 1);
-            console.log('dequeueing unit', unit.unit.name)
             break;
         }
 
@@ -87,7 +92,6 @@ const BuildController = {
             return false;
         }
 
-
         const units = BuildController.getAllowedUnits(selected);
         const unit = units.find(unit => unit.name === unitName);
         if (!unit) {
@@ -109,7 +113,7 @@ const BuildController = {
 
         const startTime = Date.now();
         const completeTime = startTime + unit.complete_time;
-        BuildController.addToQueue(selected, { unit, completeTime, startTime });
+        BuildController.addToQueue(selected, { unit, completeTime, startTime }, team);
 
         useToast().add('toasts.unit_controller.success', 4000, 'success');
 
@@ -137,22 +141,31 @@ const BuildController = {
         const s = selected.value || selected;
         return queues.value.find(q => q.uuid === s.uuid);        
     },
-    setQueue: (selected, queue=[]) => {
+    setQueue: (selected, queue=[], team) => {
         const s = selected.value || selected;
         const uuid = s.uuid;
         const index = queues.value.findIndex(q => q.uuid === uuid);
         if (index === -1) {
-            queues.value.push({ uuid, queue });
+            queues.value.push({ uuid, queue, team });
         } else {
-            queues.value[index] = { uuid, queue };
+            queues.value[index] = { uuid, queue, team };
         }
     },
-    addToQueue: (selected, unit) => {
+    addToQueue: (selected, unit, team) => {
         const queueData = BuildController.getQueue(selected);
         const queueArray = queueData ? queueData.queue : [];
         console.log('adding to queue', queueData)
         queueArray.push(unit);
-        BuildController.setQueue(selected, queueArray);
+        BuildController.setQueue(selected, queueArray, team);
+    },
+    getQueueUnitCount: (team) => {
+        let count = 0;
+        for (const queue of queues.value) {
+            if (queue.team === team) {
+                count += queue.queue.length;
+            }
+        }
+        return count;
     },
     canBuild: (selected) => {
         const s = selected.value || selected;

@@ -21,10 +21,15 @@ export const useCanvas = () => {
         adapter.value = null;
     }
 
+    const getCamera = () => {
+        return adapter.value.camera;
+    }
+
     return {
         adapter,
         webGLOptions,
         enable,
-        disable
+        disable,
+        getCamera
     }
 }

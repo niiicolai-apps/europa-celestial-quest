@@ -13,5 +13,9 @@ export default {
             en: 'Play again',
             da: 'Spil igen',
         },
+        quit: {
+            en: 'Quit',
+            da: 'Afslut',
+        },
     }
 }

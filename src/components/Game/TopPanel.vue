@@ -1,6 +1,6 @@
 <template>
     <UI.Fixed bottom="auto">
-        <UI.Flex direction="horizontal" justify="between" class="bg-info box-shadow-lg p-3 border-b-1 border-solid border-primary">
+        <UI.Flex direction="horizontal" justify="between" gap="1" class="bg-info box-shadow-lg p-3 border-b-1 border-solid border-primary">
             
             <UI.Flex direction="horizontal" gap="1">
                 <BankAccounts />

@@ -140,6 +140,6 @@ export const useMap = () => {
         resources,
         objectives,
         tutorials,
-        players
+        players,
     }
 }

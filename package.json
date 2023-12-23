@@ -15,7 +15,8 @@
     "build": "npm run build-web && npm run build-electron && npm run build-capacitor",
     "build-web": "vite build",
     "build-electron": "electron-builder",
-    "build-capacitor": "npx cap copy && npx cap sync"
+    "build-capacitor": "npx cap copy && npx cap sync",
+    "test": "vitest"
   },
   "build": {
     "appId": "ls",
@@ -71,6 +72,7 @@
     "electron": "^27.0.4",
     "electron-builder": "^24.6.4",
     "vite": "^4.4.5",
-    "vite-plugin-javascript-obfuscator": "^3.1.0"
+    "vite-plugin-javascript-obfuscator": "^3.1.0",
+    "vitest": "^1.1.0"
   }
 }

@@ -105,5 +105,9 @@ export default {
             en: 'Queue is empty',
             da: 'Køen er tom',
         },
+        build_time: {
+            en: 'Build time',
+            da: 'Byggetid',
+        },
     },
 }

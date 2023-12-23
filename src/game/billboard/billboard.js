@@ -1,10 +1,15 @@
 import { ref } from 'vue';
 import { useManager } from '../managers/manager.js';
 import { useCanvas } from '../../composables/canvas.js';
+import BillboardController from './billboard_controller.js';
 
-const objects = ref([]);
+/**
+ * A reference to the scenes camera.
+ *
+ * @type {Ref<THREE.Camera>}
+ * @private
+ */
 const camera = ref(null);
-const isPaused = ref(false);
 
 /**
  * Manager methods.
@@ -13,60 +18,49 @@ const isPaused = ref(false);
 useManager().create('billboard', {
     init: {
         priority: 1,
-        callback: () => {
-            const canvas = useCanvas()
-            const adapter = canvas.adapter.value
-            camera.value = adapter.camera
-        }
+        callback: () => camera.value = useCanvas().getCamera()
     },
-    update: {
+    slowUpdate: {
         priority: 1,
-        callback: () => {
-            if (isPaused.value) return;
-            for (const object of objects.value) {
-                object.lookAt(camera.value.position);
-            }
-        }
+        callback: () => BillboardController.update()
     },
     onBeforeTimeline: {
         priority: 1,
-        callback: () => {
-            isPaused.value = true;
-        }
+        callback: () => BillboardController.setPaused(true)
     },
     onAfterTimeline: {
         priority: 1,
-        callback: () => {
-            isPaused.value = false;
-        }
+        callback: () => BillboardController.setPaused(false)
     }
 })
 
+/**
+ * Billboard interface.
+ * 
+ * @typedef {Object} Billboard Interface for the billboard.
+ */
 export const useBillboard = () => {
 
     /**
-     * Add an object to the billboard.
+     * Create a new billboard for the given object3D.
      * 
      * @param {Object3D} object3D 
-     * @returns {void}
+     * @returns {Billboard}
      * @public
      */
     const add = (object3D) => {
-        const exist = objects.value.find(o => o.uuid === object3D.uuid);
-        if (exist) return;
-
-        objects.value.push(object3D);
+        return BillboardController.create(object3D, camera.value);
     }
 
     /**
-     * Remove an object from the billboard.
+     * Remove the billboard for the given object3D.
      * 
      * @param {Object3D} object3D
      * @returns {void}
      * @public
      */
     const remove = (object3D) => {
-        objects.value = objects.value.filter(o => o.uuid !== object3D.uuid);
+        BillboardController.remove(object3D);
     }
 
     /**

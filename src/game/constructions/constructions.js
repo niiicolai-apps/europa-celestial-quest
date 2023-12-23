@@ -45,7 +45,7 @@ const recalculateStorage = (team) => {
     console.log('Recalculating storage', team, max)
 }
 
-const removeItemFromState = (item) => {
+const removeItemFromState = async (item) => {
 
     const uuid = item.uuid
     const team = item.userData.team
@@ -97,7 +97,7 @@ const removeItemFromState = (item) => {
     /**
      * Save the player
      */
-    usePlayers().get(team).saveData()
+    await usePlayers().get(team).saveData()
     
     console.log('Removing item from state', item)
 
@@ -109,8 +109,8 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
     const { maxHealth, current } = healthFeature.options
     const healthManager = useHealth()
 
-    const onDie = () => {
-        removeItemFromState(item)
+    const onDie = async () => {
+        await removeItemFromState(item)
         useGameEnd().endGameCheck()
     }
 

@@ -85,13 +85,12 @@ useManager().create('initializer', {
             scene.value = adapter.scene
 
             const map = useMap()
-            const mapName = await map.name()
             playersMapData.value = await map.players()
             
             /**
              * 1. Load PD players
              */
-            const pdPlayers = await PersistentData.get(`${mapName}-players`)
+            const pdPlayers = await PersistentData.getPlayers();
             const spawnedTeams = []
             if (pdPlayers) {
                 for (const pdPlayer of pdPlayers) {

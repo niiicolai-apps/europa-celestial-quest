@@ -187,7 +187,7 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         /**
          * 5. Find existing PD players and update
          */
-        const pdPlayers = await PersistentData.get(`${mapName.value}-players`) || []
+        const pdPlayers = await PersistentData.getPlayers() || []
         const pdIndex = pdPlayers.findIndex(p => p.team_name === team)
         if (pdIndex !== -1) pdPlayers[pdIndex] = data
         else pdPlayers.push(data)
@@ -195,7 +195,7 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         /**
          * 6. Save PD players
          */
-        await PersistentData.set(`${mapName.value}-players`, pdPlayers)
+        await PersistentData.setPlayers(pdPlayers)
     }
 
     const getStat = () => {

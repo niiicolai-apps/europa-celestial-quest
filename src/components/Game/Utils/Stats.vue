@@ -8,7 +8,7 @@
             <UI.ProgressBar 
                 :progress="stat.experience" 
                 :maxProgress="stat.maxExperience()"
-                class="w-25 h-2 border-1 border-solid border-primary mt-1" 
+                class="w-26 h-2 border-1 border-solid border-primary mt-1" 
                 :showPercent="false"
                 bg_color="bg-dark"
                 bar_color="bg-warning"

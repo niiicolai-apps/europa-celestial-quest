@@ -9,7 +9,6 @@ const Controller = (team, _constructions={default:10, max:10, total: 100}, _unit
     const constructions = ref(_constructions);
     const units = ref(_units);
 
-
     const hasReachedMaxConstructions = () => {
         const constructionsManager = useItems();
         const count = constructionsManager.countByTeam(team);

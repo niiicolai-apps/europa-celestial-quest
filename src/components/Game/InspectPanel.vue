@@ -223,37 +223,63 @@
                     </UI.Flex>
                 </UI.Flex>
 
-                <UI.Flex direction="horizontal" items="auto" justify="start" gap="3">
-                    <UI.Button @click="inspectManager.unitCtrl.cancel()" class="h-25 w-17">
+                <UI.Flex direction="horizontal" items="auto" justify="start" gap="3" class="w-full">
+                    <UI.Button @click="inspectManager.unitCtrl.cancel()" class="h-26 w-17">
                         <Icons.fa.ArrowLeftIcon :width="iconSize" :height="iconSize" :fill="iconFill" />
                         <p class="text-info uppercase font-bold" style="font-size: 0.7em;">
                             <Locale id="inspect.cancel_unit_button" />
                         </p>
                     </UI.Button>
 
-                    <UI.Flex direction="horizontal" justify="start" gap="2">
+                    <UI.Flex direction="horizontal" justify="start" items="start" gap="2" class="w-full" style="overflow-x: auto;">
                         <UI.Button 
                             v-for="unit in allowedUnits"
                             :key="unit.name"
                             type="primary"
                             @click="inspectManager.unitCtrl.queueUnit(unit.name)"
-                            class="h-25"
+                            class="h-26"
                         >
                             <div>
-                                <div class="text-left text-info mb-3">
-                                    <p class="font-bold uppercase text-xs text-info mb-1">
-                                        <Locale :id="`units.${unit.name}.title`" />
-                                    </p>
-                                    <p class="text-xs text-info" style="font-size: 0.8em;">
-                                        <Locale :id="`units.${unit.name}.description`" />
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <UI.Flex class="w-full h-10 bg-info rounded">
+                                <UI.Flex direction="horizontal" justify="between" class="w-full text-left text-info text-xs">
+                                    <div class="w-full">
+                                        <p class="font-bold uppercase">
+                                            <Locale :id="`units.${unit.name}.title`" />
+                                        </p>
+                                        <p style="font-size: 0.8em;">
+                                            <Locale :id="`units.${unit.name}.description`" />
+                                        </p>
+                                        <p style="font-size: 0.8em;">
+                                            <Locale :id="`inspect.build_time`" />: {{ (parseInt(unit.complete_time)/1000) }}s
+                                        </p>
+                                    </div>
+                                        
+                                    <UI.Flex class="bg-info rounded w-15 h-10">
                                         <img :src="unit.image" :alt="unit.name" class="block w-7 mx-auto" />
                                     </UI.Flex>
-                                </div>
+                                </UI.Flex>
+                                    
+                                <UI.Flex direction="horizontal" class="w-full h-13 text-info">
+                                    <UI.Flex v-for="cost in unit.costs" :key="cost.currency" gap="1" class="text-xs w-4">
+                                        <div>
+                                            <Icons.fa.RingIcon v-if="cost.currency == 'metal'" :width="unitCostIconSize" :height="unitCostIconSize"
+                                                :fill="iconFill" />
+                                            <Icons.fa.IciclesIcon v-if="cost.currency == 'ice'" :width="unitCostIconSize" :height="unitCostIconSize"
+                                                :fill="iconFill" />
+                                            <Icons.fa.AtomIcon v-if="cost.currency == 'hydrogen'" :width="unitCostIconSize" :height="unitCostIconSize"
+                                                :fill="iconFill" />
+                                            <Icons.fa.HillRockSlideIcon v-if="cost.currency == 'rock'" :width="unitCostIconSize" :height="unitCostIconSize"
+                                                :fill="iconFill" />
+                                            <Icons.fa.BoltIcon v-if="cost.currency == 'power'" :width="unitCostIconSize" :height="unitCostIconSize"
+                                                :fill="iconFill" />
+                                        </div>
+                                        <div class="text-center font-bold mb-1" style="font-size: .7em;">
+                                            <p class="mb-1">
+                                                <Locale :id="`bank.${cost.currency}`" />
+                                            </p>
+                                            <p>{{ cost.amount }}</p>
+                                        </div>
+                                    </UI.Flex>
+                                </UI.Flex>
                             </div>
                         </UI.Button>
                     </UI.Flex>
@@ -274,6 +300,8 @@ import { useLocalization } from '../../composables/localization.js';
 
 const iconSize = "1.5em";
 const iconFill = "#3f88c5";
+
+const unitCostIconSize = "0.5em";
 
 const localizationManager = useLocalization();
 const inspectManager = useInspect();

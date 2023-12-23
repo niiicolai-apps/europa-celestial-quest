@@ -212,7 +212,14 @@ useManager().create('inspect', {
             if (!isInitialized.value) return false;
             selectableManager.value.enable();
         }
-    }
+    }, 
+    update: {
+        priority: 1,
+        callback: () => {
+            if (!isInitialized.value) return false;
+            MarkerController.update();
+        }
+    },
 })
 
 export const useInspect = () => {

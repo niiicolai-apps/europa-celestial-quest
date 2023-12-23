@@ -1,6 +1,6 @@
 
 export default {
-    units: {
+    units: {        
         'B S-1': {
             title: {
                 en: 'B S-1',

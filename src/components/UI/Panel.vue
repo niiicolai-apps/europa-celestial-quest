@@ -1,10 +1,10 @@
 <template>
     <UI.Panel transition_name="slide-up" :show="selectedPanel === identifier">
 
-        <div class="bg-info rounded w-full h-screen" :class="showScroll ? 'overflow-y-scroll' : ''">
+        <div class="bg-info rounded w-full h-screen" :style="showScroll ? 'overflow-y:auto;' : ''">
             <UI.Fixed bottom="auto" class="top-panel">
                 <UI.Flex direction="horizontal" justify="start" gap="3" 
-                    class="p-5 bg-info box-shadow-lg border-b-1 border-solid border-primary">
+                    class="p-5 bg-info box-shadow-lg border-b-1 border-solid border-primary h-18">
 
                     <UI.Button type="primary" 
                         class="flex items-center justify-center" 
@@ -28,8 +28,9 @@
 
                 </UI.Flex>
             </UI.Fixed>
-            
-            <div class="p-5 body-panel">
+
+            <div class="h-18"></div>
+            <div class="p-5">
                 <slot />
             </div>
         </div>
@@ -74,7 +75,4 @@ const selectedPanel = computed(() => panelManager.selectedPanel.value);
     font-size: 0.7em;
 }
 
-.body-panel {
-    margin-top: 5.5em;
-}
 </style>

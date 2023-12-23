@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { usePlayers } from '../players/player.js';
+import PersistentData from '../persistent_data/persistent_data.js';
 
 const END_STATES = {
     WIN: 'win',
@@ -22,12 +23,17 @@ export const useGameEnd = () => {
         return endState.value === END_STATES.LOSE;
     }
 
-    const endGame = (state='win') => {
+    const endGame = async (state='win') => {
         if (Object.values(END_STATES).indexOf(state) === -1) {
             throw new Error(`Invalid game end state: ${state}`);
         }
 
         endState.value = state;
+
+        /**
+         * Reset persistent data.
+         */
+        PersistentData.resetMap();  
     }
 
     const reset = () => {
@@ -41,17 +47,17 @@ export const useGameEnd = () => {
      * Option 3) Nothing happens. 
      * @returns {void}
      */
-    const endGameCheck = () => {
+    const endGameCheck = async () => {
         const players = usePlayers();
         const you = players.findYou();
         if (you.isDead()) {
-            endState.value = END_STATES.LOSE;
+            await endGame(END_STATES.LOSE);
             return;
         }
     
         const aliveComputerPlayers = players.findAll(false, true, false);
         if (aliveComputerPlayers.length === 0) {
-            endState.value = END_STATES.WIN;
+            await endGame(END_STATES.WIN);
         }
     }
 

@@ -32,6 +32,9 @@ const timelineManager = useTimeline();
 const endGame = ref(null);
 const gameIsStarted = ref(false);
 
+const slowLoop = ref(null);
+const slowLoopInterval = 500;
+
 const gameLoop = ref(null);
 const gameLoopInterval = 30;
 
@@ -57,8 +60,7 @@ export const useGameManager = () => {
            
         } else {
 
-            const mapName = await useMap().name();
-            const timelines = await PersistentData.get(`${mapName}-timelines`) || [];
+            const timelines = await PersistentData.getTimelines() || [];
             const introExists = timelines.find(t => t === 'intro');
             if (introExists) await startNewGame();
             else await timelineManager.play('intro');
@@ -101,7 +103,14 @@ export const useGameManager = () => {
         }, gameLoopInterval);
 
         /**
-         * 5. Set game as started.
+         * 6. Start slow game loop.
+         */
+        slowLoop.value = setInterval(async () => {
+            await useManager().runMethod('slowUpdate');
+        }, slowLoopInterval);
+
+        /**
+         * 7. Set game as started.
          */
         gameIsStarted.value = true;
     }

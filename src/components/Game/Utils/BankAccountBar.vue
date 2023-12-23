@@ -9,7 +9,7 @@
             <UI.ProgressBar 
                 :progress="account.balance" 
                 :maxProgress="account.max"
-                class="w-25 h-2 border-1 border-solid border-primary" 
+                class="w-26 h-2 border-1 border-solid border-primary" 
                 :showPercent="false"
                 bg_color="bg-dark"
                 bar_color="bg-warning"

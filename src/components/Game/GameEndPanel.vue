@@ -9,8 +9,8 @@
                     <Locale id="game_end.you_lost" />
                 </UI.Title>
 
-                <UI.Button @click="gameManager.backToMainMenu()">
-                    <Locale id="game_end.play_again" />
+                <UI.Button @click="quit">
+                    <Locale id="game_end.quit" />
                 </UI.Button>
             </UI.Flex>
         </UI.Fixed>
@@ -31,4 +31,7 @@ const isGameStarted = computed(() => gameManager.isGameStarted())
 const isGameEnded = computed(() => gameEnd.isGameEnded())
 const isGameWon = computed(() => gameEnd.isGameWon())
 
+const quit = () => {
+    window.location.reload()
+}
 </script>
