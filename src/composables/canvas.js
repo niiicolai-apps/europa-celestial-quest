@@ -1,9 +1,13 @@
 import { ref } from 'vue';
-import Camera from '../game/camera/camera.js';
 import * as THREE from 'three';
 
 const adapter = ref(null);
-const webGLOptions = { camera: { ...Camera.options } };
+const webGLOptions = {
+    camera: {
+        near: 0.1,
+        far: 1000,
+    },
+ };
 
 export const useCanvas = () => {
 
@@ -25,11 +29,21 @@ export const useCanvas = () => {
         return adapter.value.camera;
     }
 
+    const getRenderer = () => {
+        return adapter.value.renderer;
+    }
+
+    const getScene = () => {
+        return adapter.value.scene;
+    }
+
     return {
         adapter,
         webGLOptions,
         enable,
         disable,
-        getCamera
+        getCamera,
+        getRenderer,
+        getScene,
     }
 }

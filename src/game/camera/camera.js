@@ -1,43 +1,52 @@
 import * as THREE from 'three'
-import WebGL from 'frontend-webgl'
 import { useManager } from '../managers/manager.js'
 import PersistentData from '../persistent_data/persistent_data.js'
 
-const currentZoom = 150;
-const currentPosition = new THREE.Vector3(0, 0, 35);
-const minZoom = 50;
+import { useCanvas } from '../../composables/canvas.js'
+import { MapControls } from 'three/addons/controls/MapControls.js';
+
+
+const minZoom = 100;
 const maxZoom = 620;
-const zoomSpeed = 3;
-const moveSpeed = 0.1;
+const startZoom = 300;
+const minPolarAngle = 10 * Math.PI / 180;
+const startPolarAngle = 45 * Math.PI / 180;
+const maxPolarAngle = 80 * Math.PI / 180;
 
-const manager = WebGL.composables.useTopDownCamera({
-    minZoom,
-    maxZoom,
-    currentZoom,
-    currentPosition,
-    zoomSpeed,
-    moveSpeed,
-})
-
-const options = {
-    custom: manager.camera,
-    rotation: {
-        x: -60 * Math.PI / 180,
-    },
-}
+let zoomSpeed = 3;
+let panSpeed = 1;
+let controls = null;
 
 const setZoomSpeed = async (value) => {
-    manager.setZoomSpeed(value);
-    await PersistentData.set('camera_zoom_speed', {value});
+    zoomSpeed = value;
+    //if (controls) controls.zoomSpeed = value;
+    await PersistentData.set('camera_zoom_speed', { value });
 }
 
 const setMoveSpeed = async (value) => {
-    manager.setMoveSpeed(value);
-    await PersistentData.set('camera_move_speed', {value});
+    panSpeed = value;
+    //if (controls) controls.panSpeed = value;
+    await PersistentData.set('camera_move_speed', { value });
 }
 
-const focus = async (object) => {
-    manager.focus(object);
+const setPosition = async (position) => {
+    if (controls) {
+        controls.target.x = position.x;
+        controls.target.y = position.y;
+        controls.target.z = position.z;
+    }
+    
+    const camera = useCanvas().getCamera();
+    camera.position.x = position.x;
+    camera.position.y = position.y + 10
+    camera.position.z = position.z;
+}
+
+const setRotation = async (rotation) => {
+    /*const camera = useCanvas().getCamera();
+    camera.rotation.x = rotation.x;
+    camera.rotation.y = rotation.y;
+    camera.rotation.z = rotation.z;*/
 }
 
 /**
@@ -45,43 +54,61 @@ const focus = async (object) => {
  * Will be called by the manager.
  */
 useManager().create('camera', {
+    init: {
+        priority: 1,
+        callback: async () => {
+            const camera = useCanvas().getCamera();
+            const renderer = useCanvas().getRenderer();
+            controls = new MapControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = minZoom;
+            controls.maxDistance = maxZoom;
+            controls.zoomSpeed = zoomSpeed;
+            controls.panSpeed = panSpeed;
+            controls.maxPolarAngle = maxPolarAngle;
+            controls.minPolarAngle = minPolarAngle;
+            controls.polarAngle = startPolarAngle;
+            console.log('controls', controls)
+            //controls.zoom = startZoom;
+        }
+    },
     enable: {
         priority: 1,
         callback: async () => {
-            manager.enable();
+            //if (controls) controls.enabled = true;
         }
     },
     disable: {
         priority: 1,
         callback: async () => {
-            manager.disable();
+            //if (controls) controls.enabled = false;
         }
     },
     onAnimate: {
         priority: 1,
         callback: async () => {
-            manager.update();
+            controls?.update();
         }
     },
     onBeforeTimeline: {
         priority: 1,
         callback: async () => {
+            //if (controls) controls.enabled = false;
         }
     },
     onAfterTimeline: {
         priority: 1,
         callback: async () => {
-            manager.camera.rotation.x = -60 * Math.PI / 180;
-            manager.camera.rotation.y = 0 * Math.PI / 180;
-            manager.camera.rotation.z = 0 * Math.PI / 180;
+            //if (controls) controls.enabled = true;
         }
     }
 })
 
 export default {
-    manager,
-    options,
     setZoomSpeed,
     setMoveSpeed,
-    focus,
+    setPosition,
+    setRotation,
 }

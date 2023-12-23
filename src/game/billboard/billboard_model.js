@@ -16,7 +16,7 @@ const update = (camera, object3D, lastX=null, lastY=null, lastZ=null) => {
         lastZ === camera.position.z) {
         return false;
     }
-    console.log('update');
+    
     object3D.lookAt(camera.position);
 }
 

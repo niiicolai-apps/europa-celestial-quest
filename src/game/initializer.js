@@ -53,8 +53,7 @@ const setup = async (player, data) => {
      * Setup player camera.
      */
     if (player.isYou) {
-        await Camera.manager.setPosition(startConstruction.position.x, startConstruction.position.z + 150);
-        await Camera.manager.setZoom(250)
+        await Camera.setPosition(startConstruction.position);
     }
 
     /**
