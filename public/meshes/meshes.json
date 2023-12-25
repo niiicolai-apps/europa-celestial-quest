@@ -2,7 +2,7 @@
     "terrain": {
         "name": "terrain",
         "type": "GLTF",
-        "url": "meshes/utils/terrain.glb",
+        "url": "./meshes/utils/terrain.glb",
         "subMeshes": [
             {
                 "name": "map",
@@ -13,13 +13,13 @@
     "dragon": {
         "name": "dragon",
         "type": "GLTF",
-        "url": "meshes/utils/dragon.glb",
+        "url": "./meshes/utils/dragon.glb",
         "subMeshes": []
     },
     "womans_house": {
         "name": "womans_house",
         "type": "GLTF",
-        "url": "meshes/utils/womans_house.glb",
+        "url": "./meshes/utils/womans_house.glb",
         "subMeshes": [
             {
                 "name": "Wood",
@@ -58,7 +58,7 @@
     "woman_with_poem": {
         "name": "woman_with_poem",
         "type": "GLTF",
-        "url": "meshes/utils/woman_with_poem.glb",
+        "url": "./meshes/utils/woman_with_poem.glb",
         "subMeshes": [
             {
                 "name": "Cube105",
@@ -98,7 +98,7 @@
     "ball_pen_stand": {
         "name": "ball_pen_stand",
         "type": "GLTF",
-        "url": "meshes/utils/ball_pen_stand.glb",
+        "url": "./meshes/utils/ball_pen_stand.glb",
         "subMeshes": [
             {
                 "name": "Cylinder_001",
@@ -109,7 +109,7 @@
     "ball_pen": {
         "name": "ball_pen",
         "type": "GLTF",
-        "url": "meshes/utils/ball_pen.glb",
+        "url": "./meshes/utils/ball_pen.glb",
         "subMeshes": [
             {
                 "name": "Cylinder_005",
@@ -124,7 +124,7 @@
     "blanket_1": {
         "name": "blanket_1",
         "type": "GLTF",
-        "url": "meshes/utils/blanket_1.glb",
+        "url": "./meshes/utils/blanket_1.glb",
         "subMeshes": [
             {
                 "name": "Cube_099",
@@ -135,7 +135,7 @@
     "blanket_2": {
         "name": "blanket_2",
         "type": "GLTF",
-        "url": "meshes/utils/blanket_2.glb",
+        "url": "./meshes/utils/blanket_2.glb",
         "subMeshes": [
             {
                 "name": "Plane_004",
@@ -146,7 +146,7 @@
     "book_blue": {
         "name": "book_blue",
         "type": "GLTF",
-        "url": "meshes/utils/book.glb",
+        "url": "./meshes/utils/book.glb",
         "subMeshes": [
             {
                 "name": "Outside",
@@ -161,7 +161,7 @@
     "book_red": {
         "name": "book_red",
         "type": "GLTF",
-        "url": "meshes/utils/book.glb",
+        "url": "./meshes/utils/book.glb",
         "subMeshes": [
             {
                 "name": "Outside",
@@ -176,7 +176,7 @@
     "book_black": {
         "name": "book_black",
         "type": "GLTF",
-        "url": "meshes/utils/book.glb",
+        "url": "./meshes/utils/book.glb",
         "subMeshes": [
             {
                 "name": "Outside",
@@ -191,7 +191,7 @@
     "book_shelf": {
         "name": "book_shelf",
         "type": "GLTF",
-        "url": "meshes/utils/book_shelf.glb",
+        "url": "./meshes/utils/book_shelf.glb",
         "subMeshes": [
             {
                 "name": "Wood_012",
@@ -202,7 +202,7 @@
     "candle": {
         "name": "candle",
         "type": "GLTF",
-        "url": "meshes/utils/candle.glb",
+        "url": "./meshes/utils/candle.glb",
         "subMeshes": [
             {
                 "name": "Candle",
@@ -217,7 +217,7 @@
     "carpet": {
         "name": "carpet",
         "type": "GLTF",
-        "url": "meshes/utils/carpet.glb",
+        "url": "./meshes/utils/carpet.glb",
         "subMeshes": [
             {
                 "name": "Plane_006",
@@ -228,7 +228,7 @@
     "chair": {
         "name": "chair",
         "type": "GLTF",
-        "url": "meshes/utils/chair.glb",
+        "url": "./meshes/utils/chair.glb",
         "subMeshes": [
             {
                 "name": "Wood_005",
@@ -239,7 +239,7 @@
     "coffee_cup": {
         "name": "coffee_cup",
         "type": "GLTF",
-        "url": "meshes/utils/coffee_cup.glb",
+        "url": "./meshes/utils/coffee_cup.glb",
         "subMeshes": [
             {
                 "name": "Coffee_Cup",
@@ -250,7 +250,7 @@
     "curtain_1": {
         "name": "curtain_1",
         "type": "GLTF",
-        "url": "meshes/utils/curtain_1.glb",
+        "url": "./meshes/utils/curtain_1.glb",
         "subMeshes": [
             {
                 "name": "Rod",
@@ -265,7 +265,7 @@
     "curtain_2": {
         "name": "curtain_2",
         "type": "GLTF",
-        "url": "meshes/utils/curtain_2.glb",
+        "url": "./meshes/utils/curtain_2.glb",
         "subMeshes": [
             {
                 "name": "Rod",
@@ -280,7 +280,7 @@
     "curtain_3": {
         "name": "curtain_3",
         "type": "GLTF",
-        "url": "meshes/utils/curtain_3.glb",
+        "url": "./meshes/utils/curtain_3.glb",
         "subMeshes": [
             {
                 "name": "Rod",
@@ -295,7 +295,7 @@
     "desk_cover": {
         "name": "desk_cover",
         "type": "GLTF",
-        "url": "meshes/utils/desk_cover.glb",
+        "url": "./meshes/utils/desk_cover.glb",
         "subMeshes": [
             {
                 "name": "Cover",
@@ -306,7 +306,7 @@
     "desk": {
         "name": "desk",
         "type": "GLTF",
-        "url": "meshes/utils/desk.glb",
+        "url": "./meshes/utils/desk.glb",
         "subMeshes": [
             {
                 "name": "Desk",
@@ -321,7 +321,7 @@
     "ehdx1_toy": {
         "name": "ehdx1_toy",
         "type": "GLTF",
-        "url": "meshes/utils/ehdx1_toy.glb",
+        "url": "./meshes/utils/ehdx1_toy.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -368,7 +368,7 @@
     "lantern": {
         "name": "lantern",
         "type": "GLTF",
-        "url": "meshes/utils/lantern.glb",
+        "url": "./meshes/utils/lantern.glb",
         "subMeshes": [
             {
                 "name": "Skeleton",
@@ -383,7 +383,7 @@
     "lantern_no_hook": {
         "name": "lantern_no_hook",
         "type": "GLTF",
-        "url": "meshes/utils/lantern_no_hook.glb",
+        "url": "./meshes/utils/lantern_no_hook.glb",
         "subMeshes": [
             {
                 "name": "Skeleton",
@@ -398,7 +398,7 @@
     "pillow_1": {
         "name": "pillow_1",
         "type": "GLTF",
-        "url": "meshes/utils/pillow_1.glb",
+        "url": "./meshes/utils/pillow_1.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -409,7 +409,7 @@
     "pillow_2": {
         "name": "pillow_2",
         "type": "GLTF",
-        "url": "meshes/utils/pillow_2.glb",
+        "url": "./meshes/utils/pillow_2.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -456,7 +456,7 @@
     "rose": {
         "name": "rose",
         "type": "GLTF",
-        "url": "meshes/utils/rose.glb",
+        "url": "./meshes/utils/rose.glb",
         "subMeshes": [
             {
                 "name": "Stem",
@@ -475,7 +475,7 @@
     "ruler": {
         "name": "ruler",
         "type": "GLTF",
-        "url": "meshes/utils/ruler.glb",
+        "url": "./meshes/utils/ruler.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -486,7 +486,7 @@
     "shelf": {
         "name": "shelf",
         "type": "GLTF",
-        "url": "meshes/utils/shelf.glb",
+        "url": "./meshes/utils/shelf.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -497,7 +497,7 @@
     "small_crate_top": {
         "name": "small_crate_top",
         "type": "GLTF",
-        "url": "meshes/utils/small_crate_top.glb",
+        "url": "./meshes/utils/small_crate_top.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -508,7 +508,7 @@
     "small_crate": {
         "name": "small_crate",
         "type": "GLTF",
-        "url": "meshes/utils/small_crate.glb",
+        "url": "./meshes/utils/small_crate.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -519,7 +519,7 @@
     "stool": {
         "name": "stool",
         "type": "GLTF",
-        "url": "meshes/utils/stool.glb",
+        "url": "./meshes/utils/stool.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -530,7 +530,7 @@
     "table_mirror": {
         "name": "table_mirror",
         "type": "GLTF",
-        "url": "meshes/utils/table_mirror.glb",
+        "url": "./meshes/utils/table_mirror.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -545,7 +545,7 @@
     "table_painting": {
         "name": "table_painting",
         "type": "GLTF",
-        "url": "meshes/utils/table_painting.glb",
+        "url": "./meshes/utils/table_painting.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -560,7 +560,7 @@
     "telescope": {
         "name": "telescope",
         "type": "GLTF",
-        "url": "meshes/utils/telescope.glb",
+        "url": "./meshes/utils/telescope.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -583,7 +583,7 @@
     "vase": {
         "name": "vase",
         "type": "GLTF",
-        "url": "meshes/utils/vase.glb",
+        "url": "./meshes/utils/vase.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -594,7 +594,7 @@
     "wall_painting_1": {
         "name": "wall_painting_1",
         "type": "GLTF",
-        "url": "meshes/utils/wall_painting_1.glb",
+        "url": "./meshes/utils/wall_painting_1.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -609,7 +609,7 @@
     "wall_painting_2": {
         "name": "wall_painting_2",
         "type": "GLTF",
-        "url": "meshes/utils/wall_painting_2.glb",
+        "url": "./meshes/utils/wall_painting_2.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -624,7 +624,7 @@
     "window": {
         "name": "window",
         "type": "GLTF",
-        "url": "meshes/utils/window.glb",
+        "url": "./meshes/utils/window.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -639,7 +639,7 @@
     "wooden_chest": {
         "name": "wooden_chest",
         "type": "GLTF",
-        "url": "meshes/utils/wooden_chest.glb",
+        "url": "./meshes/utils/wooden_chest.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -654,7 +654,7 @@
     "woman_house_skeleton": {
         "name": "woman_house_skeleton",
         "type": "GLTF",
-        "url": "meshes/utils/woman_house_skeleton.glb",
+        "url": "./meshes/utils/woman_house_skeleton.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -665,7 +665,7 @@
     "woman_house_walls": {
         "name": "woman_house_walls",
         "type": "GLTF",
-        "url": "meshes/utils/woman_house_walls.glb",
+        "url": "./meshes/utils/woman_house_walls.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -676,7 +676,7 @@
     "woman": {
         "name": "woman",
         "type": "GLTF",
-        "url": "meshes/utils/woman.glb",
+        "url": "./meshes/utils/woman.glb",
         "subMeshes": [
             {
                 "name": "Body",
@@ -694,7 +694,7 @@
     "rock_resource_01": {
         "name": "rock_resource_01",
         "type": "GLTF",
-        "url": "meshes/resources/rock_resource_01.glb",
+        "url": "./meshes/resources/rock_resource_01.glb",
         "subMeshes": [
             {
                 "name": "Rock",
@@ -705,7 +705,7 @@
     "ice_resource_01": {
         "name": "ice_resource_01",
         "type": "GLTF",
-        "url": "meshes/resources/ice_resource_01.glb",
+        "url": "./meshes/resources/ice_resource_01.glb",
         "subMeshes": [
             {
                 "name": "Ice",
@@ -721,7 +721,7 @@
     "europa_horizon_drifter_x1": {
         "name": "europa_horizon_drifter_x1",
         "type": "GLTF",
-        "url": "meshes/human_construction/europa_horizon_drifter_x1.glb",
+        "url": "./meshes/human_construction/europa_horizon_drifter_x1.glb",
         "subMeshes": [
             {
                 "name": "Europa_Horizon_Drifter_X1",
@@ -892,7 +892,7 @@
     "europa_horizon_drifter_x1_no_parachute": {
         "name": "europa_horizon_drifter_x1_no_parachute",
         "type": "GLTF",
-        "url": "meshes/human_construction/europa_horizon_drifter_x1_no_parachute.glb",
+        "url": "./meshes/human_construction/europa_horizon_drifter_x1_no_parachute.glb",
         "subMeshes": [
             {
                 "name": "Europa_Horizon_Drifter_X1",
@@ -1039,7 +1039,7 @@
     "Robot Facility": {
         "name": "Robot Facility",
         "type": "GLTF",
-        "url": "meshes/human_construction/bot_builder.glb",
+        "url": "./meshes/human_construction/bot_builder.glb",
         "subMeshes": [
             {
                 "name": "Light_01",
@@ -1082,7 +1082,7 @@
     "Drone Facility": {
         "name": "Drone Facility",
         "type": "GLTF",
-        "url": "meshes/human_construction/drone_builder.glb",
+        "url": "./meshes/human_construction/drone_builder.glb",
         "subMeshes": [
             {
                 "name": "Light_01",
@@ -1153,7 +1153,7 @@
     "Hydrogen Fuel Tank": {
         "name": "Hydrogen Fuel Tank",
         "type": "GLTF",
-        "url": "meshes/human_construction/hydrogen_fuel_tank.glb",
+        "url": "./meshes/human_construction/hydrogen_fuel_tank.glb",
         "subMeshes": [
             {
                 "name": "Hydrogen_Fuel_Tank_Lights",
@@ -1184,7 +1184,7 @@
     "Rock Metal Extractor": {
         "name": "Rock Metal Extractor",
         "type": "GLTF",
-        "url": "meshes/human_construction/rock_metal_extractor.glb",
+        "url": "./meshes/human_construction/rock_metal_extractor.glb",
         "subMeshes": [
             {
                 "name": "Rock_Metal_Extractor",
@@ -1247,7 +1247,7 @@
     "Rover Research Facility": {
         "name": "Rover Research Facility",
         "type": "GLTF",
-        "url": "meshes/human_construction/rover_research_facility.glb",
+        "url": "./meshes/human_construction/rover_research_facility.glb",
         "subMeshes": [
             {
                 "name": "Rover_Research_Facility",
@@ -1298,7 +1298,7 @@
     "Rover Warrior Facility": {
         "name": "Rover Warrior Facility",
         "type": "GLTF",
-        "url": "meshes/human_construction/rover_warrior_facility.glb",
+        "url": "./meshes/human_construction/rover_warrior_facility.glb",
         "subMeshes": [
             {
                 "name": "Rover_Warrior_Facility",
@@ -1381,7 +1381,7 @@
     "Machine Gun Turrent": {
         "name": "Machine Gun Turrent",
         "type": "GLTF",
-        "url": "meshes/human_construction/machine_gun_turrent.glb",
+        "url": "./meshes/human_construction/machine_gun_turrent.glb",
         "subMeshes": [
             {
                 "name": "Text_005",
@@ -1436,7 +1436,7 @@
     "Solar Panel": {
         "name": "Solar Panel",
         "type": "GLTF",
-        "url": "meshes/human_construction/solar_panel.glb",
+        "url": "./meshes/human_construction/solar_panel.glb",
         "subMeshes": [
             {
                 "name": "Solar_Panel_Level_1",
@@ -1468,55 +1468,55 @@
     "B S-1": {
         "name": "B S-1",
         "type": "GLTF",
-        "url": "meshes/human_units/bot_spider_1.glb",
+        "url": "./meshes/human_units/bot_spider_1.glb",
         "subMeshes": []
     },
     "B S-2": {
         "name": "B S-2",
         "type": "GLTF",
-        "url": "meshes/human_units/bot_spider_2.glb",
+        "url": "./meshes/human_units/bot_spider_2.glb",
         "subMeshes": []
     },
     "D L-1": {
         "name": "D L-1",
         "type": "GLTF",
-        "url": "meshes/human_units/drone_laser_1.glb",
+        "url": "./meshes/human_units/drone_laser_1.glb",
         "subMeshes": []
     },
     "D L-2": {
         "name": "D L-2",
         "type": "GLTF",
-        "url": "meshes/human_units/drone_laser_2.glb",
+        "url": "./meshes/human_units/drone_laser_2.glb",
         "subMeshes": []
     },
     "RR H20": {
         "name": "RR H20",
         "type": "GLTF",
-        "url": "meshes/human_units/rover_research_h20.glb",
+        "url": "./meshes/human_units/rover_research_h20.glb",
         "subMeshes": []
     },
     "RR D-1": {
         "name": "RR D-1",
         "type": "GLTF",
-        "url": "meshes/human_units/rover_research_d1.glb",
+        "url": "./meshes/human_units/rover_research_d1.glb",
         "subMeshes": []
     },
     "RR S-1": {
         "name": "RR S-1",
         "type": "GLTF",
-        "url": "meshes/human_units/rover_research_d1.glb",
+        "url": "./meshes/human_units/rover_research_d1.glb",
         "subMeshes": []
     },
     "RR W-3": {
         "name": "RR W-3",
         "type": "GLTF",
-        "url": "meshes/human_units/rover_warrior_3.glb",
+        "url": "./meshes/human_units/rover_warrior_3.glb",
         "subMeshes": []
     },
     "RR W-6": {
         "name": "RR W-6",
         "type": "GLTF",
-        "url": "meshes/human_units/rover_warrior_6.glb",
+        "url": "./meshes/human_units/rover_warrior_6.glb",
         "subMeshes": []
     }
     

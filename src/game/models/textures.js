@@ -36,7 +36,7 @@ export const getTexturePack = async (name, object_uuid) => {
     if (cached) return cached
 
     if (!textureJson)
-        textureJson = await fetch('/textures/textures.json').then(res => res.json())
+        textureJson = await fetch('./textures/textures.json').then(res => res.json())
 
     const texturePack = textureJson.find(texturePack => texturePack.name === name)
     if (!texturePack) return null

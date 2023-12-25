@@ -21,7 +21,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/jupiter/jupiter_basecolor.jpg"
+                "url": "./textures/jupiter/jupiter_basecolor.jpg"
             }
         ]
     },
@@ -32,7 +32,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/europa/europa_basecolor.png"
+                "url": "./textures/europa/europa_basecolor.png"
             }
         ]
     },
@@ -43,11 +43,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/wood/wood_basecolor.png"
+                "url": "./textures/wood/wood_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/wood/wood_normal.png"
+                "url": "./textures/wood/wood_normal.png"
             }
         ]
     },
@@ -58,11 +58,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/cardboard/cardboard_basecolor.png"
+                "url": "./textures/cardboard/cardboard_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/cardboard/cardboard_normal.png"
+                "url": "./textures/cardboard/cardboard_normal.png"
             }
         ]
     },
@@ -90,11 +90,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/red_fabric/red_fabric_basecolor.png"
+                "url": "./textures/red_fabric/red_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/red_fabric/red_fabric_normal.png"
+                "url": "./textures/red_fabric/red_fabric_normal.png"
             }
         ]
     },
@@ -106,11 +106,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/black_fabric/black_fabric_basecolor.png"
+                "url": "./textures/black_fabric/black_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/black_fabric/black_fabric_normal.png"
+                "url": "./textures/black_fabric/black_fabric_normal.png"
             }
         ]
     },
@@ -122,11 +122,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/grey_fabric/grey_fabric_basecolor.png"
+                "url": "./textures/grey_fabric/grey_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/grey_fabric/grey_fabric_normal.png"
+                "url": "./textures/grey_fabric/grey_fabric_normal.png"
             }
         ]
     },
@@ -138,11 +138,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/blue_fabric/blue_fabric_basecolor.png"
+                "url": "./textures/blue_fabric/blue_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/blue_fabric/blue_fabric_normal.png"
+                "url": "./textures/blue_fabric/blue_fabric_normal.png"
             }
         ]
     },
@@ -154,11 +154,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/white_fabric/white_fabric_basecolor.png"
+                "url": "./textures/white_fabric/white_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/white_fabric/white_fabric_normal.png"
+                "url": "./textures/white_fabric/white_fabric_normal.png"
             }
         ]
     },
@@ -170,11 +170,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/white_fabric/white_fabric_basecolor.png"
+                "url": "./textures/white_fabric/white_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/white_fabric/white_fabric_normal.png"
+                "url": "./textures/white_fabric/white_fabric_normal.png"
             }
         ]
     },
@@ -186,11 +186,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/green_fabric/green_fabric_basecolor.png"
+                "url": "./textures/green_fabric/green_fabric_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/green_fabric/green_fabric_normal.png"
+                "url": "./textures/green_fabric/green_fabric_normal.png"
             }
         ]
     },
@@ -208,11 +208,11 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/book_paper/book_paper_basecolor.png"
+                "url": "./textures/book_paper/book_paper_basecolor.png"
             },
             {
                 "type": "normalMap",
-                "url": "textures/book_paper/book_paper_normal.png"
+                "url": "./textures/book_paper/book_paper_normal.png"
             }
         ]
     },
@@ -224,7 +224,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/blueprint_1/blueprint_1_basecolor.png"
+                "url": "./textures/blueprint_1/blueprint_1_basecolor.png"
             }
         ]
     },
@@ -236,7 +236,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/blueprint_2/blueprint_2_basecolor.png"
+                "url": "./textures/blueprint_2/blueprint_2_basecolor.png"
             }
         ]
     },
@@ -248,7 +248,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/poem/poem_basecolor.png"
+                "url": "./textures/poem/poem_basecolor.png"
             }
         ]
     },
@@ -259,7 +259,7 @@
         "textures": [
             {
                 "type": "map",
-                "url": "textures/terrain/terrain_basecolor.png"
+                "url": "./textures/terrain/terrain_basecolor.png"
             }
         ]
     }

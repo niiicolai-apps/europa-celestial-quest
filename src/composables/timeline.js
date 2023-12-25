@@ -46,7 +46,7 @@ export const useTimeline = () => {
     const play = async (name) => {
         await onBefore.value()
 
-        const response = await fetch(`timelines/${name}.json`);
+        const response = await fetch(`./timelines/${name}.json`);
         if (!response.ok) {
             throw new Error(`Failed to load timeline: ${name}`);
         }

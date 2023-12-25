@@ -19,8 +19,8 @@
     "test": "vitest"
   },
   "build": {
-    "appId": "ls",
-    "productName": "ls",
+    "appId": "Europa: The Celestial Quest",
+    "productName": "Europa: The Celestial Quest",
     "directories": {
       "output": "dist_electron"
     },

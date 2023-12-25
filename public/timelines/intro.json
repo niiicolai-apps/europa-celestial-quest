@@ -195,7 +195,7 @@
             "playTime": 17000,
             "background": {
                 "type": "CubeTexture",
-                "path": "textures/cubeMaps/",
+                "path": "./textures/cubeMaps/",
                 "load": [ "px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png" ]
             },
             "fog": {
@@ -204,12 +204,12 @@
             },
             "sub_title": "intro.dialog_1",
             "audio_1": {
-                "clip": "audio/battle-of-the-dragons-8037.mp3",
+                "clip": "./audio/battle-of-the-dragons-8037.mp3",
                 "volume": 0.5,
                 "muted": false
             },
             "audio_2": {
-                "clip": "audio/intro_dialog_1.mp3",
+                "clip": "./audio/intro_dialog_1.mp3",
                 "volume": 0.5,
                 "muted": false
             },
@@ -521,7 +521,7 @@
             },
             "sub_title": "intro.dialog_2",
             "audio_2": {
-                "clip": "audio/intro_dialog_2.mp3",
+                "clip": "./audio/intro_dialog_2.mp3",
                 "volume": 0.5
             },
             "camera": {
@@ -979,7 +979,7 @@
             },
             "sub_title": "intro.dialog_3",
             "audio_2": {
-                "clip": "audio/intro_dialog_3.mp3",
+                "clip": "./audio/intro_dialog_3.mp3",
                 "volume": 0.5
             },
             "camera": {
@@ -1437,7 +1437,7 @@
             },
             "sub_title": "intro.poem_1",
             "audio_2": {
-                "clip": "audio/intro_poem_1.mp3",
+                "clip": "./audio/intro_poem_1.mp3",
                 "volume": 0.5
             },
             "camera": {
@@ -1610,7 +1610,7 @@
             },
             "sub_title": "intro.poem_2",
             "audio_2": {
-                "clip": "audio/intro_poem_2.mp3",
+                "clip": "./audio/intro_poem_2.mp3",
                 "volume": 0.5
             },
             "camera": {
@@ -1783,7 +1783,7 @@
                 "density": 0.001
             },
             "audio_2": {
-                "clip": "audio/intro_poem_3.mp3",
+                "clip": "./audio/intro_poem_3.mp3",
                 "volume": 0.5
             },
             "camera": {

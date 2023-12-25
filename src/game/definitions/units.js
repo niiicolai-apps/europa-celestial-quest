@@ -6,7 +6,7 @@ const UNIT_PRIMARY_FUNCTIONS = PRIMARY_FUNCTIONS.UNITS;
 const UNITS = {
     BOT_SPIDER_1: {
         name: 'B S-1',
-        image: 'thumbnails/human_units/bot_spider_1.png',
+        image: './thumbnails/human_units/bot_spider_1.png',
         requiredLevel: 1,
         complete_time: 10000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
@@ -26,7 +26,7 @@ const UNITS = {
     },
     BOT_SPIDER_2: {
         name: 'B S-2',
-        image: 'thumbnails/human_units/bot_spider_2.png',
+        image: './thumbnails/human_units/bot_spider_2.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
@@ -46,7 +46,7 @@ const UNITS = {
     },
     DRONE_LASER_1: {
         name: 'D L-1',
-        image: 'thumbnails/human_units/drone_laser_1.png',
+        image: './thumbnails/human_units/drone_laser_1.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
@@ -66,7 +66,7 @@ const UNITS = {
     },
     DRONE_LASER_2: {
         name: 'D L-2',
-        image: 'thumbnails/human_units/drone_laser_2.png',
+        image: './thumbnails/human_units/drone_laser_2.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
@@ -86,7 +86,7 @@ const UNITS = {
     },
     ROVER_RESEARCH_H20: {
         name: 'RR H20',
-        image: 'thumbnails/human_units/rover_research_h20.png',
+        image: './thumbnails/human_units/rover_research_h20.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
@@ -106,7 +106,7 @@ const UNITS = {
     },
     ROVER_RESEARCH_D1: {
         name: 'RR D-1',
-        image: 'thumbnails/human_units/rover_research_d1.png',
+        image: './thumbnails/human_units/rover_research_d1.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.COLLECTOR,
@@ -126,7 +126,7 @@ const UNITS = {
     },
     ROVER_RESEARCH_S1: {
         name: 'RR S-1',
-        image: 'thumbnails/human_units/rover_research_d1.png',
+        image: './thumbnails/human_units/rover_research_d1.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.SCANNER,
@@ -146,7 +146,7 @@ const UNITS = {
     },
     ROVER_WARRIOR_3: {
         name: 'RR W-3',
-        image: 'thumbnails/human_units/rover_warrior_6.png',
+        image: './thumbnails/human_units/rover_warrior_6.png',
         requiredLevel: 1,
         complete_time: 1000,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,
@@ -166,7 +166,7 @@ const UNITS = {
     },
     ROVER_WARRIOR_6: {
         name: 'RR W-6',
-        image: 'thumbnails/human_units/rover_warrior_3.png',
+        image: './thumbnails/human_units/rover_warrior_3.png',
         complete_time: 1000,
         requiredLevel: 1,
         primary_function: UNIT_PRIMARY_FUNCTIONS.WARRIOR,

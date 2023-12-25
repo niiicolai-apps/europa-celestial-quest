@@ -8,7 +8,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Europa Horizon Drifter X1',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
-        image: 'thumbnails/human_construction/europa_horizon_drifter_x1.png',
+        image: './thumbnails/human_construction/europa_horizon_drifter_x1.png',
         requiredLevel: 1,
         requiredNumbers: 1,
         mesh: 'europa_horizon_drifter_x1_no_parachute',
@@ -41,7 +41,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Robot Facility',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
-        image: 'thumbnails/human_construction/bot_builder.png',
+        image: './thumbnails/human_construction/bot_builder.png',
         requiredLevel: 8,
         requiredNumbers: 0,
         placementYOffset: 0.8,
@@ -85,7 +85,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Drone Facility',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
-        image: 'thumbnails/human_construction/drone_builder.png',
+        image: './thumbnails/human_construction/drone_builder.png',
         requiredLevel: 8,
         requiredNumbers: 0,
         mesh: 'Drone Facility',
@@ -129,7 +129,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Hydrogen Fuel Tank',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
-        image: 'thumbnails/human_construction/hydrogen_fuel_tank.png',
+        image: './thumbnails/human_construction/hydrogen_fuel_tank.png',
         requiredLevel: 1,
         requiredNumbers: 0,
         placementYOffset: 5.9,
@@ -179,7 +179,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Rock Metal Extractor',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
-        image: 'thumbnails/human_construction/rock_metal_extractor.png',
+        image: './thumbnails/human_construction/rock_metal_extractor.png',
         requiredLevel: 2,
         requiredNumbers: 0,
         placementYOffset: 0,
@@ -229,7 +229,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Rover Research Facility',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
-        image: 'thumbnails/human_construction/rover_research_facility.png',
+        image: './thumbnails/human_construction/rover_research_facility.png',
         requiredLevel: 1,
         requiredNumbers: 0,
         mesh: 'Rover Research Facility',
@@ -276,7 +276,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Rover Warrior Facility',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.SPAWNER,
-        image: 'thumbnails/human_construction/rover_warrior_facility.png',
+        image: './thumbnails/human_construction/rover_warrior_facility.png',
         requiredLevel: 6,
         requiredNumbers: 0,
         mesh: 'Rover Warrior Facility',
@@ -320,7 +320,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Machine Gun Turrent',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.TOWER,
-        image: 'thumbnails/human_construction/machine_gun_turrent.png',
+        image: './thumbnails/human_construction/machine_gun_turrent.png',
         requiredLevel: 5,
         requiredNumbers: 0,
         mesh: 'Machine Gun Turrent',
@@ -390,7 +390,7 @@ const CONSTRUCTIONS = [
     {
         name: 'Solar Panel',
         primary_function: CONSTRUCTION_PRIMARY_FUNCTIONS.PRODUCER,
-        image: 'thumbnails/human_construction/solar_panel.png',
+        image: './thumbnails/human_construction/solar_panel.png',
         requiredLevel: 3,
         requiredNumbers: 0,
         mesh: 'Solar Panel',

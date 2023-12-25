@@ -26,7 +26,7 @@ const applyTexturePacks = async (object3D, mesh) => {
 
 const createObject3D = async (name) => {
     if (!meshesJson) {
-        const response = await fetch('/meshes/meshes.json');
+        const response = await fetch('./meshes/meshes.json');
         meshesJson = await response.json();
     }
 

@@ -9,7 +9,7 @@ const lights = ref([])
 
 const fetchMapData = async (mapName) => {
     if (!mapName) throw new Error('mapName is required');
-    const mapData = await fetch(`/maps/${mapName}.json`).then(r => r.json());
+    const mapData = await fetch(`./maps/${mapName}.json`).then(r => r.json());
     if (!mapData) throw new Error(`Map not found: ${mapName}`);
     return mapData;
 }
