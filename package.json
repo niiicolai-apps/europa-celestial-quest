@@ -1,34 +1,65 @@
 {
-  "name": "ls",
-  "description": "ls",
-  "author": "Nicolai",
+  "name": "com.c7pixel.com.europa.the.celestial.quest",
+  "description": "RTS game",
+  "author": {
+    "name": "Nicolai Berg Andersen",
+    "email": "niiicolai@gmail.com"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "main": "electron/main.prod.cjs",
   "scripts": {
     "setup": "npm install && npx cap add android && npx cap add ios",
+    "test": "vitest",
     "dev-web": "vite",
     "dev-ios": "npx cap open ios",
     "dev-android": "npx cap open android",
     "dev-electron": "electron ./electron/main.dev.cjs",
-    "build": "npm run build-web && npm run build-electron && npm run build-capacitor",
+    "build": "npm run build-web && npm run build-pc && npm run build-mac && npm run build-capacitor",
     "build-web": "vite build",
-    "build-electron": "electron-builder",
-    "build-capacitor": "npx cap copy && npx cap sync",
-    "test": "vitest"
+    "build-pc": "electron-builder",
+    "build-mac": "electron-forge package",
+    "build-capacitor": "npx cap copy && npx cap sync"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "publish": {
+        "directory": "./dist_electron"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "Europa: The Celestial Quest"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   },
   "build": {
-    "appId": "Europa: The Celestial Quest",
+    "appId": "com.c7pixel.com.europa.the.celestial.quest",
     "productName": "Europa: The Celestial Quest",
     "directories": {
       "output": "dist_electron"
     },
     "win": {
       "target": "nsis"
-    },
-    "mac": {
-      "target": "dmg"
     },
     "linux": {
       "target": [
@@ -39,15 +70,6 @@
     "files": [
       "dist/**/*",
       "electron/**/*"
-    ],
-    "extraResources": [
-      {
-        "from": "./dist",
-        "to": "./",
-        "filter": [
-          "**/*"
-        ]
-      }
     ]
   },
   "dependencies": {
@@ -55,6 +77,7 @@
     "@capacitor/cli": "^5.5.1",
     "@capacitor/core": "^5.5.1",
     "@capacitor/ios": "^5.5.1",
+    "electron-squirrel-startup": "^1.0.0",
     "frontend-icons": "github:niiicolai-apps/frontend-icons#v1.0.1",
     "frontend-persistent-data": "github:niiicolai-apps/frontend-persistent-data#v1.0.0",
     "frontend-ui": "github:niiicolai-apps/frontend-ui#v1.0.2",
@@ -68,9 +91,14 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "electron": "^27.0.4",
-    "electron-builder": "^24.6.4",
     "vite": "^4.4.5",
     "vite-plugin-javascript-obfuscator": "^3.1.0",
     "vitest": "^1.1.0"

@@ -27,3 +27,4 @@ dist_electron
 env.js
 ios
 android
+out/
