@@ -46,10 +46,10 @@ const recalculateStorage = (team) => {
     bank.setMax('power', max.power)
 }
 
-const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
+const addHealthBar = (item, healthFeature, team, healthBarYOffset, currentHealth=null) => {
     if (!healthFeature) return
 
-    const { maxHealth, current } = healthFeature
+    const { maxHealth } = healthFeature
     const healthManager = useHealth()
 
     const onDie = async () => {
@@ -60,10 +60,14 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
     const onDamage = (attacker) => {
     }
 
+    if (!currentHealth) {
+        currentHealth = maxHealth
+    }
+
     healthManager.addHealthObject(
         item,
         team,
-        current,
+        currentHealth,
         maxHealth,
         onDie,
         onDamage,
@@ -71,7 +75,7 @@ const addHealthBar = (item, healthFeature, team, healthBarYOffset) => {
     )
 }
 
-const setup = async (construction) => {
+const setup = async (construction, currentHealth=null) => {
     const object3D = construction.object3D
     const definition = construction.definition
     const team = construction.team
@@ -91,7 +95,7 @@ const setup = async (construction) => {
      * Setup health bar.
      */
     const healthBarYOffset = definition.healthBarYOffset || 0
-    addHealthBar(object3D, features.health, team, healthBarYOffset)
+    addHealthBar(object3D, features.health, team, healthBarYOffset, currentHealth)
 
     /**
      * Setup particles.
@@ -201,18 +205,11 @@ useManager().create('constructions', {
     onBeforeTimeline: {
         priority: 1,
         callback: () => {
-            for (const construction of items.value) {
-                console.log('Hiding construction', construction)
-                construction.visible = false
-            }
         }
     },
     onAfterTimeline: {
         priority: 1,
         callback: () => {
-            for (const construction of items.value) {
-                construction.visible = true
-            }
         }
     }
 })
@@ -231,10 +228,10 @@ export const useItems = () => {
         return canAfford
     }
 
-    const spawn = async (constructionDefinition, team = 'player', isOwned = false, upgradeIndex = 0) => {
+    const spawn = async (constructionDefinition, team = 'player', isOwned = false, upgradeIndex = 0, currentHealth=null) => {
         const object3D = await getMesh(constructionDefinition.mesh)
         const construction = ConstructionController.create(object3D, constructionDefinition, team, isOwned, upgradeIndex)
-        await setup(construction)
+        await setup(construction, currentHealth)
         return construction
     }
 

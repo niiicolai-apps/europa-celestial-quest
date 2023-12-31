@@ -1,47 +1,43 @@
 import Base from '../Base.js'
-import { useUnits } from '../../../units/units.js';
+import { useHealth } from '../../../health/health.js';
 
 export default class AttackCheck extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
     }
 
-    async exit() {
-        let allUnitsSpawned = true;
-        const unitsManager = useUnits();
-        const manager = this.manager;
-        const player = manager.object;
-        const options = this.options;
-        const army = options.army;
-        const team = player.team;
+    async enter() {
+        console.log('Starting attack check state')
+        this.manager.object.setUnitsStateByPrimaryFunction('attack');
+        this.manager.object.setUnitsCommand('attack');
+    }
 
-        if (army) {
-            for (const solider of army) {
-                const unitCount = unitsManager.countByNameAndTeam(solider.name, team);
-                if (unitCount >= solider.count) {
+    async update() {
+        const healthManager = useHealth();
+        let allWarriorsDead = true;
+
+        if (this.manager.target instanceof Array) {
+            for (const warrior of this.manager.target) {
+                if (healthManager.isDead(warrior.object3D)) {
                     continue;
                 }
 
-                allUnitsSpawned = false;
+                allWarriorsDead = false;
                 break;
             }
         }
-        
-        if (allUnitsSpawned && manager.state.name !== 'attack') {
-            //player.setUnitsStateByPrimaryFunction('attack');
-            //player.setState('attack');
-            console.log('Setting attack command');
-        }
-        else if (!allUnitsSpawned && manager.state.name === 'attack') {
-            //player.setUnitsStateByPrimaryFunction('build first army');
-            //player.setState('build first army');
-            console.log('Setting build army command');
+
+        if (allWarriorsDead) {
+            console.log('All warriors is dead, Moving to ready up for attack state')
+            this.manager.object.setUnitsStateByPrimaryFunction('regroup');
+            this.manager.object.setUnitsCommand('regroup');
+            this.manager.object.setState('ready up for attack');
         } else {
-            console.log('Waiting for army');
+            console.log('Warriors still alive');
         }
     }
 
     isComplete() {
-        return true;
+        return false;
     }
 }

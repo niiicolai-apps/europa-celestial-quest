@@ -85,9 +85,9 @@ const setState = async (id, stateName, target=null) => {
     const stateIndex = manager.data.behavior.states.findIndex(s => s.name === stateName);
     if (stateIndex === -1) throw new Error(`State not found: ${stateName}`);
     
+    manager.data.target = target;
     manager.setState(stateIndex);
     await manager.setAction(0);
-    manager.target = target;
 }
 
 export default {

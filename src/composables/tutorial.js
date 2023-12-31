@@ -52,6 +52,8 @@ export const useTutorial = () => {
         }
 
         pdTutorials = pdTutorials.filter(t => t !== name);
+        // Remove nulls
+        pdTutorials = pdTutorials.filter(t => t);
 
         await PersistentData.set('tutorials', pdTutorials);
     }

@@ -13,6 +13,7 @@ const PARTICLES = {
 const FEATURES = {
     MISSILE_ATTACK: (
         distance = 45,
+        detect = 80,
         rate = 1000,
         damage = 1,
         muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
@@ -24,6 +25,7 @@ const FEATURES = {
                 type: 'missile',
                 target: null,
                 distance,
+                detect,
                 rate,
                 damage,
                 muzzleParticle,
@@ -33,6 +35,7 @@ const FEATURES = {
     },
     MACHINE_GUN_ATTACK: (
         distance = 25,
+        detect = 80,
         rate = 1000,
         damage = 1,
         muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
@@ -44,6 +47,7 @@ const FEATURES = {
                 type: 'machine_gun',
                 target: null,
                 distance,
+                detect,
                 rate,
                 damage,
                 muzzleParticle,
@@ -53,6 +57,7 @@ const FEATURES = {
     },
     LASER_ATTACK: (
         distance = 25,
+        detect = 80,
         rate = 1000,
         damage = 1,
         muzzleParticle = PARTICLES.MACHINE_GUN_MUZZLE,
@@ -64,6 +69,7 @@ const FEATURES = {
                 type: 'laser',
                 target: null,
                 distance,
+                detect,
                 rate,
                 damage,
                 muzzleParticle,

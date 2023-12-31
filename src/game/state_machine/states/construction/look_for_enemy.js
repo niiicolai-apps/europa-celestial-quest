@@ -6,19 +6,20 @@ export default class LookForEnemy extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
 
-        if (!manager.object.features.attack) 
+        if (!manager.object.features.attack)
             throw new Error('Manager Attack feature is required');
+
+        const construction = manager.object;
+        const upgrade = construction.getUpgrade();
+        this.team = construction.team;
+        this.object3D = construction.object3D;
+        this.foundTarget = false;
     }
 
     update() {
-    }
-
-    exit() {
         const manager = this.manager;
         const construction = manager.object;
-        const team = construction.team;
         const upgrade = construction.getUpgrade();
-        const object3D = construction.object3D;
         const attackFeature = upgrade.features.find(feature => feature.name === 'attack');
 
         /**
@@ -29,16 +30,16 @@ export default class LookForEnemy extends Base {
         /**
          * Find the closest non-team construction and unit.
          */
-        const closestNonTeamConstruction = useItems().findClosestNotOnTeam(object3D.position, team).construction?.object3D
-        const closestNonTeamUnit = useUnits().findClosestNotOnTeam(team, object3D.position).unit?.object3D
+        const closestNonTeamConstruction = useItems().findClosestNotOnTeam(this.object3D.position, this.team).construction?.object3D
+        const closestNonTeamUnit = useUnits().findClosestNotOnTeam(this.team, this.object3D.position).unit?.object3D
         let target = null;
         /**
          * If both a construction and unit are found,
          * choose the closest one.
          */
         if (closestNonTeamConstruction && closestNonTeamUnit) {
-            const constructionDistance = object3D.position.distanceTo(closestNonTeamConstruction.position)
-            const unitDistance = object3D.position.distanceTo(closestNonTeamUnit.position)
+            const constructionDistance = this.object3D.position.distanceTo(closestNonTeamConstruction.position)
+            const unitDistance = this.object3D.position.distanceTo(closestNonTeamUnit.position)
             target = constructionDistance < unitDistance
                 ? closestNonTeamConstruction
                 : closestNonTeamUnit
@@ -59,18 +60,21 @@ export default class LookForEnemy extends Base {
          * Otherwise, do nothing.
          */
         if (target) {
-            const distance = object3D.position.distanceTo(target.position);
+            const distance = this.object3D.position.distanceTo(target.position);
             const attackDistance = attackFeature.options.distance;
 
             /**
              * Only set the target if it is within the attack distance.
              */
-            if (distance <= attackDistance)
+            if (distance <= attackDistance) {
                 attackFeature.options.target = target;
+                this.foundTarget = true;
+            }
+                
         }
     }
 
     isComplete() {
-        return true;
+        return this.foundTarget;
     }
 }

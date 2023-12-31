@@ -72,6 +72,7 @@ const UpgradeController = {
 
         isUpgrading.value = false;
         construction.upgradeToNext();
+        console.log('upgraded to', construction.upgradeIndex);
 
         useObjectives().tryCompleteIncompletes();
         useItems().recalculateStorage(team);

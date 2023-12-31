@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { getMesh } from '../models/meshes.js'
 import { useItems } from '../constructions/constructions.js'
+import { useHealth } from '../health/health.js'
 import { useUnits } from '../units/units.js'
 import { useStateMachine } from '../state_machine/state_machine.js'
 import { useManager } from '../managers/manager.js'
@@ -10,6 +11,7 @@ import { useInspect } from '../inspect/inspect.js'
 import { useStats } from '../stats/stats.js'
 import { useBank } from '../bank/bank.js'
 import { useMax } from '../map/max.js'
+import { useCommands } from '../units/commands.js'
 
 import ConstructionDefinitions from '../definitions/constructions.js'
 import ComputerBehavior from '../state_machine/behaviors/computer_behavior.json'
@@ -34,24 +36,23 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
     const maxManager = useMax()
     const maxController = await maxManager.add(team)
 
-    const spawnUnit = async (unitData, byPassMax=false) => {
+    const spawnUnit = async (unitData, currentHealth=null, byPassMax=false) => {
         if (!byPassMax && maxController.hasReachedMaxUnits()) {
             throw new Error(`Max constructions reached: ${maxController.units.max}`)
         }
 
-        const units = useUnits()
         const mesh = await getMesh(unitData.mesh)
+        mesh.name = unitData.name
         if (!mesh) {
             throw new Error(`Mesh not found: ${unitData.mesh}`)
         }
 
-        await units.add(mesh, unitData, team)
-        mesh.name = unitData.name
+        await useUnits().add(mesh, unitData, team, currentHealth)
 
         return mesh
     }
 
-    const spawnConstruction = async (constructionName, isOwned=false, upgradeIndex = 0, byPassMax=false) => {
+    const spawnConstruction = async (constructionName, isOwned=false, upgradeIndex = 0, currentHealth=null, byPassMax=false) => {
         
         const definition = Object.values(ConstructionDefinitions).find(d => d.name === constructionName)
         if (!definition) {
@@ -61,9 +62,9 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         if (!byPassMax && maxController.hasReachedMaxConstructions()) {
             throw new Error(`Max constructions reached: ${maxController.constructions.max}`)
         }
-        
+                
         const items = useItems()
-        const item = await items.spawn(definition, team, isOwned, upgradeIndex)
+        const item = await items.spawn(definition, team, isOwned, upgradeIndex, currentHealth)
 
         /**
          * Check if definition is max_increaser
@@ -79,14 +80,13 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         console.log(`Setting units state to ${stateName} by primary function ${primaryFunction}`)
     }
 
-    const setUnitsCommand = (type, position) => {
-        const units = useUnits()
-        units.setCommand(type, position, team)
+    const setUnitsCommand = (type, position=null) => {
+        useCommands().setCommand(type, position, team)
     }
 
-    const setState = (stateName) => {
+    const setState = (stateName, target=null) => {
         const stateMachine = useStateMachine()
-        stateMachine.setState(stateMachineId, stateName)
+        stateMachine.setState(stateMachineId, stateName, target)
     }
 
     const addExperience = (experience) => {
@@ -107,9 +107,12 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         /**
          * 1. Create constructions data
          */
+        const healthManager = useHealth()
         const constructionsData = useItems().findAllByTeam(team)
         const constructions = []
         for (const construction of constructionsData) {
+            const healthObject = healthManager.findByObject3D(construction.object3D)
+
             constructions.push({
                 name: construction.definition.name,
                 position: {
@@ -123,7 +126,8 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
                     z: radToDeg(construction.object3D.rotation.z)
                 },
                 upgradeIndex: construction.upgradeIndex,
-                uuid: construction.object3D.uuid
+                uuid: construction.object3D.uuid,
+                currentHealth: healthObject.getCurrentHealth(),
             })
         }
 
@@ -134,6 +138,8 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         const units = []
         for (const unit of unitsData) {
             const object3D = unit.object3D
+            const healthObject = healthManager.findByObject3D(object3D)
+            console.log(healthObject)
             units.push({
                 name: object3D.name,
                 position: {
@@ -147,7 +153,8 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
                     z: radToDeg(object3D.rotation.z)
                 },
                 userData: object3D.userData,
-                uuid: object3D.uuid
+                uuid: object3D.uuid,
+                currentHealth: healthObject.getCurrentHealth(),
             })
         }
 

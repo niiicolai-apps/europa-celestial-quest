@@ -19,6 +19,7 @@ export default class SpawnArmy extends Base {
 
         for (const solider of army) {
             const unitCount = unitsManager.countByNameAndTeam(solider.name, team);
+            
             if (unitCount > solider.count) {
                 continue;
             }
@@ -32,12 +33,14 @@ export default class SpawnArmy extends Base {
             const randomConstruction = construtions[randomIndex];
             const unitName = solider.name.toUpperCase();
             const unitData = Object.values(UNITS).find(u => u.name === unitName);
-            const unit = await player.spawnUnit(unitData, true);
+            const unit = await player.spawnUnit(unitData, null, true);
 
             unit.position.copy(randomConstruction.object3D.position);
+            break;
         }
 
         manager.target = options.attack.build_speed;
+        console.log('spawn')
     }
 
     isComplete() {

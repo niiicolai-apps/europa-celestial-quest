@@ -346,7 +346,7 @@ const CONSTRUCTIONS = [
                     name: 'Machine_Gun_Turrent_Level_1',
                 },
                 features: [
-                    FEATURES.MACHINE_GUN_ATTACK(),
+                    FEATURES.MACHINE_GUN_ATTACK(40, 40, 1000, 10),
                     FEATURES.HEALTH(),
                     FEATURES.LOOK_AT(['Stand', 'Stand_001', 'Stand_002'], 1),
                 ],

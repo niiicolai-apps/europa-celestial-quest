@@ -204,10 +204,6 @@ export const useCommands = () => {
             throw new Error(`Invalid command type: ${type}`);
         }
 
-        if (!position) {
-            throw new Error(`Position is required`);
-        }
-
         if (!team) {
             throw new Error(`Team is required`);
         }
@@ -215,7 +211,10 @@ export const useCommands = () => {
         const command = createOrFindCommand(team);
 
         command.type = type;
-        command.position = position;
+        
+        if (position) {
+            command.position = position;
+        }
     }
 
     const getCommand = (team) => {

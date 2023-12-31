@@ -86,7 +86,7 @@ const applyDamage = (object3D, damage, attacker, attackerTeam='player') => {
  */
 const isDead = (object3D) => {
     const model = getByObject3D(object3D);
-    if (!model) return false;
+    if (!model) return true;
 
     return model.isDead();
 }
@@ -140,6 +140,16 @@ const findAllNotOnTeam = (team, isDead=false) => {
 }
 
 /**
+ * find all damaged health models by team
+ * 
+ * @param {string} team
+ * @returns {Array<HealthModel>}
+ */
+const findAllDamagedByTeam = (team) => {
+    return models.value.filter(h => h.team === team && h.isDamaged())
+}
+
+/**
  * Find the closest health model not on team
  * 
  * @param {string} team
@@ -148,7 +158,7 @@ const findAllNotOnTeam = (team, isDead=false) => {
  */
 const findClosestNotOnTeam = (team, position) => {
     const models = findAllNotOnTeam(team);
-
+    
     let closest = null;
     let closestDistance = Infinity;
 
@@ -174,5 +184,6 @@ export default {
     reset,
     findAllByTeam,
     findAllNotOnTeam,
+    findAllDamagedByTeam,
     findClosestNotOnTeam
 }

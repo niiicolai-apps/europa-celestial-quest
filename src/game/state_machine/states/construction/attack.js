@@ -11,6 +11,7 @@ export default class Attack extends Base {
         if (!manager.object.features.attack) 
             throw new Error('Manager Attack feature is required');
 
+        this.noTarget = false;
         this.healthManager = useHealth();
 
         const construction = manager.object;
@@ -21,9 +22,9 @@ export default class Attack extends Base {
         const attackOptions = this.attackFeature.options;
         const particlesPool = useParticlesPool();
         
-        this.muzzleParticle = particlesPool.get(attackOptions.muzzleParticle.name);
-        this.hitParticle = particlesPool.get(attackOptions.hitParticle.name);
-
+        //this.muzzleParticle = particlesPool.get(attackOptions.muzzleParticle.name);
+        //this.hitParticle = particlesPool.get(attackOptions.hitParticle.name);
+        /*
         this.playParticles = () => {
             const particlesManager = useParticles();
             const position = null
@@ -48,7 +49,7 @@ export default class Attack extends Base {
             const particlesManager = useParticles();
             particlesManager.stop(this.muzzleParticle.id);
             particlesManager.stop(this.hitParticle.id);
-        }
+        }*/
     }
 
     update() {
@@ -64,13 +65,14 @@ export default class Attack extends Base {
         const distance = position.distanceTo(target.position);
         const attackDistance = this.attackFeature.options.distance;
         const attackDamage = this.attackFeature.options.damage;
-
+        
         if (distance <= attackDistance) {
             /**
              * Look at target.
              */
-            const upgrades = construction.upgrades;
-            const lookAtFeature = upgrades.features.find(feature => feature.name === 'look_at');
+            
+            const upgrade = construction.getUpgrade();
+            const lookAtFeature = upgrade.features.find(feature => feature.name === 'look_at');
             if (lookAtFeature) {
                 const rotateable_child_names = lookAtFeature.options.rotateable_child_names;
                 object3D.traverse(child => {
@@ -92,25 +94,28 @@ export default class Attack extends Base {
             /**
              * Play particles.
              */
-            this.playParticles();
+            //this.playParticles();
 
             /**
              * If the target is dead, remove it from the attack feature.
              * Otherwise, do nothing.
              */
             const isDead = this.healthManager.isDead(target);
-            if (isDead) this.attackFeature.options.target = null;
+            if (isDead) {
+                this.attackFeature.options.target = null;
+                this.noTarget = true;
+            }
         } else {
             this.attackFeature.options.target = null;
+            this.noTarget = true;
         }
     }
 
     exit() {
-        this.manager.target = this.attackFeature.options.rate;
-        this.stopParticles();
+        //this.stopParticles();
     }
 
     isComplete() {
-        return true;
+        return this.noTarget;
     }
 }

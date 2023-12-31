@@ -1,5 +1,5 @@
 import { featuresToOptions } from '../definitions/features.js';
-
+import { ref } from 'vue';
 /**
  * Setup the construction visuals.
  * 
@@ -47,9 +47,11 @@ const setupUpgradeVisuals = (object3D, upgrades, upgradeIndex) => {
     setupConstructionVisuals(object3D, activeSubMeshes, inactiveSubMeshes);
 }
 
-export default (object3D, definition, team = 'team-1', isOwned = false, upgradeIndex = 0) => {
+export default (object3D, definition, team = 'team-1', _isOwned = false, _upgradeIndex = 0) => {
     const upgrades = [...definition.upgrades]
     const features = featuresToOptions(upgrades[0].features || []);
+    const isOwned = ref(_isOwned);
+    const upgradeIndex = ref(_upgradeIndex);
 
     /**
      * Setup the construction visuals.
@@ -61,7 +63,7 @@ export default (object3D, definition, team = 'team-1', isOwned = false, upgradeI
     /**
      * setup the upgrade visuals.
      */
-    setupUpgradeVisuals(object3D, upgrades, upgradeIndex)
+    setupUpgradeVisuals(object3D, upgrades, upgradeIndex.value)
 
     /**
      * Upgrade the construction model
@@ -69,7 +71,7 @@ export default (object3D, definition, team = 'team-1', isOwned = false, upgradeI
      * @return {void}
      */
     const isUpgradeable = () => {
-        return upgradeIndex < (upgrades.length - 1);
+        return upgradeIndex.value < (upgrades.length - 1);
     }
 
     /**
@@ -79,8 +81,8 @@ export default (object3D, definition, team = 'team-1', isOwned = false, upgradeI
      */
     const upgradeToNext = () => {
         if (isUpgradeable()) {
-            upgradeIndex++;
-            setupUpgradeVisuals(object3D, upgrades, upgradeIndex)
+            upgradeIndex.value++;
+            setupUpgradeVisuals(object3D, upgrades, upgradeIndex.value)
         }
     }
 
@@ -90,7 +92,7 @@ export default (object3D, definition, team = 'team-1', isOwned = false, upgradeI
      * @return {object}
      */
     const getUpgrade = () => {
-        return upgrades[upgradeIndex];
+        return upgrades[upgradeIndex.value];
     }
 
     /**
@@ -99,7 +101,7 @@ export default (object3D, definition, team = 'team-1', isOwned = false, upgradeI
      * @return {boolean}
      */
     const isMaxUpgradeReached = () => {
-        return upgradeIndex >= upgrades.length-1;
+        return upgradeIndex.value >= upgrades.length-1;
     }
 
     return {

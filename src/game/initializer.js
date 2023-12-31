@@ -20,7 +20,7 @@ const setup = async (player, data) => {
     
     for (const construction of data.constructions) {
         const upgradeIndex = construction.upgradeIndex || 0
-        const c = await player.spawnConstruction(construction.name, true, upgradeIndex, true)
+        const c = await player.spawnConstruction(construction.name, true, upgradeIndex, construction.currentHealth, true)
         const mesh = c.object3D
         mesh.position.x = construction.position.x
         mesh.position.y = construction.position.y
@@ -34,7 +34,7 @@ const setup = async (player, data) => {
     if (data.units) {
         for (const unit of data.units) {
             const unitData = Object.values(UNITS).find(u => u.name === unit.name);
-            const mesh = await player.spawnUnit(unitData, true)
+            const mesh = await player.spawnUnit(unitData, unit.currentHealth, true)
             mesh.position.x = unit.position.x
             mesh.position.y = unit.position.y
             mesh.position.z = unit.position.z

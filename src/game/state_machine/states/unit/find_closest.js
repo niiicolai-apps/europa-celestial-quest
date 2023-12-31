@@ -3,6 +3,8 @@ import { useResources } from '../../../map/resources.js';
 import { useItems } from '../../../constructions/constructions.js';
 import { useUnits } from '../../../units/units.js';
 import { useHealth } from '../../../health/health.js';
+import { useCommands } from '../../../units/commands.js';
+import { useStateMachine } from '../../state_machine.js';
 
 export default class FindClosest extends Base {
     constructor(manager, options = {}) {
@@ -57,13 +59,16 @@ export default class FindClosest extends Base {
             }
             
         } else if (type === 'enemy') {
+            const commandoManager = useCommands();
+            const command = commandoManager.getCommand(team);
+
             const healthManager = useHealth();
-            const closestResult = healthManager.findClosestNotOnTeam(team, position);
-            const closestObject = closestResult?.healthObject?.object3D;
+            const closestResult = healthManager.findClosestNotOnTeam(team, command.position);
+            const closestObject = closestResult?.closest?.object3D;
+
             if (!closestObject) {
                 console.log('No health objects found, regrouping');
-                const unitsManager = useUnits();
-                unitsManager.setStateByFunction('warrior', 'regroup', team);
+                useStateMachine().setState(unit.object3D.uuid, 'regroup');
                 return;
             }
 

@@ -18,12 +18,11 @@ import UnitStates from '../state_machine/states/unit_states.js';
 const isInitialized = ref(false);
 const scene = ref(null);
 
-const setupHealth = (unit) => {
+const setupHealth = (unit, currentHealth=null) => {
     const health = unit.features.health;
     if (!health) return;
 
     const healthManager = useHealth();
-    const current = health.current;
     const maxHealth = health.maxHealth;
     const object3D = unit.object3D;
     const team = unit.team;
@@ -48,17 +47,21 @@ const setupHealth = (unit) => {
         useStateMachine().setState(unit.object3D.uuid, reactStateName, attacker);
     }
 
+    if (!currentHealth) {
+        currentHealth = maxHealth;
+    }
+
     healthManager.addHealthObject(
         object3D,
         team,
-        current,
+        currentHealth,
         maxHealth,
         onDie,
         onDamage
     )
 }
 
-const setup = async (unit) => {
+const setup = async (unit, currentHealth=null) => {
     const object3D = unit.object3D;
     const unitDefinition = unit.data;
     const team = unit.team;
@@ -95,7 +98,7 @@ const setup = async (unit) => {
     /**
      * Add to health manager.
      */
-    setupHealth(unit);
+    setupHealth(unit, currentHealth);
 
     /**
      * Add to navigation.
@@ -124,7 +127,7 @@ const setup = async (unit) => {
      */
     const command = useCommands().findCommand(team);
     if (command && unitDefinition.primary_function === 'warrior') {
-        useUnits().setStateByFunction('warrior', command.type, team);
+        useStateMachine().setState(object3D.uuid, command.type);
     }
 }
 
@@ -184,14 +187,14 @@ useManager().create('units', {
 
 export const useUnits = () => {
 
-    const add = async (object3D, unitDefinition, team = 'player') => {
+    const add = async (object3D, unitDefinition, team = 'player', currentHealth=null) => {
         const unit = UnitController.create(object3D, unitDefinition, team);
-        await setup(unit);
+        await setup(unit, currentHealth);
         return unit;
     }
 
     const remove = (object3D) => {
-        const unit = findByObject3D(object3D);
+        const unit = UnitController.findByObject3D(object3D);
         if (!unit) return;
         UnitController.remove(object3D);
         destroy(unit);

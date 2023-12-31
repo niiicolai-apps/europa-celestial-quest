@@ -88,6 +88,16 @@ export const useHealth = () => {
     }
 
     /**
+     * find the health object by object3D
+     * 
+     * @param {object} object3D
+     * @returns {HealthModel}
+     */
+    const findByObject3D = (object3D) => {
+        return HealthController.getByObject3D(object3D);
+    }
+
+    /**
      * find all health objects by team
      * 
      * @param {string} team
@@ -96,6 +106,16 @@ export const useHealth = () => {
      */
     const findAllByTeam = (team, isDead=false) => {
         return HealthController.findAllByTeam(team, isDead);        
+    }
+
+    /**
+     * find all damaged health objects by team
+     * 
+     * @param {string} team
+     * @returns {Array<HealthModel>}
+     */
+    const findAllDamagedByTeam = (team) => {
+        return HealthController.findAllDamagedByTeam(team);
     }
 
     /**
@@ -126,8 +146,10 @@ export const useHealth = () => {
         applyDamage,
         isDead,
         reset,
+        findByObject3D,
         findAllByTeam,
         findAllNotOnTeam,
+        findAllDamagedByTeam,
         findClosestNotOnTeam,
         isHittedWithin
     }
