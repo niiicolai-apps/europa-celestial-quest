@@ -17,25 +17,24 @@
                     {
                         "method": "spawn_army",
                         "options": {
-                            "attack": {
-                                "delay": 10000,
-                                "build_speed": 5
-                            },
                             "army": [
                                 {
                                     "name": "RR W-3",
                                     "construction": "Rover Warrior Facility",
-                                    "count": 1
+                                    "build_time": 1000,
+                                    "count": 2
                                 },
                                 {
                                     "name": "B S-1",
                                     "construction": "Robot Facility",
-                                    "count": 1
+                                    "build_time": 5000,
+                                    "count": 2
                                 },
                                 {
                                     "name": "D L-1",
                                     "construction": "Drone Facility",
-                                    "count": 1
+                                    "build_time": 10000,
+                                    "count": 2
                                 }
                             ]
                         }
@@ -48,6 +47,23 @@
                     {
                         "method": "army_check",
                         "options": {
+                            "army": [
+                                {
+                                    "name": "RR W-3",
+                                    "construction": "Rover Warrior Facility",
+                                    "count": 2
+                                },
+                                {
+                                    "name": "B S-1",
+                                    "construction": "Robot Facility",
+                                    "count": 2
+                                },
+                                {
+                                    "name": "D L-1",
+                                    "construction": "Drone Facility",
+                                    "count": 2
+                                }
+                            ]
                         }
                     }
                 ]

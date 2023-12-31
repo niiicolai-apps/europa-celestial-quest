@@ -145,6 +145,10 @@ export default {
                     en: 'Objective complete: Upgrade Your Power',
                     da: 'Mål fuldført: Opgrader din Power',
                 },
+                "Increase Your Scan ability": {
+                    en: 'Objective complete: Increase Your Scan ability',
+                    da: 'Mål fuldført: Øg din Scan evne',
+                },
                 "Improve Your Offense": {
                     en: 'Objective complete: Improve Your Offense',
                     da: 'Mål fuldført: Forbedre dit angreb',

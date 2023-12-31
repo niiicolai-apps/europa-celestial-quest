@@ -1,6 +1,6 @@
 <template>
-    <Panel :name="localizationManager.getLocale('shop.title')" identifier="shop">
-        <UI.Grid columns="2" gap="3">
+    <Panel :name="localizationManager.getLocale('shop.title')" identifier="shop" transition_name="slide-up-game" :styling="{top: '12em'}" styling_top="top:6em;">
+        <UI.Grid columns="2" gap="3" style="padding-bottom: 6em;">
             <ShopCard 
                 v-for="definition in sortedDefinitions" 
                 :key="definition.name"

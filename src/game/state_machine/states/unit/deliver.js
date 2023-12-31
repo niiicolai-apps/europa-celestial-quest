@@ -1,5 +1,6 @@
 import Base from '../Base.js'
 import { useBank } from '../../../bank/bank.js';
+import { useObjectives } from '../../../objectives/objectives.js';
 
 export default class Deliver extends Base {
     constructor(manager, options = {}) {
@@ -15,10 +16,15 @@ export default class Deliver extends Base {
         this.bank = bankManager.get(unit.team);
         this.amount = collect ? collect.max : scan.rate;
         this.type = collect ? collect.type : scan.type;
+        this.objectivesCheck = scan !== undefined && scan !== null;
     }
 
-    exit() {
+    async exit() {
         this.bank.deposit(this.amount, this.type);
+        
+        if (this.objectivesCheck) {
+            await useObjectives().tryCompleteIncompletes();
+        }
     }
 
     isComplete() {

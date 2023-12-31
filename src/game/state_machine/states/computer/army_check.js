@@ -13,10 +13,12 @@ export default class ArmyCheck extends Base {
         const army = this.options.army;
         const team = this.manager.object.team;
 
-        let allUnitsSpawned = true;
+        let allUnitsSpawned = false;
         if (army) {
+            allUnitsSpawned = true;
             for (const solider of army) {
                 const construction = itemsManager.findByNameAndTeam(solider.construction, team);
+                
                 /**
                  * If the computer cannot spawn the unit because the construction does not exist
                  * it will just skip it and continue to the next unit.
@@ -29,8 +31,7 @@ export default class ArmyCheck extends Base {
                  * If the unit count is greater than or equal to the count required
                  * then continue to the next unit.
                  */
-                const unitCount = unitsManager.countByNameAndTeam(solider.name, team);         
-                console.log('unitCount', unitCount)       
+                const unitCount = unitsManager.countByNameAndTeam(solider.name, team);     
                 if (unitCount >= solider.count) {
                     continue;
                 }

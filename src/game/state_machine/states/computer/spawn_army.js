@@ -8,7 +8,7 @@ export default class SpawnArmy extends Base {
         super(manager, options);
     }
 
-    async exit() {
+    async enter() {
         const unitsManager = useUnits();
         const itemsManager = useItems();
         const manager = this.manager;
@@ -17,6 +17,7 @@ export default class SpawnArmy extends Base {
         const army = options.army;
         const team = player.team;
 
+        let time = 1000;
         for (const solider of army) {
             const unitCount = unitsManager.countByNameAndTeam(solider.name, team);
             
@@ -36,11 +37,11 @@ export default class SpawnArmy extends Base {
             const unit = await player.spawnUnit(unitData, null, true);
 
             unit.position.copy(randomConstruction.object3D.position);
+            time = solider.build_time;
             break;
         }
 
-        manager.target = options.attack.build_speed;
-        console.log('spawn')
+        manager.target = { time };
     }
 
     isComplete() {

@@ -228,7 +228,7 @@ const countByNameAndTeam = (name, team) => {
  * @returns {number}
  */
 const countByNameAndUpgradeAndTeam = (name, upgradeIndex, team) => {
-    return constructions.value.filter(construction => construction.definition.name === name && construction.upgradeIndex === upgradeIndex && construction.team === team).length
+    return constructions.value.filter(construction => construction.definition.name === name && construction.upgradeIndex >= upgradeIndex && construction.team === team).length
 }
 
 export default {

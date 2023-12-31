@@ -1,5 +1,5 @@
 <template>
-    <Panel :name="localizationManager.getLocale('settings.title')" identifier="settings" :showScroll="true">
+    <Panel :name="localizationManager.getLocale('settings.title')" identifier="settings">
         <UI.Flex>
             <div v-for="setting in settings" :key="setting.name"
                 class="w-full bg-info border-1 border-solid border-primary text-primary rounded p-3 box-shadow-lg">

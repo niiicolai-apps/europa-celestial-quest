@@ -1,5 +1,5 @@
 <template>
-    <Panel :name="localizationManager.getLocale('software_licens.title')" identifier="licens" :showScroll="true">
+    <Panel :name="localizationManager.getLocale('software_licens.title')" identifier="licens">
         
         <UI.Flex class="mt-5">
             <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg w-full">

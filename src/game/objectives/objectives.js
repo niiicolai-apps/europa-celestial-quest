@@ -69,6 +69,7 @@ useManager().create('objectives', {
                                 team,
                                 goalData.options.upgrade.upgradeIndex
                             );
+                            console.log(constructionCount);
                             return goalData.options.min
                                 ? constructionCount >= goalData.options.min
                                 : constructionCount > 0;

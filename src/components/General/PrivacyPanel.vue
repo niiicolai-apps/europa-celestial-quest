@@ -1,5 +1,5 @@
 <template>
-    <Panel :name="localizationManager.getLocale('privacy.title')" identifier="privacy" :showScroll="true">
+    <Panel :name="localizationManager.getLocale('privacy.title')" identifier="privacy">
         <UI.Flex>
             <UI.Card v-for="section in sections" :key="section.name" class="w-full">
                 <template #header>

@@ -1,6 +1,6 @@
 <template>
-    <Panel :name="localizationManager.getLocale('pause.title')" identifier="pause">
-        <UI.Flex gap="2">
+    <Panel :name="localizationManager.getLocale('pause.title')" identifier="pause" transition_name="slide-up-game" :styling="{top: '12em'}" styling_top="top:6em;">
+        <UI.Flex gap="2" style="padding-bottom: 6em;">
             <div type="primary" v-for="option in options" :key="option.name"
                 class="w-full bg-info text-primary border-1 border-solid border-primary p-3 rounded box-shadow-lg">
                 <UI.Flex direction="horizontal" justify="between" class="w-full">
