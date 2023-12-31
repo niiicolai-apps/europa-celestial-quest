@@ -5,6 +5,7 @@ import SellController from './controllers/sell_controller.js';
 import UpgradeController from './controllers/upgrade_controller.js';
 import UnitController from './controllers/unit_controller.js';
 import MarkerController from './controllers/marker_controller.js';
+import ConstructionController from '../constructions/construction_controller.js';
 import { useGround } from '../map/ground.js';
 import { useManager } from '../managers/manager.js';
 import { useCanvas } from '../../composables/canvas.js';
@@ -21,9 +22,11 @@ const detailCtrl = {
         if (!selected.value) return false;
         const players = usePlayers();
         const player = players.findYou();
-        console.log(player);
+        
         if (!player) return false;
-        return selected.value.userData.team === player.team;
+
+        const construction = ConstructionController.findByObject3D(selected.value);
+        return construction.team === player.team;
     },
     isOthers: () => {
         return !detailCtrl.isYours();

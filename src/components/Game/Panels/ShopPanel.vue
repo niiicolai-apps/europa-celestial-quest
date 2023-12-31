@@ -57,7 +57,7 @@ const click = async (definition) => {
     if (bankController.canAfford(definition.costs)) {
         
         const construction = await you.value.spawnConstruction(definition.name);
-        inspectManager.setSelected(construction);
+        inspectManager.setSelected(construction.object3D);
         panelManager.clearPanel();
     } else {
         toastManager.add('toasts.shop.cannot_afford', 4000, 'danger');

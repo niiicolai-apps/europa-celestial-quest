@@ -45,7 +45,6 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
             throw new Error(`Mesh not found: ${unitData.mesh}`)
         }
 
-        scene.value.add(mesh)
         await units.add(mesh, unitData, team)
         mesh.name = unitData.name
 
@@ -65,11 +64,6 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         
         const items = useItems()
         const item = await items.spawn(definition, team, isOwned, upgradeIndex)
-
-        /**
-         * Ensure all constructions are selectable.
-         */
-        useInspect().addSelectable(item)
 
         /**
          * Check if definition is max_increaser
@@ -117,19 +111,19 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         const constructions = []
         for (const construction of constructionsData) {
             constructions.push({
-                name: construction.name,
+                name: construction.definition.name,
                 position: {
-                    x: construction.position.x,
-                    y: construction.position.y,
-                    z: construction.position.z
+                    x: construction.object3D.position.x,
+                    y: construction.object3D.position.y,
+                    z: construction.object3D.position.z
                 },
                 rotation: {
-                    x: radToDeg(construction.rotation.x), 
-                    y: radToDeg(construction.rotation.y), 
-                    z: radToDeg(construction.rotation.z)
+                    x: radToDeg(construction.object3D.rotation.x), 
+                    y: radToDeg(construction.object3D.rotation.y), 
+                    z: radToDeg(construction.object3D.rotation.z)
                 },
-                upgradeIndex: construction.userData.upgrade.index,
-                uuid: construction.uuid
+                upgradeIndex: construction.upgradeIndex,
+                uuid: construction.object3D.uuid
             })
         }
 

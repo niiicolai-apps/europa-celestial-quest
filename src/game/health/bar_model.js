@@ -8,7 +8,7 @@ const defaultBggYOffset = 0.1;
 /**
  * The health bar z offset
  */
-const defaultBarZOffset = 0.01;
+const defaultBarZOffset = 0.05;
 
 /**
  * The health bar geometry

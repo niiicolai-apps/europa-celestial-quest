@@ -1,149 +1,18 @@
-import { useResources } from "../../map/resources.js";
 import { useNavigation } from "../../navigation/navigation.js";
-import { useUnits } from "../../units/units.js";
-import { useBank } from "../../bank/bank.js";
-import { useItems } from "../../constructions/constructions.js";
 import { useParticles } from "../../particles/particles.js";
 import { useParticlesPool } from "../../particles/particles_pool.js";
 import { useHealth } from "../../health/health.js";
-import { usePlayers } from "../../players/player.js";
-import { useCommands } from "../../units/commands.js";
 import { useStateMachine } from "../state_machine.js";
-import * as THREE from 'three';
 
-class Base {
-    constructor(manager, options = {}) {
-        this.manager = manager;
-        this.options = options;
-        if (!manager) throw new Error('Manager is required');
-    }
-
-    enter() { }
-    update() { }
-    exit() { }
-
-    isComplete() {
-        return false;
-    }
-}
-
-class Wait extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-    }
-
-    exit() {
-    }
-
-    isComplete() {
-        return false
-    }
-}
-
-class Timer extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const duration = manager.target || 1000;
-        this.endTime = Date.now() + duration;
-    }
-
-    isComplete() {
-        return Date.now() > this.endTime;
-    }
-}
-
-class Collect extends Timer {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-
-        const bankManager = useBank();
-        this.bank = bankManager.get(unit.team);
-        this.costs = collect ? collect.costs : scan.costs;
-    }
-
-    exit() {
-        if (this.costs) {
-            for (const cost of this.costs) {
-                this.bank.withdraw(cost.amount, cost.currency);
-            }
-        }
-    }
-
-    isComplete() {
-        const timerIsComplete = super.isComplete();
-        let canAfford = true;
-        if (this.costs) {
-            canAfford = this.bank.canAfford(this.costs);
-        }
-
-        return (timerIsComplete && canAfford);
-    }
-}
-
-class Deliver extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-
-        const bankManager = useBank();
-        this.bank = bankManager.get(unit.team);
-        this.amount = collect ? collect.max : scan.rate;
-        this.type = collect ? collect.type : scan.type;
-    }
-
-    exit() {
-        this.bank.deposit(this.amount, this.type);
-    }
-
-    isComplete() {
-        return true
-    }
-}
-
-/**
- * Move behavior.
- */
-class MoveTo extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const object3D = unit.object3D;
-        const move = unitOptions.move;
-        const destination = move ? move.destination : null;
-
-        if (!move) throw new Error('Unit Move feature is required');
-        if (!destination) throw new Error('Unit Move feature destination is required');
-
-        this.nModel = useNavigation().find(object3D);
-        this.nModel.setDestination(destination);
-    }
-
-    exit() {
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const move = unitOptions.move;
-        move.destination = null;
-    }
-
-    isComplete() {
-        return this.nModel.reachedDestination();
-    }
-}
+import Base from './base.js';
+import Wait from './utils/wait.js';
+import Timer from './utils/timer.js';
+import MoveTo from './unit/move_to.js';
+import Collect from './unit/collect.js';
+import Deliver from './unit/deliver.js';
+import FindClosest from './unit/find_closest.js';
+import FindRandom from './unit/find_random.js';
+import Regroup from "./unit/regroup.js";
 
 /**
  * Move Attack behavior.
@@ -157,7 +26,7 @@ class MoveToAttack extends Base {
         super(manager, options);
 
         const unit = manager.object;
-        const unitOptions = unit.options;
+        const unitOptions = unit.features;
         const attack = unitOptions.attack;
         const move = unitOptions.move;
         const target = manager.target;
@@ -202,188 +71,12 @@ class MoveToTarget extends Base {
     }
 }
 
-class FindClosest extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        const attack = unitOptions.attack;
-        if (!collect && !scan && !attack)
-            throw new Error('Unit Collect, Scan, or Attack feature is required');
-
-        this.target = null;
-    }
-
-    update() {
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const object3D = unit.object3D;
-        const type = this.options.type;
-        const position = object3D.position;
-        const team = unit.team;
-
-        if (type === 'resource') {
-            const resourceManager = useResources();
-            const collect = unitOptions.collect;
-            const targetType = collect.type;
-            const resource = resourceManager.findClosest(position, targetType);
-            if (resource) {
-                this.target = resource;
-            }
-        }
-        else if (type === 'construction') {
-            const itemsManager = useItems();
-            const collect = unitOptions.collect;
-            const scan = unitOptions.scan;
-            const constructionName = collect
-                ? collect.deliver_construction
-                : scan.deliver_construction;
-
-            this.target = itemsManager.findClosestByNameAndTeam(
-                position,
-                constructionName,
-                team
-            );
-            
-        } else if (type === 'enemy') {
-            const healthManager = useHealth();
-            const closestResult = healthManager.findClosestNotOnTeam(team, position);
-            const closestObject = closestResult?.healthObject?.object3D;
-            if (!closestObject) {
-                console.log('No health objects found, regrouping');
-                const unitsManager = useUnits();
-                unitsManager.setStateByFunction('warrior', 'regroup', team);
-                return;
-            }
-
-            this.target = closestObject;
-        }
-    }
-
-    exit() {
-        if (!this.target) return;
-
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        const attack = unitOptions.attack;
-        const move = unitOptions.move;
-        const targetPosition = this.target.position;
-
-        if (collect) {
-            collect.target = this.target;
-            manager.target = collect.speed;
-        }
-        else if (scan) {
-            scan.target = this.target;
-            manager.target = scan.speed;
-        }
-        else if (attack) {
-            manager.target = this.target;
-        }
-
-        move.destination = targetPosition;
-    }
-
-    isComplete() {
-        return !!this.target;
-    }
-}
-
-class FindRandom extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        if (!collect && !scan) throw new Error('Unit Collect or Scan feature is required');
-        this.target = null;
-    }
-
-    update() {
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const object3D = unit.object3D;
-        const type = this.options.type;
-        const position = object3D.position;
-
-        if (type === 'resource') {
-            this.target = useResources().getRandom().object3D;
-        }
-        else if (type === 'construction') {
-            const targetType = unitOptions.scan.deliver_construction;
-            this.target = useItems().findClosestItem(position, targetType);
-        }
-    }
-
-    exit() {
-        if (!this.target) return;
-
-        const manager = this.manager;
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const collect = unitOptions.collect;
-        const scan = unitOptions.scan;
-        const move = unitOptions.move;
-        const targetPosition = this.target.position;
-
-        if (collect) {
-            collect.target = this.target;
-            manager.target = collect.speed;
-        }
-        else if (scan) {
-            scan.target = this.target;
-            manager.target = scan.speed;
-        }
-
-        move.destination = targetPosition;
-    }
-
-    isComplete() {
-        return !!this.target;
-    }
-}
-
-
-class Regroup extends Base {
-    constructor(manager, options = {}) {
-        super(manager, options);
-
-        const unit = manager.object;
-        const unitOptions = unit.options;
-        const move = unitOptions.move;
-        const team = unit.team;
-
-        const players = usePlayers();
-        const player = players.get(team);
-        const command = useCommands().createOrFindCommand(team);
-
-        if (!move) throw new Error('Unit Move feature is required');
-        if (!command) throw new Error('Unit Command is required');
-
-        move.destination = command.position;
-    }
-
-    isComplete() {
-        return true;
-    }
-}
-
 class DefendPosition extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
 
         const unit = manager.object;
-        const unitOptions = unit.options;
+        const unitOptions = unit.features;
         const attack = unitOptions.attack;
         if (!attack) throw new Error('Unit Attack feature is required');
         this.attackDistance = attack.distance;
@@ -426,7 +119,7 @@ class Attack extends Base {
         super(manager, options);
 
         const unit = manager.object;
-        const unitOptions = unit.options;
+        const unitOptions = unit.features;
         const attack = unitOptions.attack;
         const target = manager.target;
         if (!attack) throw new Error('Unit Attack feature is required');

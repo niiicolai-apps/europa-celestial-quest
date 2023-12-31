@@ -12,6 +12,7 @@ import { usePlayers } from '../../players/player.js';
 import { useCanvas } from '../../../composables/canvas.js';
 import { useHealth } from '../../health/health.js';
 import { useMax } from '../../map/max.js';
+import ConstructionController from '../../constructions/construction_controller.js';
 import * as THREE from 'three';
 
 const collisionManager = useCollision();
@@ -30,16 +31,18 @@ const worldDown = new THREE.Vector3(0, -1, 0);
 const move = (selected, dx, dy, dz) => {
     if (!isMoving.value) return false;
     nextPosition.x = dx + selected.value.position.x;
-    nextPosition.y = dy + selected.value.position.y;
+    nextPosition.y = dy + selected.value.position.y + 10;
     nextPosition.z = dz + selected.value.position.z;
 
     const point = useGround().getIntersectFromPosition(nextPosition, worldDown);
     if (!point) return false;
     nextPosition.copy(getPosition(point));
 
-    const placementYOffset = selected.value.userData.placementYOffset || 0;    
-    nextPosition.y = placementYOffset;
-
+    const construction = ConstructionController.findByObject3D(selected.value);
+    const placementYOffset = construction.definition.placementYOffset || 0;  
+    
+    nextPosition.y += placementYOffset;
+    
     if (collisionManager.isCollidingAt(selected.value, nextPosition))
         return false;
 
@@ -49,7 +52,8 @@ const move = (selected, dx, dy, dz) => {
 }
 
 const setStartPoint = (selected) => {
-    if (selected.value.userData.isOwned) return;
+    const construction = ConstructionController.findByObject3D(selected.value);
+    if (construction.isOwned) return;
 
     const ground = useGround();
     const groundCameraViewPoint = ground.getGroundAtCameraViewPoint();
@@ -132,12 +136,13 @@ const MoveController = {
         isMoving.value = false;
         setupMovingVisual(selected, true);
 
-        if (selected.value.userData.isOwned) {
+        const construction = ConstructionController.findByObject3D(selected.value);
+        if (construction.isOwned) {
             selected.value.position.copy(lastPosition.value);
         } else {
             useItems().removeItemFromState(selected.value);
 
-            const team = selected.value.userData.team;
+            const team = construction.team;
             const playerManager = usePlayers();
             const player = playerManager.get(team);
             player.maxController.recalculateMax()
@@ -155,34 +160,33 @@ const MoveController = {
         /**
          * Check if the selected item is too close to an enemy building.
          */
+        const construction = ConstructionController.findByObject3D(selected.value);
         const constructions = useItems();
-        const team = selected.value.userData.team;
-        const closestNonTeamConstruction = constructions.findClosestNotOnTeam(selected.value.position, team);
-        if (closestNonTeamConstruction && closestNonTeamConstruction.position.distanceTo(selected.value.position) < acceptablePlacementDistance) {
+        const team = construction.team;
+        const result = constructions.findClosestNotOnTeam(selected.value.position, team);
+        const closestConstruction = result.construction;
+        
+        if (closestConstruction && closestConstruction.object3D.position.distanceTo(selected.value.position) < acceptablePlacementDistance) {
             useToast().add('toasts.move_controller.too_close_to_enemy_building', 4000, 'danger');
             return false;
         }
 
-        if (!selected.value.userData.isOwned) {
+        if (!construction.isOwned) {
             
             const bankManager = useBank();
             const bank = bankManager.get(team);
-            const canAfford = bank.canAfford(selected.value.userData.costs);
+            const canAfford = bank.canAfford(construction.definition.costs);
 
             if (canAfford) {
-                for (const cost of selected.value.userData.costs) {
+                for (const cost of construction.definition.costs) {
                     bank.withdraw(cost.amount, cost.currency);
                 }
-                selected.value.userData.isOwned = true;
+                construction.isOwned = true;
                 useObjectives().tryCompleteIncompletes();
             } else {
                 useToast().add('toasts.move_controller.cannot_afford', 4000, 'danger');
                 return false;
             }
-        }
-
-        if (selected.value.userData.canStore) {
-            useItems().recalculateStorage();
         }
         
         isMoving.value = false;
@@ -193,6 +197,8 @@ const MoveController = {
         const player = playerManager.get(team);
         player.saveData();
         player.maxController.recalculateMax()
+
+        useItems().recalculateStorage(team);
 
         return true;
         
@@ -225,7 +231,8 @@ const MoveController = {
         if (!isMoving.value)
             return false;
 
-        const placementYOffset = selected.value.userData.placementYOffset || 0;
+        const construction = ConstructionController.findByObject3D(selected.value);
+        const placementYOffset = construction.definition.placementYOffset || 0;
         point.y += placementYOffset;
 
         if (collisionManager.isCollidingAt(selected.value, point))
@@ -241,8 +248,8 @@ const MoveController = {
         /**
          * Do not allow moving within 5 seconds after being hit.
          */
-        const userData = selected.value.userData;
-        const upgrade = userData.upgrades[userData.upgrade.index];
+        const construction = ConstructionController.findByObject3D(selected.value);
+        const upgrade = construction.getUpgrade();
         const features = upgrade.features;
         const healthFeature = features.find(f => f.name === 'health');
         if (healthFeature) {

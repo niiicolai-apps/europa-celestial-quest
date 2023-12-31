@@ -8,7 +8,7 @@
                     </div>
 
                     <div v-if="isUpgradeable" class="bg-primary font-bold text-info text-xs p-1 rounded">
-                        <Locale id="inspect.upgrade" /> {{ selected.userData.upgrade.index + 1 }}
+                        <Locale id="inspect.upgrade" /> {{ selectedConstruction.upgradeIndex + 1 }}
                     </div>
 
                     <div v-if="!selectedIsYours" class="bg-primary font-bold text-info text-xs p-1 rounded">
@@ -297,6 +297,7 @@ import Locale from '../General/Locale.vue';
 import { ref, computed, watch } from 'vue';
 import { useInspect } from '../../game/inspect/inspect.js';
 import { useLocalization } from '../../composables/localization.js';
+import { useItems } from '../../game/constructions/constructions.js';
 
 const iconSize = "1.5em";
 const iconFill = "#3f88c5";
@@ -308,6 +309,9 @@ const inspectManager = useInspect();
 
 const selected = computed(() => inspectManager.selected.value);
 const selectedIsYours = computed(() => inspectManager.selectedIsYours.value);
+const selectedConstruction = computed(() => {
+    return selected.value ? useItems().findByObject3D(selected.value) : null
+});
 
 const isMoving = computed(() => inspectManager.moveCtrl.isMoving.value);
 const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);

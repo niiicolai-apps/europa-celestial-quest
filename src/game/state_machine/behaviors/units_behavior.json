@@ -159,11 +159,6 @@
                         "method": "move_to",
                         "options": {
                         }
-                    },
-                    {
-                        "method": "defend_position",
-                        "options": {
-                        }
                     }
                 ]
             },

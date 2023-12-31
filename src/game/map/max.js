@@ -43,10 +43,8 @@ const Controller = (team, _constructions={default:10, max:10, total: 100}, _unit
         const _constructions = constructionsManager.findAllByTeam(team);
         
         for (const construction of _constructions) {
-            const userData = construction.userData;
-            if (!userData.isOwned) continue;
-            const ugradeIndex = userData.upgrade.index;
-            const upgrade = userData.upgrades[ugradeIndex];
+            if (!construction.isOwned) continue;
+            const upgrade = construction.getUpgrade();
             const features = upgrade.features;
             const max_increaser = features.find(feature => feature.name === 'max_increaser');
             

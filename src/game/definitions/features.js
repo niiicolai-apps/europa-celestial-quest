@@ -188,4 +188,12 @@ const FEATURES = {
     },
 }
 
+export const featuresToOptions = (features) => {
+    const options = {};
+    for (const feature of features) {
+        options[feature.name] = { ...feature.options };
+    }
+    return options;
+}
+
 export default FEATURES;
