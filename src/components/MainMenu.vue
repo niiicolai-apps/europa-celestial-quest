@@ -9,6 +9,7 @@ import LicensPanel from './General/LicensPanel.vue';
 import ReleaseNotesPanel from './General/ReleaseNotesPanel.vue';
 import Loader from './UI/Loader.vue';
 import Audio from './UI/Audio.vue';
+import PersistentData from '../game/persistent_data/persistent_data.js';
 import { usePanel } from '../composables/panel.js';
 import { useAudio } from '../composables/audio.js';
 import { getMesh, removeMesh } from '../game/models/meshes.js';
@@ -20,9 +21,15 @@ const isWeb = true;
 const emits = defineEmits(['startGame']);
 const panelManager = usePanel();
 const audio = useAudio();
-const startGame = () => emits('startGame');
+
+const continueGame = () => emits('startGame');
+const newGame = async () => {
+    await PersistentData.resetMap();
+    emits('startGame');
+}
 
 const isInitialized = ref(false);
+const hasSavedGame = ref(false);
 const blinkInterval = ref(null);
 const canvasRef = ref(null);
 const options = {
@@ -131,6 +138,11 @@ onMounted(async () => {
         ehdx1Light.intensity = ehdx1Light.intensity === 0 ? 5 : 0;
     }, blinkRate);
 
+    const pdTimelines = await PersistentData.getTimelines();
+    if (pdTimelines) {
+        hasSavedGame.value = true;
+    }
+
     isInitialized.value = true;
 })
 
@@ -164,9 +176,17 @@ onUnmounted(async () => {
                     </UI.Paragraph>
 
                     <UI.Flex direction="vertical" gap="1" class="mb-5">
-                        <UI.Button type="primary" @click="startGame" class="w-full py-3 font-bold uppercase">
+                        
+                        <UI.Button v-if="hasSavedGame" type="primary" @click="continueGame" class="w-full py-3 font-bold uppercase">
                             <UI.Flex direction="horizontal" items="center" justify="between">
-                                <Locale id="main_menu.play_button" />
+                                <Locale id="main_menu.continue_game_button" />
+                                <Icons.fa.PlayIcon width="1em" height="1em" fill="white" />
+                            </UI.Flex>
+                        </UI.Button>
+
+                        <UI.Button type="primary" @click="newGame" class="w-full py-3 font-bold uppercase">
+                            <UI.Flex direction="horizontal" items="center" justify="between">
+                                <Locale id="main_menu.new_game_button" />
                                 <Icons.fa.PlayIcon width="1em" height="1em" fill="white" />
                             </UI.Flex>
                         </UI.Button>

@@ -7,16 +7,11 @@ import { useObjectives } from '../../objectives/objectives.js';
 import { useToast } from '../../../composables/toast.js';
 import { usePlayers } from '../../players/player.js';
 import { useMax } from '../../map/max.js';
-import ConstructionDefinitions from '../../definitions/constructions.js'
+import ConstructionController from '../../constructions/construction_controller.js';
 import * as THREE from 'three';
 
-const unitManager = useUnits();
 const isBuilding = ref(false);
 const queues = ref([]);
-
-const getConstructionDefinition = (name) => {
-    return ConstructionDefinitions.find(definition => definition.name === name);
-}
 
 const BuildController = {
     start: (selected) => {
@@ -34,12 +29,13 @@ const BuildController = {
     },
     dequeueAny: async (selected, scene) => {
         const s = selected.value || selected;
+        const construction = ConstructionController.findByObject3D(s);
         const queueData = BuildController.getQueue(s);
         if (!queueData || queueData.queue.length == 0) return;
 
         const queue = queueData.queue;
         const playerManager = usePlayers();
-        const team = s.userData.team;
+        const team = construction.team;
         const player = playerManager.get(team);
         const time = Date.now();
 
@@ -54,7 +50,6 @@ const BuildController = {
             if (time < unit.completeTime) continue;
 
             const unitMesh = await player.spawnUnit(unit.unit);
-            scene.add(unitMesh);
 
             const selectedBox3 = new THREE.Box3().setFromObject(s);
             const size = selectedBox3.getSize(new THREE.Vector3());
@@ -79,12 +74,15 @@ const BuildController = {
             return false;
         }
 
-        if (!selected.value.userData.isOwned) {
+        const s = selected.value || selected;
+        const construction = ConstructionController.findByObject3D(s);
+
+        if (!construction.isOwned) {
             useToast().add('toasts.unit_controller.cannot_spawn_unowned_construction', 4000, 'danger');
             return false;
         }
 
-        const team = selected.value.userData.team;
+        const team = construction.team;
         const maxManager = useMax();
         const maxController = maxManager.find(team);
         if (!maxController.canSpawnOneMoreUnit()) {
@@ -120,11 +118,13 @@ const BuildController = {
         return true;
     },
     getAllowedUnits: (selected) => {
-        if (!selected.value.userData.isOwned) return [];
+        const s = selected.value || selected;
+        const construction = ConstructionController.findByObject3D(s);
 
-        const construction = getConstructionDefinition(selected.value.name);
-        const upgradeIndex = selected.value.userData.upgrade.index;
+        if (!construction.isOwned) return [];
+        
         const upgrades = construction.upgrades;
+        const upgradeIndex = construction.upgradeIndex;
         if (!upgrades || upgrades.length == 0) return [];
 
         let allowedUnits = [];
@@ -169,15 +169,13 @@ const BuildController = {
     },
     canBuild: (selected) => {
         const s = selected.value || selected;
-
-        const construction = getConstructionDefinition(s.name);
-        const upgradeIndex = s.userData.upgrade.index;
+        const construction = ConstructionController.findByObject3D(s);
         const upgrades = construction.upgrades;
         if (!upgrades || upgrades.length == 0) return false;
 
         let can = false;
         for (let i = 0; i < upgrades.length; i++) {
-            if (i <= upgradeIndex) {
+            if (i <= construction.upgradeIndex) {
                 if (upgrades[i].units && upgrades[i].units.length > 0) {
                     can = true;
                     break;

@@ -20,7 +20,8 @@ const setup = async (player, data) => {
     
     for (const construction of data.constructions) {
         const upgradeIndex = construction.upgradeIndex || 0
-        const mesh = await player.spawnConstruction(construction.name, true, upgradeIndex, true)
+        const c = await player.spawnConstruction(construction.name, true, upgradeIndex, construction.currentHealth, true)
+        const mesh = c.object3D
         mesh.position.x = construction.position.x
         mesh.position.y = construction.position.y
         mesh.position.z = construction.position.z
@@ -33,7 +34,7 @@ const setup = async (player, data) => {
     if (data.units) {
         for (const unit of data.units) {
             const unitData = Object.values(UNITS).find(u => u.name === unit.name);
-            const mesh = await player.spawnUnit(unitData, true)
+            const mesh = await player.spawnUnit(unitData, unit.currentHealth, true)
             mesh.position.x = unit.position.x
             mesh.position.y = unit.position.y
             mesh.position.z = unit.position.z
@@ -48,12 +49,13 @@ const setup = async (player, data) => {
     if (items.length === 0) return
 
     const startConstruction = items[0]
+    const startPosition = startConstruction.object3D.position
 
     /**
      * Setup player camera.
      */
     if (player.isYou) {
-        await Camera.setPosition(startConstruction.position);
+        await Camera.setPosition(startPosition);
     }
 
     /**
@@ -61,7 +63,7 @@ const setup = async (player, data) => {
      */
     const commands = useCommands()
     const commandZOffset = -15
-    const position = { x: startConstruction.position.x, y: startConstruction.position.y, z: startConstruction.position.z + commandZOffset}
+    const position = { x: startPosition.x, y: startPosition.y, z: startPosition.z + commandZOffset}
     commands.setCommand(commands.COMMAND_TYPES.REGROUP, position, player.team)
 
     if (player.isYou) {

@@ -5,6 +5,7 @@ import { removeMesh } from '../../models/meshes.js';
 import { useToast } from '../../../composables/toast.js';
 import { useCanvas } from '../../../composables/canvas.js';
 import { usePlayers } from '../../players/player.js';
+import ConstructionController from '../../constructions/construction_controller.js';
 import CONSTRUCTIONS from '../../definitions/constructions.js';
 
 const isSelling = ref(false);
@@ -29,7 +30,8 @@ const SellController = {
             return false;
         }
 
-        if (!selected.value.userData.isOwned) {
+        const construction = ConstructionController.findByObject3D(selected.value);
+        if (!construction.isOwned) {
             useToast().add('toasts.sell_controller.cannot_sell_unowned_construction', 4000, 'danger');
             return false;
         }
@@ -39,12 +41,11 @@ const SellController = {
          * that the player are required to have a certain amount of.
          */
         const itemsManager = useItems();
-        const definition = CONSTRUCTIONS.find((construction) => construction.name === selected.value.name);
-        const requiredNumbers = definition.requiredNumbers;
+        const requiredNumbers = construction.definition.requiredNumbers;
         if (requiredNumbers > 0) {
             const requiredItemCount = itemsManager.countByNameAndTeam(
-                selected.value.name,
-                selected.value.userData.team
+                construction.definition.name,
+                construction.team
             );
             const nextAmount = (requiredItemCount - 1);
             if (nextAmount < requiredNumbers) {
@@ -55,11 +56,11 @@ const SellController = {
 
         isSelling.value = false;
 
-        const team = selected.value.userData.team;
+        const team = construction.team;
         const bankManager = useBank();
         const bank = bankManager.get(team);
         
-        for (const cost of selected.value.userData.costs) {
+        for (const cost of construction.definition.costs) {
             bank.deposit(cost.amount, cost.currency);
         }
         

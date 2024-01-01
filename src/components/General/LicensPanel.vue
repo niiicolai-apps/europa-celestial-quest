@@ -1,7 +1,7 @@
 <template>
-    <Panel :name="localizationManager.getLocale('software_licens.title')" identifier="licens" :showScroll="true">
+    <Panel :name="localizationManager.getLocale('software_licens.title')" identifier="licens">
         
-        <UI.Flex class="mt-5">
+        <UI.Flex>
             <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg w-full">
                 <UI.Flex direction="horizontal" justify="start" gap="2">
                     <p class="text-xs">
@@ -23,20 +23,20 @@
             </div>
 
             <div v-for="section in sections" :key="section.name" class="w-full border-1 border-solid border-primary p-3 rounded box-shadow-lg">
-                <UI.Paragraph class="font-bold uppercase mb-3">
+                <UI.Paragraph class="font-bold uppercase mb-1">
                     {{ section.title }}
                 </UI.Paragraph>
 
                 <ul>
                     <li v-for="item in section.items" :key="item" class="mb-1">
-                        <p class="text-xs">
+                        <p class="text-sm">
                             {{ item }}
                         </p>
                     </li>
                 </ul>
             </div>
 
-            <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg">
+            <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg w-full">
                 <p class="text-xs">
                     <Locale id="software_licens.ending" />
                 </p> 

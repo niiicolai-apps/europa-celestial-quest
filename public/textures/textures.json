@@ -44,10 +44,6 @@
             {
                 "type": "map",
                 "url": "./textures/wood/wood_basecolor.png"
-            },
-            {
-                "type": "normalMap",
-                "url": "./textures/wood/wood_normal.png"
             }
         ]
     },
@@ -91,10 +87,6 @@
             {
                 "type": "map",
                 "url": "./textures/red_fabric/red_fabric_basecolor.png"
-            },
-            {
-                "type": "normalMap",
-                "url": "./textures/red_fabric/red_fabric_normal.png"
             }
         ]
     },
@@ -249,6 +241,42 @@
             {
                 "type": "map",
                 "url": "./textures/poem/poem_basecolor.png"
+            }
+        ]
+    },
+    {
+        "name": "woman_painting",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "./textures/woman_painting/woman_painting_basecolor.png"
+            }
+        ]
+    },
+    {
+        "name": "house_painting",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "./textures/house_painting/house_painting_basecolor.png"
+            }
+        ]
+    },
+    {
+        "name": "jupiter_painting",
+        "material": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "transparent": false,
+        "textures": [
+            {
+                "type": "map",
+                "url": "./textures/jupiter_painting/jupiter_painting_basecolor.png"
             }
         ]
     },

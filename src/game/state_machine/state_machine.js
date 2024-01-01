@@ -1,52 +1,6 @@
-import { ref } from 'vue'
 import { useManager } from '../managers/manager.js'
-
-const managers = ref([])
-const paused = ref(false)
-
-const setAction = async (manager, actionIndex) => {
-    manager.actionIndex = actionIndex;
-
-    if (manager.action) {
-        await manager.action.exit();
-    }
-
-    const action = manager.state.actions[actionIndex];
-    const method = action.method.toUpperCase();
-    const nextClazz = manager.states[method];
-    manager.action = new nextClazz(manager, action.options);
-    await manager.action.enter();
-}
-
-const moveToNextAction = async (manager) => {
-    const actionIndex = manager.actionIndex;
-    const nextActionIndex = (actionIndex + 1) % manager.state.actions.length;
-    await setAction(manager, nextActionIndex);
-}
-
-const update = async () => {
-    if (paused.value) return;
-    for (const manager of managers.value) {
-
-        /**
-         * Note:
-         * If a manager is not in a state, then it will be set to the first state.
-         * If a manager does not have an action, then it will be set to the first action.
-         */
-        if (!manager.state) {
-            manager.state = manager.behavior.states[0];
-        }
-        if (!manager.action) {
-            await setAction(manager, 0);
-        }
-
-        if (manager.action?.isComplete()) {
-            await moveToNextAction(manager);
-        }
-
-        await manager.action?.update();
-    }
-}
+import StateMachineController from './state_machine_controller.js'
+import StateMachineModel from './state_machine_model.js'
 
 /**
  * Manager methods.
@@ -55,76 +9,39 @@ const update = async () => {
 useManager().create('statemachine', {
     update: {
         priority: 1,
-        callback: async () => await update()
+        callback: async () => await StateMachineController.update()
     },
     onBeforeTimeline: {
         priority: 1,
-        callback: () => {
-            paused.value = true;
-        }
+        callback: () => StateMachineController.setPaused(true)
     },
     onAfterTimeline: {
         priority: 1,
-        callback: () => {
-            paused.value = false;
-        }
+        callback: () => StateMachineController.setPaused(false)
     }
 })
 
+/**
+ * State machine interface.
+ * 
+ * @returns {object}
+ */
 export const useStateMachine = () => {
 
-    const add = (object, id=Date.now(), behavior={}, states={}) => {
-        if (!object) throw new Error('object is required');
-        if (!behavior) throw new Error('behavior is required');
-        if (!states) throw new Error('states is required');
-        if (!id) throw new Error('id is required');
-        if (getById(id)) throw new Error('id already exists');
-
-        const manager = {
-            id,
-            object: {...object},
-            behavior,
-            states,
-            actionIndex: 0,
-            action: null,            
-            state: null,
-            target: null            
-        };
-
-        managers.value.push(manager);
+    const add = (object, id=Date.now(), behavior={}, states={}, model=StateMachineModel) => {
+        return StateMachineController.create(id, object, behavior, states, model);
     }
 
     const remove = (id) => {
-        if (!id) throw new Error('id is required');
-        const index = managers.value.findIndex(m => m.id === id);
-        if (index !== -1) {
-            managers.value.splice(index, 1);
-        }
+        return StateMachineController.remove(id);
     }
 
     const getById = (id) => {
-        if (!id) throw new Error('id is required');
-        
-        return managers.value.find(m => m.id === id);
+        return StateMachineController.findById(id);
     }
 
     const setState = (id, stateName, target=null) => {
-        if (!id) throw new Error('id is required');
-        if (!stateName) throw new Error('stateName is required');
-
-        const manager = getById(id);
-        if (!manager) throw new Error(`Manager not found: ${id}`);
-
-        const state = manager.behavior.states.find(s => s.name === stateName);
-        if (!state) throw new Error(`State not found: ${stateName}`);
-
-        manager.state = state;
-
-        if (target) {
-            manager.target = target;
-        }
-
-        setAction(manager, 0);
+        return StateMachineController.setState(id, stateName, target);
     }
 
     return {

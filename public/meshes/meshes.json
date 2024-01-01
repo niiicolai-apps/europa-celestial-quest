@@ -10,12 +10,6 @@
             }
         ]
     },
-    "dragon": {
-        "name": "dragon",
-        "type": "GLTF",
-        "url": "./meshes/utils/dragon.glb",
-        "subMeshes": []
-    },
     "womans_house": {
         "name": "womans_house",
         "type": "GLTF",
@@ -602,7 +596,7 @@
             },
             {
                 "name": "Image",
-                "texturePack": "red_fabric"
+                "texturePack": "jupiter_painting"
             }
         ]
     },
@@ -617,7 +611,22 @@
             },
             {
                 "name": "Image",
-                "texturePack": "red_fabric"
+                "texturePack": "woman_painting"
+            }
+        ]
+    },
+    "wall_painting_3": {
+        "name": "wall_painting_1",
+        "type": "GLTF",
+        "url": "./meshes/utils/wall_painting_1.glb",
+        "subMeshes": [
+            {
+                "name": "Body",
+                "texturePack": "wood"
+            },
+            {
+                "name": "Image",
+                "texturePack": "house_painting"
             }
         ]
     },

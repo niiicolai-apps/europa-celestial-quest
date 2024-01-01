@@ -94,7 +94,7 @@ export default (object3D, _speed=0.1, _acceptableDistance=0.1, groundYOffset=0) 
     const speed = ref(_speed);
     const isMoving = ref(false);
 
-    position.y = groundYOffset;
+    object3D.position.y = groundYOffset;
 
     /**
      * Update the navigation model
@@ -123,7 +123,7 @@ export default (object3D, _speed=0.1, _acceptableDistance=0.1, groundYOffset=0) 
          && newDestination.z === destination.z) return;
             
         destination.copy(newDestination);
-        destination.y = position.y;        
+        destination.y = groundYOffset;        
         isMoving.value = true;
         
         lookAt(object3D, position, destination);

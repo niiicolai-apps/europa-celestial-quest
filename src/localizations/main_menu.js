@@ -5,9 +5,13 @@ export default {
             en: 'The Celestial Quest',
             da: 'Den Himmelske Quest',
         },
-        play_button: {
-            en: 'Play',
-            da: 'Spil',
+        continue_game_button: {
+            en: 'Continue Game',
+            da: 'Fortsæt Spil',
+        },
+        new_game_button: {
+            en: 'New Game',
+            da: 'Nyt Spil',
         },
         privacy_button: {
             en: 'Privacy',

@@ -55,8 +55,9 @@
                         }
                     },
                     {
-                        "method": "wait",
+                        "method": "set_state",
                         "options": {
+                            "stateName": "collect resources"
                         }
                     }
                 ]
@@ -123,8 +124,9 @@
                         }
                     },
                     {
-                        "method": "wait",
+                        "method": "set_state",
                         "options": {
+                            "stateName": "scan resources"
                         }
                     }
                 ]
@@ -137,16 +139,6 @@
     },
     "warrior": {
         "states": [
-            {
-                "name": "idle",
-                "actions": [
-                    {
-                        "method": "wait",
-                        "options": {
-                        }
-                    }
-                ]
-            },
             {
                 "name": "regroup",
                 "actions": [
@@ -171,18 +163,19 @@
                 "name": "defend",
                 "actions": [
                     {
-                        "method": "move_to_target",
-                        "options": {
-                        }
-                    },
-                    {
                         "method": "move_to_attack",
                         "options": {
                         }
                     },
                     {
-                        "method": "defend_attack",
+                        "method": "attack",
                         "options": {
+                        }
+                    },
+                    {
+                        "method": "set_state",
+                        "options": {
+                            "stateName": "regroup"
                         }
                     }
                 ]
@@ -204,7 +197,6 @@
                     {
                         "method": "attack",
                         "options": {
-                            "who": "target"
                         }
                     }
                 ]
@@ -212,7 +204,7 @@
         ],
         "on_damage": {
             "blocking_states": ["attack"],
-            "state": "defend"
+            "state": "attack"
         }
     }
 }

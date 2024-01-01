@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+
 import { useHealth } from '../health/health.js';
 import { removeMesh } from '../models/meshes.js';
 import { useStateMachine } from '../state_machine/state_machine.js'
@@ -8,16 +9,162 @@ import { useCanvas } from '../../composables/canvas.js';
 import { useParticlesPool } from '../particles/particles_pool.js';
 import { useCommands } from './commands.js';
 import { useNavigation } from '../navigation/navigation.js';
-import UnitsBehavior from '../state_machine/behaviors/units_behavior.json';
-import UnitStates from '../state_machine/states/unit_states.js';
 import { usePlayers } from '../players/player.js';
 
-const units = ref([]);
+import UnitController from './unit_controller.js';
+import UnitsBehavior from '../state_machine/behaviors/units_behavior.json';
+import UnitStates from '../state_machine/states/unit_states.js';
 
 const isInitialized = ref(false);
-const isPaused = ref(false);
-
 const scene = ref(null);
+
+const setupHealth = (unit, currentHealth=null) => {
+    const health = unit.features.health;
+    if (!health) return;
+
+    const healthManager = useHealth();
+    const maxHealth = health.maxHealth;
+    const object3D = unit.object3D;
+    const team = unit.team;
+
+    const onDie = () => {
+        useUnits().remove(unit.object3D)
+        useGameEnd().endGameCheck()
+    }
+
+    const onDamage = (attacker) => {
+        const behavior = UnitsBehavior[unit.data.primary_function];
+        const { state: reactStateName, blocking_states } = behavior.on_damage;
+        if (blocking_states.includes(unit.state?.name)) {
+            return;
+        }
+
+        const state = behavior.states.find(s => s.name === reactStateName);
+        if (!state) {
+            throw new Error(`State not found: ${reactStateName}`);
+        }
+
+        useStateMachine().setState(unit.object3D.uuid, reactStateName, attacker);
+    }
+
+    if (!currentHealth) {
+        currentHealth = maxHealth;
+    }
+
+    healthManager.addHealthObject(
+        object3D,
+        team,
+        currentHealth,
+        maxHealth,
+        onDie,
+        onDamage
+    )
+}
+
+const setup = async (unit, currentHealth=null) => {
+    const object3D = unit.object3D;
+    const unitDefinition = unit.data;
+    const team = unit.team;
+    const move = unit.features.move;
+    const attack = unit.features.attack;
+
+    /**
+     * Add to scene.
+     */
+    scene.value.add(object3D);
+
+    /**
+     * Create muzzle particle pool.
+     */
+    if (attack?.muzzleParticle) {
+        const particlesPools = useParticlesPool();
+
+        if (!particlesPools.findPool(attack.muzzleParticle.name)) {
+            await particlesPools.create(attack.muzzleParticle.name);
+        }
+    }
+
+    /**
+     * Create hit particle pool.
+     */
+    if (attack?.hitParticle) {
+        const particlesPools = useParticlesPool();
+
+        if (!particlesPools.findPool(attack.hitParticle.name)) {
+            await particlesPools.create(attack.hitParticle.name);
+        }
+    }
+
+    /**
+     * Add to health manager.
+     */
+    setupHealth(unit, currentHealth);
+
+    /**
+     * Add to navigation.
+     */
+    if (move) {
+        useNavigation().add(
+            object3D,
+            move.speed,
+            move.acceptableDistance,
+            move.groundOffset
+        );
+    }
+
+    /**
+     * Add to state machine.
+     */
+    useStateMachine().add(
+        unit,
+        object3D.uuid,
+        UnitsBehavior[unitDefinition.primary_function],
+        UnitStates
+    );
+
+    /**
+     * Ensure Unit warrior is set to last command.
+     */
+    const command = useCommands().findCommand(team);
+    if (command && unitDefinition.primary_function === 'warrior') {
+        useStateMachine().setState(object3D.uuid, command.type);
+    }
+}
+
+const destroy = (unit) => {
+    const object3D = unit.object3D;
+    const team = unit.team;
+
+    /**
+     * Remove from state machine.
+     */
+    useStateMachine().remove(object3D.uuid);
+
+    /**
+     * Remove from health manager.
+     */
+    useHealth().removeHealthObject(object3D);
+
+    /**
+     * Remove from navigation.
+     */
+    useNavigation().remove(object3D);
+
+    /**
+     * Remove from scene.
+     */
+    scene.value.remove(object3D)
+
+    /**
+     * Remove from cache.
+     */
+    removeMesh(object3D)
+
+    /**
+     * Save player data.
+     */
+    usePlayers().get(team).saveData()
+}
 
 /**
  * Manager methods.
@@ -35,256 +182,76 @@ useManager().create('units', {
 
             isInitialized.value = true;
         }
-    },
-    onBeforeTimeline: {
-        priority: 1,
-        callback: () => {
-            isPaused.value = true;
-            for (const unit of units.value) {
-                unit.object3D.visible = false;
-            }
-        }
-    },
-    onAfterTimeline: {
-        priority: 1,
-        callback: () => {
-            for (const unit of units.value) {
-                unit.object3D.visible = true;
-            }
-        }
     }
 })
 
 export const useUnits = () => {
 
-    const featuresToOptions = (features) => {
-        const options = {};
-        for (const feature of features) {
-            options[feature.name] = { ...feature.options };
-        }
-        return options;
-    }
-
-    const createHealth = (unit) => {
-        const health = unit.options.health;
-        if (!health) return;
-
-        const healthManager = useHealth();
-        const current = health.current;
-        const maxHealth = health.maxHealth;
-        const object3D = unit.object3D;
-        const team = unit.team;
-
-        const onDie = () => {
-            remove(unit.object3D)
-            useGameEnd().endGameCheck()
-        }
-
-        const onDamage = (attacker) => {
-            const behavior = UnitsBehavior[unit.data.primary_function];
-            const { state: reactStateName, blocking_states } = behavior.on_damage;
-            if (blocking_states.includes(unit.state?.name)) {
-                return;
-            }
-
-            const state = behavior.states.find(s => s.name === reactStateName);
-            if (!state) {
-                throw new Error(`State not found: ${reactStateName}`);
-            }
-
-            useStateMachine().setState(unit.object3D.uuid, reactStateName, attacker);
-        }
-
-        healthManager.addHealthObject(
-            object3D,
-            team,
-            current,
-            maxHealth,
-            onDie,
-            onDamage
-        )
-    }
-
-    const add = async (object3D, data, team = 'player') => {
-        /**
-         * Create unit options
-         */
-        const options = featuresToOptions(data.features);
-
-        /**
-         * Create unit data
-         */
-        const unit = {
-            object3D,
-            data,
-            options,
-            team
-        };
-
-        /**
-         * Create muzzle particle pool.
-         */
-        if (options.attack?.muzzleParticle) {
-            const particlesPools = useParticlesPool();
-            if (!particlesPools.findPool(options.attack.muzzleParticle.name)) {
-                await particlesPools.create(options.attack.muzzleParticle.name);
-            }
-        }
-
-        /**
-         * Create hit particle pool.
-         */
-        if (options.attack?.hitParticle) {
-            const particlesPools = useParticlesPool();
-            if (!particlesPools.findPool(options.attack.hitParticle.name)) {
-                await particlesPools.create(options.attack.hitParticle.name);
-            }
-        }
-
-        /**
-         * Hide unit if paused.
-         */
-        if (isPaused.value) {
-            unit.object3D.visible = false;
-        }
-
-        /**
-         * Add to units array.
-         */
-        units.value.push(unit);
-
-        /**
-         * Add to health manager.
-         */
-        createHealth(unit);
-
-        /**
-         * Add to navigation.
-         */
-        if (options.move) {
-            useNavigation().add(
-                object3D, 
-                options.move.speed, 
-                options.move.acceptableDistance, 
-                options.move.groundOffset
-            );
-        }
-
-        /**
-         * Add to state machine.
-         */
-        const stateMachine = useStateMachine()
-        const behavior = UnitsBehavior[data.primary_function]
-        const states = UnitStates;
-        const id = object3D.uuid
-        stateMachine.add(unit, id, behavior, states);
-
-        /**
-         * Ensure Unit warrior is set to last command.
-         */
-        const command = useCommands().findCommand(team);
-        if (command && data.primary_function === 'warrior') {
-            setStateByFunction('warrior', command.type, team);
-        }
+    const add = async (object3D, unitDefinition, team = 'player', currentHealth=null) => {
+        const unit = UnitController.create(object3D, unitDefinition, team);
+        await setup(unit, currentHealth);
+        return unit;
     }
 
     const remove = (object3D) => {
-        const unitIndex = units.value.findIndex(u => u.object3D.uuid === object3D.uuid);
-        if (unitIndex === -1) return;
-
-        const team = units.value[unitIndex].team;
-        
-        /**
-         * Remove from units array.
-         */
-        units.value.splice(unitIndex, 1);
-
-        /**
-         * Remove from state machine.
-         */
-        useStateMachine().remove(object3D.uuid);
-
-        /**
-         * Remove from health manager.
-         */
-        useHealth().removeHealthObject(object3D);
-
-        /**
-         * Remove from navigation.
-         */
-        useNavigation().remove(object3D);
-
-        /**
-         * Remove from scene.
-         */
-        scene.value.remove(object3D)
-
-        /**
-         * Remove from cache.
-         */
-        removeMesh(object3D)
-
-        /**
-         * Save player data.
-         */
-        usePlayers().get(team).saveData()
+        const unit = UnitController.findByObject3D(object3D);
+        if (!unit) return;
+        UnitController.remove(object3D);
+        destroy(unit);
     }
 
     const setStateByFunction = (primaryFunction, stateName, team = 'player') => {
         const stateMachine = useStateMachine()
-        const unitsByFunction = units.value.filter(u => u.data.primary_function === primaryFunction);
-        const unitsByTeam = unitsByFunction.filter(u => u.team === team);
-        for (const unit of unitsByTeam) {
+        const units = UnitController.findAllByTeam(team).filter(u => u.data.primary_function === primaryFunction);
+        console.log(units, stateName, team);
+        for (const unit of units) {
             stateMachine.setState(unit.object3D.uuid, stateName);
         }
     }
 
     const findByName = (name) => {
-        return units.value.find(u => u.data.name === name);
+        return UnitController.findByName(name);
     }
 
     const findAllByTeam = (team) => {
-        return units.value.filter(u => u.team === team);
+        return UnitController.findAllByTeam(team);
     }
 
     const findAllNotOnTeam = (team) => {
-        return units.value.filter(u => u.team !== team);
+        return UnitController.findAllNotOnTeam(team);
     }
 
     const findClosestNotOnTeam = (team, position) => {
-        const notOnTeam = findAllNotOnTeam(team);
-        return findClosest(notOnTeam, position);
+        return UnitController.findClosestNotOnTeam(team, position);
     }
 
     const findClosest = (units, position) => {
-        let closest = null;
-        let closestDistance = Infinity;
-        for (const unit of units) {
-            const distance = unit.object3D.position.distanceTo(position);
-            if (distance < closestDistance) {
-                closest = unit;
-                closestDistance = distance;
-            }
-        }
-        return { unit: closest, closestDistance };
+        return UnitController.findClosest(units, position);
     }
 
     const countByName = (name) => {
-        return units.value.filter(u => u.data.name === name).length;
+        return UnitController.countByName(name);
     }
 
     const countByTeam = (team) => {
-        return units.value.filter(u => u.team === team).length;
+        return UnitController.countByTeam(team);
     }
 
     const countByNameAndTeam = (name, team) => {
-        return units.value.filter(u => u.data.name === name && u.team === team).length;
+        return UnitController.countByNameAndTeam(name, team);
+    }
+
+    const removeAll = async () => {
+        const units = UnitController.findAll();
+        for (const unit of units) {
+            await remove(unit.object3D);
+        }
     }
 
     return {
-        units,
         add,
         remove,
+        removeAll,
         setStateByFunction,
         findByName,
         findAllByTeam,

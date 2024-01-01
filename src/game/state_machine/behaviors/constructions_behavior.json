@@ -46,11 +46,6 @@
                         "method": "attack",
                         "options": {
                         }
-                    },
-                    {
-                        "method": "timer",
-                        "options": {
-                        }
                     }
                 ]
             }

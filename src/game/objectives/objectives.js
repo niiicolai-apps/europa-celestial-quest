@@ -186,7 +186,7 @@ export function useObjectives() {
                     await useTimeline().play(availableObjective.data.timeline);
                 }
             }
-
+            usePlayers().findYou().saveData();
             addNewAvailable();
             PersistentData.set(`${mapName.value}-completed_objectives`, completedNamesAfter);
         }

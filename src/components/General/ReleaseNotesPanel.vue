@@ -1,5 +1,5 @@
 <template>
-    <Panel :name="localizationManager.getLocale('release_notes.title')" identifier="release_notes" :showScroll="true">
+    <Panel :name="localizationManager.getLocale('release_notes.title')" identifier="release_notes">
         <UI.Flex>
             <div v-for="note in releaseNotes" :key="note.name" type="primary"
                 class="bg-info text-primary w-full rounded box-shadow-lg p-3 border-1 border-solid border-primary">

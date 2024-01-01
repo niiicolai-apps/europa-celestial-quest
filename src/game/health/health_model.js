@@ -82,6 +82,7 @@ export default (
     const uuid = object3D.uuid
     
     const barModel = BarModel(object3D, healthBarYOffset);
+    barModel.setProgress(currentHealth.value, maxHealth.value);
 
     return {
         applyDamage: (damage, attacker, attackerTeam='other') => {
@@ -119,6 +120,9 @@ export default (
         },
         getMaxHealth: () => {
             return maxHealth.value;
+        },
+        isDamaged: () => {
+            return currentHealth.value < maxHealth.value;
         },
         team,
         uuid,

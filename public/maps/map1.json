@@ -549,7 +549,7 @@
                     "right": "auto",
                     "arrow_top": "auto",
                     "arrow_bottom": "-3em",
-                    "arrow_left": "4.5em",
+                    "arrow_left": "3.6em",
                     "arrow_right": "auto",
                     "icon": "arrow-down"
                 },
@@ -562,7 +562,7 @@
                     "right": "auto",
                     "arrow_top": "auto",
                     "arrow_bottom": "-3em",
-                    "arrow_left": "6.5em",
+                    "arrow_left": "4.4em",
                     "arrow_right": "auto",
                     "icon": "arrow-down"
                 },
@@ -576,7 +576,7 @@
                     "arrow_top": "auto",
                     "arrow_bottom": "-3em",
                     "arrow_left": "auto",
-                    "arrow_right": "4.5em",
+                    "arrow_right": "3.7em",
                     "icon": "arrow-down"
                 },
                 {
@@ -589,7 +589,7 @@
                     "arrow_top": "auto",
                     "arrow_bottom": "-3em",
                     "arrow_left": "auto",
-                    "arrow_right": "0.3em",
+                    "arrow_right": "0.2em",
                     "icon": "arrow-down"
                 },
                 {
@@ -601,7 +601,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "0.2em",
+                    "arrow_left": "0em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -614,7 +614,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "3em",
+                    "arrow_left": "2.8em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -627,7 +627,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "5.7em",
+                    "arrow_left": "5.4em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },
@@ -640,7 +640,7 @@
                     "right": "auto",
                     "arrow_top": "-3em",
                     "arrow_bottom": "auto",
-                    "arrow_left": "5.1em",
+                    "arrow_left": "4.9em",
                     "arrow_right": "auto",
                     "icon": "arrow-up"
                 },

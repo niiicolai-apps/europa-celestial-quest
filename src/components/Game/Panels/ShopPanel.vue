@@ -1,6 +1,6 @@
 <template>
-    <Panel :name="localizationManager.getLocale('shop.title')" identifier="shop">
-        <UI.Grid columns="2" gap="3">
+    <Panel :name="localizationManager.getLocale('shop.title')" identifier="shop" transition_name="slide-up-game" :styling="{top: '12em'}" styling_top="top:6em;">
+        <UI.Grid columns="2" gap="3" style="padding-bottom: 6em;">
             <ShopCard 
                 v-for="definition in sortedDefinitions" 
                 :key="definition.name"
@@ -57,7 +57,7 @@ const click = async (definition) => {
     if (bankController.canAfford(definition.costs)) {
         
         const construction = await you.value.spawnConstruction(definition.name);
-        inspectManager.setSelected(construction);
+        inspectManager.setSelected(construction.object3D);
         panelManager.clearPanel();
     } else {
         toastManager.add('toasts.shop.cannot_afford', 4000, 'danger');

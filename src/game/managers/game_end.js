@@ -1,5 +1,7 @@
 import { ref } from 'vue';
 import { usePlayers } from '../players/player.js';
+import { useUnits } from '../units/units.js';
+import { useItems } from '../constructions/constructions.js';
 import PersistentData from '../persistent_data/persistent_data.js';
 
 const END_STATES = {
@@ -29,6 +31,8 @@ export const useGameEnd = () => {
         }
 
         endState.value = state;
+
+        usePlayers().removeAll();
 
         /**
          * Reset persistent data.
