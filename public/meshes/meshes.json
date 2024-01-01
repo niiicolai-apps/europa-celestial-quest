@@ -10,12 +10,6 @@
             }
         ]
     },
-    "dragon": {
-        "name": "dragon",
-        "type": "GLTF",
-        "url": "./meshes/utils/dragon.glb",
-        "subMeshes": []
-    },
     "womans_house": {
         "name": "womans_house",
         "type": "GLTF",

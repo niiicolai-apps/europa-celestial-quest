@@ -24,9 +24,12 @@ export default class Produce extends Base {
 
         const costs = produceFeature.options.costs
         if (costs) {
-            if (!bank.canAfford(costs)) {
-                manager.target = 1000;
-                return;
+            const min = 10
+            for (const cost of costs) {
+                if (bank.getBalance(cost.currency) < cost.amount + min) {
+                    manager.target = 1000;
+                    return;
+                }
             }
 
             for (const cost of costs) {

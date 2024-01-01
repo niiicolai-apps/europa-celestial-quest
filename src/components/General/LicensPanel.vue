@@ -23,13 +23,13 @@
             </div>
 
             <div v-for="section in sections" :key="section.name" class="w-full border-1 border-solid border-primary p-3 rounded box-shadow-lg">
-                <UI.Paragraph class="font-bold uppercase mb-3">
+                <UI.Paragraph class="font-bold uppercase mb-1">
                     {{ section.title }}
                 </UI.Paragraph>
 
                 <ul>
                     <li v-for="item in section.items" :key="item" class="mb-1">
-                        <p class="text-xs">
+                        <p class="text-sm">
                             {{ item }}
                         </p>
                     </li>

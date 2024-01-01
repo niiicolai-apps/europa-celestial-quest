@@ -1,32 +1,32 @@
 <template>
     <Panel :name="localizationManager.getLocale('privacy.title')" identifier="privacy">
+
+
         <UI.Flex>
-            <UI.Card v-for="section in sections" :key="section.name" class="w-full">
-                <template #header>
-                    <UI.Paragraph class="font-bold uppercase">
-                        {{ section.title }}
-                    </UI.Paragraph>
-                </template>
+            <div class="border-1 border-solid border-primary rounded p-3 box-shadow-lg w-full">
+                <UI.Flex direction="horizontal" justify="start" gap="2">
+                    <p class="text-xs">
+                        <Locale id="privacy.published.label" />:
+                        <Locale id="privacy.published.date" />
+                    </p>
 
-                <template #body>
-                    <UI.Paragraph>
-                        {{ section.content }}
-                    </UI.Paragraph>
-                </template>
+                    <p class="text-xs">
+                        <Locale id="privacy.updated.label" />: 
+                        <Locale id="privacy.updated.date" />
+                    </p>
+                </UI.Flex>
+            </div>
 
-                <template #footer>
-                    <UI.Flex direction="horizontal" class="text-xs text-dark">
-                        <UI.Flex direction="horizontal" gap="1">
-                            <Locale id="privacy.published" /> 
-                            <span>{{ section.created_at }}</span>
-                        </UI.Flex>
-                        <UI.Flex direction="horizontal" gap="1">
-                            <Locale id="privacy.updated" /> 
-                            <span>{{ section.updated_at }}</span>
-                        </UI.Flex>
-                    </UI.Flex>
-                </template>
-            </UI.Card>
+            <div class="border-1 border-solid border-primary rounded p-3 box-shadow-lg w-full" v-for="section in sections"
+                :key="section.name">
+                <UI.Paragraph class="font-bold uppercase mb-1">
+                    {{ section.title }}
+                </UI.Paragraph>
+
+                <p class="text-sm">
+                    {{ section.content }}
+                </p>
+            </div>
         </UI.Flex>
     </Panel>
 </template>
@@ -42,23 +42,24 @@ const sections = computed(() => {
     return [{
         title: localizationManager.getLocale('privacy.data_collection_title'),
         content: localizationManager.getLocale('privacy.data_collection_content'),
-        created_at: "2023-11-17",
-        updated_at: "2023-11-17",
     }, {
         title: localizationManager.getLocale('privacy.data_usage_title'),
         content: localizationManager.getLocale('privacy.data_usage_content'),
-        created_at: "2023-11-17",
-        updated_at: "2023-11-17",
     }, {
         title: localizationManager.getLocale('privacy.data_storage_title'),
         content: localizationManager.getLocale('privacy.data_storage_content'),
-        created_at: "2023-11-17",
-        updated_at: "2023-11-17",
     }, {
         title: localizationManager.getLocale('privacy.data_sharing_title'),
         content: localizationManager.getLocale('privacy.data_sharing_content'),
-        created_at: "2023-11-17",
-        updated_at: "2023-11-17",
+    }, {
+        title: localizationManager.getLocale('privacy.coppa_title'),
+        content: localizationManager.getLocale('privacy.coppa_content'),
+    }, {
+        title: localizationManager.getLocale('privacy.gdpr_title'),
+        content: localizationManager.getLocale('privacy.gdpr_content'),
+    }, {
+        title: localizationManager.getLocale('privacy.changes_title'),
+        content: localizationManager.getLocale('privacy.changes_content'),
     }]
 })
 </script>

@@ -16,7 +16,7 @@ const accept = () => emits('acceptPrivacy');
         persistent_data_key="privacy_policy" :accept="accept">
 
         <div class="text-xs mb-5">
-            <p class="font-bold mb-2">
+            <p class="font-bold mb-1">
                 <Locale id="privacy.data_collection_title" />
             </p>
             <UI.Flex gap="2" items="start" class="ml-3 w-full">
@@ -27,7 +27,7 @@ const accept = () => emits('acceptPrivacy');
         </div>
 
         <div class="text-xs mb-5">
-            <p class="font-bold mb-2">
+            <p class="font-bold mb-1">
                 <Locale id="privacy.data_usage_title" />
             </p>
             <UI.Flex gap="2" items="start" class="ml-3 w-full">
@@ -38,7 +38,7 @@ const accept = () => emits('acceptPrivacy');
         </div>
 
         <div class="text-xs mb-5">
-            <p class="font-bold mb-2">
+            <p class="font-bold mb-1">
                 <Locale id="privacy.data_storage_title" />
             </p>
             <UI.Flex gap="2" items="start" class="ml-3 w-full">
@@ -49,12 +49,45 @@ const accept = () => emits('acceptPrivacy');
         </div>
 
         <div class="text-xs mb-5">
-            <p class="font-bold mb-2">
+            <p class="font-bold mb-1">
                 <Locale id="privacy.data_sharing_title" />
             </p>
             <UI.Flex gap="2" items="start" class="ml-3 w-full">
                 <p>
                     <Locale id="privacy.data_sharing_content" />
+                </p>
+            </UI.Flex>
+        </div>
+
+        <div class="text-xs mb-5">
+            <p class="font-bold mb-1">
+                <Locale id="privacy.coppa_title" />
+            </p>
+            <UI.Flex gap="2" items="start" class="ml-3 w-full">
+                <p>
+                    <Locale id="privacy.coppa_content" />
+                </p>
+            </UI.Flex>
+        </div>
+
+        <div class="text-xs mb-5">
+            <p class="font-bold mb-1">
+                <Locale id="privacy.gdpr_title" />
+            </p>
+            <UI.Flex gap="2" items="start" class="ml-3 w-full">
+                <p>
+                    <Locale id="privacy.gdpr_content" />
+                </p>
+            </UI.Flex>
+        </div>
+
+        <div class="text-xs mb-5">
+            <p class="font-bold mb-1">
+                <Locale id="privacy.changes_title" />
+            </p>
+            <UI.Flex gap="2" items="start" class="ml-3 w-full">
+                <p>
+                    <Locale id="privacy.changes_content" />
                 </p>
             </UI.Flex>
         </div>
