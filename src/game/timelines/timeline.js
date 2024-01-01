@@ -445,7 +445,6 @@ export const TimelineFromJson = async (json, camera, scene, audio1Ctrl, audio2Ct
         useTimeline().showTransition.value = false;
         await removeMeshes(_meshes, scene);
         await onStop();
-        console.log('Timeline stopped');
     }
 
     return Timeline([...sequencies, { playTime: 1000, callback: stop }], stop);

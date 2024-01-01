@@ -79,7 +79,6 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
     const setUnitsStateByPrimaryFunction = (stateName, primaryFunction='warrior') => {
         const units = useUnits()
         units.setStateByFunction(primaryFunction, stateName, team)
-        console.log(`Setting units state to ${stateName} by primary function ${primaryFunction}`)
     }
 
     const setUnitsCommand = (type, position=null) => {

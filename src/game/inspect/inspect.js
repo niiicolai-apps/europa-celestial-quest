@@ -85,7 +85,6 @@ const sellCtrl = {
             selectableManager.value.enable();
     },
     confirm: () => {
-        console.log(scene.value);
         if (SellController.confirm(selected)) {
             selectableManager.value.enable();
             selectableManager.value.removeSelected();
@@ -111,6 +110,7 @@ const upgradeCtrl = {
     },
     isUpgradeable: () => UpgradeController.isUpgradeable(selected),
     isMaxUpgradeReached: () => UpgradeController.isMaxUpgradeReached(selected),
+    getUpgradeCost: () => UpgradeController.getUpgradeCost(selected),
     isUpgrading: UpgradeController.isUpgrading    
 }
 
@@ -144,7 +144,6 @@ const onSelect = (selectable) => {
     selected.value = parent;
     MarkerController.onSelect(parent);
     selectedIsYours.value = detailCtrl.isYours();
-    console.log('onSelect', parent);
 }
 
 const onDeselect = () => {
@@ -182,7 +181,6 @@ useManager().create('inspect', {
     
             selectableManager.value.enable();
             scene.value = scene;
-            console.log(scene.value);
             isInitialized.value = true;
            
         }

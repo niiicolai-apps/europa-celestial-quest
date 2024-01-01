@@ -11,7 +11,6 @@ import Base from '../base.js'
 export default class Wait extends Base {
     constructor(manager, options = {}) {
         super(manager, options);
-        console.log('Wait');
     }
 
     exit() {

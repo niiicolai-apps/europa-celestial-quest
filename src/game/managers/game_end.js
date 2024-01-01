@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { usePlayers } from '../players/player.js';
+import { useStateMachine } from '../state_machine/state_machine.js';
 import { useUnits } from '../units/units.js';
 import { useItems } from '../constructions/constructions.js';
 import PersistentData from '../persistent_data/persistent_data.js';
@@ -32,6 +33,7 @@ export const useGameEnd = () => {
 
         endState.value = state;
 
+        useStateMachine().setPaused(true);
         usePlayers().removeAll();
 
         /**

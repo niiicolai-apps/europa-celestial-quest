@@ -50,10 +50,7 @@ export default class ArmyCheck extends Base {
              */
             const units = unitsManager.findAllByTeam(team);
             const warriors = units.filter(u => u.data.primary_function === 'warrior');
-            console.log('Moving to attack state')
             this.manager.object.setState('attack', warriors);
-        } else {
-            console.log('Army not ready yet');
         }
     }
 

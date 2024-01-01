@@ -19,7 +19,6 @@ export default class Regroup extends Base {
 
         this.nModel = useNavigation().find(unit.object3D);        
         this.nModel.setAcceptableDistance(1);
-        console.log('Regrouping');
     }
 
     isComplete() {

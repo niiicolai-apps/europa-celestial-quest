@@ -67,7 +67,6 @@ export default class FindClosest extends Base {
             const closestObject = closestResult?.closest?.object3D;
 
             if (!closestObject) {
-                console.log('No health objects found, regrouping');
                 useStateMachine().setState(unit.object3D.uuid, 'regroup');
                 return;
             }

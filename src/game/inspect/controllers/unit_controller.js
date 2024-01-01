@@ -154,7 +154,6 @@ const BuildController = {
     addToQueue: (selected, unit, team) => {
         const queueData = BuildController.getQueue(selected);
         const queueArray = queueData ? queueData.queue : [];
-        console.log('adding to queue', queueData)
         queueArray.push(unit);
         BuildController.setQueue(selected, queueArray, team);
     },

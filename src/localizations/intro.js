@@ -22,8 +22,8 @@ export default {
             da: 'Udforskning længes efter trøst på din fjerne kyst, Et tilflugtssted for drømme, for evigt at udforske.',
         },
         poem_3: {
-            en: 'Exploration\'s heartbeat echoes a cosmic lore, A sanctuary of dreams, forever to explore.',
-            da: 'Udforskningens hjerteslag ekkoer en kosmisk lore, Et tilflugtssted for drømme, for evigt at udforske.',
+            en: 'Beneath the ice, Hope\'s silent symphony plays, In frozen oceans, where life\'s mystery sways.',
+            da: 'Under isen spiller Håbets stille symfoni, I frosne oceaner, hvor livets mysterium svinger.',
         },
         poem_4: {
             en: 'Exploration\'s heartbeat echoes a cosmic lore, A sanctuary of dreams, forever to explore.',

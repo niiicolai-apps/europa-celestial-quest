@@ -7,7 +7,6 @@ export default class AttackCheck extends Base {
     }
 
     async enter() {
-        console.log('Starting attack check state')
         this.manager.object.setUnitsStateByPrimaryFunction('attack');
         this.manager.object.setUnitsCommand('attack');
     }
@@ -28,12 +27,9 @@ export default class AttackCheck extends Base {
         }
 
         if (allWarriorsDead) {
-            console.log('All warriors is dead, Moving to ready up for attack state')
             this.manager.object.setUnitsStateByPrimaryFunction('regroup');
             this.manager.object.setUnitsCommand('regroup');
             this.manager.object.setState('ready up for attack');
-        } else {
-            console.log('Warriors still alive');
         }
     }
 

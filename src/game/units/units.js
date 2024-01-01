@@ -203,7 +203,6 @@ export const useUnits = () => {
     const setStateByFunction = (primaryFunction, stateName, team = 'player') => {
         const stateMachine = useStateMachine()
         const units = UnitController.findAllByTeam(team).filter(u => u.data.primary_function === primaryFunction);
-        console.log(units, stateName, team);
         for (const unit of units) {
             stateMachine.setState(unit.object3D.uuid, stateName);
         }

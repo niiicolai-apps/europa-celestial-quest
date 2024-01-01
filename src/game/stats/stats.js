@@ -65,6 +65,7 @@ export function useStats() {
 
     const findStatYou = () => {
         const player = usePlayers().findYou()
+        if (!player) return null
         return findStat(player.team)
     }
 

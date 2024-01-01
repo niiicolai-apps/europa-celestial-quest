@@ -76,6 +76,10 @@ export default {
             en: 'Are you sure you want to upgrade',
             da: 'Er du sikker på du vil opgradere',
         },
+        upgrading_cost: {
+            en: 'Cost',
+            da: 'Pris',
+        },
         start_upgrade_button: {
             en: 'Upgrade',
             da: 'Opgrader',

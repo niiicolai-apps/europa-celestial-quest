@@ -160,13 +160,32 @@
     <Transition name="slide-up">
         <UI.Fixed v-if="selected && isUpgrading" top="auto">
             <UI.Flex items="start" gap="3" class="bg-info p-3 box-shadow-lg border-t-1 border-solid border-primary">
-                <span class="bg-primary font-bold text-info text-xs p-1 rounded">
-                    <Locale id="inspect.upgrading_title" /> 
-                    <span>
-                        <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
-                        <span>?</span>
+
+                <UI.Flex direction="horizontal" justify="start" gap="1">
+                    <span class="bg-primary font-bold text-info text-xs p-1 rounded">
+                        <Locale id="inspect.upgrading_title" /> 
+                        <span>
+                            <Locale :id="`constructions.${selected.name}`" /> <Locale :id="`constructions.${selected.name}.title`" />
+                            <span>?</span>
+                        </span>
                     </span>
-                </span>
+
+                    <span class="bg-primary font-bold text-info text-xs p-1 rounded">
+                        <span>
+                            <Locale id="inspect.upgrading_cost" />:
+                        </span>
+                    </span>
+                    <UI.Flex direction="horizontal" v-for="cost in upgradeCost" :key="cost.currency" gap="1" class="bg-primary font-bold text-info text-xs p-1 rounded">
+                        <UI.Flex direction="horizontal" gap="1">
+                            <p>
+                                <Locale :id="`bank.${cost.currency}`" />:
+                            </p>
+                            <div class="text-center font-bold">
+                                <p>{{ cost.amount }}</p>
+                            </div>
+                        </UI.Flex>
+                    </UI.Flex>
+                </UI.Flex>
 
                 <UI.Grid columns="2" gap="1">
                     <UI.Button type="success" @click="inspectManager.upgradeCtrl.confirm()" class="h-15">
@@ -319,6 +338,7 @@ const isSelling = computed(() => inspectManager.sellCtrl.isSelling.value);
 const isUpgrading = computed(() => inspectManager.upgradeCtrl.isUpgrading.value);
 const isUpgradeable = computed(() => inspectManager.upgradeCtrl.isUpgradeable());
 const isMaxUpgradeReached = computed(() => inspectManager.upgradeCtrl.isMaxUpgradeReached());
+const upgradeCost = computed(() => inspectManager.upgradeCtrl.getUpgradeCost());
 
 const isBuilding = computed(() => inspectManager.unitCtrl.isBuilding().value);
 const canBuild = computed(() => inspectManager.unitCtrl.canBuild());

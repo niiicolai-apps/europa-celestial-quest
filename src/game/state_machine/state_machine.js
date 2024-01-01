@@ -44,10 +44,15 @@ export const useStateMachine = () => {
         return StateMachineController.setState(id, stateName, target);
     }
 
+    const setPaused = (paused) => {
+        return StateMachineController.setPaused(paused);
+    }
+
     return {
         add,
         remove,
         getById,
         setState,
+        setPaused
     }
 }

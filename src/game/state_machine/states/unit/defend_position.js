@@ -36,7 +36,6 @@ export default class DefendPosition extends Base {
          * Otherwise, do nothing.
          */
         if (shouldAttack) {
-            console.log('Defend Attack', closestObject);
             await useStateMachine().setState(unit.object3D.uuid, 'defend', closestObject);
             move.destination = closestObject.position;
         }

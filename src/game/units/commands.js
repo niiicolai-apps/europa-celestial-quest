@@ -224,6 +224,7 @@ export const useCommands = () => {
     const getCommandYou = () => {
         const players = usePlayers();
         const player = players.findYou();
+        if (!player) return null;
         return getCommand(player.team);
     }
 

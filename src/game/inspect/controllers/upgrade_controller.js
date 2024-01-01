@@ -72,7 +72,6 @@ const UpgradeController = {
 
         isUpgrading.value = false;
         construction.upgradeToNext();
-        console.log('upgraded to', construction.upgradeIndex);
 
         useObjectives().tryCompleteIncompletes();
         useItems().recalculateStorage(team);
@@ -82,6 +81,19 @@ const UpgradeController = {
         player.saveData();
         
         return true;
+    },
+    getUpgradeCost: (selected) => {
+        if (!isUpgradeable(selected)) {
+            useToast().add('toasts.upgrade_controller.not_upgradeable', 4000, 'danger');
+            return [];
+        } 
+
+        const construction = ConstructionController.findByObject3D(selected.value);
+        const upgrades = construction.upgrades; 
+        const upgradeIndex = construction.upgradeIndex;
+        const nextUpgrade = upgrades[upgradeIndex + 1];
+
+        return nextUpgrade.costs;
     },
     isUpgradeable,
     isMaxUpgradeReached,

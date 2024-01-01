@@ -40,7 +40,7 @@ const options = {
 
 onMounted(async () => {
     const audioCtrl = audio.get(0);
-    audioCtrl.setSrc('audio/sacred-garden-10377.mp3');
+    audioCtrl.setSrc('audio/battle-of-the-dragons-8037.mp3');
     audioCtrl.setVolume(0.3);
 
     const adapter = canvasRef.value.adapter;
