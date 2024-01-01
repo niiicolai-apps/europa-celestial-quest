@@ -1,5 +1,5 @@
 import { useBank } from "../../../bank/bank.js";
-import Base from '../Base.js'
+import Base from '../base.js'
 
 export default class Produce extends Base {
     constructor(manager, options = {}) {

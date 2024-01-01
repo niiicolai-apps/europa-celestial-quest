@@ -2,7 +2,7 @@ import { useHealth } from '../../../health/health.js'
 import { useParticles } from '../../../particles/particles.js'
 import { useParticlesPool } from '../../../particles/particles_pool.js'
 
-import Base from '../Base.js'
+import Base from '../base.js'
 
 export default class Attack extends Base {
     constructor(manager, options = {}) {

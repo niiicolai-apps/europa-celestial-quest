@@ -1,4 +1,4 @@
-import Base from '../Base.js'
+import Base from '../base.js'
 import { useUnits } from '../../../units/units.js';
 import { useItems } from '../../../constructions/constructions.js';
 import UNITS from '../../../definitions/units.js'

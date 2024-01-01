@@ -1,4 +1,4 @@
-import Base from '../Base.js'
+import Base from '../base.js'
 import { useBank } from '../../../bank/bank.js';
 import { useObjectives } from '../../../objectives/objectives.js';
 

@@ -1,4 +1,4 @@
-import Base from '../Base.js'
+import Base from '../base.js'
 import { useHealth } from '../../../health/health.js';
 import { useParticles } from '../../../particles/particles.js';
 import { useParticlesPool } from '../../../particles/particles_pool.js';

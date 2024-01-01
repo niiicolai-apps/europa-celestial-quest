@@ -1,6 +1,5 @@
-import Base from '../Base.js'
 import { useBank } from '../../../bank/bank.js';
-import Timer from '../utils/Timer.js';
+import Timer from '../utils/timer.js';
 
 export default class Collect extends Timer {
     constructor(manager, options = {}) {

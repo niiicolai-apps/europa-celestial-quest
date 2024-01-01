@@ -1,4 +1,4 @@
-import Base from '../Base.js'
+import Base from '../base.js'
 import { useHealth } from '../../../health/health.js';
 
 export default class AttackCheck extends Base {

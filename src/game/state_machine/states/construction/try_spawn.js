@@ -1,5 +1,5 @@
 import { useItems } from "../../../constructions/constructions.js";
-import Base from '../Base.js'
+import Base from '../base.js'
 
 export default class TrySpawn extends Base {
     constructor(manager, options = {}) {
