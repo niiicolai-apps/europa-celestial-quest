@@ -69,7 +69,6 @@ useManager().create('objectives', {
                                 team,
                                 goalData.options.upgrade.upgradeIndex
                             );
-                            console.log(constructionCount);
                             return goalData.options.min
                                 ? constructionCount >= goalData.options.min
                                 : constructionCount > 0;
@@ -187,7 +186,7 @@ export function useObjectives() {
                     await useTimeline().play(availableObjective.data.timeline);
                 }
             }
-
+            usePlayers().findYou().saveData();
             addNewAvailable();
             PersistentData.set(`${mapName.value}-completed_objectives`, completedNamesAfter);
         }

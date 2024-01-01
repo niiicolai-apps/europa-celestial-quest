@@ -14,16 +14,28 @@ export default {
             da: 'Med et hjerte åbent for vidundrene over hende, begyndte hun at væve en fortælling i poesi, hvor Europa holdt løftet om det sidste håb i det kosmiske rum.',
         },
         poem_1: {
-            en: 'Europa, a beacon in the cosmic vast, Life\'s fragile thread in the dance so steadfast. Exploration yearns for solace on your distant shore, A sanctuary of dreams, forever to explore.',
-            da: 'Europa, et fyrtårn i det kosmiske uendelige, Livets skrøbelige tråd i dansen så standhaftig. Udforskning længes efter trøst på din fjerne kyst, Et tilflugtssted for drømme, for evigt at udforske.',
+            en: 'Europa, a beacon in the cosmic vast, Life\'s fragile thread in the dance so steadfast.',
+            da: 'Europa, et fyrtårn i det kosmiske uendelige, Livets skrøbelige tråd i dansen så standhaftig.',
         },
         poem_2: {
-            en: 'Beneath the ice, Hope\'s silent symphony plays, In frozen oceans, where life\'s mystery sways. Exploration\'s heartbeat echoes a cosmic lore, A sanctuary of dreams, forever to explore.',
-            da: 'Under isen, spiller Håbets stille symfoni, I frosne oceaner, hvor livets mysterium vugger. Udforskningens hjerteslag ekkoer en kosmisk lore, Et tilflugtssted for drømme, for evigt at udforske.',
+            en: 'Exploration yearns for solace on your distant shore, A sanctuary of dreams, forever to explore.',
+            da: 'Udforskning længes efter trøst på din fjerne kyst, Et tilflugtssted for drømme, for evigt at udforske.',
         },
         poem_3: {
-            en: 'Oh, Europa, cradle of the celestial quest, Where the last hope resides, a haven blessed. Exploration\'s flame ignites, a forevermore, A sanctuary of dreams, forever to explore.',
-            da: 'Oh, Europa, vugge af den himmelske søgen, Hvor det sidste håb bor, en velsignet havn. Udforskningens flamme tændes, en for evigt, Et tilflugtssted for drømme, for evigt at udforske.',
+            en: 'Exploration\'s heartbeat echoes a cosmic lore, A sanctuary of dreams, forever to explore.',
+            da: 'Udforskningens hjerteslag ekkoer en kosmisk lore, Et tilflugtssted for drømme, for evigt at udforske.',
+        },
+        poem_4: {
+            en: 'Exploration\'s heartbeat echoes a cosmic lore, A sanctuary of dreams, forever to explore.',
+            da: 'Udforskningens hjerteslag ekkoer en kosmisk lore, Et tilflugtssted for drømme, for evigt at udforske.',
+        },
+        poem_5: {
+            en: 'Oh, Europa, cradle of the celestial quest, Where the last hope resides, a haven blessed.',
+            da: 'Oh, Europa, vugge af den himmelske søgen, Hvor det sidste håb bor, en velsignet havn.',
+        },
+        poem_6: {
+            en: 'Exploration\'s flame ignites, a forevermore, A sanctuary of dreams, forever to explore.',
+            da: 'Udforskningens flamme tændes, en for evigt, Et tilflugtssted for drømme, for evigt at udforske.',
         }
     }
 }

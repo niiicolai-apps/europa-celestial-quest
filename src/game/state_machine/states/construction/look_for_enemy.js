@@ -62,7 +62,6 @@ export default class LookForEnemy extends Base {
         if (target) {
             const distance = this.object3D.position.distanceTo(target.position);
             const attackDistance = attackFeature.options.distance;
-
             /**
              * Only set the target if it is within the attack distance.
              */

@@ -101,14 +101,14 @@ const settings = computed(() => {
         rangeUpdate: async (value) => {
             await Camera.setZoomSpeed(value);
         }
-    }, {
+    }]/*, {
         name: localizationManager.getLocale("settings.camera_pan_speed_title"),
         description: localizationManager.getLocale("settings.camera_pan_speed_description"),
         range: { min: 0.01, max: 5, step: 0.01, startValue: startMoveSpeed },
         rangeUpdate: async (value) => {
             await Camera.setMoveSpeed(value);
         }
-    }]
+    }]*/
 })
 
 onMounted(async () => {

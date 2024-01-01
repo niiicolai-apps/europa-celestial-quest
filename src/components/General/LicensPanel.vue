@@ -1,7 +1,7 @@
 <template>
     <Panel :name="localizationManager.getLocale('software_licens.title')" identifier="licens">
         
-        <UI.Flex class="mt-5">
+        <UI.Flex>
             <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg w-full">
                 <UI.Flex direction="horizontal" justify="start" gap="2">
                     <p class="text-xs">
@@ -36,7 +36,7 @@
                 </ul>
             </div>
 
-            <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg">
+            <div class="border-1 border-solid border-primary p-3 rounded box-shadow-lg w-full">
                 <p class="text-xs">
                     <Locale id="software_licens.ending" />
                 </p> 

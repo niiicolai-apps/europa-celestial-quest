@@ -134,10 +134,20 @@ const countByNameAndTeam = (name, team) => {
     return units.value.filter(unit => unit.data.name === name && unit.team === team).length;
 }
 
+/**
+ * Remove all units.
+ * 
+ * @returns {void}
+ */
+const findAll = () => {
+    return units.value;
+}
+
 export default {
     units,
     create,
     remove,
+    findAll,
     findByObject3D,
     findByName,
     findAllByTeam,

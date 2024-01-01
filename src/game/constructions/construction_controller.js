@@ -231,10 +231,20 @@ const countByNameAndUpgradeAndTeam = (name, upgradeIndex, team) => {
     return constructions.value.filter(construction => construction.definition.name === name && construction.upgradeIndex >= upgradeIndex && construction.team === team).length
 }
 
+/**
+ * Find all constructions.
+ * 
+ * @returns {object[]}
+ */
+const findAll = () => {
+    return constructions.value
+}
+
 export default {
     constructions,
     create,
     remove,
+    findAll,
     findByObject3D,
     findByName,
     findByNameAndTeam,

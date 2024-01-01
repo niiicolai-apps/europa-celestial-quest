@@ -241,9 +241,17 @@ export const useUnits = () => {
         return UnitController.countByNameAndTeam(name, team);
     }
 
+    const removeAll = async () => {
+        const units = UnitController.findAll();
+        for (const unit of units) {
+            await remove(unit.object3D);
+        }
+    }
+
     return {
         add,
         remove,
+        removeAll,
         setStateByFunction,
         findByName,
         findAllByTeam,

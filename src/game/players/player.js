@@ -49,6 +49,8 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
 
         await useUnits().add(mesh, unitData, team, currentHealth)
 
+        if (!byPassMax) await saveData()
+
         return mesh
     }
 
@@ -139,7 +141,7 @@ const Player = async (isComputer=false, isYou=false, team=null, level=1, experie
         for (const unit of unitsData) {
             const object3D = unit.object3D
             const healthObject = healthManager.findByObject3D(object3D)
-            console.log(healthObject)
+            
             units.push({
                 name: object3D.name,
                 position: {
@@ -284,12 +286,17 @@ export const usePlayers = () => {
         }
     }
 
+    const removeAll = () => {
+        players.value = []
+    }
+
     return {
         add,
         get,
         remove,
         findAll,
         findYou,
-        savePlayers
+        savePlayers,
+        removeAll
     }
 }

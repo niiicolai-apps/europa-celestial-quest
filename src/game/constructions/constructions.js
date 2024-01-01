@@ -291,12 +291,20 @@ export const useItems = () => {
         return ConstructionController.countByTeam(team)
     }
 
+    const removeAll = async () => {
+        const constructions = ConstructionController.findAll();
+        for (const construction of constructions) {
+            await removeItemFromState(construction.object3D);
+        }
+    }
+
     return {
         spawn,
         canAfford,
         ConstructionDefinitions,
         dequeueAny,
         removeItemFromState,
+        removeAll,
         recalculateStorage,
         findAllByNameAndTeam,
         findAllByTeam,
